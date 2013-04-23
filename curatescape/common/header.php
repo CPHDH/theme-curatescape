@@ -22,29 +22,10 @@
 <link rel="apple-touch-icon-precomposed" href="<?php echo mh_apple_icon_logo_url();?>"/>
 <?php echo mh_ios_smart_banner(); ?>
 
-
-<?php 
-// Are we viewing the item record? If so, queue up the following JS and CSS...
-$itemsShow = ( ($bodyid == 'items') && ($bodyclass == 'show item-story') ) ? true : false;
-if($itemsShow){
-	queue_js('audiojs/audiojs/audio.min');
-	queue_js('fancybox/source/jquery.fancybox');
-	queue_css('fancybox/source/jquery.fancybox', 'all', $conditional, 'javascripts');
-	queue_css('video-js/video-js.min','all',$conditional,'javascripts');
-}
-
-// Are we viewing the stealth mode homepage? If so, queue up the following CSS...
-$stealthHome = ( ($bodyid == 'home') && ($bodyclass == 'stealth-mode') ) ? true : false;
-if($stealthHome){
-	queue_css('stealth-screen');
-}
-?>
-
 <!-- Stylesheets -->
 <?php 
 // also returns conditional styles from queue above
 queue_css('screen');
-queue_css('print','print');
 display_css();
 ?>
 
@@ -54,13 +35,12 @@ display_css();
 <!-- JavaScripts -->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <?php
-// also returns conditional scripts from queue above
-queue_js('jquery.ui.map');
-queue_js('jquery.ui.map.services');
-queue_js('jquery.ui.map.extensions');
-queue_js('swipe.min');
-queue_js('modernizr'); 
+/* AudioJS has directory-structure dependencies 
+** so it's not combined with other libraries 
+*/
+queue_js('audiojs/audiojs/audio.min'); 	
 queue_js('check-width');
+queue_js('libraries.min');
 display_js();
 ?>
 
