@@ -15,7 +15,7 @@
 <meta name="description" content="<?php echo settings('description'); ?>" />
 <meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
 <meta name="viewport" content="width=device-width">
-<link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/>
+<link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
 <?php echo auto_discovery_link_tag(); ?>
 
 <!-- Apple Stuff -->
@@ -78,5 +78,5 @@ display_js();
 	
 	
 	<figure id="hero">
-		<?php echo mh_which_content($maptype); ?>
+		<?php echo mh_which_content($maptype); ?>		
 	</figure>

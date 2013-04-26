@@ -35,12 +35,11 @@
 	    
     </div>
 </div>
+
 </footer>
 
 </div><!--end wrap-->
-<?php
 
-?>
 </body>
 
 </html>
