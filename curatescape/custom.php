@@ -695,9 +695,9 @@ function mh_share_this(){
 	$html = '<h3>Share this Page</h3>';
 	$html .= '<!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-<a class="addthis_button_preferred_2"></a>
-<a class="addthis_button_preferred_3"></a>
-<a class="addthis_button_preferred_4"></a>
+<a class="addthis_button_twitter"></a>
+<a class="addthis_button_facebook"></a>
+<a class="addthis_button_email"></a>
 <a class="addthis_button_compact"></a>
 </div>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
@@ -956,7 +956,7 @@ function mh_custom_css(){
 		background:url('.mh_bg_url().') repeat-x fixed center top #CCCCCC;
 		box-shadow:none;
 	}
-	.random-story-link.home-button{background-color:'.mh_link_color().'}
+	#swipenav #position li.current, .random-story-link.home-button{background-color:'.mh_link_color().'}
 	a,blockquote{
 		color:'.mh_link_color().'
 		}
@@ -1066,7 +1066,7 @@ function mh_lg_logo_url()
 */
 function mh_apple_icon_logo_url()
 {
-	$apple_icon_logo = get_theme_option('apple_icon');
+	$apple_icon_logo = get_theme_option('apple_icon_144');
 
 	$logo_img = $apple_icon_logo ? WEB_ROOT.'/archive/theme_uploads/'.$apple_icon_logo : img('Icon.png');
 
