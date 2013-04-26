@@ -43,18 +43,41 @@ jQuery(document).ready(function() {
 					images[index] = jQuery(this).attr('src');
 				});
 				var slideCount = images.length; // use number of images to set number of slides	
+				var slideNav = '';
 				if (!jQuery('#slider').exists()) { // prevent duplicates during window resize
 					var slideDiv;
 					slideDiv = '<div id="slider"><ul>';
 					for (var i = 0; i < slideCount; i++) {
 						slideDiv += '<li style="display:block;background-image:url(' + images[i] + ')"><div>' + titles[i] + '</div></li>';
+						current = (i == 0) ? 'class="current"' : '';
+						slideNav += '<li ' + current + '  onclick="mySwipe.slide('+i+', 300)"><em>' + i + '</em></li>';
 					}
-					slideDiv += '</ul></div>';
+					slideDiv += '</ul></div>' + '<nav id="swipenav"><ul id="position">' + slideNav + '</ul></nav>';
 					jQuery('#hero').append(slideDiv);
 					window.mySwipe = new Swipe(document.getElementById('slider'), {
 						speed: 500,
-						auto: 5000
+						auto: 5000,
+						callback: function(e, pos) {
+							var si = mySwipe.index;
+							var i = bullets.length;
+							
+							while (i--) {
+								bullets[i].className = ' ';
+							}
+							bullets[si].className = 'current';
+						}
 					});
+					bullets = document.getElementById('position').getElementsByTagName('li');
+					jQuery(document).keydown(function(e){
+					    if (e.keyCode == 37) { //left arrow
+					       mySwipe.prev();
+					       return false;
+					    }
+					    if (e.keyCode == 39) { //right arrow 
+					       mySwipe.next();
+					       return false;
+					    }					    
+					});					
 				} else {
 					jQuery('#hero #slider').show();
 				}
@@ -86,7 +109,7 @@ jQuery(document).ready(function() {
 			} //endif              
 			// Determine the state of the slider for specific pages/viewports
 			var slideStateBig = /* these will not use the slider, but are used to hide it on window resize */
-			(jQuery("body#home").hasClass('home big')) || (jQuery("body#items").hasClass('browse items stories big')) || (jQuery("body#subject-browse").hasClass('subject-browse browse subjects big')) || (jQuery("body#items").hasClass('browse tags big')) || (jQuery("body#tours").hasClass('show tour big')) || (jQuery("body#items").hasClass('browse queryresults big')) || (jQuery("body#tours").hasClass('browse tour big'));
+			(jQuery("body#home").hasClass('home big')) || (jQuery("body#items").hasClass('browse items stories big')) || (jQuery("body#subject-browse").hasClass('subject-browse browse subjects big')) || (jQuery("body#items").hasClass('browse tags big')) || (jQuery("body#tours").hasClass('show tour big')) || (jQuery("body#items").hasClass('browse queryresults big')) || (jQuery("body#tours").hasClass('browse big'));
 			//removes the slider from the #hero div
 			if (slideStateBig) {
 				jQuery('#hero #slider').hide();
