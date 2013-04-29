@@ -15,7 +15,8 @@ else{
 				<?php 
 				mh_custom_content();
 				echo random_item_link('View a Random Story','home-button');
-				echo '<p class="view-more-link">'.link_to_browse_items('View All Stories').'</p>';	
+				$text='View All'.( ($num=total_items()) ? ' '.$num.' ' : '' ).'Stories';
+				echo '<p class="view-more-link">'.link_to_browse_items($text).'</p>';	
 				?>					
 			</section>
 				
