@@ -293,6 +293,8 @@ body {
 	font-weight:lighter;
 	font-variant:small-caps;
 	font-size:smaller;
+	display: inline-block;
+	line-height: 1.6em;
 }
 
 #story-header .item-title,#tour-header .tour-title {
@@ -1726,9 +1728,8 @@ div#map-block p.map-notification {
 	}
 	
 	#custom-block,#about-text {
-		width:64%;
+		width:62%;
 		float:left;
-		padding-right:3%;
 	}
 	
 	#featured-story {
@@ -1737,19 +1738,48 @@ div#map-block p.map-notification {
 		float:right;
 		min-height:40em;
 		overflow:hidden;
-		padding-left:3%;
-		padding-right:3%;
-		width:25%;
+		width:35%;
 	}
+	#featured-story h2, #featured-story .item-description{
+		padding-left:3.5%;
+		padding-right:3.5%;
+		width: auto;
+		}	
+		
+	#featured-story .view-more-link{max-width: 96.5%;}	
 	
 	#featured-story .item-description {
 		font-size:.85em;
-		line-height:1.75em;
+		line-height:1.5em;
 	}
 	
-	#featured-story h2,#featured-story h3 {
-		text-shadow:.01em .025em 0 #222;
+	#desktop-block #featured-story .item-result h3 {
+    border-bottom: 1px solid #999999;
+    display: inline-block;
+    font-weight: lighter;
+    line-height: 1.2em;
+    margin-right: 3.5%;
+    margin-left: 3.5%;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    text-shadow: 0.01em 0.025em 0 #222222;
+    width: 92%;		
 	}
+	#desktop-block #featured-story .item-result h3 a:hover{border-bottom: 0px none transparent;}
+	
+	#featured-story h2 {
+	    background: none repeat scroll 0 0 #eaeaea;
+	    box-shadow: 0 0 0.5em #333;
+	    color: #333;
+	    margin-bottom: -3em;
+	    max-width: 70%;
+	    padding: 0 0 0 3.5%;
+	    position: relative;
+	    width: auto;
+	}
+
+	
+	#featured-story .item-thumb{margin-bottom: .5em; max-height: 15em;}
 	
 	#about-text,#about-text .view-more-link,#about-text .view-more-link a {
 		display:none;
@@ -1801,10 +1831,10 @@ div#map-block p.map-notification {
 		clear:none;
 		display:block;
 		float:left;
-		padding:1em;
+		padding:1em 0.5em;
 		position:absolute;
 		top:21em;
-		width:10em;
+		width:12em;
 		min-height:50em;
 	}
 	
@@ -1823,7 +1853,7 @@ div#map-block p.map-notification {
 	
 	#home-tours h3 {
 		background:none;
-		line-height:1em;
+		line-height:1.2em;
 		padding:.5em 0;
 		border-bottom:1px solid #555;
 		width:100%;
@@ -1834,7 +1864,7 @@ div#map-block p.map-notification {
 	#downloads {
 		position:absolute;
 		top:15em;
-		width:12em;
+		width:13em;
 	}
 	
 	#downloads h2 {
