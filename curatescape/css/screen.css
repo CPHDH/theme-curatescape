@@ -1286,6 +1286,78 @@ div#map-block p.map-notification {
 	text-shadow:.01em .025em 0 #fafafa;
 }
 
+
+
+/* STEALTH MODE */
+
+.stealth-mode h2,
+.stealth-mode #hero,
+.stealth-mode footer.main,
+.stealth-mode #mobile-menu-cluster{
+	display: none;
+	visibility: hidden;
+	height: 0;
+	width: 0;
+	}
+	
+.stealth-mode #stealth-logo-container{
+	margin: 1em auto;
+	width: 100%;
+	float: none;
+	max-width: 25em;
+}
+
+.stealth-mode #logo,
+.stealth-mode #logo img{
+	float: none;
+	width: 100%;
+	max-width: 100%;	
+}
+
+
+.stealth-mode #content{
+	width: 85%;
+	max-width:25em;
+	margin: 2em auto 3em;
+}
+
+.stealth-mode #wrap{
+	box-shadow: none;
+	background-color: #fff;
+}
+
+body.stealth-mode{
+	background-color:#fff;
+	background-image: none; 
+}
+
+.stealth-mode #contact{
+	border-top: 1px solid #ccc;
+	padding-top: 1.5em;
+	margin-top: 1em;
+	color:#777;
+	font-family: "Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-size: .9em;
+}
+
+.stealth-mode #contact{
+	line-height: 1.4em;
+	margin: 0;
+}
+
+.stealth-mode .contact-item{font-variant: small-caps; font-weight: bold; color:#777; }
+
+#about .soon{
+	font-family: "Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-style: italic;
+	float: left;
+	clear: both;
+	width: 100%;
+	text-align: right;
+}
+
 /*
 **
 **
