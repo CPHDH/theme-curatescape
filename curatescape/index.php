@@ -6,6 +6,7 @@ else{
 //if not stealth mode, do everything else
 ?>
 <?php head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>'home')); ?>
+
 	
 <div id="content">
 <article id="homepage">

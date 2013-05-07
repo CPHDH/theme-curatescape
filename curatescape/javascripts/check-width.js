@@ -13,6 +13,7 @@ jQuery(document).ready(function() {
 		var breakpoint = 720;
 		if ($window.width() < breakpoint) {
 			jQuery('body').removeClass('big').addClass('small');
+			jQuery('.item-file a').removeClass('fancybox');
 			jQuery(".item-file img").attr("src", function() {
 				return this.src.replace('square_thumbnails', 'fullsize');
 			});
@@ -85,6 +86,7 @@ jQuery(document).ready(function() {
 		}
 		if ($window.width() >= breakpoint) {
 			jQuery('body').removeClass('small').addClass('big');
+			jQuery('.item-file a').addClass('fancybox');
 			jQuery(".item-file img").attr("src", function() {
 				return this.src.replace('fullsize', 'square_thumbnails');
 			});
@@ -120,4 +122,26 @@ jQuery(document).ready(function() {
 	checkWidth();
 	// Bind event listener
 	jQuery($window).resize(checkWidth);
+
+	// ShowMap script for "mobile" views
+	jQuery('#showmap a').click(function(){
+		jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
+            var map = jQuery('#map_canvas').gmap('get', 'map');
+            var bounds=map.getBounds();
+            var center=bounds.getCenter();
+            var znum=map.getZoom();
+            if(eval(znum)<10){
+	            znum=10;
+            }
+            google.maps.event.trigger(map, "resize");
+                	map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+	                map.fitBounds(bounds);
+	                map.setCenter(center);
+	                map.setZoom(eval(znum)); 
+	                
+		});
+		jQuery('#slider').slideToggle('fast', 'linear');
+		jQuery('#swipenav').slideToggle('fast', 'linear');
+	 });	
+	
 });

@@ -15,6 +15,7 @@ head( array( 'maptype'=>'tour','title' => $tourTitle, 'content_class' => 'horizo
 <article class="tour show" role="main">
 
 	<header id="tour-header">
+	<?php echo mh_showmap();?>
 	<h2 class="tour-title instapaper_title"><?php echo $tourTitle; ?></h2>
 	<?php if(tour( 'Credits' )){
 		echo '<span class="tour-meta">By '.tour( 'Credits' ).'</span>';

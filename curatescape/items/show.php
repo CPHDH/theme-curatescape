@@ -1,17 +1,18 @@
 <?php head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => item('Dublin Core', 'Title'))); ?>
-
 <div id="content">
 
 <article class="story item show instapaper_body hentry" role="main">
 
 			
 	<header id="story-header">
+	<?php echo mh_showmap();?>
 	<hgroup class="instapaper_title entry-title">	
 		<h2 class="item-title"><?php echo item('Dublin Core', 'Title',array('index'=>0)); ?></h2>
 		<h3 class="item-subtitle"><?php echo item('Dublin Core', 'Title',array('index'=>1)); ?></h3>
 	</hgroup>	
 	<?php mh_the_author();?>
 	</header>
+
 
 	
 	<div id="item-primary" class="show">

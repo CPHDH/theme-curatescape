@@ -441,7 +441,7 @@ function mh_item_images(){
 	}
 	// checkWidth.js sets 'big' and 'small' body classes
 	// FancyBox is used only when the body class is 'big'
-	jQuery(".big .fancybox").fancybox({
+	jQuery(".fancybox").fancybox({
         beforeShow: function () {
             if (this.title) {
                 // Add caption close button
@@ -911,7 +911,10 @@ function mh_display_random_item($num=1){
 ** also sets content for mobile slideshow, via mh_random_or_recent()
 */
 function mh_custom_content($length=500){
-	$html = '<h2>About '.settings('site_title').'</h2>';
+	$html ='';
+	
+	$html .= mh_showmap();
+	$html .= '<h2>About '.settings('site_title').'</h2>';
 	$html .= '<article>';
 
 	$html .= '<div id="inline-logo"><img alt="'.settings('site_title').' logo" src="'.mh_lg_logo_url().'"/></div>';
@@ -1174,6 +1177,10 @@ function mh_normalize_special_characters( $str )
 	$str = str_replace( "&#039;", "'", $str );        # '
 
 	return $str;
+}
+
+function mh_showmap(){
+	return '<div id="showmap"><a style="cursor:pointer" ><i class="icon-globe"></i></a></div>';
 }
 
 ?>

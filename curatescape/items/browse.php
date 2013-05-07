@@ -31,7 +31,8 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 
 <div id="content">
 
-<section class="browse stories items">			
+<section class="browse stories items">	
+<?php echo mh_showmap();?>
 	<h2><?php 
 	$title .= ( (total_results()) ? ': <span class="item-number">'.total_results().'</span>' : '');
 	echo $title; 

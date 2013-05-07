@@ -18,7 +18,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
     The Font Awesome webfont, CSS, and LESS files are licensed under CC BY 3.0:
     http://creativecommons.org/licenses/by/3.0/ A mention of
     */
-@font-face{font-family:"FontAwesome";src:url(../font/fontawesome-webfont.eot);src:url(../font/fontawesome-webfont.eot?#iefix) format("eot"),url(../font/fontawesome-webfont.woff) format("woff"),url(../font/fontawesome-webfont.ttf) format("truetype"),url(../font/fontawesome-webfont.svg#FontAwesome) format("svg");font-weight:400;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:400;font-style:normal;display:inline-block;text-decoration:inherit}a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit}.icon-large:before{vertical-align:top;font-size:1.3333333333333em}.btn [class^="icon-"],.btn [class*=" icon-"]{line-height:.9em}li [class^="icon-"],li [class*=" icon-"]{display:inline-block;width:1.25em;text-align:center}li .icon-large[class^="icon-"],li .icon-large[class*=" icon-"]{width:1.875em}li[class^="icon-"],li[class*=" icon-"]{margin-left:0;list-style-type:none}li[class^="icon-"]:before,li[class*=" icon-"]:before{text-indent:-2em;text-align:center}li[class^="icon-"].icon-large:before,li[class*=" icon-"].icon-large:before{text-indent:-1.3333333333333em}.icon-camera-retro:before{content:"\f083"}.icon-film:before{content:"\f008"}.icon-volume-up:before{content:"\f028"}.icon-facetime-video:before{content:"\f03d"}.icon-picture:before{content:"\f03e"}.icon-comment:before{content:"\f075"}.icon-comments:before{content:"\f086"}.icon-envelope:before{content:"\f003"}.icon-twitter:before{content:"\f099"}.icon-facebook:before{content:"\f09a"}.icon-github:before{content:"\f09b"}.icon-map-marker:before{content:"\f041"}.icon-search:before{content:"\f002"}.icon-th:before{content:"\f00a"}.icon-chevron-down:before{content:"\f078"}.icon-chevron-right:before{content:"\f054"}.icon-reorder:before{content:"\f0c9"}.icon-info-sign:before{content:"\f05a"}.icon-home:before{content:"\f015"}.icon-book:before{content:"\f02d"}.icon-bookmark:before{content:"\f02e"}
+@font-face{font-family:"FontAwesome";src:url(../font/fontawesome-webfont.eot);src:url(../font/fontawesome-webfont.eot?#iefix) format("eot"),url(../font/fontawesome-webfont.woff) format("woff"),url(../font/fontawesome-webfont.ttf) format("truetype"),url(../font/fontawesome-webfont.svg#FontAwesome) format("svg");font-weight:400;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:400;font-style:normal;display:inline-block;text-decoration:inherit}a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit}.icon-large:before{vertical-align:top;font-size:1.3333333333333em}.btn [class^="icon-"],.btn [class*=" icon-"]{line-height:.9em}li [class^="icon-"],li [class*=" icon-"]{display:inline-block;width:1.25em;text-align:center}li .icon-large[class^="icon-"],li .icon-large[class*=" icon-"]{width:1.875em}li[class^="icon-"],li[class*=" icon-"]{margin-left:0;list-style-type:none}li[class^="icon-"]:before,li[class*=" icon-"]:before{text-indent:-2em;text-align:center}li[class^="icon-"].icon-large:before,li[class*=" icon-"].icon-large:before{text-indent:-1.3333333333333em}.icon-camera-retro:before{content:"\f083"}.icon-film:before{content:"\f008"}.icon-volume-up:before{content:"\f028"}.icon-facetime-video:before{content:"\f03d"}.icon-picture:before{content:"\f03e"}.icon-comment:before{content:"\f075"}.icon-comments:before{content:"\f086"}.icon-envelope:before{content:"\f003"}.icon-twitter:before{content:"\f099"}.icon-facebook:before{content:"\f09a"}.icon-github:before{content:"\f09b"}.icon-map-marker:before{content:"\f041"}.icon-search:before{content:"\f002"}.icon-th:before{content:"\f00a"}.icon-chevron-down:before{content:"\f078"}.icon-chevron-right:before{content:"\f054"}.icon-reorder:before{content:"\f0c9"}.icon-info-sign:before{content:"\f05a"}.icon-home:before{content:"\f015"}.icon-book:before{content:"\f02d"}.icon-bookmark:before{content:"\f02e"}.icon-globe:before{content:"\f0ac"}
 
 h3 .icon-camera-retro:before,h3 .icon-film:before,h3 .icon-volume-up:before,h3 .icon-facetime-video:before,h3 .icon-picture:before,h3 .icon-comment:before,h3 .icon-comments:before,h3 .icon-envelope:before,h3 .icon-twitter:before,h3 .icon-facebook:before,h3 .icon-github:before,.icon-map-marker:before {
 	padding-right:.5em;
@@ -183,26 +183,19 @@ header.main,#content,footer.main {
 }
 
 /* ===== HIDDEN (some items we need to hide but that we can't or don't want to remove, like plugin and semantic markup) ===== */
+#showmap a,
+#page-col-right,
+#share-this,
 .item-description h3 {
 	display:none;
 	visibility:hidden;
 }
 
-#share-this {
-	display:none;
-	visibility:hidden;
-}
-
-/* we don't need this on mobile... */
 #disqus_thread {
 	padding:2em 1em 1em;
 	border-top:1px solid #eaeaea;
 }
 
-#page-col-right {
-	display:none;
-	visibility:hidden;
-}
 
 /* TRANSITIONS */
 body,#wrap,#search-wrap,nav,#hero,header.main{
@@ -363,6 +356,7 @@ span.amp {
 	color:#999;
 	border-bottom:0 none transparent;
 }
+
 
 #mobile-logo-container {
 	position:relative;
@@ -621,6 +615,14 @@ figure#home-map {
 #map-faq-inner p {
 	margin:auto 1em;
 	line-height:1.4em;
+}
+
+#map-faq h3{
+	line-height: 1.4em;
+}
+
+#map-faq h2{
+	line-height: 1.2em;
 }
 
 #items.show #map-block div div div div div div div div div div div {
@@ -1378,6 +1380,7 @@ body.stealth-mode{
 		width:100%;
 		height:12em;
 	}
+	#map_canvas{max-height:12em;}
 	
 	#slider li div {
 		height:12em;
@@ -1404,6 +1407,30 @@ body.stealth-mode{
 @media only screen and (max-width: 45em) {
 	/* Rules that apply above (max 25) & below (min 25, up to 45), i.e. phone-sized devices in general */
 	/* =================================================================================== */
+	
+	#showmap a{
+	    border: none;
+	    border-radius: 50%;
+	    color: #999;
+	    display: block;
+	    float: right;
+	    font-size: 2em;
+	    line-height: normal;
+	    margin: -0.1em 0 0 0;
+	    height: 1em;
+	    width: 1em;
+	    padding: 0 0.1em;
+	    text-align: center;
+	    text-decoration: none;
+	    visibility: visible;	
+	    opacity: .5;	
+	}
+	
+	#showmap a:hover{
+		opacity: 1;
+	}
+	
+	
 	footer.main,footer.main span#app-store-links {
 		background:#222;
 		color:#fafafa;

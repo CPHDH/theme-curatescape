@@ -18,6 +18,7 @@
 
 <div id="content">
 <section class="browse subjects">
+<?php echo mh_showmap();?>
 <h2>Subjects: <?php echo count($result);?></h2>
 
 	<div id="page-col-left">
