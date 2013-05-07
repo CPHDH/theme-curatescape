@@ -14,7 +14,7 @@
 
 <meta name="description" content="<?php echo settings('description'); ?>" />
 <meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
 <?php echo auto_discovery_link_tag(); ?>
 
