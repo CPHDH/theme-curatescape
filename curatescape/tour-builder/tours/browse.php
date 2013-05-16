@@ -29,7 +29,9 @@ head( array( 'title' => 'Tours', 'bodyid'=>'tours',
 			echo '<article id="item-result-'.$i.'" class="item-result">';
 			echo '<h3><a href="'.$this->url( array('action' => 'show', 'id' => tour( 'id' ) ) ).'">'.tour( 'title' ).'</a></h3>';
 						
+			if($i<=10){
 			echo display_tour_thumb($this->tour,0,$userDefined);
+			}
 			
 			echo '<div class="item-description"><p>'.snippet($tourdesc,0,300).'</p></div>'; 
 			echo '</article>';
