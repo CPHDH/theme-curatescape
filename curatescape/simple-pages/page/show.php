@@ -30,9 +30,9 @@ if (simple_pages_is_home_page(get_current_simple_page())) {
 			<?php echo mh_sidebar_nav();?>
 			</nav>
 			
-			<div id="share-this">
-			<?php echo mh_share_this();?>
-			</div>
+			<!-- Grab some recent images for the image tile montage -->
+			<?php mh_display_recent_item(10);?>
+			
 		</aside>	
 	</div>	
 

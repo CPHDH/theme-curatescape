@@ -4,6 +4,79 @@ jQuery(document).ready(function() {
 	jQuery.fn.exists = function() {
 		return this.length > 0;
 	};
+	 function buildTileMontage(){
+			if (!jQuery('#tile-outer-container').exists()){
+			
+				jQuery(".item-result img").attr("src", function() {
+					return this.src.replace('square_thumbnails', 'fullsize');
+				});
+				var tileLinks = []; // get the titles
+				jQuery(".item-result h3 a").each(function(index) {
+					tileLinks[index] = jQuery(this).attr('href');
+				});
+	
+				var tileTitles = []; // get the titles
+				jQuery(".item-result h3").each(function(index) {
+					tileTitles[index] = jQuery(this).text();
+				});
+				
+				var tileImages = []; // get the images
+				jQuery(".item-result img").each(function(index) {
+					tileImages[index] = jQuery(this).attr('src');
+				});
+				
+				var tileCount = tileImages.length; 			
+				
+				var tileDiv;
+				tileDiv ='<div id="tile-outer-container" style=""><div class="tile-container" id="tile-container">';
+				for (var i = 0; i < tileCount; i++) {
+					tileDiv += '<div class="box"><a class="tile-item" href="'+ tileLinks[i] +'"><img src="'+ tileImages[i] +'" title="'+ tileTitles[i] +'"></img></a></div>';
+				}	
+				
+				
+				tileDiv +='</div></div>';				
+				
+				jQuery('#hero #slider').hide();
+				jQuery('#hero').append(tileDiv);
+				jQuery('.box').hide();
+				
+				/* 
+				the ideal "safe" number of images to use here is about 15-20, 
+				since we have 5 (CSS) columns, each of which will include 2-3 images, 
+				depending on their size...
+				if the number of tours is low, we'll repeat the tile html...
+				*/
+				var safeNum=20;
+				if((tileCount<safeNum)&&tileCount>0){
+					var n= safeNum/parseInt(tileCount);
+					var repeater='';
+					for(i=0;i<n;i++){
+						repeater += jQuery('#hero .tile-container').html();	
+					}
+					jQuery('#hero .tile-container').append(repeater);
+				}	
+				
+							
+			}else{
+				jQuery('#hero #slider').hide();
+				jQuery('#tile-outer-container').show();
+			}		 
+	 }
+
+
+	function doTileMontage(){
+		var yesTiles = /* these will use the tile montage */
+		(jQuery("body#tours").hasClass('browse big')) ||
+		(jQuery("body").hasClass('page simple-page show big')) ||
+		(jQuery("body").hasClass('page simple-page show small'));					
+		if (yesTiles) {
+			buildTileMontage();
+			jQuery('#tile-outer-container').show();	
+			jQuery('#tile-container').show();		
+			jQuery('.box').fadeIn('slow');			
+			//we use CSS to create the tile montage thing... TODO: needs an IE fallback
+			} 
+	}
 	// Function to handle changes to style classes based on window width
 	// Also swaps in thumbnails for larger views where user can utilize Fancybox image viewer
 	// Also swaps #hero images in items/show header
@@ -83,6 +156,7 @@ jQuery(document).ready(function() {
 					jQuery('#hero #slider').show();
 				}
 			} //endif
+			doTileMontage();
 		}
 		if ($window.width() >= breakpoint) {
 			jQuery('body').removeClass('small').addClass('big');
@@ -116,6 +190,7 @@ jQuery(document).ready(function() {
 			if (slideStateBig) {
 				jQuery('#hero #slider').hide();
 			} //endif
+			doTileMontage();		
 		}
 	}
 	// Execute on load
