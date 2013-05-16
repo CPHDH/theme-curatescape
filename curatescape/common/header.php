@@ -44,6 +44,12 @@ queue_js('libraries.min');
 display_js();
 ?>
 
+<!--[if lte IE 9]>
+<?php echo js('ie-polyfills.min');?>
+<![endif]-->
+
+
+
 <!-- TypeKit -->
 <?php echo mh_typekit();?>
 
