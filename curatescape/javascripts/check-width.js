@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 				
 				tileDiv +='</div></div>';				
 				
-				jQuery('#hero #slider').hide();
+				undoSwipeJS();
 				jQuery('#hero').append(tileDiv);
 				jQuery('.box').hide();
 				
@@ -119,7 +119,6 @@ jQuery(document).ready(function() {
 				
 							
 			}else{
-				jQuery('#hero #slider').hide();
 				jQuery('#tile-outer-container').show();
 			}		 
 	 }
@@ -132,6 +131,7 @@ jQuery(document).ready(function() {
 		(jQuery("body").hasClass('page simple-page show small'));					
 		if (yesTiles) {
 			buildTileMontage();
+			undoSwipeJS();	
 			jQuery('#tile-outer-container').show();	
 			jQuery('#tile-container').show();		
 			jQuery('.box').fadeIn('slow');			
@@ -163,9 +163,8 @@ jQuery(document).ready(function() {
 		(jQuery("body#tours").hasClass('show tour small'));
 		//grabs the "recent stories" content to build the slider and swaps it into the #hero div on homepage
 		if (yesSwipe) {
+			undoTileMontage();
 			buildSwipeJS();
-			jQuery('#tile-outer-container').hide();	
-			jQuery('#tile-container').hide();
 		} 
 	}
 			
@@ -186,25 +185,20 @@ jQuery(document).ready(function() {
 
 
 	function undoSwipeJS(){           
-		// Determine the state of the slider for specific pages/viewports
-		var noSwipe = /* these will not use the slider, but are used to hide it on window resize */
-		(jQuery("body#home").hasClass('home big')) || 
-		(jQuery("body#items").hasClass('browse items stories big')) || 
-		(jQuery("body#subject-browse").hasClass('subject-browse browse subjects big')) || 
-		(jQuery("body#items").hasClass('browse tags big')) || 
-		(jQuery("body#tours").hasClass('browse big')) || 
-		(jQuery("body#items").hasClass('browse queryresults big')) || 
-		(jQuery("body#tours").hasClass('show tour big'));
-		//removes the slider from the #hero div
-		if (noSwipe) {
 			jQuery('#hero #slider').hide();
 			jQuery('#hero #swipenav').hide();
-		} //endif
 	}
+	
+	function undoTileMontage(){           
+			jQuery('#tile-outer-container').hide();	
+			jQuery('#tile-container').hide();
+	}	
 
 	function itemMapToggle(){
 		// ShowMap script for "mobile" views
+		
 		jQuery('#showmap a').click(function(){
+			
 			jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
 	            var map = jQuery('#map_canvas').gmap('get', 'map');
 	            var bounds=map.getBounds();
@@ -218,10 +212,9 @@ jQuery(document).ready(function() {
 		                map.fitBounds(bounds);
 		                map.setCenter(center);
 		                map.setZoom(eval(znum)); 
-		                
-			});
+						});
 			jQuery('#slider').slideToggle('fast', 'linear');
-			jQuery('#swipenav').slideToggle('fast', 'linear');
+			jQuery('#swipenav').slideToggle('fast', 'linear');					
 		 });
 	 }	
 
@@ -269,6 +262,8 @@ jQuery(document).ready(function() {
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").hide();
 			jQuery('#map_canvas').show(); 
+			undoSwipeJS();
+		
 
 			/*TOGGLE ITEM-IMAGE SIZES*/
 			jQuery(".item-file img").attr("src", function() {
@@ -277,8 +272,6 @@ jQuery(document).ready(function() {
 
 			/*FUNCTIONS*/			
 			toggleDescriptions(); 
-			
-			undoSwipeJS();
 		
 			doTileMontage();		
 		
