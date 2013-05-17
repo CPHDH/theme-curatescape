@@ -315,7 +315,7 @@ span.amp {
 .item-description:first-child:first-letter,#tour-description p:first-child:first-letter,#about-text:first-child:first-letter {
 	float:left;
 	font-size:4em;
-	line-height:.5em;
+	line-height:0.65em;
 	padding-top:.125em;
 	padding-right:.115em;
 	padding-left:0;
