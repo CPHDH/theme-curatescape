@@ -18,7 +18,49 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
     The Font Awesome webfont, CSS, and LESS files are licensed under CC BY 3.0:
     http://creativecommons.org/licenses/by/3.0/ A mention of
     */
-@font-face{font-family:"FontAwesome";src:url(../font/fontawesome-webfont.eot);src:url(../font/fontawesome-webfont.eot?#iefix) format("eot"),url(../font/fontawesome-webfont.woff) format("woff"),url(../font/fontawesome-webfont.ttf) format("truetype"),url(../font/fontawesome-webfont.svg#FontAwesome) format("svg");font-weight:400;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:400;font-style:normal;display:inline-block;text-decoration:inherit}a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit}.icon-large:before{vertical-align:top;font-size:1.3333333333333em}.btn [class^="icon-"],.btn [class*=" icon-"]{line-height:.9em}li [class^="icon-"],li [class*=" icon-"]{display:inline-block;width:1.25em;text-align:center}li .icon-large[class^="icon-"],li .icon-large[class*=" icon-"]{width:1.875em}li[class^="icon-"],li[class*=" icon-"]{margin-left:0;list-style-type:none}li[class^="icon-"]:before,li[class*=" icon-"]:before{text-indent:-2em;text-align:center}li[class^="icon-"].icon-large:before,li[class*=" icon-"].icon-large:before{text-indent:-1.3333333333333em}.icon-camera-retro:before{content:"\f083"}.icon-film:before{content:"\f008"}.icon-volume-up:before{content:"\f028"}.icon-facetime-video:before{content:"\f03d"}.icon-picture:before{content:"\f03e"}.icon-comment:before{content:"\f075"}.icon-comments:before{content:"\f086"}.icon-envelope:before{content:"\f003"}.icon-twitter:before{content:"\f099"}.icon-facebook:before{content:"\f09a"}.icon-github:before{content:"\f09b"}.icon-map-marker:before{content:"\f041"}.icon-search:before{content:"\f002"}.icon-th:before{content:"\f00a"}.icon-chevron-down:before{content:"\f078"}.icon-chevron-right:before{content:"\f054"}.icon-reorder:before{content:"\f0c9"}.icon-info-sign:before{content:"\f05a"}.icon-home:before{content:"\f015"}.icon-book:before{content:"\f02d"}.icon-bookmark:before{content:"\f02e"}.icon-globe:before{content:"\f0ac"}
+@font-face{font-family:"FontAwesome";src:url(../font/fontawesome-webfont.eot);src:url(../font/fontawesome-webfont.eot?#iefix) format("eot"),url(../font/fontawesome-webfont.woff) format("woff"),url(../font/fontawesome-webfont.ttf) format("truetype"),url(../font/fontawesome-webfont.svg#FontAwesome) format("svg");font-weight:400;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:400;font-style:normal;display:inline-block;text-decoration:inherit}a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit}.icon-large:before{vertical-align:top;font-size:1.3333333333333em}.btn [class^="icon-"],.btn [class*=" icon-"]{line-height:.9em}li [class^="icon-"],li [class*=" icon-"]{display:inline-block;width:1.25em;text-align:center}li .icon-large[class^="icon-"],li .icon-large[class*=" icon-"]{width:1.875em}li[class^="icon-"],li[class*=" icon-"]{margin-left:0;list-style-type:none}li[class^="icon-"]:before,li[class*=" icon-"]:before{text-indent:-2em;text-align:center}li[class^="icon-"].icon-large:before,li[class*=" icon-"].icon-large:before{text-indent:-1.3333333333333em}.icon-camera-retro:before{content:"\f083"}.icon-film:before{content:"\f008"}.icon-volume-up:before{content:"\f028"}.icon-facetime-video:before{content:"\f03d"}.icon-picture:before{content:"\f03e"}.icon-comment:before{content:"\f075"}.icon-comments:before{content:"\f086"}.icon-envelope:before{content:"\f003"}.icon-twitter:before{content:"\f099"}.icon-facebook:before{content:"\f09a"}.icon-github:before{content:"\f09b"}.icon-map-marker:before{content:"\f041"}.icon-search:before{content:"\f002"}.icon-th:before{content:"\f00a"}.icon-chevron-down:before{content:"\f078"}.icon-chevron-right:before{content:"\f054"}.icon-reorder:before{content:"\f0c9"}.icon-info-sign:before{content:"\f05a"}.icon-home:before{content:"\f015"}.icon-book:before{content:"\f02d"}.icon-bookmark:before{content:"\f02e"}.icon-globe:before{content:"\f0ac"}.icon-spin {display: inline-block;-moz-animation: spin 2s infinite linear;-o-animation: spin 2s infinite linear;-webkit-animation: spin 2s infinite linear;animation: spin 2s infinite linear;}
+
+/* animations */
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(359deg);
+  }
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(359deg);
+  }
+}
+@-ms-keyframes spin {
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
 
 h3 .icon-camera-retro:before,h3 .icon-film:before,h3 .icon-volume-up:before,h3 .icon-facetime-video:before,h3 .icon-picture:before,h3 .icon-comment:before,h3 .icon-comments:before,h3 .icon-envelope:before,h3 .icon-twitter:before,h3 .icon-facebook:before,h3 .icon-github:before,.icon-map-marker:before {
 	padding-right:.5em;
@@ -256,7 +298,7 @@ a,h1 a,h2 a,h3 a,h4 a,h5 a {
 }
 
 blockquote {
-	font-family:"Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 	font-size:large;
 	font-style:italic;
 	margin:1em 2em;
@@ -272,8 +314,13 @@ h1 a,h2 a,h3 a,h4 a,h5 a,nav a,a.item-map-link {
 }
 
 h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span {
-	font-family:"Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 	font-variant:small-caps;
+}
+
+.ie #featured-story h3,
+.ie #home-tours h3{
+	font-weight: bold;
 }
 
 body {
@@ -322,9 +369,28 @@ span.amp {
 	font-family:"Baskerville","Palatino","Book Antiqua",serif;
 }
 
+#tours.show #tour-items h3.locations{
+    margin-bottom: 0;
+}
+#tours.show #tour-items article{margin: 1% auto;}
+
+
 #map-faq-inner p a {
 	font-variant:small-caps;
-	font-family:"Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
+}
+
+
+.view-more-link{
+	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
+}
+
+.view-more-link span{
+	font-family:"Georgia","Times","Times New Roman",serif;
+}
+
+.random-story-link.home-button {
+	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 }
 
 /*HEADER*/
@@ -704,14 +770,14 @@ figure#home-map {
 	border-bottom:none;
 }
 
+.view-more-link span{font-weight:bold;font-style: oblique;display: inline-block;}
+
 #home-tours h2 {
 	background:#333;
 	color:#fff;
-	text-align:center;
-	padding:.5em 0;
+	padding:.25em 0.5em;
 	border-radius:.1em;
 	margin-bottom:.25em;
-	font-weight:lighter;
 	position:relative;
 	margin-top:0;
 	text-shadow:none;
@@ -798,11 +864,11 @@ figure#home-map {
 	border-bottom:0 none transparent;
 }
 
+
 .random-story-link.home-button {
 	background:#333;
 	color:#fff;
 	font-size:1.5em;
-	font-family:"Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
 	width:100%;
 	padding:.5em 0;
 	text-align:center;
@@ -1338,7 +1404,7 @@ body.stealth-mode{
 	padding-top: 1.5em;
 	margin-top: 1em;
 	color:#777;
-	font-family: "Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-family: "Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 	font-size: .9em;
 }
 
@@ -1350,7 +1416,7 @@ body.stealth-mode{
 .stealth-mode .contact-item{font-variant: small-caps; font-weight: bold; color:#777; }
 
 .stealth-mode #about .soon{
-	font-family: "Arial Narrow","Franklin Gothic Medium","Arial","Helvetica",sans-serif;
+	font-family: "Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 	font-weight: bold;
 	font-variant: small-caps;
 	font-style: italic;
@@ -1607,7 +1673,7 @@ body.stealth-mode{
 	
 	#home-tours h3 {
 		font-size:1em;
-		font-weight:400;
+
 	}
 	
 	#tours.show #hero,#tours.browse #hero,.page #hero {
@@ -1838,8 +1904,22 @@ body.stealth-mode{
 	}
 	
 	#homepage #custom-block .view-more-link {
-		border-bottom:1px solid #eaeaea;
+		border-bottom:1px solid #ccc;
 	}
+
+	#home-tours .view-more-link {
+	    background: #EAEAEA;
+	    border-bottom: 0 none transparent;
+	    border-radius: 0.15em;
+	    display: inline-block;
+	    line-height: 1.25em;
+	    margin: 1em 2% 0;
+	    padding: 2.25% 2% 2%;
+	    text-align: center;
+	    width: 92%;
+	}
+
+	#featured-story .view-more-link{text-shadow: 0 0 .25em #444;}
 	
 	header.main,#content,footer.main {
 		padding:0 3%;
@@ -1910,14 +1990,14 @@ body.stealth-mode{
 	    box-shadow: 0 0 0.5em #333;
 	    color: #333;
 	    margin-bottom: -3em;
-	    max-width: 70%;
-	    padding: 0 0 0 3.5%;
+	    max-width: 76%;
+	    padding: 0 0 0.5% 3.5%;
 	    position: relative;
 	    width: auto;
 	}
 
 	
-	#featured-story .item-thumb{margin-bottom: .5em; max-height: 15em;}
+	#featured-story .item-thumb{margin-bottom: .5em; max-height: 15em; min-height:4em;}
 	
 	#about-text,#about-text .view-more-link,#about-text .view-more-link a {
 		display:none;
@@ -1947,6 +2027,11 @@ body.stealth-mode{
 	#home-tours h2 {
 		background:#fafafa;
 		color:#333;
+		margin-bottom:1em;
+		text-shadow:none;
+		border-radius:0;	
+		text-align: center;	
+		line-height: 1.2em;
 	}
 	
 	#home-tours h2:after {
@@ -1958,11 +2043,6 @@ body.stealth-mode{
 		color:#fafafa;
 	}
 	
-	#home-tours h2 {
-		margin-bottom:1em;
-		text-shadow:none;
-		border-radius:0;
-	}
 	
 	#home-tours {
 		background:#333;

@@ -1,13 +1,11 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
-   $tourTitle = ': ' . $tourTitle . '';
 } else {
    $tourTitle = '';
 }
-$tourTitle = 'Tour' . $tourTitle;
 
-head( array( 'maptype'=>'tour','title' => $tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
+head( array( 'maptype'=>'tour','title' => 'Tour: '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
    'bodyclass' => 'show tour' ) );
 ?>
 
@@ -36,7 +34,7 @@ head( array( 'maptype'=>'tour','title' => $tourTitle, 'content_class' => 'horizo
 		</section>
 		   
 		<section id="tour-items">
-			<h3 class="visuallyhidden">Locations</h3>
+			<h3 class="locations">Tour Locations</h3>
 	         <?php 
 	         $i=1;
 	         foreach( $tour->Items as $tourItem ): ?>

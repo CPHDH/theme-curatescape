@@ -799,7 +799,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">View All Tours</a></p>';
+	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">View all <span>'.count($items).' Tours</span></a></p>';
 
 	return $items;
 }
@@ -834,7 +834,7 @@ function mh_display_random_featured_item($withImage=false)
 		}else{
 			$html .= '<div class="item-description empty">Preview text not available.</div>';}
 
-		$html .= '<p class="view-more-link">'. link_to_item('View "'.$itemTitle.'"', array(), 'show', $featuredItem) .'</p>';
+		$html .= '<p class="view-more-link">'. link_to_item('Continue reading <span>'.$itemTitle.'</span>', array(), 'show', $featuredItem) .'</p>';
 
 	}else {
 		$html .= '<p>No featured items are available.</p>';
@@ -871,7 +871,7 @@ function mh_display_recent_item($num=1){
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items('View All Stories').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items('View all Stories').'</p>';
 }
 
 
@@ -903,7 +903,7 @@ function mh_display_random_item($num=1){
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items('View All Stories').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items('View all Stories').'</p>';
 }
 
 /*
@@ -922,7 +922,7 @@ function mh_custom_content($length=500){
 
 	$html .= '</article>';
 
-	$html .= '<p class="view-more-link"><a href="'.uri('about').'">Read More About Us</a></p>';
+	$html .= '<p class="view-more-link"><a href="'.uri('about').'">Read more <span>About Us</span></a></p>';
 
 
 	echo $html;
