@@ -111,7 +111,9 @@ function mh_which_content($maptype){
 **
 */
 function mh_display_map($type=null){
-	$plugincenter = get_option( 'geolocation_default_latitude' ) .','. get_option( 'geolocation_default_longitude' );
+	$pluginlng=get_option( 'geolocation_default_longitude' );
+	$pluginlat=get_option( 'geolocation_default_latitude' );
+	$plugincenter = $pluginlat .','. $pluginlng;
 	$zoom=(get_option('geolocation_default_zoom_level')) ? get_option('geolocation_default_zoom_level') : 12;
 
 	switch($type){
@@ -151,6 +153,10 @@ function mh_display_map($type=null){
 		var root = location.protocol + '//' + location.host;
 		var marker = root+"/themes/curatescape/images/map-icn.png";
 		var shadow = root+"/themes/curatescape/images/map-icn-shadow.png";
+		var fallbacklat='<?php echo $pluginlat ;?>';
+		var fallbacklng='<?php echo $pluginlng ;?>';
+		var fallbackmarker=null;
+		var fallbackshadow=null;
 
 		jQuery(document).ready(function() {
 
@@ -171,14 +177,24 @@ function mh_display_map($type=null){
 			// The MOBILE-JSON source is formatted differently for stories
 			// We also add some custom content to the bubble and set bounds to true
 			jQuery.getJSON( source, function(data) {
+					
+					var lat=data.latitude;
+					var lng=data.longitude;
+					if( (!lat) || (!lng) ){
+						lat= fallbacklat;
+						lng= fallbacklng;	
+						marker= fallbackmarker;	
+						shadow=fallbackshadow;	
+					};
+
 					jQuery('#map_canvas').gmap('addMarker', {
 						'zoom':zoom,
-						'position': new google.maps.LatLng(data.latitude, data.longitude),
+						'position': new google.maps.LatLng(lat, lng),
 						'bounds': true,
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+data.latitude+','+data.longitude+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small>' }, this);
 					});
 			});
 			}else{
