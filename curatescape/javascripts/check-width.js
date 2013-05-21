@@ -216,7 +216,7 @@ jQuery(document).ready(function() {
 			jQuery('#slider').slideToggle('fast', 'linear');
 			jQuery('#swipenav').slideToggle('fast', 'linear');					
 		 });
-	 }	
+	 }itemMapToggle();
 
 	// Function to handle changes to style classes based on window width
 	// Also swaps in thumbnails for larger views where user can utilize Fancybox image viewer
@@ -250,7 +250,6 @@ jQuery(document).ready(function() {
 			
 			doTileMontage();
 			
-			itemMapToggle();
 			
 		}
 		if ($window.width() >= breakpoint) {
