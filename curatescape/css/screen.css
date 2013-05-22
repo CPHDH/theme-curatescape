@@ -271,8 +271,9 @@ a:hover,a:active {
 	border-bottom:1px dotted #aaa;
 }
 
-a,h1 a,h2 a,h3 a,h4 a,h5 a {
+a,a:hover,a:active {
 /* color for these elements is set in theme options */
+	color:#999;
 }
 
 /* Typography */
