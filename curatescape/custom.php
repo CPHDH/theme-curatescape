@@ -281,16 +281,20 @@ function mh_appstore_downloads(){
 		echo ($ios_link ?
 			'<a id="apple" class="app-store" href="'.$ios_link.'">
 		iOS App Store
-		</a> ':'');
+		</a> ':'<a id="apple" class="app-store" href="#">
+		Coming Soon
+		</a> ');
 
 		$android_link = get_theme_option('android_link');
 		echo ($android_link ?
 			'<a id="android" class="app-store" href="'.$android_link.'">
 		Google Play
-		</a> ':'');
+		</a> ':'<a id="android" class="app-store" href="#">
+		Coming Soon
+		</a> ');
 
-		if ( ($android_link != true) && ($ios_link !=true) ) echo "Coming Soon";
-
+	}else{
+		echo '<a id="coming-soon" class="app-store" href="#">iOS + Android Apps Coming Soon!</a>';
 	}
 }
 
@@ -313,7 +317,7 @@ function mh_appstore_footer(){
 			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="'.$ios_link.'">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="'.$android_link.'">Android</a>';
 		}
 		else{
-			echo 'Coming soon for iPhone and Android Devices';
+			echo 'iPhone + Android Apps Coming Soon!';
 		}
 	}
 }

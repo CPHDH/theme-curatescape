@@ -613,7 +613,7 @@ a.app-store:hover {
 
 .app-store {
 	border-bottom:0 none transparent;
-	border-radius:.2em .2em .2em .2em;
+	border-radius: .2em;
 	display:inline-block;
 	margin:1em 1%;
 	min-width:none;
@@ -621,6 +621,12 @@ a.app-store:hover {
 	text-align:center;
 	text-decoration:none;
 	width:46%;
+}
+
+.app-store#coming-soon{
+	width:100%;
+	padding:2em 0;
+	border-radius: .2em;
 }
 
 .app-store#android {
@@ -2104,7 +2110,7 @@ body.stealth-mode{
 		width:46%;
 		background-size:contain;
 		text-shadow:0 0 1em #000;
-		border-radius:.75em;
+		border-radius:.5em;
 	}
 	
 	#apple.app-store {
