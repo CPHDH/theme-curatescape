@@ -1,4 +1,4 @@
-<?php head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => item('Dublin Core', 'Title'))); ?>
+<?php head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => item('Dublin Core', 'Title'),'item'=>$item)); ?>
 <div id="content">
 
 <article class="story item show instapaper_body hentry" role="main">
@@ -109,5 +109,4 @@
 	})
 	
 </script>
-
 <?php foot(); ?>
