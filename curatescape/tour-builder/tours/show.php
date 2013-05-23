@@ -6,7 +6,7 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 }
 
 head( array( 'maptype'=>'tour','title' => 'Tour: '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
-   'bodyclass' => 'show tour' ) );
+   'bodyclass' => 'show tour', 'tour'=>$tour) );
 ?>
 
 <div id="content">
