@@ -374,7 +374,10 @@ span.amp {
     margin-bottom: 0;
 }
 #tours.show #tour-items article{margin: 1% auto;}
-
+#tours.show #primary,
+.page #primary{
+	margin-bottom:3em;
+	}
 
 #map-faq-inner p a {
 	font-variant:small-caps;
