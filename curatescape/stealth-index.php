@@ -34,12 +34,12 @@ display_css();
 
 	<header class="main">	
 		<h1 id="site-title" class="visuallyhidden">
-		<a href="http://dev.clevelandhistorical.co" >DEV SITE</a>
+		<a href="<?php echo uri('');?>" ><?php echo settings('site_title');?></a>
 		</h1>
 		
 		<div id="stealth-logo-container" class="clearfix">
 			<div id="logo">
-				<a href="http://dev.clevelandhistorical.co" >
+				<a href="<?php echo uri('');?>" >
 				<?php echo mh_the_logo();?>
 				</a>
 			</div>
