@@ -1,4 +1,34 @@
 <?php
+// Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
+
+function mh_seo_pagedesc($item=null,$tour=null){
+	if($item){
+		$itemdesc=snippet(item('Dublin Core', 'Description'),0,500,"...");
+		return strip_tags($itemdesc);
+	}elseif($tour){
+		$tourdesc=snippet(tour('Description'),0,300,"...");
+		return strip_tags($tourdesc);
+	}else{
+		return mh_seo_sitedesc();
+	}
+}
+function mh_seo_sitedesc(){
+	return mh_about() ? mh_about() : settings('description');
+}
+function mh_seo_pagetitle($title){
+	return $title ? $title.' | '.settings('site_title') : settings('site_title');	
+}
+function mh_seo_pageimg($item=null){
+	if($item){
+		if(item_has_thumbnail()){
+			$itemimg=item_square_thumbnail();	
+			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
+			$itemimg=array_pop($result);
+		}
+	}
+	return $itemimg ? $itemimg : mh_lg_logo_url();
+}
+
 /*
 ** Global navigation
 */
@@ -150,8 +180,7 @@ function mh_display_map($type=null){
 		var source ='<?php echo $json_source ;?>';
 		var center ='<?php echo $plugincenter ;?>';
 		var zoom = <?php echo $zoom ;?>;
-		//var root = location.protocol + '//' + location.host;
-		var root = jQuery('header.main h1 a').attr('href'); // this is more compatible with non-root installations
+		var root = '<?php echo WEB_ROOT ;?>';
 		var marker = root+"/themes/curatescape/images/map-icn.png";
 		var shadow = root+"/themes/curatescape/images/map-icn-shadow.png";
 		var fallbacklat='<?php echo $pluginlat ;?>';
@@ -278,17 +307,17 @@ function mh_appstore_downloads(){
 
 		echo '<h2>Downloads</h2>';
 
-		$ios_link = get_theme_option('ios_link');
-		echo ($ios_link ?
-			'<a id="apple" class="app-store" href="'.$ios_link.'">
+		$ios_app_id = get_theme_option('ios_app_id');
+		echo ($ios_app_id ?
+			'<a id="apple" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">
 		iOS App Store
 		</a> ':'<a id="apple" class="app-store" href="#">
 		Coming Soon
 		</a> ');
 
-		$android_link = get_theme_option('android_link');
-		echo ($android_link ?
-			'<a id="android" class="app-store" href="'.$android_link.'">
+		$android_app_id = get_theme_option('android_app_id');
+		echo ($android_app_id ?
+			'<a id="android" class="app-store" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">
 		Google Play
 		</a> ':'<a id="android" class="app-store" href="#">
 		Coming Soon
@@ -306,16 +335,16 @@ function mh_appstore_downloads(){
 function mh_appstore_footer(){
 	if (get_theme_option('enable_app_links')){
 
-		$ios_link = get_theme_option('ios_link');
-		$android_link = get_theme_option('android_link');
-		if (($ios_link != false) && ($android_link == false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store" href="'.$ios_link.'">iPhone</a>';
+		$ios_app_id = get_theme_option('ios_app_id');
+		$android_app_id = get_theme_option('android_app_id');
+		if (($ios_app_id != false) && ($android_app_id == false)) {
+			echo 'Get the app for <a id="apple-text-link" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a>';
 		}
-		elseif (($ios_link == false) && ($android_link != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="'.$android_link.'">Android</a>';
+		elseif (($ios_app_id == false) && ($android_app_id != false)) {
+			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
 		}
-		elseif (($ios_link != false)&&($android_link != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="'.$ios_link.'">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="'.$android_link.'">Android</a>';
+		elseif (($ios_app_id != false)&&($android_app_id != false)) {
+			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
 		}
 		else{
 			echo 'iPhone + Android Apps Coming Soon!';
@@ -1163,8 +1192,9 @@ function mh_ios_smart_banner(){
 	// show the iOS Smart Banner once per day if the app ID is set
 	if (mh_app_id()!=false){
 		$AppBanner = 'Curatescape_AppBanner_'.mh_app_id();
+		$numericID=str_replace('id', '', mh_app_id());
 		if (!isset($_COOKIE[$AppBanner])){
-			echo '<meta name="apple-itunes-app" content="app-id='.mh_app_id().'">';
+			echo '<meta name="apple-itunes-app" content="app-id='.$numericID.'">';
 			setcookie($AppBanner, true,  time()+86400); // 1 day
 		}
 	}

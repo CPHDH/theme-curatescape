@@ -9,14 +9,28 @@
 <!-- Meta -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-<title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
-
-<meta name="description" content="<?php echo settings('description'); ?>" />
-<meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
 <?php echo auto_discovery_link_tag(); ?>
+    
+<title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
+<meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour); ?>" />
+<meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
+
+<!-- FB Open Graph stuff -->
+<meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
+<meta property="og:image" content="<?php echo mh_seo_pageimg($item);?>"/>
+<meta property="og:site_name" content="<?php echo settings('site_title');?>"/>
+<meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour); ?>"/>
+
+<!-- Twitter Card stuff-->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title); ?>">
+<meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour); ?>">
+<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item);?>">
+<?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="'.$twitter.'"> ' : '';?> 
+<?php echo ($ios=get_theme_option('ios_app_id')) ?  '<meta name="twitter:app:id:iphone" content="'.$ios.'"> ' : '';?> 
+<?php echo ($play=get_theme_option('android_app_id')) ?  '<meta name="twitter:app:id:googleplay" content="'.$play.'"> ' : '';?> 
 
 <!-- Apple Stuff -->
 <link rel="apple-touch-icon-precomposed" href="<?php echo mh_apple_icon_logo_url();?>"/>
