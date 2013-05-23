@@ -458,11 +458,21 @@ function mh_item_images(){
 	//===========================// ?>
 	<script>
 	function hideText(){
-		jQuery(".fancybox-title").fadeOut();
+		var link = jQuery('a.fancybox-hide-text');
+		jQuery(".fancybox-title span").fadeToggle(function(){
+            if (jQuery(this).is(":visible")) {
+                 link.html('X');                
+            } else {
+                 link.html('&hellip;');                
+            } 			
+		});
 	}
 	// checkWidth.js sets 'big' and 'small' body classes
 	// FancyBox is used only when the body class is 'big'
 	jQuery(".fancybox").fancybox({
+        beforeLoad: function() {
+            this.title = jQuery(this.element).attr('data-caption');
+        },
         beforeShow: function () {
             if (this.title) {
                 // Add caption close button
@@ -483,15 +493,17 @@ function mh_item_images(){
 	echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';
 	while ($file = loop_files_for_item()){
 		if ($file->hasThumbnail()) {
-			//
+			
 			$photoDesc = mh_normalize_special_characters(item_file('Dublin Core', 'Description'));
 			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
-			$photoCaption= $photoTitle.': '.$photoDesc;
-			$photoCaption = strip_tags($photoCaption);
+			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
+			
+			$photoCaption= $photoTitle.': '.$photoDesc.' ';
+			$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$photoSource;
 
 			$html = '<div class="item-file-container">';
 
-			$html .= ''.display_file($file, array('imageSize' => 'fullsize','linkAttributes'=>array('title'=>$photoCaption, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
+			$html .= ''.display_file($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$photoCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
 			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
 			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.'</p>' : '';
