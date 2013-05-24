@@ -393,7 +393,7 @@ span.amp {
 	font-family:"Georgia","Times","Times New Roman",serif;
 }
 
-.random-story-link.home-button {
+.random-story-link.big-button {
 	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 }
 
@@ -875,7 +875,7 @@ figure#home-map {
 }
 
 
-.random-story-link.home-button {
+.random-story-link.big-button {
 	background:#333;
 	color:#fff;
 	font-size:1.5em;
@@ -1638,7 +1638,7 @@ body.stealth-mode{
 		padding:0;
 	}
 	
-	.random-story-link.home-button,header .random-story-link.show,footer .random-story-link.show {
+	.random-story-link.big-button,header .random-story-link.show,footer .random-story-link.show {
 		display:block;
 		visibility:visible;
 	}
@@ -1829,7 +1829,7 @@ body.stealth-mode{
 		background-position-y:top!important;
 	}
 	
-	.random-story-link.home-button,footer .random-story-link.show {
+	.random-story-link.big-button,footer .random-story-link.show {
 		display:block;
 		visibility:visible;
 	}
@@ -1902,12 +1902,12 @@ body.stealth-mode{
 		padding:0;
 	}
 	
-	.random-story-link.home-button,header .random-story-link.show,footer .random-story-link.show {
+	.random-story-link.big-button,header .random-story-link.show,footer .random-story-link.show {
 		display:none;
 		visibility:hidden;
 	}
 	
-	.random-story-link.home-button {
+	.random-story-link.big-button {
 		display:block;
 		visibility:visible;
 		line-height:.05em;
@@ -2263,7 +2263,7 @@ body.stealth-mode{
 	visibility:collapse;
 }
 
-.lte8 .random-story-link.home-button {
+.lte8 .random-story-link.big-button {
 	width:100%;
 	display:block;
 }

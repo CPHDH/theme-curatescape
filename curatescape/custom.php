@@ -1047,7 +1047,7 @@ function mh_custom_css(){
 		background:url('.mh_bg_url().') repeat-x fixed center top #CCCCCC;
 		box-shadow:none;
 	}
-	#swipenav #position li.current, .random-story-link.home-button{background-color:'.mh_link_color().'}
+	#swipenav #position li.current, .random-story-link.big-button{background-color:'.mh_link_color().'}
 	a,blockquote{
 		color:'.mh_link_color().'
 		}
