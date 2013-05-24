@@ -6,17 +6,17 @@ function mh_seo_pagedesc($item=null,$tour=null){
 		$itemdesc=snippet(item('Dublin Core', 'Description'),0,500,"...");
 		return strip_tags($itemdesc);
 	}elseif($tour){
-		$tourdesc=snippet(tour('Description'),0,300,"...");
+		$tourdesc=snippet(tour('Description'),0,500,"...");
 		return strip_tags($tourdesc);
 	}else{
 		return mh_seo_sitedesc();
 	}
 }
 function mh_seo_sitedesc(){
-	return mh_about() ? mh_about() : settings('description');
+	return mh_about() ? htmlspecialchars(mh_about()) : htmlspecialchars(settings('description'));
 }
 function mh_seo_pagetitle($title){
-	return $title ? $title.' | '.settings('site_title') : settings('site_title');	
+	return $title ? htmlspecialchars($title).' | '.settings('site_title') : settings('site_title');	
 }
 function mh_seo_pageimg($item=null){
 	if($item){
@@ -351,6 +351,32 @@ function mh_appstore_footer(){
 		}
 	}
 }
+
+
+/*
+** Map FAQ
+** used for item map marker onclick
+** may be customized by site owner
+*/
+function mh_mapfaq(){
+	$emailincl=($email=get_theme_option('contact_email')) ? 'at <a href="mailto:'.$email.'">'.$email.'</a> ' : '';
+	$html ='';
+	$html .='<div style="display: none"><div id="map-faq"><div id="map-faq-inner">';
+	$html .='<h2>Frequently Asked Questions <span>about the map</span></h2>';
+	if((!get_theme_option('map_faq'))){
+		   $html .='<h3><a>Are all the locations on '.settings('site_title').' publicly accessible?</a></h3>';
+		   $html .='<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>';
+		   $html .='<h3><a>How do you choose locations for each story?</a> <span>or</span> <a>The location is wrong!</a></h3>';
+		   $html .='<p>Placing historical stories on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
+	}else{
+	$html .=get_theme_option('map_faq');
+	}
+	$html.='</div></div></div>';
+
+	return $html;
+
+}
+
 
 /*
 ** map figure on items/show.php
