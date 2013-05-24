@@ -99,7 +99,6 @@ jQuery(document).ready(function() {
 				
 				undoSwipeJS();
 				jQuery('#hero').append(tileDiv);
-				jQuery('.box').hide();
 				
 				/* 
 				the ideal "safe" number of images to use here is about 15-20, 
@@ -134,8 +133,10 @@ jQuery(document).ready(function() {
 			undoSwipeJS();	
 			jQuery('#tile-outer-container').show();	
 			jQuery('#tile-container').show();		
-			jQuery('.box').fadeIn('slow');			
-			//we use CSS to create the tile montage thing... TODO: needs an IE fallback
+			jQuery(window).load(function(){
+				jQuery('.box').fadeIn('slow');
+				});
+			//we use CSS to create the tile montage thing...
 			} 
 	}
 	

@@ -1463,7 +1463,7 @@ body.stealth-mode{
 }
 
 #tile-container .box{
-
+	display: none;
 }
 
 #tile-container .box:hover{
