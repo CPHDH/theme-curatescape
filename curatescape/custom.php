@@ -149,11 +149,11 @@ function mh_display_map($type=null){
 	switch($type){
 
 	case 'focusarea':
-		$json_source='/items/browse?output=mobile-json';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 		break;
 
 	case 'global':
-		$json_source='/items/browse?output=mobile-json';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 		break;
 
 	case 'story':
