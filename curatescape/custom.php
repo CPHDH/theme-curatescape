@@ -172,17 +172,32 @@ function mh_display_map($type=null){
 		$json_source='/items/browse?output=mobile-json';
 
 	}
+	
+	if(get_theme_option('custom_marker')){
+		$marker='/archive/theme_uploads/'.get_theme_option('custom_marker');
+	}else{
+		$marker='/themes/curatescape/images/map-icn.png';
+	}
+	if(get_theme_option('custom_shadow')){
+		$shadow='/archive/theme_uploads/'.get_theme_option('custom_shadow');
+	}else{
+		$shadow='/themes/curatescape/images/map-icn-shadow.png';
+	}
 ?>
 		<script type="text/javascript">
 
 		var type =  '<?php echo $type ;?>';
 		var mapstyle = '<?php echo 'google.maps.MapTypeId.'.get_theme_option('map_style') ;?>';
+		
+		var root = '<?php echo WEB_ROOT ;?>';
 		var source ='<?php echo $json_source ;?>';
+		
 		var center ='<?php echo $plugincenter ;?>';
 		var zoom = <?php echo $zoom ;?>;
-		var root = '<?php echo WEB_ROOT ;?>';
-		var marker = root+"/themes/curatescape/images/map-icn.png";
-		var shadow = root+"/themes/curatescape/images/map-icn-shadow.png";
+		
+		var marker = root+"<?php echo $marker ;?>";
+		var shadow = root+"<?php echo $shadow ;?>";	
+		
 		var fallbacklat='<?php echo $pluginlat ;?>';
 		var fallbacklng='<?php echo $pluginlng ;?>';
 		var fallbackmarker=null;
@@ -1269,7 +1284,7 @@ function mh_normalize_special_characters( $str )
 }
 
 function mh_showmap(){
-	return '<div id="showmap"><a style="cursor:pointer" ><i class="icon-globe"></i></a></div>';
+	return '<div id="showmap"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
 }
 
 ?>
