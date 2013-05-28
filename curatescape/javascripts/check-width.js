@@ -216,7 +216,9 @@ jQuery(document).ready(function() {
 						});
 						
 			jQuery('#slider').slideToggle('fast', 'linear');
-			jQuery('#swipenav').slideToggle('fast', 'linear');					
+			jQuery('#swipenav').slideToggle('fast', 'linear');	
+			jQuery('#showmap a').toggleClass('mapview');
+			jQuery('#showmap a i').toggleClass('hidden');
 		 });
 	 }itemMapToggle();
 
