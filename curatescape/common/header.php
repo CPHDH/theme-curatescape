@@ -36,6 +36,11 @@
 <link rel="apple-touch-icon-precomposed" href="<?php echo mh_apple_icon_logo_url();?>"/>
 <?php echo mh_ios_smart_banner(); ?>
 
+<!-- Windows stuff -->
+<meta name="msapplication-TileColor" content="#ffffff"/>
+<meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
+
+
 <!-- Stylesheets -->
 <?php 
 // also returns conditional styles from queue above
