@@ -205,9 +205,9 @@ jQuery(document).ready(function() {
 	            var bounds=map.getBounds();
 	            var center=bounds.getCenter();
 	            var znum=map.getZoom();
-	            if( (jQuery('body#tours')) && (znum<8)){
+	            if( (jQuery('body#tours')) && (znum<10)){
 		            // for whatever reason, we need to manually tweak the zoom level on the tour maps
-		            znum=8;
+		            znum=10;
 	            }
 	            google.maps.event.trigger(map, "resize");
 	                	map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
