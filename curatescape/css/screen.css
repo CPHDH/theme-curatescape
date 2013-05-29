@@ -2277,9 +2277,8 @@ body.stealth-mode{
 	display:none;
 }
 
-.lte8 #tours.show #hero,.lte8 #tours.browse #hero,.lte8 .page #hero {
-	display:none;
-	visibility:collapse;
+.lte8 footer input#search{
+	border-color:#ccc;
 }
 
 .lte8 .random-story-link.big-button {
@@ -2289,6 +2288,11 @@ body.stealth-mode{
 
 .lte8 a.app-store,.lte8 a.app-store#android,.lte8 a.app-store#apple {
 	background:#333;
+}
+
+.lte7 #tours.show #hero,.lte7 #tours.browse #hero,.lte7 .page #hero {
+	display:none;
+	visibility:collapse;
 }
 
 .lte7 #hero {
