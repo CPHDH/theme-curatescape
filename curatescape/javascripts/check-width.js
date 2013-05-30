@@ -236,6 +236,7 @@ jQuery(document).ready(function() {
 			/*TOGGLE CLASSES*/
 			jQuery('body').removeClass('big').addClass('small');
 			jQuery('.item-file a').removeClass('fancybox');	
+			jQuery('#showmap').removeClass('hidden');	
 			
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").show();
@@ -261,6 +262,7 @@ jQuery(document).ready(function() {
 			/*TOGGLE CLASSES*/
 			jQuery('body').removeClass('small').addClass('big');
 			jQuery('.item-file a').addClass('fancybox');
+			jQuery('#showmap').addClass('hidden');
 			
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").hide();

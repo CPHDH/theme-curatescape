@@ -240,24 +240,12 @@ header.main,#content,footer.main {
 
 
 /* TRANSITIONS */
-body,#wrap,#search-wrap,nav,#hero,header.main{
+body,#wrap,#search-wrap,nav,#hero,header.main,
+#showmap a, #swipenav #position li.current, #mobile-menu-cluster{
 	transition:all .2s linear;
 	-o-transition:all .2s linear;
 	-moz-transition:all .2s linear;
 	-webkit-transition:all .2s linear;
-}
-#swipenav #position li.current {
-	transition:all .25s linear;
-	-o-transition:all .25s linear;
-	-moz-transition:all .25s linear;
-	-webkit-transition:all .25s linear;	
-}
-
-#mobile-menu-cluster {
-	transition:all .25s linear;
-	-o-transition:all .25s linear;
-	-moz-transition:all .25s linear;
-	-webkit-transition:all .25s linear;
 }
 
 /* Links */
@@ -1474,10 +1462,10 @@ body.stealth-mode{
 	display: none;
 }
 
-#tile-container .box:hover{
-	
+body.page #showmap,
+body#tours.browse #showmap{
+	display: none;
 }
-
 
 /*
 **
@@ -1536,26 +1524,25 @@ body.stealth-mode{
 	}
 	
 	#showmap a{
-	    border: none;
+	    background: none repeat scroll 0 0 #fafafa;
+	    border: medium none;
+	    border-radius: 50%;
+	    bottom: 1.25em;
 	    color: #999;
-	    border-radius: .25em .25em 0 0;
-	    display: block;
+	    display: inline-block;
 	    font-size: 2em;
-	    line-height: normal;
-	    margin: 0 0 0 0;
-	    height: 1.25em;
-	    width: 15%;
-	    max-width: 2em;
-	    padding: 0.1em;
+	    height: .85em;
+	    line-height: .95em;
+	    margin: 0;
+	    opacity: 0.65;
+	    padding: 0.25em;
+	    position: absolute;
+	    right: 0.25em;
 	    text-align: center;
 	    text-decoration: none;
-	    visibility: visible;	
-	    opacity: .65;	
-	    background: #fff;
+	    visibility: visible;
+	    width: .85em;
 	    z-index: 999;
-	    position: inherit;
-	    left: 17.5%;
-	    bottom:1.25em;
 	}
 	#showmap a i.icon-map-marker:before{
 		padding-right: 0;
@@ -1567,6 +1554,8 @@ body.stealth-mode{
 	
 	#showmap a.mapview{
 		opacity: 1;
+		box-shadow: 0 0 .75em #333;
+		border-radius: 10%;
 	}
 	
 	footer.main,footer.main span#app-store-links {

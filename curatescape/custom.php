@@ -1028,7 +1028,6 @@ function mh_display_random_item($num=1){
 function mh_custom_content($length=500){
 	$html ='';
 	
-	$html .= mh_showmap();
 	$html .= '<h2>About '.settings('site_title').'</h2>';
 	$html .= '<article>';
 
@@ -1296,7 +1295,7 @@ function mh_normalize_special_characters( $str )
 }
 
 function mh_showmap(){
-	return '<div id="showmap"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
+	return '<div id="showmap" class="hidden"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
 }
 
 ?>
