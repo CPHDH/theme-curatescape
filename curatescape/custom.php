@@ -149,7 +149,7 @@ function mh_which_content($maptype){
 ** Render the map using Google Maps API via jQuery-UI-Map http://code.google.com/p/jquery-ui-map/
 ** Source feed generated from Mobile JSON plugin
 ** Location data (LatLon and Zoom) created and stored in Omeka using stock Geolocation plugin
-**
+** Per_page limits overridden, set to 9,999
 */
 function mh_display_map($type=null){
 	$pluginlng=get_option( 'geolocation_default_longitude' );
@@ -160,11 +160,11 @@ function mh_display_map($type=null){
 	switch($type){
 
 	case 'focusarea':
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=9999';
 		break;
 
 	case 'global':
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=9999';
 		break;
 
 	case 'story':
@@ -172,15 +172,15 @@ function mh_display_map($type=null){
 		break;
 
 	case 'tour':
-		$json_source='?output=mobile-json';
+		$json_source='?output=mobile-json&per_page=9999';
 		break;
 
 	case 'queryresults': // used for tags, subjects, search results, etc
-		$json_source=$_SERVER['REQUEST_URI'].'&output=mobile-json';
+		$json_source=$_SERVER['REQUEST_URI'].'&output=mobile-json&per_page=9999';
 		break;
 
 	default:
-		$json_source='/items/browse?output=mobile-json';
+		$json_source='/items/browse?output=mobile-json&per_page=9999';
 
 	}
 	
