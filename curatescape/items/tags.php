@@ -3,7 +3,6 @@
 
 <div id="content">
 <section class="browse tags">		
-<?php echo mh_showmap();?>
 <h2>Tags: <?php echo total_tags();?></h2>
 
 	<div id="page-col-left">

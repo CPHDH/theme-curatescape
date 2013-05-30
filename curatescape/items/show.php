@@ -5,7 +5,6 @@
 
 			
 	<header id="story-header">
-	<?php echo mh_showmap();?>
 	<hgroup class="instapaper_title entry-title">	
 		<h2 class="item-title"><?php echo item('Dublin Core', 'Title',array('index'=>0)); ?></h2>
 		<h3 class="item-subtitle"><?php echo item('Dublin Core', 'Title',array('index'=>1)); ?></h3>
