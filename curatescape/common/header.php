@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
-<?php echo auto_discovery_link_tag(); ?>
+<?php echo mh_auto_discovery_link_tags(); ?>
     
 <title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
 <meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour); ?>" />

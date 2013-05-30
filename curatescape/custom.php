@@ -1,6 +1,5 @@
 <?php
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
-
 function mh_seo_pagedesc($item=null,$tour=null){
 	if($item){
 		$itemdesc=snippet(item('Dublin Core', 'Description'),0,500,"...");
@@ -27,6 +26,18 @@ function mh_seo_pageimg($item=null){
 		}
 	}
 	return $itemimg ? $itemimg : mh_lg_logo_url();
+}
+
+
+/*
+** Modify Omeka's auto_discovery_link_tags
+** Changes labels for feed names to be more appropriate
+** Introduces item limit to avoid excessive memory use
+*/
+function mh_auto_discovery_link_tags() {
+    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New Stories: RSS') . '" href="'. html_escape(items_output_uri()) .'&per_page=15" />';
+    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New Stories: Atom') .'" href="'. html_escape(items_output_uri('atom')) .'&per_page=15" />';
+    return $html;
 }
 
 /*
