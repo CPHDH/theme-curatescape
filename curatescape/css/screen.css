@@ -898,6 +898,10 @@ figure#home-map {
 	letter-spacing:.15em;
 }
 
+ul.pagination_list{
+	padding-left:0;
+}
+
 .item-tags p {
 	color:#777;
 	font-variant:small-caps;
