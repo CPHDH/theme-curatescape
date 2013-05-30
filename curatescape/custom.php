@@ -571,10 +571,10 @@ function mh_item_images(){
 	});
 	</script>
 	<?php //========================//
-	echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';
+
 	while ($file = loop_files_for_item()){
 		if ($file->hasThumbnail()) {
-			
+			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';			
 			$photoDesc = mh_normalize_special_characters(item_file('Dublin Core', 'Description'));
 			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
 			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
@@ -591,6 +591,7 @@ function mh_item_images(){
 			$html .= '</div>';
 
 			echo $html;
+			$index++;
 
 		}
 	}
