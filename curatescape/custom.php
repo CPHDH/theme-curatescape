@@ -1028,8 +1028,12 @@ function mh_display_random_item($num=1){
 function mh_custom_content($length=500){
 	$html ='';
 	
-	$html .= '<h2>About '.settings('site_title').'</h2>';
 	$html .= '<article>';
+	
+	$html .= '<header>';	
+	$html .= '<h2><span class="hidden">About </span>'.settings('site_title').'</h2>';
+	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
+	$html .= '</header>';
 
 	$html .= '<div id="inline-logo"><img alt="'.settings('site_title').' logo" src="'.mh_lg_logo_url().'"/></div>';
 	$html .= snippet(mh_about(),0,$length,"...");
@@ -1046,6 +1050,38 @@ function mh_custom_content($length=500){
 	echo '</div>';
 }
 
+/*
+** Build a series of social media link for the homepage
+** see: mh_custom_content()
+*/
+function mh_home_find_us(){
+	$service=array();
+	($twitter=get_theme_option('twitter_username')) ? array_push($service,'<a href="https://twitter.com/'.$twitter.'">Twitter</a>') : null;
+	($facebook=get_theme_option('facebook_link')) ? array_push($service,'<a href="'.$facebook.'">Facebook</a>') : null;
+	($youtube=get_theme_option('youtube_username')) ? array_push($service,'<a href="http://www.youtube.com/user/'.$youtube.'">Youtube</a>') : null;
+	
+	if(count($service)>0){
+		$findus='Find us on '.join(' | ',$service);
+	}else{
+		$findus='A project by '.mh_owner_link();
+	}
+	return $findus;
+}
+
+
+/*
+** Build a link for the footer copyright statement and the fallback credit line on homepage 
+** see: mh_home_find_us()
+*/
+function mh_owner_link(){
+
+	$authname_fallback=(settings('author')) ? settings('author') : settings('site_title');
+	
+	$authname=(get_theme_option('sponsor_name')) ? get_theme_option('sponsor_name') : $authname_fallback;
+	$authlink=(get_theme_option('sponsor_link')) ? get_theme_option('sponsor_link') : '#';
+	
+	return '<a href="'.$authlink.'">'.$authname.'</a>';
+}
 
 /*
 ** Get recent/random items for use in mobile slideshow on homepage
