@@ -15,7 +15,7 @@
 	<p>
 		Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
 		<br>
-		<span id="copyright">&copy; <?php echo date('Y').' '.settings('author');?></span> 
+		<span id="copyright">&copy; <?php echo date('Y').' '.mh_owner_link();?></span> 
 		<br>
 		<span id="app-store-links"><?php mh_appstore_footer(); ?></span>
 	</p>
