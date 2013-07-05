@@ -256,9 +256,7 @@ function mh_display_map($type=null){
 					};
 
 					jQuery('#map_canvas').gmap('addMarker', {
-						//'zoom':15,
 						'position': new google.maps.LatLng(lat, lng),
-						//'center': new google.maps.LatLng(lat, lng),
 						'bounds': true,
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
@@ -267,7 +265,6 @@ function mh_display_map($type=null){
 					});
 			});
 			jQuery.when(makemap).done(function() {
-				//console.log('map loaded');
 				jQuery('#hero_loading').fadeOut('slow');
 				jQuery('#map_canvas').gmap('option', 'zoom', 15);
 			});				
@@ -288,7 +285,6 @@ function mh_display_map($type=null){
 				});
 			});
 			jQuery.when(makemap).done(function() {
-				//console.log('map loaded');
 				jQuery('#hero_loading').fadeOut('slow');
 			});				
 			}
