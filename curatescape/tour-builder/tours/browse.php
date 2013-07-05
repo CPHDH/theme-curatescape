@@ -1,5 +1,5 @@
 <?php
-head( array( 'title' => 'Tours', 'bodyid'=>'tours',
+head( array('maptype'=>'none', 'title' => 'Tours', 'bodyid'=>'tours',
    'bodyclass' => 'browse' ) );
 ?>
 <div id="content">
