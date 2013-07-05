@@ -105,4 +105,3 @@ display_js();
 	<figure id="hero">
 		<?php echo mh_which_content($maptype); ?>	
 	</figure>
-	<?php echo mh_showmap();?>	

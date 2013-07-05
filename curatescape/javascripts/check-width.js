@@ -197,7 +197,7 @@ jQuery(document).ready(function() {
 
 	function itemMapToggle(){
 		// ShowMap script for "mobile" views
-		
+		jQuery('#hero').after('<div id="showmap" class=""><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>').fadeIn('slow');
 		jQuery('#showmap a').click(function(){
 			
 			jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
@@ -220,7 +220,7 @@ jQuery(document).ready(function() {
 			jQuery('#showmap a').toggleClass('mapview');
 			jQuery('#showmap a i').toggleClass('hidden');
 		 });
-	 }itemMapToggle();
+	 }
 
 	// Function to handle changes to style classes based on window width
 	// Also swaps in thumbnails for larger views where user can utilize Fancybox image viewer
@@ -286,5 +286,7 @@ jQuery(document).ready(function() {
 	checkWidth();
 	// Bind event listener
 	jQuery($window).resize(checkWidth);
-	
+	jQuery($window).load(function() {
+	    itemMapToggle();
+		});	
 });
