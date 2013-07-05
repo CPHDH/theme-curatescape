@@ -358,7 +358,7 @@ span.amp {
 	font-family:"Baskerville","Palatino","Book Antiqua",serif;
 }
 
-#tours.browse h3,
+#tours.browse #content h3,
 #tours.show #tour-items h3.locations{
     margin-bottom: 0;
 }

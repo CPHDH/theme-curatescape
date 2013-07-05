@@ -98,7 +98,7 @@ jQuery(document).ready(function() {
 				tileDiv +='</div></div>';				
 				
 				undoSwipeJS();
-				jQuery('#hero').append(tileDiv);
+				jQuery('#hero').prepend(tileDiv);
 				
 				/* 
 				the ideal "safe" number of images to use here is about 15-20, 
@@ -135,6 +135,7 @@ jQuery(document).ready(function() {
 			jQuery('#tile-container').show();		
 			jQuery(window).load(function(){
 				jQuery('.box').fadeIn('slow');
+				jQuery('#hero_loading').fadeOut('slow');
 				});
 			//we use CSS to create the tile montage thing...
 			} 
