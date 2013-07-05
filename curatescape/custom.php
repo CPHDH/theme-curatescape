@@ -1052,12 +1052,8 @@ function mh_display_random_item($num=1){
 function mh_custom_content($length=500){
 	$html ='';
 	
+	$html .= '<h2>About '.settings('site_title').'</h2>';
 	$html .= '<article>';
-	
-	$html .= '<header>';	
-	$html .= '<h2><span class="hidden">About </span>'.settings('site_title').'</h2>';
-	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
-	$html .= '</header>';
 
 	$html .= '<div id="inline-logo"><img alt="'.settings('site_title').' logo" src="'.mh_lg_logo_url().'"/></div>';
 	$html .= snippet(mh_about(),0,$length,"...");
@@ -1074,6 +1070,7 @@ function mh_custom_content($length=500){
 	echo '</div>';
 }
 
+<<<<<<< HEAD
 /*
 ** Build a series of social media link for the homepage
 ** see: mh_custom_content()
@@ -1106,6 +1103,8 @@ function mh_owner_link(){
 	
 	return $authlink;
 }
+=======
+>>>>>>> parent of 7798361... new custom functions for homepage center column
 
 /*
 ** Get recent/random items for use in mobile slideshow on homepage
