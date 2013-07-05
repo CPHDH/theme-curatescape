@@ -123,23 +123,25 @@ function mh_global_header(){
 ** TODO: To speed this up, we should just send a specific variable to the header rather than using regexp
 */
 function mh_which_content($maptype){
+	
+	$loading = '<img id="hero_loading" src="'.img('map_loading.gif').'">';
+	
 	if ($maptype == 'focusarea') {
-		return mh_display_map('focusarea');
+		return $loading.mh_display_map('focusarea');
 	}
 	elseif ($maptype == 'story') {
-		return mh_display_map('story');
+		return $loading.mh_display_map('story');
 	}
 	elseif ($maptype == 'queryresults') {
-		return mh_display_map('queryresults');
+		return $loading.mh_display_map('queryresults');
 	}
 	elseif ($maptype == 'tour') {
-		return mh_display_map('tour');
+		return $loading.mh_display_map('tour');
 	}
-	// TODO: figure out what to do with these
-	elseif (preg_match('/page/i', $bodyclass)) {
-		return null; }
-	elseif (preg_match('/tours/i', $bodyclass)) {
-		return null; }
+	elseif ($maptype == 'none') {
+		//return null; 
+		return $loading;
+		}
 	else {
 		return null;
 	}
@@ -160,22 +162,27 @@ function mh_display_map($type=null){
 	switch($type){
 
 	case 'focusarea':
+		/* all stories, map is centered on focus area (plugin center) */
 		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=9999';
 		break;
 
 	case 'global':
+		/* all stories, map is bounded according to content */
 		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=9999';
 		break;
 
 	case 'story':
+		/* single story */
 		$json_source='?output=mobile-json';
 		break;
 
 	case 'tour':
+		/* single tour, map is bounded according to content  */
 		$json_source='?output=mobile-json&per_page=9999';
 		break;
 
-	case 'queryresults': // used for tags, subjects, search results, etc
+	case 'queryresults': 
+		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
 		$json_source=$_SERVER['REQUEST_URI'].'&output=mobile-json&per_page=9999';
 		break;
 
@@ -213,10 +220,12 @@ function mh_display_map($type=null){
 		var fallbacklng='<?php echo $pluginlng ;?>';
 		var fallbackmarker=null;
 		var fallbackshadow=null;
-
+		
 		jQuery(document).ready(function() {
 
-
+		jQuery('#hero_loading').fadeIn('slow');
+		
+		/* setup the default map */
 		jQuery('#map_canvas').gmap({
 			'center': center,
 			'zoom': zoom,
@@ -230,22 +239,26 @@ function mh_display_map($type=null){
 		}).bind('init', function() {
 
 			if(type == 'story'){
+			
+			
 			// The MOBILE-JSON source is formatted differently for stories
 			// We also add some custom content to the bubble and set bounds to true
-			jQuery.getJSON( source, function(data) {
+			var makemap=jQuery.getJSON( source, function(data) {
 					
+					// make sure we have a location; if not, use plugin center and empty marker
 					var lat=data.latitude;
 					var lng=data.longitude;
 					if( (!lat) || (!lng) ){
 						lat= fallbacklat;
 						lng= fallbacklng;	
 						marker= fallbackmarker;	
-						shadow=fallbackshadow;	
+						shadow= fallbackshadow;	
 					};
 
 					jQuery('#map_canvas').gmap('addMarker', {
-						'zoom':zoom,
+						//'zoom':15,
 						'position': new google.maps.LatLng(lat, lng),
+						//'center': new google.maps.LatLng(lat, lng),
 						'bounds': true,
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
@@ -253,11 +266,16 @@ function mh_display_map($type=null){
 						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small>' }, this);
 					});
 			});
+			jQuery.when(makemap).done(function() {
+				//console.log('map loaded');
+				jQuery('#hero_loading').fadeOut('slow');
+				jQuery('#map_canvas').gmap('option', 'zoom', 15);
+			});				
 			}else{
 			// The MOBILE-JSON source format for everything else is compatible w/ the following
-			// Set bounds to true unless it's the homepage or a "browse all" page
+			// Set bounds to true unless it's the homepage or a "browse all" page, each of which use the "focusarea" view
 			var bounds = (type == 'focusarea') ? false : true;
-			jQuery.getJSON( source, function(data) {
+			var makemap=jQuery.getJSON( source, function(data) {
 				jQuery.each( data.items, function(i, item) {
 					jQuery('#map_canvas').gmap('addMarker', {
 						'position': new google.maps.LatLng(item.latitude, item.longitude),
@@ -269,15 +287,17 @@ function mh_display_map($type=null){
 					});
 				});
 			});
+			jQuery.when(makemap).done(function() {
+				//console.log('map loaded');
+				jQuery('#hero_loading').fadeOut('slow');
+			});				
 			}
-
-
 		})
 		});
 
         </script>
 		<div id="hm-map">
-			<div id="map_canvas" style="height:20em;">
+			<div id="map_canvas" style="height:20em;">		
 			</div>
 		</div>
 <?php }
@@ -579,8 +599,12 @@ function mh_item_images(){
 			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
 			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
 			
-			$photoCaption= $photoTitle.': '.$photoDesc.' ';
-			$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$photoSource;
+			if($photoTitle){
+				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
+				$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$photoSource;
+				}else{
+					$photoCaption = '<span class="main">Image '.($index+1).'</span>';	
+				}
 
 			$html = '<div class="item-file-container">';
 
@@ -728,7 +752,7 @@ function mh_subjects(){
 			$link .= htmlentities('/items/browse?term=');
 			$link .= rawurlencode($subject);
 			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
-			$link .= rawurlencode($subject);
+			$link .= urlencode(str_replace('&amp;','&',$subject));
 			$link .= htmlentities('&submit_search=Search');
 			echo '<li><a href="'.$link.'">'.$subject.'</a></li>';
 		}
@@ -1078,9 +1102,9 @@ function mh_owner_link(){
 	$authname_fallback=(settings('author')) ? settings('author') : settings('site_title');
 	
 	$authname=(get_theme_option('sponsor_name')) ? get_theme_option('sponsor_name') : $authname_fallback;
-	$authlink=(get_theme_option('sponsor_link')) ? get_theme_option('sponsor_link') : '#';
+	$authlink=(get_theme_option('sponsor_link')) ? '<a href="'.get_theme_option('sponsor_link').'">'.$authname.'</a>' : $authname;
 	
-	return '<a href="'.$authlink.'">'.$authname.'</a>';
+	return $authlink;
 }
 
 /*
