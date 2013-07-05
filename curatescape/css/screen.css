@@ -397,6 +397,27 @@ span.amp {
 	box-shadow:0 0 1em #333 inset;
 }
 
+img#hero_loading{
+	display: none;
+}
+
+.small img#hero_loading{
+	display: none !important;
+	visibility: hidden !important;
+}
+.big img#hero_loading{
+	margin: -2em auto 0;
+	float: left;
+	clear: none;
+	position: relative;
+	left:.5em;
+	width:auto;
+	opacity: .9;
+	background: #fff;
+	border-radius: .15em;
+	padding: .25em .5em;
+}
+
 #map-block div.map {
 	height:20em;
 }
