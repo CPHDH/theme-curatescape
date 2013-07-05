@@ -1,5 +1,7 @@
 <?php
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
+
+// SEO Page description
 function mh_seo_pagedesc($item=null,$tour=null){
 	if($item){
 		$itemdesc=snippet(item('Dublin Core', 'Description'),0,500,"...");
@@ -11,12 +13,18 @@ function mh_seo_pagedesc($item=null,$tour=null){
 		return mh_seo_sitedesc();
 	}
 }
+
+// SEO Site description
 function mh_seo_sitedesc(){
 	return mh_about() ? htmlspecialchars(mh_about()) : htmlspecialchars(settings('description'));
 }
+
+// SEO Page Title
 function mh_seo_pagetitle($title){
 	return $title ? htmlspecialchars($title).' | '.settings('site_title') : settings('site_title');	
 }
+
+// SEO Page image
 function mh_seo_pageimg($item=null){
 	if($item){
 		if(item_has_thumbnail()){
