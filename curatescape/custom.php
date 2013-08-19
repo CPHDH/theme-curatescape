@@ -16,7 +16,7 @@ function mh_seo_pagedesc($item=null,$tour=null){
 
 // SEO Site description
 function mh_seo_sitedesc(){
-	return mh_about() ? htmlspecialchars(mh_about()) : htmlspecialchars(settings('description'));
+	return mh_about() ? strip_tags(mh_about()) : strip_tags(settings('description'));
 }
 
 // SEO Page Title
