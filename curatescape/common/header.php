@@ -13,7 +13,7 @@
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
 <?php echo mh_auto_discovery_link_tags(); ?>
     
-<title><?php echo settings('site_title'); echo $title ? ' | ' . $title : ''; ?></title>
+<title><?php echo $title ?  $title.' | '.settings('site_title') : settings('site_title'); ?></title>
 <meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour); ?>" />
 <meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
 
@@ -43,13 +43,16 @@
 
 <!-- Stylesheets -->
 <?php 
-// also returns conditional styles from queue above
 queue_css('screen');
 display_css();
 ?>
 
 <!-- Custom CSS via theme config -->
-<?php echo mh_custom_css(); ?>
+<?php 
+if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
+	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/archive/theme_uploads/'.$uploaded_stylesheet.'" />';
+	}
+echo mh_custom_css(); ?>
 
 <!-- JavaScripts -->
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
