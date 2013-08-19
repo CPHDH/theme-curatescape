@@ -20,6 +20,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
     */
 @font-face{font-family:"FontAwesome";src:url(../font/fontawesome-webfont.eot);src:url(../font/fontawesome-webfont.eot?#iefix) format("eot"),url(../font/fontawesome-webfont.woff) format("woff"),url(../font/fontawesome-webfont.ttf) format("truetype"),url(../font/fontawesome-webfont.svg#FontAwesome) format("svg");font-weight:400;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:400;font-style:normal;display:inline-block;text-decoration:inherit}a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit}.icon-large:before{vertical-align:top;font-size:1.3333333333333em}.btn [class^="icon-"],.btn [class*=" icon-"]{line-height:.9em}li [class^="icon-"],li [class*=" icon-"]{display:inline-block;width:1.25em;text-align:center}li .icon-large[class^="icon-"],li .icon-large[class*=" icon-"]{width:1.875em}li[class^="icon-"],li[class*=" icon-"]{margin-left:0;list-style-type:none}li[class^="icon-"]:before,li[class*=" icon-"]:before{text-indent:-2em;text-align:center}li[class^="icon-"].icon-large:before,li[class*=" icon-"].icon-large:before{text-indent:-1.3333333333333em}.icon-camera-retro:before{content:"\f083"}.icon-film:before{content:"\f008"}.icon-volume-up:before{content:"\f028"}.icon-facetime-video:before{content:"\f03d"}.icon-picture:before{content:"\f03e"}.icon-comment:before{content:"\f075"}.icon-comments:before{content:"\f086"}.icon-envelope:before{content:"\f003"}.icon-twitter:before{content:"\f099"}.icon-facebook:before{content:"\f09a"}.icon-github:before{content:"\f09b"}.icon-map-marker:before{content:"\f041"}.icon-search:before{content:"\f002"}.icon-th:before{content:"\f00a"}.icon-chevron-down:before{content:"\f078"}.icon-chevron-right:before{content:"\f054"}.icon-reorder:before{content:"\f0c9"}.icon-info-sign:before{content:"\f05a"}.icon-home:before{content:"\f015"}.icon-book:before{content:"\f02d"}.icon-bookmark:before{content:"\f02e"}.icon-globe:before{content:"\f0ac"}.icon-spin {display: inline-block;-moz-animation: spin 2s infinite linear;-o-animation: spin 2s infinite linear;-webkit-animation: spin 2s infinite linear;animation: spin 2s infinite linear;}
 
+
 /* animations */
 @-moz-keyframes spin {
   0% {
@@ -1359,6 +1360,14 @@ span#tour-nav-links {
 }
 
 /* FOOTER */
+
+footer.main .custom{
+	float:none;
+	width:100%;
+	margin: 1em auto;
+}
+
+
 footer.main {
 	text-align:center;
 	margin-top:1em;
@@ -1369,14 +1378,19 @@ footer.main nav {
 	margin-bottom:.25em;
 }
 
-footer.main p {
+footer.main p{
 	font-size:smaller;
+	color:#ccc;
+}
+
+footer.main p.default {
 	line-height:0;
 	margin:3em auto 1em;
+	width: 100%;
+	
 }
 
 #app-store-links {
-	background:#eaeaea;
 	width:100%;
 	display:block;
 	padding:.75em 0;
@@ -1551,6 +1565,10 @@ body#tours.browse #showmap{
 	.app-store#apple {
 		float:none;
 	}
+
+
+	
+	
 }
 
 @media only screen and (max-width: 45em) {
@@ -1598,7 +1616,7 @@ body#tours.browse #showmap{
 	}
 	
 	footer.main,footer.main span#app-store-links {
-		background:#222;
+		background:#333;
 		color:#fafafa;
 	}
 	
@@ -1751,6 +1769,10 @@ body#tours.browse #showmap{
 		margin:0;
 		padding:0;
 	}
+	
+	
+	
+	
 }
 
 @media only screen and (min-width: 25.1em) {
@@ -1774,6 +1796,7 @@ body#tours.browse #showmap{
 		margin-bottom:-1.15em;
 		margin-top:.5em;
 		max-width:100%;
+		max-height: 210px;
 	}
 	
 	#featured-story h2 {
@@ -1872,8 +1895,9 @@ body#tours.browse #showmap{
 	}
 	
 	footer.main {
-		background:#ccc;
+		background:#333;
 	}
+	
 	
 	#tours.show #hero,#tours.browse #hero,.page #hero {
 		background-size:contain!important;
@@ -2236,7 +2260,7 @@ body#tours.browse #showmap{
 		padding:1em;
 	}
 	
-	footer.main p,footer.main nav,nav#footer-nav ul {
+	footer.main p.default,footer.main nav,nav#footer-nav ul {
 		text-align:right;
 	}
 	
@@ -2279,6 +2303,19 @@ body#tours.browse #showmap{
 		visibility:visible;
 		display:inline;
 	}
+
+	footer.main .custom{
+		float: left;
+		width: 45%;
+		margin: 0 0 1em 1em;
+	}
+	
+	footer.main p.default{
+		float: right;
+		width: 50%;
+	}	
+	
+	
 }
 
 @media only screen and (min-width: 80em) {
