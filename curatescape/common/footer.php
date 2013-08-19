@@ -12,15 +12,23 @@
 	        
     </nav>	
  
-	<p>
+	<p class="default">
 		Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
 		<br>
 		<span id="copyright">&copy; <?php echo date('Y').' '.mh_owner_link();?></span> 
 		<br>
 		<span id="app-store-links"><?php mh_appstore_footer(); ?></span>
 	</p>
+	
+	<div class="custom">
+		<?php echo get_theme_option('custom footer html');?>
+	</div>
+
 
 	<?php echo mh_mapfaq();?>
+	
+	
+	<div class="clearfix"></div>
 
 </footer>
 
