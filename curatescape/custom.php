@@ -269,7 +269,7 @@ function mh_display_map($type=null){
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;"><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
 					});
 			});
 			jQuery.when(makemap).done(function() {
@@ -388,7 +388,7 @@ function mh_appstore_footer(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		$android_app_id = get_theme_option('android_app_id');
 		if (($ios_app_id != false) && ($android_app_id == false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a>';
+			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a>';
 		}
 		elseif (($ios_app_id == false) && ($android_app_id != false)) {
 			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
@@ -1144,7 +1144,12 @@ function mh_custom_css(){
 	a:hover{
 		color:'.mh_secondary_link_color().'
 		}'.get_theme_option('custom_css').
-		'</style>';
+		'@media only screen and (min-width: 60em){
+			#featured-story .view-more-link a, footer.main a{
+			color:'.mh_secondary_link_color().'
+			}
+		}
+		</style>';
 }
 
 /*
