@@ -269,7 +269,7 @@ function mh_display_map($type=null){
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;"><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
 					});
 			});
 			jQuery.when(makemap).done(function() {
@@ -1141,7 +1141,7 @@ function mh_custom_css(){
 	a,blockquote{
 		color:'.mh_link_color().'
 		}
-	a:hover{
+	a:hover,#items #tour-nav-links a{
 		color:'.mh_secondary_link_color().'
 		}'.get_theme_option('custom_css').
 		'@media only screen and (min-width: 60em){
