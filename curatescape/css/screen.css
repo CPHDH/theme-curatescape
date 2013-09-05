@@ -529,7 +529,7 @@ nav.secondary-nav ul li {
 }
 
 nav.secondary-nav ul li.current {
-	border-bottom:3px solid #356C77;
+	border-bottom:3px solid #333;
 	margin-bottom:-4px;
 }
 
