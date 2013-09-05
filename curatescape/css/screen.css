@@ -1271,7 +1271,7 @@ section.meta{
 .generatedcontent .show .item-related-links h3 {
 	border-top:1px solid #CCC;
 	margin-top:2.5em;
-	margin-top:2em;
+	padding-top:2em;
 }
 
 .generatedcontent .show .item-related-links h3:after {
