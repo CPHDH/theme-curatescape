@@ -424,23 +424,6 @@ img#hero_loading{
 	height:20em;
 }
 
-#map_canvas a {
-	display:inline-block;
-	line-height:1.5em;
-	max-width:93%;
-}
-
-#map_canvas span {
-	color:#999;
-	display:inline-block;
-	font-size:.65em;
-}
-
-#map_canvas span a {
-	color:#999;
-	border-bottom:0 none transparent;
-}
-
 
 #mobile-logo-container {
 	position:relative;
@@ -672,23 +655,30 @@ a.app-store:hover {
 figure#home-map {
 }
 
-.geolocation_balloon_title {
+#map_canvas a {
+	display:inline-block;
+	line-height:1.2em;
+	max-width:93%;
 }
 
-.geolocation_balloon_title a {
+.browse #map_canvas a, .home #map_canvas a, #tours #map_canvas a {
+	text-align: center;
+	min-width: 10em;
+	border-bottom: none;
 }
 
-.geolocation_balloon_description {
-	font-size:.75em;
-	color:#777;
-	line-height:1.15em;
-	overflow:hidden;
+#map_canvas span {
+	color:#999;
+	display:inline-block;
+	font-size:.65em;
 }
 
-.geolocation_balloon_title {
-	line-height:1.3em;
-	margin:0 0 .25em;
+#map_canvas span a {
+	color:#999;
+	border-bottom:0 none transparent;
 }
+
+
 
 #map-faq-inner {
 	font-size:smaller;
@@ -1143,6 +1133,10 @@ body.small #item-media .item-file-container p.description,body.small #item-media
 	display:inline;
 }
 
+section.meta{
+	margin-bottom: 3em;
+}
+
 /* We use the Modernizr generatedcontent class to determine of the browser can transform unordered bullet lists into comma-separated lists ... We can't do this in HTML because some core and plugin data can only output list items */
 .generatedcontent .show #subjects {
 	margin-top:.75em;
@@ -1271,13 +1265,13 @@ body.small #item-media .item-file-container p.description,body.small #item-media
 	font-variant:small-caps;
 	line-height:1em;
 	margin-top:.75em;
-	padding-bottom:2em;
+	margin-bottom:2em;
 }
 
 .generatedcontent .show .item-related-links h3 {
 	border-top:1px solid #CCC;
 	margin-top:2.5em;
-	padding-top:2em;
+	margin-top:2em;
 }
 
 .generatedcontent .show .item-related-links h3:after {
