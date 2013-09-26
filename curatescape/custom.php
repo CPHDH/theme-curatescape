@@ -43,19 +43,69 @@ function mh_seo_pageimg($item=null){
 ** Introduces item limit to avoid excessive memory use
 */
 function mh_auto_discovery_link_tags() {
-    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New Stories: RSS') . '" href="'. html_escape(items_output_uri()) .'&per_page=15" />';
-    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New Stories: Atom') .'" href="'. html_escape(items_output_uri('atom')) .'&per_page=15" />';
+    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New '.mh_item_label('plural').': RSS') . '" href="'. html_escape(items_output_uri()) .'&per_page=15" />';
+    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New '.mh_item_label('plural').': Atom') .'" href="'. html_escape(items_output_uri('atom')) .'&per_page=15" />';
     return $html;
 }
 
+function mh_item_label_option($which=null){
+	if($which=='singular'){
+		return ($singular=get_theme_option('item_label_singular')) ? $singular : 'Story';
+		}
+	elseif($which=='plural'){
+		return ($plural=get_theme_option('item_label_plural')) ? $plural : 'Stories';
+		}		
+}
+
+function mh_tour_label_option($which=null){
+	if($which=='singular'){
+		return ($singular=get_theme_option('tour_label_singular')) ? $singular : 'Tour';
+		}
+	elseif($which=='plural'){
+		return ($plural=get_theme_option('tour_label_plural')) ? $plural : 'Tours';
+		}		
+}
+
+/*
+** Item Labels
+*/
+function mh_item_label($which=null){
+	if($which=='plural'){
+		return mh_item_label_option('plural');
+	}else{
+		return mh_item_label_option('singular');
+	}
+}
+
+/*
+** Tour Labels
+*/
+function mh_tour_label($which=null){
+	if($which=='plural'){
+		return mh_tour_label_option('plural');
+	}else{
+		return mh_tour_label_option('singular');
+	}
+}
+
+/*
+** Tour Header on homepage
+*/
+function mh_tour_header(){
+	if($text=get_theme_option('tour_header')){
+		return $text;
+	}else{
+		return 'Take a '.mh_tour_label_option('singular').'';
+	}
+}
 /*
 ** Global navigation
 */
 function mh_global_nav(){
 	return public_nav_main(array(
 			'Home' => uri('/'),
-			'Stories' => uri('items/browse'),
-			'Tours' => uri('/tour-builder/tours/browse/')));
+			mh_item_label('plural') => uri('items/browse'),
+			mh_tour_label('plural') => uri('/tour-builder/tours/browse/')));
 }
 
 /*
@@ -76,9 +126,12 @@ function mh_the_logo(){
 ** Link to Random item
 */
 
-function random_item_link($text='Show me a random story',$class='show'){
+function random_item_link($text=null,$class='show'){
 	$items = get_items(array('random' => 1), 1);
 	$item = $items[0];
+	if(!$text){
+		$text='View a random '.mh_item_label();
+	}
 	return link_to($item, 'show', $text, array('class'=>'random-story-link '.$class));
 }
 
@@ -331,7 +384,7 @@ function mh_simple_search($buttonText = null, $formProperties=array('id'=>'simpl
 	$formProperties['method'] = 'get';
 	$html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>'. "\n\n";
-	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>'Search stories'));
+	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>'Search '.mh_item_label('plural').''));
 	$html .= __v()->formSubmit('submit_search', $buttonText);
 	$html .= '</fieldset>' . "\n\n";
 
@@ -416,8 +469,8 @@ function mh_mapfaq(){
 	if((!get_theme_option('map_faq'))){
 		   $html .='<h3><a>Are all the locations on '.settings('site_title').' publicly accessible?</a></h3>';
 		   $html .='<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>';
-		   $html .='<h3><a>How do you choose locations for each story?</a> <span>or</span> <a>The location is wrong!</a></h3>';
-		   $html .='<p>Placing historical stories on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
+		   $html .='<h3><a>How do you choose locations for each '.strtolower(mh_item_label()).'?</a> <span>or</span> <a>The location is wrong!</a></h3>';
+		   $html .='<p>Placing historical '.strtolower(mh_item_label('plural')).' on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
@@ -783,7 +836,7 @@ function mh_item_relations(){
 		$subjectRelations = ItemRelationsPlugin::prepareSubjectRelations($item);
 		$objectRelations = ItemRelationsPlugin::prepareObjectRelations($item);
 		if ($subjectRelations || $objectRelations){
-			echo '<h3>Related Stories</h3>';
+			echo '<h3>Related '.mh_item_label('plural').'</h3>';
 			echo '<ul>';
 			foreach ($subjectRelations as $subjectRelation){
 				echo '<li><a href="'.uri('items/show/' . $subjectRelation['object_item_id']).'">'.$subjectRelation['object_item_title'].'</a></li>';
@@ -931,7 +984,7 @@ function mh_display_random_tours($num = 20){
 	sort($items);
 	$num = (count($items)<$num)? count($items) : $num;
 
-	echo '<h2>Take a Tour</h2>';
+	echo '<h2>'.mh_tour_header().'</h2>';
 
 	for ($i = 0; $i < $num; $i++) {
 		echo '<article class="item-result">';
@@ -942,7 +995,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">View all <span>'.count($items).' Tours</span></a></p>';
+	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">View all <span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
 
 	return $items;
 }
@@ -959,7 +1012,7 @@ function mh_display_random_tours($num = 20){
 function mh_display_random_featured_item($withImage=false)
 {
 	$featuredItem = random_featured_item($withImage);
-	$html = '<h2>Featured Story</h2>';
+	$html = '<h2>Featured '.mh_item_label().'</h2>';
 	$html .= '<article class="item-result">';
 	if ($featuredItem) {
 		$itemTitle = item('Dublin Core', 'Title', array(), $featuredItem);
@@ -993,7 +1046,7 @@ function mh_display_random_featured_item($withImage=false)
 ** Used on homepage
 */
 function mh_display_recent_item($num=1){
-	echo ($num <=1) ? '<h2>Newest Story</h2>' : '<h2>Newest Stories</h2>';
+	echo ($num <=1) ? '<h2>Newest '.mh_item_label().'</h2>' : '<h2>Newest '.mh_item_label('plural').'</h2>';
 	set_items_for_loop(recent_items($num));
 	if (has_items_for_loop()){
 		while (loop_items()){
@@ -1014,7 +1067,7 @@ function mh_display_recent_item($num=1){
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items('View all Stories').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items('View all '.mh_item_label('plural').'').'</p>';
 }
 
 
@@ -1024,7 +1077,7 @@ function mh_display_recent_item($num=1){
 */
 
 function mh_display_random_item($num=1){
-	echo ($num <=1) ? '<h2>Random Story</h2>' : '<h2>Random Stories</h2>';
+	echo ($num <=1) ? '<h2>Random '.mh_item_label().'</h2>' : '<h2>Random '.mh_item_label('plural').'</h2>';
 	$items = get_items(array('random' => 1), $num);
 	set_items_for_loop($items);
 	if (has_items_for_loop()){
@@ -1046,7 +1099,7 @@ function mh_display_random_item($num=1){
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items('View all Stories').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items('View all '.mh_item_label('plural').'').'</p>';
 }
 
 /*

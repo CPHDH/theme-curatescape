@@ -5,7 +5,7 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
    $tourTitle = '';
 }
 
-head( array( 'maptype'=>'tour','title' => 'Tour: '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
+head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
    'bodyclass' => 'show tour', 'tour'=>$tour) );
 ?>
 
@@ -33,7 +33,7 @@ head( array( 'maptype'=>'tour','title' => 'Tour: '.$tourTitle, 'content_class' =
 		</section>
 		   
 		<section id="tour-items">
-			<h3 class="locations">Tour Locations</h3>
+			<h3 class="locations">Locations for <?php echo mh_tour_label();?></h3>
 	         <?php 
 	         $i=1;
 	         foreach( $tour->Items as $tourItem ): ?>

@@ -7,7 +7,7 @@ $bodyclass='browse';
 $maptype='focusarea';
 
 if ( ($tag) && !($query) ) {
-	$title = 'Stories tagged "'.$tag.'"';
+	$title = ''.mh_item_label('plural').' tagged "'.$tag.'"';
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
@@ -22,7 +22,7 @@ elseif ($query) {
 	$maptype='queryresults';
 }	
 else{
-	$title = 'All Stories';
+	$title = 'All '.mh_item_label('plural').'';
 	$bodyclass .=' items stories';
 }	
 head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 

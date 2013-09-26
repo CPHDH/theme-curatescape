@@ -67,7 +67,7 @@
 				<?php /*DC: Relation field*/ mh_related_links();?>
 				</div>
 				
-				<?php echo random_item_link('View a Random Story','big-button');?>
+				<?php echo random_item_link($text,'big-button');?>
 				
 				<div class="comments">
 				<?php mh_disquss_comments();?>

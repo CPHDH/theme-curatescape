@@ -1,10 +1,10 @@
 <?php
-head( array('maptype'=>'none', 'title' => 'Tours', 'bodyid'=>'tours',
+head( array('maptype'=>'none', 'title' => mh_tour_label('plural'), 'bodyid'=>'tours',
    'bodyclass' => 'browse' ) );
 ?>
 <div id="content">
 <section class="browse tour">			
-<h2>All Tours: <?php echo $total_records; ?></h2>
+<h2>All <?php echo mh_tour_label('plural');?>: <?php echo $total_records; ?></h2>
 
 	<div id="page-col-left">
 		<aside>
