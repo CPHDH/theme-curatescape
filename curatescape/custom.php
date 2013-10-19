@@ -50,19 +50,19 @@ function mh_auto_discovery_link_tags() {
 
 function mh_item_label_option($which=null){
 	if($which=='singular'){
-		return ($singular=get_theme_option('item_label_singular')) ? $singular : 'Story';
+		return ($singular=get_theme_option('item_label_singular')) ? $singular : __('Story');
 		}
 	elseif($which=='plural'){
-		return ($plural=get_theme_option('item_label_plural')) ? $plural : 'Stories';
+		return ($plural=get_theme_option('item_label_plural')) ? $plural : __('Stories');
 		}		
 }
 
 function mh_tour_label_option($which=null){
 	if($which=='singular'){
-		return ($singular=get_theme_option('tour_label_singular')) ? $singular : 'Tour';
+		return ($singular=get_theme_option('tour_label_singular')) ? $singular : __('Tour');
 		}
 	elseif($which=='plural'){
-		return ($plural=get_theme_option('tour_label_plural')) ? $plural : 'Tours';
+		return ($plural=get_theme_option('tour_label_plural')) ? $plural : __('Tours');
 		}		
 }
 
@@ -95,7 +95,7 @@ function mh_tour_header(){
 	if($text=get_theme_option('tour_header')){
 		return $text;
 	}else{
-		return 'Take a '.mh_tour_label_option('singular').'';
+		return __('Take a ').mh_tour_label_option('singular').'';
 	}
 }
 /*
@@ -130,7 +130,7 @@ function random_item_link($text=null,$class='show'){
 	$items = get_items(array('random' => 1), 1);
 	$item = $items[0];
 	if(!$text){
-		$text='View a random '.mh_item_label();
+		$text=__('View a random ').mh_item_label();
 	}
 	return link_to($item, 'show', $text, array('class'=>'random-story-link '.$class));
 }
@@ -150,7 +150,7 @@ function mh_global_header(){
 	$html .= link_to_home_page(mh_the_logo());
 	$html .= '</div>';
 
-	$html  .= '<div id="mobile-menu-button"><a class="icon-reorder"><span class="visuallyhidden"> Menu</span></a></div>';
+	$html  .= '<div id="mobile-menu-button"><a class="icon-reorder"><span class="visuallyhidden">'.__('Menu').'</span></a></div>';
 	$html .= '</div>';
 
 
@@ -412,22 +412,22 @@ function mh_appstore_downloads(){
 
 		$ios_app_id = get_theme_option('ios_app_id');
 		echo ($ios_app_id ?
-			'<a id="apple" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">
-		iOS App Store
-		</a> ':'<a id="apple" class="app-store" href="#">
-		Coming Soon
-		</a> ');
+			'<a id="apple" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">'.
+			__('iOS App Store').
+			'</a> ':'<a id="apple" class="app-store" href="#">'.
+			__('Coming Soon').
+			'</a> ');
 
 		$android_app_id = get_theme_option('android_app_id');
 		echo ($android_app_id ?
-			'<a id="android" class="app-store" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">
-		Google Play
-		</a> ':'<a id="android" class="app-store" href="#">
-		Coming Soon
-		</a> ');
+			'<a id="android" class="app-store" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.
+			__('Google Play').
+			'</a> ':'<a id="android" class="app-store" href="#">'.
+			__('Coming Soon').
+			'</a> ');
 
 	}else{
-		echo '<a id="coming-soon" class="app-store" href="#">iOS + Android Apps Coming Soon!</a>';
+		echo '<a id="coming-soon" class="app-store" href="#">'.__('iOS + Android Apps Coming Soon!').'</a>';
 	}
 }
 
@@ -441,16 +441,16 @@ function mh_appstore_footer(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		$android_app_id = get_theme_option('android_app_id');
 		if (($ios_app_id != false) && ($android_app_id == false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a>';
+			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%s">iPhone</a>',$ios_app_id);
 		}
 		elseif (($ios_app_id == false) && ($android_app_id != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
+			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%s">Android</a>',$android_app_id);
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
+			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%s$1">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%s$2">Android</a>',$ios_app_id,$android_app_id);
 		}
 		else{
-			echo 'iPhone + Android Apps Coming Soon!';
+			echo __('iPhone + Android Apps Coming Soon!');
 		}
 	}
 }
