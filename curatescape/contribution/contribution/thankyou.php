@@ -25,9 +25,9 @@ head($head); ?>
 	<div id="primary" class="show" role="main">
 
     
-	<h1>Thank You for Contributing!</h1>
-	<p>Your contribution will show up in the archive once an administrator approves it. Meanwhile, feel free to <?php echo contribution_link_to_contribute('make another contribution'); ?> or <a href="<?php echo uri('items/browse'); ?>">browse the archive</a>.</p>
+	<h1><?php echo __('Thank You for Contributing!'); ?></h1>
 
+	<p><?php echo __('Your contribution will show up in the archive once an administrator approves it. Meanwhile, feel free to %1$s or <a href="%2$s">browse the archive</a>.',contribution_link_to_contribute('make another contribution'),uri('items/browse')); ?></p>
 
 	</div>
 

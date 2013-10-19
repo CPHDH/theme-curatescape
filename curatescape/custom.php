@@ -447,7 +447,7 @@ function mh_appstore_footer(){
 			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%s">Android</a>',$android_app_id);
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
-			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%s$1">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%s$2">Android</a>',$ios_app_id,$android_app_id);
+			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%1$s">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%1$s">Android</a>',$ios_app_id,$android_app_id);
 		}
 		else{
 			echo __('iPhone + Android Apps Coming Soon!');
@@ -470,7 +470,7 @@ function mh_mapfaq(){
 		   $html .= __('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',settings('site_title'));
 		   $html .= __('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
 		   $html .= __('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
-		   $html .= __('<p>Placing historical %s$1 on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %s%2 with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
+		   $html .= __('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %1$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
