@@ -88,7 +88,7 @@ display_js();
 <body<?php echo $bodyid ? ' id="'.$bodyid.'"' : ''; ?><?php echo $bodyclass ? ' class="'.$bodyclass.'"' : ''; ?>> 
 
 <div id="no-js-message">
-	<span>Please enable JavaScript in your browser settings.</span>
+	<span><?php echo __('Please enable JavaScript in your browser settings.'); ?></span>
 </div>
 
 <div id="wrap">

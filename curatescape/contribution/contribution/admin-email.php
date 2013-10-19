@@ -1,6 +1,6 @@
-A new contribution to <?php echo get_option('site_title'); ?> has been made.
+<?php echo __('A new contribution to %s has been made.', get_option('site_title')); ?> 
 	
-Contribution URL for review:
+<?php echo __('Contribution URL for review:'); ?>
 
     <?php
         set_theme_base_uri('admin');

@@ -13,7 +13,7 @@
     </nav>	
  
 	<p class="default">
-		Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
+		<?php echo __('Powered by ') ?><a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
 		<br>
 		<span id="copyright">&copy; <?php echo date('Y').' '.mh_owner_link();?></span> 
 		<br>

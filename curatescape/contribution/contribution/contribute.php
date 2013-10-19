@@ -33,7 +33,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
     <form method="post" action="" enctype="multipart/form-data">
         <fieldset id="contribution-item-metadata">
             <div class="inputs">
-                <label for="contribution-type">What type of item do you want to contribute?</label>
+                <label for="contribution-type"><?php echo __('What type of item do you want to contribute?'); ?></label>
                 <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
                 <input type="submit" name="submit-type" id="submit-type" value="Select" />
             </div>
@@ -42,9 +42,9 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
             </div>
         </fieldset>
         <fieldset id="contribution-contributor-metadata" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <legend>Personal Information</legend>
+            <legend><?php echo __('Personal Information'); ?></legend>
             <div class="field">
-                <label for="contributor-name">Name</label>
+                <label for="contributor-name"><?php echo __('Name'); ?></label>
                 <div class="inputs">
                     <div class="input">
                         <?php echo $this->formText('contributor-name', $_POST['contributor-name'], array('class' => 'textinput')); ?>
@@ -52,7 +52,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
                 </div>
             </div>
             <div class="field">
-                <label for="contributor-email">Email Address</label>
+                <label for="contributor-email"><?php echo __('Email Address'); ?></label>
                 <div class="inputs">
                     <div class="input">
                         <?php echo $this->formText('contributor-email', $_POST['contributor-email'], array('class' => 'textinput')); ?>
@@ -71,10 +71,10 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
                 <?php echo $this->formCheckbox('contribution-public', $_POST['contribution-public'], null, array('1', '0')); ?>
                 <?php echo $this->formLabel('contribution-public', 'Publish my contribution on the web.'); ?>
             </div>
-            <p>In order to contribute, you must read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
+            <p><?php echo __('In order to contribute, you must read and agree to the <a href="%s" target="_blank">Terms and Conditions.</a>',uri('contribution/terms')); ?> </p>
             <div class="inputs">
                 <?php echo $this->formCheckbox('terms-agree', $_POST['terms-agree'], null, array('1', '0')); ?>
-                <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>
+                <?php echo $this->formLabel('terms-agree', __('I agree to the Terms and Conditions.')); ?>
             </div>
             <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
         </fieldset>

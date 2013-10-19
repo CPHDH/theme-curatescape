@@ -740,7 +740,7 @@ function mh_video_files() {
 	$videoTitle = item_file('Dublin Core','Title');
 
 	if ( in_array($videoMime,$videoTypes) ){
-		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>Video <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>' : '');
+		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.__('Video ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>' : '');
 
 		$html .= '<div class="item-file-container">';
 		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'"  preload="auto" data-setup="{}">';
@@ -802,7 +802,7 @@ function mh_subjects(){
 	$subjects = item('Dublin Core', 'Subject', 'all');
 	if (count($subjects) > 0){
 
-		echo '<h3>Subjects</h3>';
+		echo '<h3>'.__('Subjects').'</h3>';
 		echo '<ul>';
 		foreach ($subjects as $subject){
 			$link = WEB_ROOT;
@@ -836,7 +836,7 @@ function mh_item_relations(){
 		$subjectRelations = ItemRelationsPlugin::prepareSubjectRelations($item);
 		$objectRelations = ItemRelationsPlugin::prepareObjectRelations($item);
 		if ($subjectRelations || $objectRelations){
-			echo '<h3>Related '.mh_item_label('plural').'</h3>';
+			echo '<h3>'.__('Related ').mh_item_label('plural').'</h3>';
 			echo '<ul>';
 			foreach ($subjectRelations as $subjectRelation){
 				echo '<li><a href="'.uri('items/show/' . $subjectRelation['object_item_id']).'">'.$subjectRelation['object_item_title'].'</a></li>';
@@ -857,7 +857,7 @@ function mh_item_relations(){
 function mh_tags(){
 	if (item_has_tags()):
 
-		echo '<h3>Tags</h3>';
+		echo '<h3>'.__('Tags').'</h3>';
 	echo item_tags_as_cloud(
 		$order = 'alpha',
 		$tagsAreLinked = true,
@@ -873,7 +873,7 @@ function mh_tags(){
 function mh_related_links(){
 	$relations = item('Dublin Core', 'Relation', array('all' => true));
 	if ($relations){
-		echo '<h3>Related Sources</h3><ul>';
+		echo '<h3>'.__('Related Sources').'</h3><ul>';
 		foreach ($relations as $relation) {
 			echo "<li>$relation</li>";
 		}
@@ -888,7 +888,7 @@ function mh_related_links(){
 function mh_share_this(){
 	$addthis = (get_theme_option('Add This')) ? (get_theme_option('Add This')) : 'ra-4e89c646711b8856';
 
-	$html = '<h3>Share this Page</h3>';
+	$html = '<h3>'.__('Share this Page').'</h3>';
 	$html .= '<!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
 <a class="addthis_button_twitter"></a>
@@ -925,7 +925,7 @@ function mh_disquss_comments(){
         })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="http://disqus.com" class="dsq-brlink"><?php echo __('comments powered by ') ; ?><span class="logo-disqus">Disqus</span>')</a>
 	<?php
 	}
 }
@@ -995,7 +995,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">View all <span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
+	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">'.__('View all ').'<span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
 
 	return $items;
 }
@@ -1012,7 +1012,7 @@ function mh_display_random_tours($num = 20){
 function mh_display_random_featured_item($withImage=false)
 {
 	$featuredItem = random_featured_item($withImage);
-	$html = '<h2>Featured '.mh_item_label().'</h2>';
+	$html = '<h2>'.__('Featured ').mh_item_label().'</h2>';
 	$html .= '<article class="item-result">';
 	if ($featuredItem) {
 		$itemTitle = item('Dublin Core', 'Title', array(), $featuredItem);
@@ -1028,12 +1028,12 @@ function mh_display_random_featured_item($withImage=false)
 		if ($itemDescription = item('Dublin Core', 'Description', array('snippet'=>200), $featuredItem)) {
 			$html .= '<div class="item-description">' . strip_tags($itemDescription) . '</div>';
 		}else{
-			$html .= '<div class="item-description empty">Preview text not available.</div>';}
+			$html .= '<div class="item-description empty">'.__('Preview text not available.').'</div>';}
 
-		$html .= '<p class="view-more-link">'. link_to_item('Continue reading <span>'.$itemTitle.'</span>', array(), 'show', $featuredItem) .'</p>';
+		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading').'<span>'.$itemTitle.'</span>', array(), 'show', $featuredItem) .'</p>';
 
 	}else {
-		$html .= '<p>No featured items are available.</p>';
+		$html .= __('<p>No featured items are available.</p>');
 	}
 	$html .= '</article>';
 
@@ -1046,7 +1046,7 @@ function mh_display_random_featured_item($withImage=false)
 ** Used on homepage
 */
 function mh_display_recent_item($num=1){
-	echo ($num <=1) ? '<h2>Newest '.mh_item_label().'</h2>' : '<h2>Newest '.mh_item_label('plural').'</h2>';
+	echo ($num <=1) ? '<h2>'.__('Newest '.mh_item_label()).'</h2>' : '<h2>'.__('Newest '.mh_item_label('plural')).'</h2>';
 	set_items_for_loop(recent_items($num));
 	if (has_items_for_loop()){
 		while (loop_items()){
@@ -1060,7 +1060,7 @@ function mh_display_recent_item($num=1){
 			if($desc = item('Dublin Core', 'Description', array('snippet'=>200))){
 				echo '<div class="item-description">'.$desc.'</div>';
 			}else{
-				echo '<div class="item-description">Text preview unavailable.</div>';
+				echo '<div class="item-description">'.__('Text preview unavailable.').'</div>';
 			}
 
 			echo '</article>';
@@ -1077,7 +1077,7 @@ function mh_display_recent_item($num=1){
 */
 
 function mh_display_random_item($num=1){
-	echo ($num <=1) ? '<h2>Random '.mh_item_label().'</h2>' : '<h2>Random '.mh_item_label('plural').'</h2>';
+	echo ($num <=1) ? '<h2>'.__('Random ').mh_item_label().'</h2>' : '<h2>'.__('Random ').mh_item_label('plural').'</h2>';
 	$items = get_items(array('random' => 1), $num);
 	set_items_for_loop($items);
 	if (has_items_for_loop()){
@@ -1092,14 +1092,14 @@ function mh_display_random_item($num=1){
 			if($desc = item('Dublin Core', 'Description', array('snippet'=>200))){
 				echo '<div class="item-description">'.$desc.'</div>';
 			}else{
-				echo '<div class="item-description">Text preview unavailable.</div>';
+				echo '<div class="item-description">'.__('Text preview unavailable.').'</div>';
 			}
 
 			echo '</article>';
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items('View all '.mh_item_label('plural').'').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items(__('View all ').mh_item_label('plural').'').'</p>';
 }
 
 /*
@@ -1112,7 +1112,7 @@ function mh_custom_content($length=500){
 	$html .= '<article>';
 	
 	$html .= '<header>';	
-	$html .= '<h2><span class="hidden">About </span>'.settings('site_title').'</h2>';
+	$html .= '<h2><span class="hidden">'.__('About ').'</span>'.settings('site_title').'</h2>';
 	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
 	$html .= '</header>';
 
@@ -1121,7 +1121,7 @@ function mh_custom_content($length=500){
 
 	$html .= '</article>';
 
-	$html .= '<p class="view-more-link"><a href="'.uri('about').'">Read more <span>About Us</span></a></p>';
+	$html .= '<p class="view-more-link"><a href="'.uri('about').'">'.__('Read more ').'<span>'.__('About Us').'</span></a></p>';
 
 
 	echo $html;
@@ -1142,9 +1142,9 @@ function mh_home_find_us(){
 	($youtube=get_theme_option('youtube_username')) ? array_push($service,'<a href="http://www.youtube.com/user/'.$youtube.'">Youtube</a>') : null;
 	
 	if(count($service)>0){
-		$findus='Find us on '.join(' | ',$service);
+		$findus=__('Find us on ').join(' | ',$service);
 	}else{
-		$findus='A project by '.mh_owner_link();
+		$findus=__('A project by ').mh_owner_link();
 	}
 	return $findus;
 }
@@ -1230,7 +1230,7 @@ function mh_about($text=null){
 		$text =
 			get_theme_option('about') ?
 			get_theme_option('about') :
-			settings('site_title').' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices. ';
+			settings('site_title').__(' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.');
 	}
 	return $text;
 }
@@ -1266,10 +1266,10 @@ function link_to_item_edit()
 {
 	$current = Omeka_Context::getInstance()->getCurrentUser();
 	if ($current->role == 'super') {
-		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">Edit this item...</a>';
+		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">'.__('Edit this item...').'</a>';
 	}
 	elseif($current->role == 'admin'){
-		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">Edit this item...</a>';
+		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">'.__('Edit this item...').'</a>';
 	}
 }
 
