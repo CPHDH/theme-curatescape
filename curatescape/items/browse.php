@@ -12,17 +12,17 @@ if ( ($tag) && !($query) ) {
 	$maptype='queryresults';
 }
 elseif ( ($term) && !($query) ) {
-	$title = 'Results for subject term "'.$term.'"';
+	$title = __('Results for subject term "%s"',$term);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
 elseif ($query) {
-	$title = (!($advanced) ? 'Search Results for "'.$query.'"':'Advanced Search Results');
+	$title = (!($advanced) ? __('Search Results for "%s"',$query) : __('Advanced Search Results'));
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }	
 else{
-	$title = 'All '.mh_item_label('plural').'';
+	$title = __('All ').mh_item_label('plural').'';
 	$bodyclass .=' items stories';
 }	
 head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
@@ -84,7 +84,7 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 
 				<?php if (item_has_tags()): ?>
     				<div class="item-tags">
-    				<p><span>Tags:</span> <?php echo $tags; ?></p>
+    				<p><span><?php echo __('Tags:') ?></span> <?php echo $tags; ?></p>
     				</div>
 				<?php endif; ?>
 			</article> 

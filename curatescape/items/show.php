@@ -18,7 +18,7 @@
 		<section id="text">
 
 			<div class="item-description">
-			<h3>Description</h3>
+			<h3><?php echo __('Description'); ?></h3>
 			<?php echo item('Dublin Core', 'Description');?>
 			</div>
 			<?php echo link_to_item_edit();?>
@@ -59,7 +59,7 @@
 				</div>
 
 				<div id="cite-this">
-				<h3>Cite this Page</h3>
+				<h3><?php echo __('Cite this Page'); ?></h3>
 				<?php echo mh_item_citation(); ?>
 				</div>	
 					

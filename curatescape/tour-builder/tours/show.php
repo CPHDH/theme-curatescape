@@ -15,9 +15,9 @@ head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, '
 	<header id="tour-header">
 	<h2 class="tour-title instapaper_title"><?php echo $tourTitle; ?></h2>
 	<?php if(tour( 'Credits' )){
-		echo '<span class="tour-meta">By '.tour( 'Credits' ).'</span>';
+		echo '<span class="tour-meta">'.__('By %s',tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
-		echo '<span class="tour-meta">By The '.settings('site_title').' Team</span>';
+		echo '<span class="tour-meta">'.__('By The %s Team',settings('site_title')).'</span>';
 	}?>
 	</header>
 			
@@ -33,7 +33,7 @@ head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, '
 		</section>
 		   
 		<section id="tour-items">
-			<h3 class="locations">Locations for <?php echo mh_tour_label();?></h3>
+			<h3 class="locations"><?php echo __('Locations for ').mh_tour_label();?></h3>
 	         <?php 
 	         $i=1;
 	         foreach( $tour->Items as $tourItem ): ?>

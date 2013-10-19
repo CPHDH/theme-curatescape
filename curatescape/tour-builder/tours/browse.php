@@ -4,7 +4,7 @@ head( array('maptype'=>'none', 'title' => mh_tour_label('plural'), 'bodyid'=>'to
 ?>
 <div id="content">
 <section class="browse tour">			
-<h2>All <?php echo mh_tour_label('plural');?>: <?php echo $total_records; ?></h2>
+<h2><?php echo __('All %s:', mh_tour_label('plural'));?> <?php echo $total_records; ?></h2>
 
 	<div id="page-col-left">
 		<aside>
