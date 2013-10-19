@@ -384,7 +384,7 @@ function mh_simple_search($buttonText = null, $formProperties=array('id'=>'simpl
 	$formProperties['method'] = 'get';
 	$html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>'. "\n\n";
-	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>'Search '.mh_item_label('plural').''));
+	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>__('Search ').mh_item_label('plural').''));
 	$html .= __v()->formSubmit('submit_search', $buttonText);
 	$html .= '</fieldset>' . "\n\n";
 
@@ -408,7 +408,7 @@ function mh_simple_search($buttonText = null, $formProperties=array('id'=>'simpl
 function mh_appstore_downloads(){
 	if (get_theme_option('enable_app_links')){
 
-		echo '<h2>Downloads</h2>';
+		echo '<h2>'.__('Downloads').'</h2>';
 
 		$ios_app_id = get_theme_option('ios_app_id');
 		echo ($ios_app_id ?
@@ -465,12 +465,12 @@ function mh_mapfaq(){
 	$emailincl=($email=get_theme_option('contact_email')) ? 'at <a href="mailto:'.$email.'">'.$email.'</a> ' : '';
 	$html ='';
 	$html .='<div style="display: none"><div id="map-faq"><div id="map-faq-inner">';
-	$html .='<h2>Frequently Asked Questions <span>about the map</span></h2>';
+	$html .='<h2>'.__('Frequently Asked Questions <span>about the map</span>').'</h2>';
 	if((!get_theme_option('map_faq'))){
-		   $html .='<h3><a>Are all the locations on '.settings('site_title').' publicly accessible?</a></h3>';
-		   $html .='<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>';
-		   $html .='<h3><a>How do you choose locations for each '.strtolower(mh_item_label()).'?</a> <span>or</span> <a>The location is wrong!</a></h3>';
-		   $html .='<p>Placing historical '.strtolower(mh_item_label('plural')).' on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
+		   $html .= __('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',settings('site_title'));
+		   $html .= __('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
+		   $html .= __('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
+		   $html .= __('<p>Placing historical %s$1 on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %s%2 with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
@@ -503,16 +503,16 @@ function mh_item_map(){
 			$coords = $lat.','.$lng;
 
 			// Google Maps for all users
-			$link = '<a class="item-map-link" href="http://maps.google.com/maps?q='.$coords.$zoom.'">View in Google Maps</a>';
+			$link = '<a class="item-map-link" href="http://maps.google.com/maps?q='.$coords.$zoom.'">'.__('View in Google  Maps').'</a>';
 
 			if (strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone OS') !== false) {
 				// + Apple Maps for iOS users
-				$link .= ' <a class="item-map-link" href="http://maps.apple.com/maps?ll='.$coords.$zoom.'">Open in iOS Maps</a>';
+				$link .= ' <a class="item-map-link" href="http://maps.apple.com/maps?ll='.$coords.$zoom.'">'.__('Open in iOS Maps').'</a>';
 			};
 
 			if (strpos($_SERVER['HTTP_USER_AGENT'], 'Windows Phone OS') !== false) {
 				// + Bing Maps for Windows Phone users
-				$link .= ' <a class="item-map-link" href="http://bing.com/maps/default.aspx?cp='.str_replace(',','~',$coords).str_replace('z','lvl',$zoom).'&v=2">Open in Bing Maps</a>';
+				$link .= ' <a class="item-map-link" href="http://bing.com/maps/default.aspx?cp='.str_replace(',','~',$coords).str_replace('z','lvl',$zoom).'&v=2">'.__('Open in Bing Maps').'</a>';
 			};
 
 			echo $link;
@@ -527,7 +527,7 @@ function mh_item_map(){
 */
 function mh_the_author(){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">By: ';
+		$html='<span class="story-meta byline">'.__('By: ');
 
 		if(item('Dublin Core', 'Creator')){
 			$authors=item('Dublin Core', 'Creator', array('all'=>true));
@@ -554,7 +554,7 @@ function mh_the_author(){
 				$index++;
 			}
 		}else{
-			$html .= "The ".settings('site_title')." team";
+			$html .= __('The %s team',settings('site_title'));
 		}
 		$html .='</span>';
 
@@ -651,7 +651,7 @@ function mh_item_images(){
 
 	while ($file = loop_files_for_item()){
 		if ($file->hasThumbnail()) {
-			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';			
+			if($index==0) echo '<h3><i class="icon-camera-retro"></i>'.__('Photos').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';			
 			$photoDesc = mh_normalize_special_characters(item_file('Dublin Core', 'Description'));
 			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
 			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
@@ -660,7 +660,7 @@ function mh_item_images(){
 				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
 				$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$photoSource;
 				}else{
-					$photoCaption = '<span class="main">Image '.($index+1).'</span>';	
+					$photoCaption = '<span class="main">'.__('Image %s',($index+1)).'</span>';	
 				}
 
 			$html = '<div class="item-file-container">';
@@ -695,7 +695,7 @@ function mh_audio_files(){
 
 	if ( array_search($mime, $audioTypes) !== false ) {
 
-		if ($index==0) echo '<h3><i class="icon-volume-up"></i>Audio <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3><script>audiojs.events.ready(function() {var as = audiojs.createAll();});</script>';
+		if ($index==0) echo '<h3><i class="icon-volume-up"></i>'.__('Audio ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3><script>audiojs.events.ready(function() {var as = audiojs.createAll();});</script>';
 		$index++;
 
 		array_push($myaudio, $file);
@@ -703,7 +703,7 @@ function mh_audio_files(){
 		$html = '<div class="item-file-container">';
 		$html .= '<audio>
 			<source src="'.file_download_uri($file).'" type="audio/mpeg" />
-			<h5 class="no-audio"><strong>Download Audio:</strong><a href="'.file_download_uri($file).'">MP3</a></h5>
+			<h5 class="no-audio"><strong>'.__('Download Audio:').'</strong><a href="'.file_download_uri($file).'">MP3</a></h5>
 			</audio>';
 		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <i class="icon-info-sign"></i></h4>' : '';
 		$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.'</p>' : '';
