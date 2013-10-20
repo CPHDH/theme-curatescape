@@ -103,7 +103,7 @@ function mh_tour_header(){
 */
 function mh_global_nav(){
 	return public_nav_main(array(
-			'Home' => uri('/'),
+			__('Home') => uri('/'),
 			mh_item_label('plural') => uri('items/browse'),
 			mh_tour_label('plural') => uri('/tour-builder/tours/browse/')));
 }

@@ -25,7 +25,7 @@ if (simple_pages_is_home_page(get_current_simple_page())) {
 
 	<div id="page-col-right">
 		<aside id="page-sidebar">
-			<h3>Pages</h3>
+			<h3><?php echo __('Pages'); ?></h3>
 			<nav>
 			<?php echo mh_sidebar_nav();?>
 			</nav>

@@ -13,14 +13,14 @@ head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodyclass'=>
 
 	<div id="primary" class="show">
 		<section id="text">
-		    <p>Sorry. Access Forbidden!</p>
+		    <p><?php echo __('Sorry. Access Forbidden!'); ?></p>
 		</section> 
 	</div>
 
 
 	<div id="page-col-right">
 		<aside id="page-sidebar">
-			<h3>Pages</h3>
+			<h3><?php echo __('Pages'); ?></h3>
 			<nav>
 			<?php echo mh_sidebar_nav();?>
 			</nav>
