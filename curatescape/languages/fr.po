@@ -1,0 +1,420 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: custom.php:1233
+msgid " is powered by <a href=\"http://omeka.org/\">Omeka</a> + <a href=\"http://curatescape.org/\">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices."
+msgstr ""
+
+#. (settings('site_title')
+#: custom.php:470
+msgid "<h3><a>Are all the locations on %s publicly accessible?</a></h3>"
+msgstr ""
+
+#. (strtolower(mh_item_label()
+#: custom.php:472
+msgid "<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>"
+msgstr ""
+
+#: custom.php:1036
+msgid "<p>No featured items are available.</p>"
+msgstr ""
+
+#: custom.php:471
+msgid "<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>"
+msgstr ""
+
+#. (strtolower(mh_item_label('plural')
+#: custom.php:473
+msgid "<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no \"right\" answer). Feel free to email us %1$s with suggestions for improvement.</p>"
+msgstr ""
+
+#. (get_option('site_title')
+#: contribution/contribution/admin-email.php:1
+msgid "A new contribution to %s has been made."
+msgstr ""
+
+#: custom.php:1147
+msgid "A project by "
+msgstr ""
+
+#: stealth-index.php:59
+msgid "About"
+msgstr ""
+
+#: custom.php:1115
+msgid "About "
+msgstr ""
+
+#: custom.php:1124
+msgid "About Us"
+msgstr ""
+
+#: items/browse.php:20
+msgid "Advanced Search Results"
+msgstr ""
+
+#: items/browse.php:25
+msgid "All "
+msgstr ""
+
+#. (mh_tour_label('plural')
+#: tour-builder/tours/browse.php:7
+msgid "All %s:"
+msgstr ""
+
+#: custom.php:698
+msgid "Audio "
+msgstr ""
+
+#: exhibit-builder/exhibits/browse.php:56 exhibit-builder/exhibits/tags.php:26
+msgid "Browse All"
+msgstr ""
+
+#: exhibit-builder/exhibits/tags.php:2
+msgid "Browse Exhibits by Tag"
+msgstr ""
+
+#: exhibit-builder/exhibits/browse.php:56 exhibit-builder/exhibits/tags.php:27
+msgid "Browse by Tag"
+msgstr ""
+
+#. (tour( 'Credits')
+#: tour-builder/tours/show.php:18
+msgid "By %s"
+msgstr ""
+
+#. (settings('site_title')
+#: tour-builder/tours/show.php:20
+msgid "By The %s Team"
+msgstr ""
+
+#: custom.php:530
+msgid "By: "
+msgstr ""
+
+#: items/show.php:62
+msgid "Cite this Page"
+msgstr ""
+
+#: custom.php:418 custom.php:426
+msgid "Coming Soon"
+msgstr ""
+
+#: stealth-index.php:62
+msgid "Coming Soon!"
+msgstr ""
+
+#: stealth-index.php:67
+msgid "Contact"
+msgstr ""
+
+#: custom.php:1033
+msgid "Continue reading"
+msgstr ""
+
+#: contribution/contribution/contributor-email.php:3
+msgid "Contribution URL (pending review by project staff):"
+msgstr ""
+
+#: contribution/contribution/admin-email.php:3
+msgid "Contribution URL for review:"
+msgstr ""
+
+#: exhibit-builder/exhibits/summary.php:24
+msgid "Credits"
+msgstr ""
+
+#: exhibit-builder/exhibits/summary.php:21 items/show.php:21
+msgid "Description"
+msgstr ""
+
+#: custom.php:706
+msgid "Download Audio:"
+msgstr ""
+
+#: custom.php:411
+msgid "Downloads"
+msgstr ""
+
+#: custom.php:1269 custom.php:1272
+msgid "Edit this item..."
+msgstr ""
+
+#: contribution/contribution/contribute.php:55
+msgid "Email Address"
+msgstr ""
+
+#: stealth-index.php:74
+msgid "Email:"
+msgstr ""
+
+#: custom.php:1015
+msgid "Featured "
+msgstr ""
+
+#: custom.php:1145
+msgid "Find us on "
+msgstr ""
+
+#: custom.php:468
+msgid "Frequently Asked Questions <span>about the map</span>"
+msgstr ""
+
+#. ($android_app_id)
+#: custom.php:447
+msgid "Get the app for <a id=\"apple-text-link\" class=\"app-store-footer\" href=\"http://play.google.com/store/apps/details?id=%s\">Android</a>"
+msgstr ""
+
+#. ($ios_app_id,$android_app_id)
+#: custom.php:450
+msgid "Get the app for <a id=\"apple-text-link\" class=\"app-store-footer\" href=\"https://itunes.apple.com/us/app/%1$s\">iPhone</a> and <a id=\"android-text-link\" class=\"app-store-footer\" href=\"http://play.google.com/store/apps/details?id=%1$s\">Android</a>"
+msgstr ""
+
+#. ($ios_app_id)
+#: custom.php:444
+msgid "Get the app for <a id=\"apple-text-link\" class=\"app-store-footer\" href=\"https://itunes.apple.com/us/app/%s\">iPhone</a>"
+msgstr ""
+
+#: custom.php:424
+msgid "Google Play"
+msgstr ""
+
+#: custom.php:106
+msgid "Home"
+msgstr ""
+
+#: contribution/contribution/contribute.php:77
+msgid "I agree to the Terms and Conditions."
+msgstr ""
+
+#. (($index+1)
+#: custom.php:663
+msgid "Image %s"
+msgstr ""
+
+#. (uri('contribution/terms')
+#: contribution/contribution/contribute.php:74
+msgid "In order to contribute, you must read and agree to the <a href=\"%s\" target=\"_blank\">Terms and Conditions.</a>"
+msgstr ""
+
+#: tour-builder/tours/show.php:36
+msgid "Locations for "
+msgstr ""
+
+#: custom.php:153
+msgid "Menu"
+msgstr ""
+
+#: contribution/contribution/contribute.php:47
+msgid "Name"
+msgstr ""
+
+#. (mh_item_label('plural')
+#: custom.php:46 custom.php:47
+msgid "New "
+msgstr ""
+
+#. (mh_item_label()
+#. (mh_item_label('plural')
+#: custom.php:1049
+msgid "Newest "
+msgstr ""
+
+#: custom.php:515
+msgid "Open in Bing Maps"
+msgstr ""
+
+#: custom.php:510
+msgid "Open in iOS Maps"
+msgstr ""
+
+#: error/403.php:23 error/404.php:23 simple-pages/page/show.php:28
+msgid "Pages"
+msgstr ""
+
+#: contribution/contribution/contribute.php:45
+msgid "Personal Information"
+msgstr ""
+
+#: stealth-index.php:80
+msgid "Phone:"
+msgstr ""
+
+#: custom.php:654
+msgid "Photos"
+msgstr ""
+
+#: common/header.php:91
+msgid "Please enable JavaScript in your browser settings."
+msgstr ""
+
+#: common/footer.php:16
+msgid "Powered by "
+msgstr ""
+
+#: custom.php:1031
+msgid "Preview text not available."
+msgstr ""
+
+#: custom.php:1080
+msgid "Random "
+msgstr ""
+
+#: custom.php:1124
+msgid "Read more "
+msgstr ""
+
+#: custom.php:839
+msgid "Related "
+msgstr ""
+
+#: custom.php:876
+msgid "Related Sources"
+msgstr ""
+
+#. ($term)
+#: items/browse.php:15
+msgid "Results for subject term \"%s\""
+msgstr ""
+
+#: custom.php:374
+msgid "Search"
+msgstr ""
+
+#: custom.php:387
+msgid "Search "
+msgstr ""
+
+#. ($query)
+#: items/browse.php:20
+msgid "Search Results for \"%s\""
+msgstr ""
+
+#: exhibit-builder/exhibits/summary.php:30
+msgid "Sections"
+msgstr ""
+
+#: custom.php:891
+msgid "Share this Page"
+msgstr ""
+
+#: custom.php:654 custom.php:698 custom.php:743
+msgid "Show "
+msgstr ""
+
+#: error/403.php:16
+msgid "Sorry. Access Forbidden!"
+msgstr ""
+
+#: error/404.php:16
+msgid "Sorry. The page you are looking for does not exist!"
+msgstr ""
+
+#: custom.php:56
+msgid "Stories"
+msgstr ""
+
+#: custom.php:53
+msgid "Story"
+msgstr ""
+
+#: custom.php:805
+msgid "Subjects"
+msgstr ""
+
+#: custom.php:860
+msgid "Tags"
+msgstr ""
+
+#: items/browse.php:87
+msgid "Tags:"
+msgstr ""
+
+#: custom.php:98
+msgid "Take a "
+msgstr ""
+
+#: custom.php:1063 custom.php:1095
+msgid "Text preview unavailable."
+msgstr ""
+
+#: contribution/contribution/thankyou.php:28
+msgid "Thank You for Contributing!"
+msgstr ""
+
+#. (get_option('site_title')
+#: contribution/contribution/contributor-email.php:1
+msgid "Thank you for your contribution to %s.  Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff."
+msgstr ""
+
+#. (settings('site_title')
+#: custom.php:557
+msgid "The %s team"
+msgstr ""
+
+#: exhibit-builder/exhibits/browse.php:78
+msgid "There are no exhibits available yet."
+msgstr ""
+
+#: custom.php:62
+msgid "Tour"
+msgstr ""
+
+#: custom.php:65
+msgid "Tours"
+msgstr ""
+
+#: custom.php:743
+msgid "Video "
+msgstr ""
+
+#: custom.php:133
+msgid "View a random "
+msgstr ""
+
+#: custom.php:1102 custom.php:998 index.php:19
+msgid "View all "
+msgstr ""
+
+#: custom.php:506
+msgid "View in Google  Maps"
+msgstr ""
+
+#: contribution/contribution/contribute.php:36
+msgid "What type of item do you want to contribute?"
+msgstr ""
+
+#. (contribution_link_to_contribute('make another contribution')
+#: contribution/contribution/thankyou.php:30
+msgid "Your contribution will show up in the archive once an administrator approves it. Meanwhile, feel free to %1$s or <a href=\"%2$s\">browse the archive</a>."
+msgstr ""
+
+#: custom.php:928
+msgid "comments powered by "
+msgstr ""
+
+#: custom.php:430
+msgid "iOS + Android Apps Coming Soon!"
+msgstr ""
+
+#: custom.php:416
+msgid "iOS App Store"
+msgstr ""
+
+#: custom.php:453
+msgid "iPhone + Android Apps Coming Soon!"
+msgstr ""
