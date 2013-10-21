@@ -818,6 +818,25 @@ function mh_subjects(){
 	}
 }
 
+function mh_subjects_string(){
+	$subjects = item('Dublin Core', 'Subject', 'all');
+	if (count($subjects) > 0){
+		$html=array();
+
+		foreach ($subjects as $subject){
+			$link = WEB_ROOT;
+			$link .= htmlentities('/items/browse?term=');
+			$link .= rawurlencode($subject);
+			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
+			$link .= urlencode(str_replace('&amp;','&',$subject));
+			$link .= htmlentities('&submit_search=Search');
+			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
+		}
+		
+		echo '<div class="item-subjects"><p><span>Subjects: </span>'.implode(", ", $html).'</p></div>';
+	}
+}
+
 
 /*
 Display nav items for Simple Pages sidebar

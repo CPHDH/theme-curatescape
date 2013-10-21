@@ -920,11 +920,11 @@ ul.pagination_list{
 	padding-left:0;
 }
 
-.item-tags p {
+.item-tags p, .item-subjects p {
 	color:#777;
 	font-variant:small-caps;
 	font-size:smaller;
-	margin-top:.5em;
+	margin:0;
 }
 
 .item-tags a {
