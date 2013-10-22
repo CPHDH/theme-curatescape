@@ -1133,12 +1133,12 @@ function mh_custom_content($length=500){
 	$html .= '<header>';	
 	$html .= '<h2><span class="hidden">About </span>'.settings('site_title').'</h2>';
 	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
-	$html .= '</header>';
+	$html .= '</header><div class="about-snippet">';
 
-	$html .= '<div id="inline-logo"><img alt="'.settings('site_title').' logo" src="'.mh_lg_logo_url().'"/></div>';
+	$html .= '<div id="inline-logo"><img alt="'.settings('site_title').' logo" src="'.mh_apple_icon_logo_url().'"/></div>';
 	$html .= snippet(mh_about(),0,$length,"...");
 
-	$html .= '</article>';
+	$html .= '</div></article>';
 
 	$html .= '<p class="view-more-link"><a href="'.uri('about').'">Read more <span>About Us</span></a></p>';
 
@@ -1334,6 +1334,7 @@ function mh_apple_icon_logo_url()
 
 	return $logo_img;
 }
+
 
 /*
 ** Background image (home)
