@@ -648,10 +648,13 @@ function mh_item_images(){
 	});
 	</script>
 	<?php //========================//
-
+	$myphoto = array();
+	$html = "";
 	while ($file = loop_files_for_item()){
 		if ($file->hasThumbnail()) {
-			if($index==0) echo '<h3><i class="icon-camera-retro"></i>'.__('Photos').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';			
+
+			array_push($myphoto, $file);
+
 			$photoDesc = mh_normalize_special_characters(item_file('Dublin Core', 'Description'));
 			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
 			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
@@ -663,7 +666,7 @@ function mh_item_images(){
 					$photoCaption = '<span class="main">'.__('Image %s',($index+1)).'</span>';	
 				}
 
-			$html = '<div class="item-file-container">';
+			$html .= '<div class="item-file-container">';
 
 			$html .= ''.display_file($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$photoCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
@@ -671,23 +674,26 @@ function mh_item_images(){
 			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.'</p>' : '';
 			$html .= '</div>';
 
-			echo $html;
-			$index++;
-
 		}
+	}
+	$count = count($myphoto);
+	if ($count > 0) {
+		echo '<h3><i class="icon-camera-retro"></i>'.(($count > 1) ? __('Photos ') : __('Photo ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';			
+		echo $html;
 	}
 }
 
 
 /*
-** Loop through and display audio files
-** FYI: adding "controls" to html <audio> tag causes a
+ ** Loop through and display audio files
+ ** FYI: adding "controls" to html <audio> tag causes a
 ** display error when used in combination w/ Fancybox
 ** image viewer
 */
 function mh_audio_files(){
 	$audioTypes = array('audio/mpeg');
 	$myaudio = array();
+	$html = "";
 	while ($file = loop_files_for_item()):
 		$audioDesc = item_file('Dublin Core','Description');
 	$audioTitle = item_file('Dublin Core','Title');
@@ -695,12 +701,9 @@ function mh_audio_files(){
 
 	if ( array_search($mime, $audioTypes) !== false ) {
 
-		if ($index==0) echo '<h3><i class="icon-volume-up"></i>'.__('Audio ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3><script>audiojs.events.ready(function() {var as = audiojs.createAll();});</script>';
-		$index++;
-
 		array_push($myaudio, $file);
 
-		$html = '<div class="item-file-container">';
+		$html .= '<div class="item-file-container">';
 		$html .= '<audio>
 			<source src="'.file_download_uri($file).'" type="audio/mpeg" />
 			<h5 class="no-audio"><strong>'.__('Download Audio:').'</strong><a href="'.file_download_uri($file).'">MP3</a></h5>
@@ -708,15 +711,19 @@ function mh_audio_files(){
 		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <i class="icon-info-sign"></i></h4>' : '';
 		$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.'</p>' : '';
 		$html .= '</div>';
-		echo $html;
 	}
 
 	endwhile;
+	$count = count($myaudio);
+	if ($count > 0) {
+		echo '<h3><i class="icon-volume-up"></i>'.(($count > 1) ? __('Audios ') : __('Audio ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3><script>audiojs.events.ready(function() {var as = audiojs.createAll();});</script>';
+		echo $html;
+	}
 }
 
 
 /*
-** Loop through and display video files
+ ** Loop through and display video files
 ** Please use H.264 video format
 ** Browsers that do not support H.264 will fallback to Flash
 ** We accept multiple H.264-related MIME-types because Omeka MIME detection is sometimes spotty
