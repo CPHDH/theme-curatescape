@@ -22,6 +22,7 @@ head( array('maptype'=>'none', 'title' => mh_tour_label('plural'), 'bodyid'=>'to
     if( has_tours() ){
     if( has_tours_for_loop() ){
     	$i=1;
+    	$tourimg=0;
 		while( loop_tours() ){ 
 		
 			$tourdesc = nls2p( tour( 'Description' ) );
@@ -31,6 +32,7 @@ head( array('maptype'=>'none', 'title' => mh_tour_label('plural'), 'bodyid'=>'to
 						
 			if($i<=10){
 			echo display_tour_thumb($this->tour,0,$userDefined);
+			$tourimg++;
 			}
 			
 			echo '<div class="item-description"><p>'.snippet($tourdesc,0,300).'</p></div>'; 
@@ -38,14 +40,21 @@ head( array('maptype'=>'none', 'title' => mh_tour_label('plural'), 'bodyid'=>'to
 			$i++;
 			
 			}
+			
 		}
-	}?>
+	}
+	?>
 	
     
 	</section>
     </div>
 
 	<div id="page-col-right">
+	<?php if($tourimg<10){
+		// if there aren't 10 tour images to fill out the collage, grab some item images to fill it out
+		$num=10-$tourimg; 
+		mh_display_recent_item($num);
+	}?>
 	</div>	
 
 </section>

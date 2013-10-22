@@ -87,6 +87,13 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
     				<p><span><?php echo __('Tags:') ?></span> <?php echo $tags; ?></p>
     				</div>
 				<?php endif; ?>
+				
+				<?php 
+				if(get_theme_option('subjects_on_browse')==1){
+					mh_subjects_string();
+					}
+				?>
+				
 			</article> 
 		<?php 
 		$index++;
