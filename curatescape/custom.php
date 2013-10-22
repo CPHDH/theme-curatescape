@@ -833,7 +833,7 @@ function mh_subjects_string(){
 			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
 		}
 		
-		echo '<div class="item-subjects"><p><span>Subjects: </span>'.implode(", ", $html).'</p></div>';
+		echo '<div class="item-subjects"><p><span>'.__('Subjects: ').'</span>'.implode(", ", $html).'</p></div>';
 	}
 }
 
