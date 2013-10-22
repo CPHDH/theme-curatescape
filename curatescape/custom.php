@@ -322,7 +322,7 @@ function mh_display_map($type=null){
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);"><?php echo __('Get Directions'); ?></a><br><small><em><?php echo __('Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.'); ?></em></small></div>' }, this);
 					});
 			});
 			jQuery.when(makemap).done(function() {
@@ -740,7 +740,7 @@ function mh_video_files() {
 	$videoTitle = item_file('Dublin Core','Title');
 
 	if ( in_array($videoMime,$videoTypes) ){
-		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.__('Video ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>' : '');
+		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.__('Videos ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>' : '');
 
 		$html .= '<div class="item-file-container">';
 		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'"  preload="auto" data-setup="{}">';
