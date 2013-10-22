@@ -747,7 +747,6 @@ function mh_video_files() {
 	$videoTitle = item_file('Dublin Core','Title');
 
 	if ( in_array($videoMime,$videoTypes) ){
-		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.__('Videos ').'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>' : '');
 
 		$html .= '<div class="item-file-container">';
 		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'"  preload="auto" data-setup="{}">';
@@ -757,12 +756,14 @@ function mh_video_files() {
 		$html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.'</p>' : '';
 		$html .= '</div>';
 
-		echo $html;
-
 		$videoIndex++;
 	}
-	echo mh_video_ResponsifyVideoScript($videoIndex);
 	endwhile;
+        if ($videoIndex > 0) {
+                echo $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
+                echo $html;
+                echo mh_video_ResponsifyVideoScript($videoIndex);
+        }
 
 }
 /*
