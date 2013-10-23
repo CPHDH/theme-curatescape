@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Add Curatescape translations directory for all requests.
+ */
+add_translation_source(dirname(__FILE__) . '/languages');
+
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
 
 // SEO Page description
@@ -749,7 +755,7 @@ function mh_video_files() {
 	if ( in_array($videoMime,$videoTypes) ){
 
 		$html .= '<div class="item-file-container">';
-		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'"  preload="auto" data-setup="{}">';
+		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'" preload="auto" data-setup="{}">';
 		$html .= '<source src="'.$videoFile.'" type="video/mp4">';
 		$html .= '</video>';
 		$html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <i class="icon-info-sign"></i></h4>' : '';
