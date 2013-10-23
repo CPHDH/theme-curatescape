@@ -49,19 +49,19 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:1174
 msgid "A project by "
-msgstr ""
+msgstr "Un projet de "
 
 #: theme-curatescape/curatescape/stealth-index.php:59
 msgid "About"
-msgstr ""
+msgstr "À-propos"
 
 #: theme-curatescape/curatescape/custom.php:1142
 msgid "About "
-msgstr ""
+msgstr "À-propos "
 
 #: theme-curatescape/curatescape/custom.php:1151
 msgid "About Us"
-msgstr ""
+msgstr "À notre propos"
 
 #: theme-curatescape/curatescape/items/browse.php:20
 msgid "Advanced Search Results"
@@ -69,24 +69,24 @@ msgstr ""
 
 #: theme-curatescape/curatescape/items/browse.php:25
 msgid "All "
-msgstr ""
+msgstr "Tout "
 
 #. (mh_tour_label('plural')
 #: theme-curatescape/curatescape/tour-builder/tours/browse.php:7
 msgid "All %s:"
-msgstr ""
+msgstr "Tous les %s :"
 
 #: theme-curatescape/curatescape/custom.php:719
 msgid "Audio "
-msgstr ""
+msgstr "Audio "
 
 #: theme-curatescape/curatescape/custom.php:719
 msgid "Audios "
-msgstr ""
+msgstr "Audios "
 
 #: theme-curatescape/curatescape/custom.php:325
 msgid "Be sure to read the <a href=\"#map-faq\" class=\"fancybox\">MAP FAQ</a>."
-msgstr ""
+msgstr "Consultez <a href=\"#map-faq\" class=\"fancybox\">FAQ de la cartographie</a>."
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/browse.php:56 theme-curatescape/curatescape/exhibit-builder/exhibits/tags.php:26
 msgid "Browse All"
@@ -103,7 +103,7 @@ msgstr ""
 #. (tour( 'Credits')
 #: theme-curatescape/curatescape/tour-builder/tours/show.php:18
 msgid "By %s"
-msgstr ""
+msgstr "Par %s"
 
 #. (settings('site_title')
 #: theme-curatescape/curatescape/tour-builder/tours/show.php:20
@@ -112,27 +112,27 @@ msgstr "Par l'équipe %s"
 
 #: theme-curatescape/curatescape/custom.php:530
 msgid "By: "
-msgstr ""
+msgstr "Par : "
 
 #: theme-curatescape/curatescape/items/show.php:62
 msgid "Cite this Page"
-msgstr "Citer cette page"
+msgstr "Citer cette page "
 
 #: theme-curatescape/curatescape/custom.php:418 theme-curatescape/curatescape/custom.php:426
 msgid "Coming Soon"
-msgstr ""
+msgstr "Prochainement"
 
 #: theme-curatescape/curatescape/stealth-index.php:62
 msgid "Coming Soon!"
-msgstr ""
+msgstr "Prochainement !"
 
 #: theme-curatescape/curatescape/stealth-index.php:67
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: theme-curatescape/curatescape/custom.php:1060
 msgid "Continue reading"
-msgstr ""
+msgstr "Continuer la lecture"
 
 #: theme-curatescape/curatescape/contribution/contribution/contributor-email.php:3
 msgid "Contribution URL (pending review by project staff):"
@@ -144,7 +144,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/summary.php:24
 msgid "Credits"
-msgstr ""
+msgstr "Crédits"
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/summary.php:21 theme-curatescape/curatescape/items/show.php:21
 msgid "Description"
@@ -160,7 +160,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:1296 theme-curatescape/curatescape/custom.php:1299
 msgid "Edit this item..."
-msgstr ""
+msgstr "Editer ce contenu ..."
 
 #: theme-curatescape/curatescape/contribution/contribution/contribute.php:55
 msgid "Email Address"
@@ -176,7 +176,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:1172
 msgid "Find us on "
-msgstr ""
+msgstr "Suivez-nous sur "
 
 #: theme-curatescape/curatescape/custom.php:468
 msgid "Frequently Asked Questions <span>about the map</span>"
@@ -207,7 +207,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:106
 msgid "Home"
-msgstr ""
+msgstr "Accueil"
 
 #: theme-curatescape/curatescape/contribution/contribution/contribute.php:77
 msgid "I agree to the Terms and Conditions."
@@ -225,20 +225,20 @@ msgstr ""
 
 #: theme-curatescape/curatescape/tour-builder/tours/show.php:36
 msgid "Locations for "
-msgstr ""
+msgstr "Localisation de "
 
 #: theme-curatescape/curatescape/custom.php:153
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: theme-curatescape/curatescape/contribution/contribution/contribute.php:47
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #. (mh_item_label('plural')
 #: theme-curatescape/curatescape/custom.php:46 theme-curatescape/curatescape/custom.php:47
 msgid "New "
-msgstr ""
+msgstr "Nouveau "
 
 #. (mh_item_label()
 #. (mh_item_label('plural')
@@ -260,19 +260,19 @@ msgstr ""
 
 #: theme-curatescape/curatescape/contribution/contribution/contribute.php:45
 msgid "Personal Information"
-msgstr ""
+msgstr "Informations personnelles"
 
 #: theme-curatescape/curatescape/stealth-index.php:80
 msgid "Phone:"
-msgstr ""
+msgstr "Téléphone : "
 
 #: theme-curatescape/curatescape/custom.php:681
 msgid "Photo "
-msgstr ""
+msgstr "Photo "
 
 #: theme-curatescape/curatescape/custom.php:681
 msgid "Photos "
-msgstr ""
+msgstr "Photos "
 
 #: theme-curatescape/curatescape/common/header.php:91
 msgid "Please enable JavaScript in your browser settings."
@@ -292,7 +292,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:1151
 msgid "Read more "
-msgstr ""
+msgstr "En lire plus "
 
 #: theme-curatescape/curatescape/custom.php:866
 msgid "Related "
@@ -326,11 +326,11 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:918
 msgid "Share this Page"
-msgstr ""
+msgstr "Partager cette page"
 
 #: theme-curatescape/curatescape/custom.php:681 theme-curatescape/curatescape/custom.php:719 theme-curatescape/curatescape/custom.php:763
 msgid "Show "
-msgstr ""
+msgstr "Voir "
 
 #: theme-curatescape/curatescape/error/403.php:16
 msgid "Sorry. Access Forbidden!"
@@ -350,11 +350,11 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:813
 msgid "Subjects"
-msgstr ""
+msgstr "Sujets"
 
 #: theme-curatescape/curatescape/custom.php:844
 msgid "Subjects: "
-msgstr ""
+msgstr "Sujets : "
 
 #: theme-curatescape/curatescape/custom.php:887
 msgid "Tags"
@@ -384,7 +384,7 @@ msgstr ""
 #. (settings('site_title')
 #: theme-curatescape/curatescape/custom.php:557
 msgid "The %s team"
-msgstr ""
+msgstr "L'équipe %s"
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/browse.php:78
 msgid "There are no exhibits available yet."
@@ -392,7 +392,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:62
 msgid "Tour"
-msgstr ""
+msgstr "Parcours"
 
 #: theme-curatescape/curatescape/custom.php:65
 msgid "Tours"
@@ -400,15 +400,15 @@ msgstr ""
 
 #: theme-curatescape/curatescape/custom.php:763
 msgid "Video "
-msgstr ""
+msgstr "Video "
 
 #: theme-curatescape/curatescape/custom.php:763
 msgid "Videos "
-msgstr ""
+msgstr "Vidéos "
 
 #: theme-curatescape/curatescape/custom.php:133
 msgid "View a random "
-msgstr ""
+msgstr "Tirer au hasard "
 
 #: theme-curatescape/curatescape/custom.php:1025 theme-curatescape/curatescape/custom.php:1129 theme-curatescape/curatescape/index.php:19
 msgid "View all "
