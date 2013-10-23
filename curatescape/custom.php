@@ -724,40 +724,40 @@ function mh_audio_files(){
 ** Opera and Firefox are currently the key browsers that need flash here, but that may change
 */
 function mh_video_files() {
-	$videoIndex = 0;
-	$videoTypes = array('video/mp4','video/mpeg','video/quicktime');
-	$videoPoster = mh_poster_url();
-	$videoJS = js('video-js/video.min');
-	$videoSWF= '<script> _V_.options.flash.swf = "'. WEB_ROOT .'/themes/curatescape/javascripts/video-js/video-js.swf"</script>';
+        $videoIndex = 0;
+        $videoTypes = array('video/mp4','video/mpeg','video/quicktime');
+        $videoPoster = mh_poster_url();
+        $videoJS = js('video-js/video.min');
+        $videoSWF= '<script> _V_.options.flash.swf = "'. WEB_ROOT .'/themes/curatescape/javascripts/video-js/video-js.swf"</script>';
 
-	while(loop_files_for_item()):
-		$file = get_current_file();
-	$videoMime = item_file("MIME Type");
-	$videoFile = file_download_uri($file);
-	$videoTitle = item_file('Dublin Core', 'Title');
-	$videoClass = (($videoIndex==0) ? 'first' : 'not-first');
-	$videoDesc = item_file('Dublin Core','Description');
-	$videoTitle = item_file('Dublin Core','Title');
+        while(loop_files_for_item()):
+                $file = get_current_file();
+        $videoMime = item_file("MIME Type");
+        $videoFile = file_download_uri($file);
+        $videoTitle = item_file('Dublin Core', 'Title');
+        $videoClass = (($videoIndex==0) ? 'first' : 'not-first');
+        $videoDesc = item_file('Dublin Core','Description');
+        $videoTitle = item_file('Dublin Core','Title');
 
-	if ( in_array($videoMime,$videoTypes) ){
-		$html = (($videoIndex==0) ? $videoJS.$videoSWF.'<h3><i class="icon-film"></i>Video <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>' : '');
+        if ( in_array($videoMime,$videoTypes) ){
 
-		$html .= '<div class="item-file-container">';
-		$html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'"  preload="auto" data-setup="{}">';
-		$html .= '<source src="'.$videoFile.'" type="video/mp4">';
-		$html .= '</video>';
-		$html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <i class="icon-info-sign"></i></h4>' : '';
-		$html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.'</p>' : '';
-		$html .= '</div>';
+                $html .= '<div class="item-file-container">';
+                $html .= '<video width="640" height="360" id="video-'.$videoIndex.'" class="'.$videoClass.' video-js vjs-default-skin" controls poster="'.$videoPoster.'" preload="auto" data-setup="{}">';
+                $html .= '<source src="'.$videoFile.'" type="video/mp4">';
+                $html .= '</video>';
+                $html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <i class="icon-info-sign"></i></h4>' : '';
+                $html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.'</p>' : '';
+                $html .= '</div>';
 
-		echo $html;
-
-		$videoIndex++;
-	}
-	echo mh_video_ResponsifyVideoScript($videoIndex);
-	endwhile;
-
-}
+                $videoIndex++;
+        }
+        endwhile;
+        if ($videoIndex > 0) {
+                echo $videoJS.$videoSWF.'<h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
+                echo $html;
+                echo mh_video_ResponsifyVideoScript($videoIndex);
+        }
+}        
 /*
 ** Script to resize the video based on desired aspect ratio and browser viewport
 ** This basically iterates a separate action for each video (see mh_video_files() loop above),
