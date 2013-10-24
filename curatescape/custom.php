@@ -101,7 +101,7 @@ function mh_tour_header(){
 	if($text=get_theme_option('tour_header')){
 		return $text;
 	}else{
-		return __('Take a ').mh_tour_label_option('singular').'';
+		return __('Take a %s',mh_tour_label_option('singular')).'';
 	}
 }
 /*
@@ -136,7 +136,7 @@ function random_item_link($text=null,$class='show'){
 	$items = get_items(array('random' => 1), 1);
 	$item = $items[0];
 	if(!$text){
-		$text=__('View a random ').mh_item_label();
+		$text=__('View a random %s',mh_item_label());
 	}
 	return link_to($item, 'show', $text, array('class'=>'random-story-link '.$class));
 }
@@ -390,7 +390,7 @@ function mh_simple_search($buttonText = null, $formProperties=array('id'=>'simpl
 	$formProperties['method'] = 'get';
 	$html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>'. "\n\n";
-	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>__('Search ').mh_item_label('plural').''));
+	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>__('Search %s',mh_item_label('plural')).''));
 	$html .= __v()->formSubmit('submit_search', $buttonText);
 	$html .= '</fieldset>' . "\n\n";
 
@@ -453,7 +453,7 @@ function mh_appstore_footer(){
 			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%s">Android</a>',$android_app_id);
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
-			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%1$s">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%1$s">Android</a>',$ios_app_id,$android_app_id);
+			echo __('Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/%1$s">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id=%2$s">Android</a>',$ios_app_id,$android_app_id);
 		}
 		else{
 			echo __('iPhone + Android Apps Coming Soon!');
@@ -476,7 +476,7 @@ function mh_mapfaq(){
 		   $html .= __('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',settings('site_title'));
 		   $html .= __('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
 		   $html .= __('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
-		   $html .= __('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %1$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
+		   $html .= __('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %2$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
@@ -712,7 +712,7 @@ function mh_audio_files(){
 		$html .= '<div class="item-file-container">';
 		$html .= '<audio>
 			<source src="'.file_download_uri($file).'" type="audio/mpeg" />
-			<h5 class="no-audio"><strong>'.__('Download Audio:').'</strong><a href="'.file_download_uri($file).'">MP3</a></h5>
+			<h5 class="no-audio"><strong>'.__('Download Audio:').'</strong><a href="'.file_download_uri($file).'">'.__('MP3').'</a></h5>
 			</audio>';
 		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <i class="icon-info-sign"></i></h4>' : '';
 		$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.'</p>' : '';
@@ -1028,7 +1028,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">'.__('View all ').'<span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
+	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">'.__('View all <span>%1$s %2$s</span>',count($items), mh_tour_label('plural')).'</a></p>';
 
 	return $items;
 }
@@ -1045,7 +1045,7 @@ function mh_display_random_tours($num = 20){
 function mh_display_random_featured_item($withImage=false)
 {
 	$featuredItem = random_featured_item($withImage);
-	$html = '<h2>'.__('Featured ').mh_item_label().'</h2>';
+	$html = '<h2>'.__('Featured %s',mh_item_label()).'</h2>';
 	$html .= '<article class="item-result">';
 	if ($featuredItem) {
 		$itemTitle = item('Dublin Core', 'Title', array(), $featuredItem);
@@ -1063,7 +1063,7 @@ function mh_display_random_featured_item($withImage=false)
 		}else{
 			$html .= '<div class="item-description empty">'.__('Preview text not available.').'</div>';}
 
-		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading').'<span>'.$itemTitle.'</span>', array(), 'show', $featuredItem) .'</p>';
+		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>',$itemTitle), array(), 'show', $featuredItem) .'</p>';
 
 	}else {
 		$html .= __('<p>No featured items are available.</p>');
@@ -1110,7 +1110,7 @@ function mh_display_recent_item($num=1){
 */
 
 function mh_display_random_item($num=1){
-	echo ($num <=1) ? '<h2>'.__('Random ').mh_item_label().'</h2>' : '<h2>'.__('Random ').mh_item_label('plural').'</h2>';
+	echo ($num <=1) ? '<h2>'.__('Random %s',mh_item_label()).'</h2>' : '<h2>'.__('Random %s',mh_item_label('plural')).'</h2>';
 	$items = get_items(array('random' => 1), $num);
 	set_items_for_loop($items);
 	if (has_items_for_loop()){
@@ -1132,7 +1132,7 @@ function mh_display_random_item($num=1){
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_browse_items(__('View all ').mh_item_label('plural').'').'</p>';
+	echo '<p class="view-more-link">'.link_to_browse_items(__('View all %s',mh_item_label('plural')).'').'</p>';
 }
 
 /*
@@ -1154,7 +1154,7 @@ function mh_custom_content($length=500){
 
 	$html .= '</div></article>';
 
-	$html .= '<p class="view-more-link"><a href="'.uri('about').'">'.__('Read more ').'<span>'.__('About Us').'</span></a></p>';
+	$html .= '<p class="view-more-link"><a href="'.uri('about').'">'.__('Read more <span>About Us</span>').'</a></p>';
 
 
 	echo $html;
