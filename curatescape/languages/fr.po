@@ -358,11 +358,11 @@ msgstr "Sujets : "
 
 #: theme-curatescape/curatescape/custom.php:887
 msgid "Tags"
-msgstr ""
+msgstr "Mots clé"
 
 #: theme-curatescape/curatescape/items/browse.php:87
 msgid "Tags:"
-msgstr ""
+msgstr "Mots clé :"
 
 #: theme-curatescape/curatescape/custom.php:98
 msgid "Take a "
