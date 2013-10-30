@@ -740,6 +740,9 @@ figure#home-map {
 
 #custom-block,#featured-story {
 }
+#custom-block article .about-snippet{
+	padding: 0;
+}
 
 #custom-block .item-image,#featured-story .item-image {
 }
@@ -747,8 +750,12 @@ figure#home-map {
 #custom-block .item-text,#featured-story .item-text {
 }
 
-#custom-block article{}
-#custom-block header{margin-bottom: 1em;margin-top: 1.25em; text-align: center;
+
+#custom-block header{
+	padding-top: 1em;
+	margin-bottom: 1em;
+	margin-top: 1.25em; 
+	text-align: center;
 	-webkit-hyphens:none;
 	-moz-hyphens:none;
 	-ms-hyphens:none;
@@ -1913,6 +1920,19 @@ body#tours.browse #showmap{
 	}
 	
 	.fancybox-title span.source{font-size:.85em; font-style: italic}
+	
+	
+	#custom-block article{
+		position: relative;
+		padding: 0;
+		background: #fff;
+		background-color: #fff;
+		box-shadow: 0 0 .1em #bcbcbc, inset 0 0 1em #fafafa;	
+	}	
+	#custom-block article .about-snippet{
+		padding: 0 1em 1em;
+	}	
+	
 }
 
 @media only screen and (min-width: 60em) {
@@ -2028,20 +2048,11 @@ body#tours.browse #showmap{
 		color:#222;
 	}
 	
-	#custom-block article{
-		background: #fff;
-		position: relative;
-		background-color: #fff;
-		box-shadow: 0 0 .1em #bcbcbc, inset 0 0 1em #fafafa;	
-	}
-	
 	#custom-block header{
 		margin-top: 0;
 		padding-top: 1.25em;
 	}
-	#custom-block .about-snippet{
-		padding: 0 1em 1em;
-	}
+
 	
 	#custom-block,#featured-story,#about-text {
 		clear:none;
