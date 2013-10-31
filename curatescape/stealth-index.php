@@ -74,7 +74,7 @@ display_css();
 					echo ($contact_email ? '<div id="homecol-email"><span class="contact-item">'.__('Email:').'</span> <a href="mailto:'.$contact_email.'">'.$contact_email.'</a></div>' : '');
 					
 				$twitter_username = get_theme_option('twitter_username');
-					echo ($twitter_username ? '<div id="homecol-twitter"><span class="contact-item">Twitter:</span> <a href="http://twitter.com/'.$twitter_username.'">@'.$twitter_username.'</a></div>' : '');
+					echo ($twitter_username ? '<div id="homecol-twitter"><span class="contact-item">'.__('Twitter:').'</span> <a href="http://twitter.com/'.$twitter_username.'">@'.$twitter_username.'</a></div>' : '');
 	
 				$contact_phone = get_theme_option('contact_phone');
 					echo ($contact_phone ? '<div id="homecol-phone"><span class="contact-item">'.__('Phone:').'</span> '.$contact_phone.'</div>' : '');

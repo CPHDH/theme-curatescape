@@ -172,6 +172,10 @@ msgstr "Adresse Email"
 msgid "Email:"
 msgstr "Email : "
 
+#: curatescape/stealth-index.php:77
+msgid "Twitter:"
+msgstr "Twitter :"
+
 #. (mh_item_label()
 #: theme-curatescape/curatescape/custom.php:1048
 msgid "Featured %s"

@@ -533,7 +533,7 @@ function mh_item_map(){
 */
 function mh_the_author(){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">'.__('By: ');
+		$html='<span class="story-meta byline">'.__('By ');
 
 		if(item('Dublin Core', 'Creator')){
 			$authors=item('Dublin Core', 'Creator', array('all'=>true));
