@@ -22,7 +22,7 @@ elseif ($query) {
 	$maptype='queryresults';
 }	
 else{
-	$title = __('All ').mh_item_label('plural').'';
+	$title = __('All %s', mh_item_label('plural')).'';
 	$bodyclass .=' items stories';
 }	
 head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
@@ -33,7 +33,7 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 
 <section class="browse stories items">	
 	<h2><?php 
-	$title .= ( (total_results()) ? ': <span class="item-number">'.total_results().'</span>' : '');
+	$title .= ( (total_results()) ? __(': <span class="item-number">%s</span>',total_results()) : '');
 	echo $title; 
 	?></h2>
 		

@@ -61,11 +61,16 @@ msgstr "À-propos "
 
 #: theme-curatescape/curatescape/items/browse.php:20
 msgid "Advanced Search Results"
-msgstr ""
+msgstr "Résulats de la recherche avancée"
 
 #: theme-curatescape/curatescape/items/browse.php:25
-msgid "All "
-msgstr "Tout "
+msgid "All %s"
+msgstr "Toutes les %s"
+
+#. (total_results()
+#: theme-curatescape/curatescape/items/browse.php:36
+msgid ": <span class=\"item-number\">%s</span>"
+msgstr " : <span class=\"item-number\">%s</span>"
 
 #. (mh_tour_label('plural')
 #: theme-curatescape/curatescape/tour-builder/tours/browse.php:7
@@ -323,7 +328,7 @@ msgstr "Rechercher %s"
 #. ($query)
 #: theme-curatescape/curatescape/items/browse.php:20
 msgid "Search Results for \"%s\""
-msgstr ""
+msgstr "Résultats de la recherche pour \"%s\""
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/summary.php:30
 msgid "Sections"
@@ -339,11 +344,11 @@ msgstr "Voir "
 
 #: theme-curatescape/curatescape/error/403.php:16
 msgid "Sorry. Access Forbidden!"
-msgstr ""
+msgstr "Désolé. Accès impossible."
 
 #: theme-curatescape/curatescape/error/404.php:16
 msgid "Sorry. The page you are looking for does not exist!"
-msgstr ""
+msgstr "Désolé. La page demandée n'est pas n'existe pas !"
 
 #: theme-curatescape/curatescape/custom.php:62
 msgid "Stories"
@@ -380,7 +385,7 @@ msgstr ""
 
 #: theme-curatescape/curatescape/contribution/contribution/thankyou.php:28
 msgid "Thank You for Contributing!"
-msgstr ""
+msgstr "Merci de votre contribution !"
 
 #. (get_option('site_title')
 #: theme-curatescape/curatescape/contribution/contribution/contributor-email.php:1
@@ -394,7 +399,7 @@ msgstr "L'équipe %s"
 
 #: theme-curatescape/curatescape/exhibit-builder/exhibits/browse.php:78
 msgid "There are no exhibits available yet."
-msgstr ""
+msgstr "Aucune exposition n'est proposée actuellement"
 
 #: theme-curatescape/curatescape/custom.php:68
 msgid "Tour"

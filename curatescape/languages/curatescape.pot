@@ -64,7 +64,12 @@ msgid "Advanced Search Results"
 msgstr ""
 
 #: theme-curatescape/curatescape/items/browse.php:25
-msgid "All "
+msgid "All %s"
+msgstr ""
+
+#. (total_results()
+#: theme-curatescape/curatescape/items/browse.php:36
+msgid ": <span class=\"item-number\">%s</span>"
 msgstr ""
 
 #. (mh_tour_label('plural')
