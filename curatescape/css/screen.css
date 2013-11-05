@@ -1292,9 +1292,9 @@ section.meta{
 }
 
 .generatedcontent .show .item-related-links h3 {
-	border-top:1px solid #CCC;
-	margin-top:2.5em;
-	padding-top:2em;
+	border-top:1px solid #eaeaea;
+	margin-top:1em;
+	padding-top:1em;
 }
 
 .generatedcontent .show .item-related-links h3:after {
