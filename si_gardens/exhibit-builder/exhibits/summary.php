@@ -43,7 +43,7 @@
 	</div>		
 		
 <div id="share-this" class="show">
-<?php echo mh_share_this();?>
+<?php echo mh_share_this("Share this Exhibit");?>
 </div>
 
 </article>

@@ -4,7 +4,7 @@ $term = ($_GET['term'] ? $_GET['term'] : null);
 $query = ($_GET['search'] ? $_GET['search'] : null);
 $advanced = ($_GET['advanced'] ? true : false);
 $bodyclass='browse';
-$maptype='focusarea';
+$maptype='none';
 
 if ( ($tag) && !($query) ) {
 	$title = 'Exhibits tagged "'.$tag.'"';
@@ -23,9 +23,9 @@ elseif ($query) {
 }	
 else{
 	$title = 'All Exhibits';
-	$bodyclass .=' items stories';
+	$bodyclass .=' exhibits';
 }	
-head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
+head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibit','bodyclass'=>$bodyclass)); 
 ?>
 
 
@@ -86,6 +86,10 @@ head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=>$bod
 	</div><!-- end primary -->
 
 	<div id="page-col-right">
+	
+		<!-- Grab some recent images for the image tile montage -->
+		<?php mh_display_recent_item(10);?>
+	
 	</div>	
 
 </section>
