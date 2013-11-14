@@ -104,7 +104,7 @@ function mh_tour_header(){
 function mh_global_nav(){
 	return nav(array(
 			'Home' => uri('/'),
-			'Stories' => uri('items/browse'),
+			mh_item_label('plural') => uri('items/browse'),
 			//'Exhibits' => uri('/exhibits'),
 			'About' => uri('/about'),
 			'FAQs' => uri('/faq'),
@@ -1000,9 +1000,6 @@ function mh_share_this($heading="Share this Page",$otherVars=null){
 	return $html;
 }
 
-function mh_showmap(){
-	return '<div id="showmap" class="hidden"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
-}
 
 /*
 ** DISQUS COMMENTS
