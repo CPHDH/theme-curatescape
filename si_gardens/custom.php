@@ -102,10 +102,16 @@ function mh_tour_header(){
 ** Global navigation
 */
 function mh_global_nav(){
-	return public_nav_main(array(
+	return nav(array(
 			'Home' => uri('/'),
-			mh_item_label('plural') => uri('items/browse'),
-			mh_tour_label('plural') => uri('/tour-builder/tours/browse/')));
+			'Stories' => uri('items/browse'),
+			//'Exhibits' => uri('/exhibits'),
+			'About' => uri('/about'),
+			'FAQs' => uri('/faq'),
+			'Education' => uri('/education'),
+			'Blog' => 'http://communityofgardens.tumblr.com/',
+			'Share A Story' => uri('/contribution')
+			));
 }
 
 /*
@@ -256,6 +262,7 @@ function mh_display_map($type=null){
 		$marker='/archive/theme_uploads/'.get_theme_option('custom_marker');
 	}else{
 		$marker='/themes/curatescape/images/map-icn.png';
+		$marker_private='/themes/curatescape/images/map-icn-private.png';
 	}
 	if(get_theme_option('custom_shadow')){
 		$shadow='/archive/theme_uploads/'.get_theme_option('custom_shadow');
@@ -291,7 +298,11 @@ function mh_display_map($type=null){
 			'center': center,
 			'zoom': zoom,
 			'mapTypeId': eval(mapstyle),
-			'disableDefaultUI':false,
+			'disableDefaultUI':true,
+			'mapTypeControl': true,
+			'mapTypeControlOptions': {
+			  'style': google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+			},
 			'zoomControl': true,
 			'zoomControlOptions': {
 			  'style': google.maps.ZoomControlStyle.SMALL,
@@ -309,25 +320,58 @@ function mh_display_map($type=null){
 					// make sure we have a location; if not, use plugin center and empty marker
 					var lat=data.latitude;
 					var lng=data.longitude;
+					
+					if(data.visibility=="Private"){
+						var status = 'private';
+						// change the marker var
+						var marker = root+"<?php echo $marker_private ;?>"
+					}else{
+						var status = 'public';
+						var marker = root+"<?php echo $marker ;?>"
+					}
+					
 					if( (!lat) || (!lng) ){
 						lat= fallbacklat;
 						lng= fallbacklng;	
 						marker= fallbackmarker;	
 						shadow= fallbackshadow;	
 					};
-
+					
 					jQuery('#map_canvas').gmap('addMarker', {
 						'position': new google.maps.LatLng(lat, lng),
 						'bounds': true,
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
+						title: status,
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
+						//Different infowindow content for Private and Public gardens
+						if(data.visibility=="Private"){
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': 'This is a Private Garden' }, this);
+						}else{
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<a class="directions-link" href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a>' }, this);
+						}
 					});
+					//Hide Private markers and show explanation at certain zoom level
+					var map = jQuery('#map_canvas').gmap('get', 'map');
+					jQuery(map).addEventListener('zoom_changed', function() {
+						var currentZoom = map.getZoom();
+						if (currentZoom >= 11 && status == 'private') {
+							jQuery('#hm-map #map_key div#zoom-text').show();
+							jQuery('#map_canvas').gmap('find', 'markers', { }, function(marker) {
+								if(marker.title == 'private'){marker.setVisible(false);}
+							});
+						} else {
+							jQuery('#hm-map #map_key div#zoom-text').hide();
+							jQuery('#map_canvas').gmap('find', 'markers', { }, function(marker) {
+								if(marker.title == 'private'){marker.setVisible(true);}
+							});	
+						}
+					});
+			
 			});
 			jQuery.when(makemap).done(function() {
 				jQuery('#hero_loading').fadeOut('slow');
-				jQuery('#map_canvas').gmap('option', 'zoom', 15);
+				jQuery('#map_canvas').gmap('option', 'zoom', 10);
 			});				
 			}else{
 			// The MOBILE-JSON source format for everything else is compatible w/ the following
@@ -335,14 +379,42 @@ function mh_display_map($type=null){
 			var bounds = (type == 'focusarea') ? false : true;
 			var makemap=jQuery.getJSON( source, function(data) {
 				jQuery.each( data.items, function(i, item) {
+					if(item.visibility=="Private"){
+						var status = 'private';
+						// change the marker var
+						var marker = root+"<?php echo $marker_private ;?>"
+					}else{
+						var status = 'public';
+						var marker = root+"<?php echo $marker ;?>"
+					}				
 					jQuery('#map_canvas').gmap('addMarker', {
 						'position': new google.maps.LatLng(item.latitude, item.longitude),
 						'bounds': bounds,
 						'icon': new google.maps.MarkerImage(marker),
 						'shadow': new google.maps.MarkerImage(shadow),
+						title: status,
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<a href="' + root + '/items/show/' + item.id +'">' + item.title + '</a>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div class="'+status+'"><div class="status">'+status+' garden</div><a href="' + root + '/items/show/' + item.id +'">' + item.title + '</a><div class="photo">'+item.thumbnail+'<a class="view-link" href="' + root + '/items/show/' + item.id +'">View Story</a></div></div>' }, this);
 					});
+				});
+				//Hide Private markers and show explanation at certain zoom level
+				var map = jQuery('#map_canvas').gmap('get', 'map');
+				jQuery(map).addEventListener('zoom_changed', function() {
+					
+					var currentZoom = map.getZoom();
+					if (currentZoom >= 11) {
+						jQuery('#hm-map #map_key div#zoom-text').show();
+						jQuery('#hm-map #map_key span.private').css('opacity', '0.4');
+						jQuery('#map_canvas').gmap('find', 'markers', { }, function(marker) {
+							if(marker.title == 'private'){marker.setVisible(false);}
+						});
+					} else {
+						jQuery('#hm-map #map_key div#zoom-text').hide();
+						jQuery('#hm-map #map_key span.private').css('opacity', '1');
+						jQuery('#map_canvas').gmap('find', 'markers', { }, function(marker) {
+							if(marker.title == 'private'){marker.setVisible(true);}
+						});	
+					}
 				});
 			});
 			jQuery.when(makemap).done(function() {
@@ -354,8 +426,12 @@ function mh_display_map($type=null){
 
         </script>
 		<div id="hm-map">
-			<div id="map_canvas" style="height:20em;">		
+			<div id="map_canvas" style="height:30em;">		
 			</div>
+            <div id="map_key">
+            <div id="zoom-text"><span class="zoom-text">At This Zoom level, private gardens are not shown as we do not ask for a specific address to protect privacy</span></div>
+            <div><span class="private">Private</span><span class="public">Public</span></div>
+            </div>
 		</div>
 <?php }
 
@@ -904,10 +980,10 @@ function mh_related_links(){
 ** Display the AddThis social sharing widgets
 ** www.addthis.com
 */
-function mh_share_this(){
+function mh_share_this($heading="Share this Page",$otherVars=null){
 	$addthis = (get_theme_option('Add This')) ? (get_theme_option('Add This')) : 'ra-4e89c646711b8856';
 
-	$html = '<h3>Share this Page</h3>';
+	$html = '<h3>'.$heading.'</h3>';
 	$html .= '<!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
 <a class="addthis_button_twitter"></a>
@@ -915,12 +991,17 @@ function mh_share_this(){
 <a class="addthis_button_email"></a>
 <a class="addthis_button_compact"></a>
 </div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript">var addthis_config = {"ui_508_compliant": true
+};'.$otherVars.'</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid='.$addthis.'"></script>
 <!-- AddThis Button END -->';
 
 
 	return $html;
+}
+
+function mh_showmap(){
+	return '<div id="showmap" class="hidden"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
 }
 
 /*
@@ -1442,6 +1523,33 @@ function mh_normalize_special_characters( $str )
 
 function mh_showmap(){
 	return '<div id="showmap" class="hidden"><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>';
+}
+
+/** Footer Legal Links
+*/
+
+function mh_legal_nav(){
+	$html .= '<li><a href="gardens@si.edu">Contact webmaster</a></li>';
+	$html .= '<li><a href="http://www.si.edu/privacy/">Privacy Policy</a></li>';
+	$html .= '<li><a href="http://www.si.edu/Termsofuse">Terms of use</a></li>';
+	$html .= '<li><a href="'.WEB_ROOT.'/submission-agreement">Submission Agreement</a></li>';
+	
+	return $html;
+}
+
+/** Footer Gardens logo and Social Media icons
+*/
+
+function social_media(){
+	$html .= '<a href="http://www.gardens.si.edu" class="icon-sg-logo"></a>';
+	$html .= '<br>';
+	$html .= '<a href="https://www.facebook.com/SmithsonianGardens" class="icon-fb"></a>';
+	$html .= '<a href="https://twitter.com/SIGardens" class="icon-tw"></a>';
+	$html .= '<a href="http://instagram.com/SmithsonianGardens" class="icon-instagram"></a>';
+	$html .= '<a href="http://www.pinterest.com/sigardens/" class="icon-pinterest"></a>';
+	$html .= '<a href="http://www.tumblr.com/tagged/smithsonian-gardens" class="icon-tumblr"></a>';
+	
+	return $html;
 }
 
 ?>
