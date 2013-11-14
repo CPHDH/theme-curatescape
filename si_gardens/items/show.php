@@ -84,9 +84,9 @@
 
 <div class="clearfix"></div>
 
-<div id="share-this" class="instapaper_ignore">
-<?php echo mh_share_this();?>
-</div>	
+<!--div id="share-this" class="instapaper_ignore">
+<?php// echo mh_share_this();?>
+</div-->	
 </article>
 </div> <!-- end content -->
 
