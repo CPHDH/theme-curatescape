@@ -1178,7 +1178,7 @@ function mh_owner_link(){
 	$authname_fallback=(settings('author')) ? settings('author') : settings('site_title');
 	
 	$authname=(get_theme_option('sponsor_name')) ? get_theme_option('sponsor_name') : $authname_fallback;
-	$authlink=(get_theme_option('sponsor_link')) ? '<a href="'.get_theme_option('sponsor_link').'">'.$authname.'</a>' : $authname;
+	$authlink=(get_theme_option('sponsor_url')) ? '<a href="'.get_theme_option('sponsor_url').'">'.$authname.'</a>' : $authname;
 	
 	return $authlink;
 }
