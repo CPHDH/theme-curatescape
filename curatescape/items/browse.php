@@ -1,23 +1,28 @@
 <?php 
-$tag = ($_GET['tags'] ? $_GET['tags'] : null);
-$term = ($_GET['term'] ? $_GET['term'] : null);
-$query = ($_GET['search'] ? $_GET['search'] : null);
-$advanced = ($_GET['advanced'] ? true : false);
+$tag = (isset($_GET['tag']) ? $_GET['tag'] : null); // items --> browse
+$tags = (isset($_GET['tags']) ? $_GET['tags'] : null); // tags/items --> show
+$subj = ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 49 )  ? $_GET['advanced'][0]['terms'] : null );
+$auth= ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 39 )  ? $_GET['advanced'][0]['terms'] : null );
+$query = (isset($_GET['search']) ? $_GET['search'] : null);
 $bodyclass='browse';
 $maptype='focusarea';
 
-if ( ($tag) && !($query) ) {
-	$title = ''.mh_item_label('plural').' tagged "'.$tag.'"';
+if ( ($tag || $tags) && !($query) ) {
+	$title = ''.mh_item_label('plural').' tagged "'.($tag ? $tag : $tags).'"';
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
-elseif ( ($term) && !($query) ) {
-	$title = 'Results for subject term "'.$term.'"';
+elseif ( !empty($auth) ) {
+	$title = ''.mh_item_label('plural').' by author "'.$auth.'"';
+	$bodyclass .=' queryresults';
+	$maptype='queryresults';
+}elseif ( !empty($subj) ) {
+	$title = 'Results for subject term "'.$subj.'"';
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
 elseif ($query) {
-	$title = (!($advanced) ? 'Search Results for "'.$query.'"':'Advanced Search Results');
+	$title = 'Search Results for "'.$query.'"';
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }	
@@ -25,7 +30,7 @@ else{
 	$title = 'All '.mh_item_label('plural').'';
 	$bodyclass .=' items stories';
 }	
-head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
+echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
 ?>
 
 
@@ -33,10 +38,9 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 
 <section class="browse stories items">	
 	<h2><?php 
-	$title .= ( (total_results()) ? ': <span class="item-number">'.total_results().'</span>' : '');
+	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>
-		
 		
 	<div id="page-col-left">
 		<aside>
@@ -49,9 +53,7 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 	<section id="results">
 			
 		<nav class="secondary-nav" id="item-browse"> 
-			<ul>
 			<?php echo mh_item_browse_subnav();?>
-			</ul>
 		</nav>
 		
 		<div class="pagination top"><?php echo pagination_links(); ?></div>
@@ -59,17 +61,17 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 		<?php 
 		$index=1; // set index to one so we can use zero as an argument below
 		$showImgNum= 3; // show this many images on the browse results page; used for slider on mobile devices
-		while (loop_items()): 
-			$description = item('Dublin Core', 'Description', array('snippet'=>250));
-			$tags=tag_string(get_current_item(), uri('items/browse?tags='));
-			$thumblink=link_to_item(item_square_thumbnail());
-			$titlelink=link_to_item(item('Dublin Core', 'Title'), array('class'=>'permalink'));
+		foreach(loop('Items') as $item): 
+			$description = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>250));
+			$tags=tag_string(get_current_record('item') , url('items/browse'));
+			$thumblink=link_to_item(item_image('square_thumbnail') );
+			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
 			?>
 			<article class="item-result" id="item-result-<?php echo $index;?>">
 			
 				<h3><?php echo $titlelink; ?></h3>
 				
-				<?php if (item_has_thumbnail() && mh_reducepayload($index,$showImgNum)): ?>
+				<?php if (metadata($item, 'has thumbnail') && mh_reducepayload($index,$showImgNum)): ?>
 					<div class="item-thumb">
 	    				<?php echo $thumblink; ?>						
 	    			</div>
@@ -82,7 +84,7 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
     				</div>
 				<?php endif; ?>
 
-				<?php if (item_has_tags()): ?>
+				<?php if (metadata($item, 'has tags') ): ?>
     				<div class="item-tags">
     				<p><span>Tags:</span> <?php echo $tags; ?></p>
     				</div>
@@ -97,7 +99,7 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 			</article> 
 		<?php 
 		$index++;
-		endwhile; 
+		endforeach; 
 		?>
 		
 		<div class="pagination bottom"><?php echo pagination_links(); ?></div>
@@ -115,4 +117,4 @@ head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$b
 <?php echo mh_share_this();?>
 </div>
 
-<?php foot(); ?>
+<?php echo foot(); ?>

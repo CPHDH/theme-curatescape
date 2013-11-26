@@ -1,4 +1,4 @@
-<?php head(array('maptype'=>'focusarea','title'=>'Browse Items by Subject','bodyid'=>'subject-browse','bodyclass' => 'subject-browse browse subjects')); ?>
+<?php echo head(array('maptype'=>'focusarea','title'=>'Browse Items by Subject','bodyid'=>'subject-browse','bodyclass' => 'subject-browse browse subjects')); ?>
 
 <?php
   $db = get_db();
@@ -85,4 +85,4 @@
 <div id="share-this" class="browse">
 <?php echo mh_share_this();?>
 </div>
-<?php foot(); ?>
+<?php echo foot(); ?>

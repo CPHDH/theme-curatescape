@@ -1,9 +1,9 @@
-<?php head(array('maptype'=>'focusarea', 'title'=>'Browse by Tag','bodyid'=>'items','bodyclass'=>'browse tags')); ?>
+<?php echo head(array('maptype'=>'focusarea', 'title'=>'Browse by Tag','bodyid'=>'items','bodyclass'=>'browse tags')); ?>
 
 
 <div id="content">
 <section class="browse tags">		
-<h2>Tags: <?php echo total_tags();?></h2>
+<h2>Tags: <?php echo total_records('Tags');?></h2>
 
 	<div id="page-col-left">
 		<aside>
@@ -17,12 +17,10 @@
     
 	    
 	    <nav class="secondary-nav" id="tag-browse"> 
-		    <ul>
 			<?php mh_item_browse_subnav(); ?>
-		    </ul>
 	    </nav>
 	
-	    <?php echo tag_cloud($tags,uri('items/browse')); ?>
+	    <?php echo tag_cloud($tags,url('items/browse')); ?>
 
 	</section> 
 	</div><!-- end primary -->
@@ -41,4 +39,4 @@
 <div id="share-this" class="browse">
 <?php echo mh_share_this();?>
 </div>
-<?php foot(); ?>
+<?php echo foot(); ?>

@@ -1,11 +1,11 @@
 <?php
-if ((get_theme_option('stealth_mode')==1)&&(has_permission('Items', 'edit')!==true)){
+if ((get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true)){
 include_once('stealth-index.php');
 }
 else{
 //if not stealth mode, do everything else
 ?>
-<?php head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>'home')); ?>
+<?php echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>'home')); ?>
 
 	
 <div id="content">
@@ -15,9 +15,9 @@ else{
 			<section id="custom-block">
 				<?php 
 				mh_custom_content();
-				echo random_item_link($text,'big-button');
-				$text='View all <span>'.total_items().' '.mh_item_label('plural').'</span>';
-				echo '<p class="view-more-link">'.link_to_browse_items($text).'</p>';	
+				echo random_item_link("View A Random ".mh_item_label('singular'),'big-button');
+				$text='View all <span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
+				echo '<p class="view-more-link">'.link_to_items_browse($text).'</p>';	
 				?>					
 			</section>
 				
@@ -37,7 +37,7 @@ else{
 </article>
 </div> <!-- end content -->
 
-<?php foot(); ?>
+<?php echo foot(); ?>
 
 <?php
 //end stealth mode else statement

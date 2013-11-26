@@ -1,4 +1,4 @@
-<?php head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => item('Dublin Core', 'Title'),'item'=>$item)); ?>
+<?php echo head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => metadata($item,array('Dublin Core', 'Title')))); ?>
 <div id="content">
 
 <article class="story item show instapaper_body hentry" role="main">
@@ -6,8 +6,9 @@
 			
 	<header id="story-header">
 	<hgroup class="instapaper_title entry-title">	
-		<h2 class="item-title"><?php echo item('Dublin Core', 'Title',array('index'=>0)); ?></h2>
-		<h3 class="item-subtitle"><?php echo item('Dublin Core', 'Title',array('index'=>1)); ?></h3>
+		<h2 class="item-title"><?php echo metadata($item, array('Dublin Core', 'Title'), array('index'=>0)); ?></h2>
+		<h3 class="item-subtitle">
+		<?php echo ( metadata($item, array('Dublin Core', 'Title'), array('index'=>1))!==('[Untitled]') ) ? metadata($item, array('Dublin Core', 'Title'), array('index'=>1)) : null; ?></h3>
 	</hgroup>	
 	<?php mh_the_author();?>
 	</header>
@@ -19,7 +20,7 @@
 
 			<div class="item-description">
 			<h3>Description</h3>
-			<?php echo item('Dublin Core', 'Description');?>
+			<?php echo metadata($item, array('Dublin Core', 'Description'));?>
 			</div>
 			<?php echo link_to_item_edit();?>
 		</section>
@@ -30,15 +31,15 @@
 		<div id="item-media">
 			<section class="media">
 				<figure id="item-video">
-				<?php mh_video_files();?>
+				<?php mh_video_files($item);?>
 				</figure> 		
 				
 				<figure id="item-audio">
-				<?php mh_audio_files();?>		
+				<?php mh_audio_files($item);?>		
 				</figure>	
 				
 				<figure id="item-photos">
-				<?php mh_item_images();?>
+				<?php mh_item_images($item);?>
 				</figure>	
 			</section>
 		</div>
@@ -53,10 +54,6 @@
 				<div id="tags">
 				<?php mh_tags();?>	
 				</div>
-				
-				<div id="relations">
-				<?php /* Item Relations plugin */ mh_item_relations();?>			
-				</div>
 
 				<div id="cite-this">
 				<h3>Cite this Page</h3>
@@ -64,16 +61,16 @@
 				</div>	
 					
 				<div class="item-related-links">
-				<?php /*DC: Relation field*/ mh_related_links();?>
+				<?php mh_related_links();?>
 				</div>
 				
-				<?php echo random_item_link($text,'big-button');?>
+				<?php echo random_item_link(null,'big-button');?>
 				
 				<div class="comments">
 				<?php mh_disquss_comments();?>
 				</div>
 				
-				<?php echo tour_nav();?>
+				<?php echo function_exists('tour_nav') ? tour_nav(null,mh_tour_label()) : null; ?>
 				
 									
 			</section>	
@@ -85,7 +82,7 @@
 <div class="clearfix"></div>
 
 <div id="share-this" class="instapaper_ignore">
-<?php echo mh_share_this();?>
+<?php echo mh_share_this(mh_item_label());?>
 </div>	
 </article>
 </div> <!-- end content -->
@@ -110,4 +107,4 @@
 	})
 	
 </script>
-<?php foot(); ?>
+<?php echo foot(); ?>

@@ -1,15 +1,4 @@
-<?php
-/**
- * @version $Id$
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright Center for History and New Media, 2010
- * @package Contribution
- */
-
-$head = array('title' => 'Contribute',
-              'bodyid' => 'contribution',
-              'bodyclass' => 'contribution thanks thank-you');
-head($head); ?>
+<?php echo head(); ?>
 
 
 <div id="content">
@@ -25,9 +14,12 @@ head($head); ?>
 	<div id="primary" class="show" role="main">
 
     
-	<h1>Thank You for Contributing!</h1>
-	<p>Your contribution will show up in the archive once an administrator approves it. Meanwhile, feel free to <?php echo contribution_link_to_contribute('make another contribution'); ?> or <a href="<?php echo uri('items/browse'); ?>">browse the archive</a>.</p>
-
+	<h1><?php echo __("Thank you for contributing!"); ?></h1>
+	<p><?php echo __("Your contribution will show up in the archive once an administrator approves it. Meanwhile, feel free to %s or %s ." , contribution_link_to_contribute(__('make another contribution')), "<a href='" . url('items/browse') . "'>" . __('browse the archive') . "</a>"); ?>
+	</p>
+	<?php if(get_option('contribution_simple') && !current_user()): ?>
+	<p><?php echo __("If you would like to interact with the site further, you can use an account that is ready for you. Visit %s, and request a new password for the email you used", "<a href='" . url('users/forgot-password') . "'>" . __('this page') . "</a>"); ?>
+	<?php endif; ?>
 
 	</div>
 
