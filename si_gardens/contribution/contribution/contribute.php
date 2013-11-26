@@ -6,26 +6,43 @@
  * @package Contribution
  */
 
-$head = array('title' => 'Share A Story',
+queue_js_file('contribution-public-form');
+$contributionPath = get_option('contribution_page_path');
+if(!$contributionPath) {
+    $contributionPath = 'contribution';
+}
+// queue_css_file('form');
+//queue_js_file('globals'); 
+//echo head_js(); 
+
+//load user profiles js and css if needed
+if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles') ) {
+    queue_js_file('admin-globals');
+    queue_js_file('tiny_mce', 'javascripts/vendor/tiny_mce');
+    queue_js_file('elements');
+    queue_css_string("input.add-element {display: block}");
+}
+
+$head = array('title' => 'Contribute',
               'bodyclass' => 'contribution');
-head($head); ?>
-<?php echo js('contribution-public-form'); ?>
+echo head($head); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
 // ]]>
 </script>
 
 <script type="text/javascript">
-	//Reveal more file uploads
-	jQuery(document).ready(function() {
-		jQuery('.upload-more a').click(function(event){
-			event.preventDefault();
-			jQuery('.contribution article form .upload-hidden').slideDown();
-			jQuery(this).hide();
-		});
-	});
+        //Reveal more file uploads
+        jQuery(document).ready(function() {
+                jQuery('.upload-more a').click(function(event){
+                        event.preventDefault();
+                        jQuery('.contribution article form .upload-hidden').slideDown();
+                        jQuery(this).hide();
+                });
+        });
 </script>
+
 
 <div id="content">
 <article class="page show">
@@ -40,61 +57,52 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
 
 	<div id="primary" class="show" role="main">
 	<?php echo flash(); ?>
-    
-    <form method="post" action="" enctype="multipart/form-data">
-    
-        <fieldset id="contribution-contributor-metadata" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <h3>About You</h3>
-            <div class="field">
-                <label for="contributor-name">Name <span>Only your first name and last initial will be published on the web.</span></label>
-                <div class="inputs">
-                    <div class="input">
-                        <?php echo $this->formText('contributor-name', $_POST['contributor-name'], array('class' => 'textinput')); ?>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <label for="contributor-email">Email Address <span>We will never share your email address with any third party or on the web. We will only contact you if we need clarification about your entry.</span></label>
-                <div class="inputs">
-                    <div class="input">
-                        <?php echo $this->formText('contributor-email', $_POST['contributor-email'], array('class' => 'textinput')); ?>
-                    </div>
-                </div>
-            </div>
-        <?php
-        foreach (contribution_get_contributor_fields() as $field) {
-            echo $field;
-        }
+    <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
+        <?php $session = new Zend_Session_Namespace;
+              $session->redirect = absolute_url();
         ?>
-        </fieldset>    
-    
-    
-        <div class="inputs hidden">
-            <label for="contribution-type">What type of item do you want to contribute?</label>
-            <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
-            <input type="submit" name="submit-type" id="submit-type" value="Select" />
-        </div>
-        <div id="contribution-type-form">
-        <?php if (isset($typeForm)): echo $typeForm; endif; ?>
-        </div>
-
-
-        <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
-            <div class="inputs hidden">
-                <?php echo $this->formCheckbox('contribution-public', '1', null, array('1','0')); ?>
-                <?php echo $this->formLabel('contribution-public', 'Publish my contribution on the web.'); ?>
+        <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>        
+    <?php else: ?>
+        <form method="post" action="" enctype="multipart/form-data">
+            <fieldset id="contribution-item-metadata">
+                <div class="inputs">
+                    <label for="contribution-type"><?php echo __("What type of item do you want to contribute?"); ?></label>
+                    <?php $options = get_table_options('ContributionType' ); ?>
+                    <?php $typeId = isset($type) ? $type->id : '' ; ?>
+                    <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
+                    <input type="submit" name="submit-type" id="submit-type" value="Select" />
+                </div>
+                
+           </fieldset>    
+           
+           
+            <div id="contribution-type-form">
+            <?php if(isset($type)) { include('type-form.php'); }?>
             </div>
-            <p>I am over the age of 13 and have read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions</a>. <span>Or, I am an educator submitting work produced by my students and I have read and agree to all the Terms & Conditions and have collected the <a href="<?php echo uri('#') ?>" target="_blank">Parental Permission Slips</a> for my own records that allow my students to participate in this project.</span></p>
-            <div class="inputs">
-                <?php echo $this->formCheckbox('terms-agree', $_POST['terms-agree'], null, array('1', '0')); ?>
-                <?php echo html_entity_decode($this->formLabel('terms-agree', 'I agree to the <a href="'.uri('contribution/terms').'" target="_blank">Terms and Conditions</a> and, if applicable, have collected <a href="'.uri('#').'" target="_blank">Parental Permission Slips</a>.')); ?>
-            </div>
-            <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
-            <span id="help">Questions or problems? Contact us at <a href="mailto:communityofgardens">communityofgardens@si.edu</a>.</span>
-        </fieldset>
-    </form>
 
+            
+            <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; } ?>>
+            <h3>Submission Agreement</h3>
+            
+                <div class="inputs hidden">
+                    <?php $public = 1; ?>
+                    <?php echo $this->formCheckbox('contribution-public', 1, null, array('1', '0')); ?>
+                    <?php echo $this->formLabel('contribution-public', __('Publish my contribution on the web.')); ?>
+                </div>
+
+                <div class="inputs">
+                    <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
+                    <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
+                    <?php echo html_entity_decode($this->formLabel('terms-agree', 'I am over the age of 13 and have read and agree to the<a href="'.url('contribution/terms').'" target="_blank">Terms and Conditions</a>. Or, I am an educator submitting work produced by my students and I have read and agree to all the Terms & Conditions and have collected the <a href="'.url('#').'" target="_blank">Parental Permission Slips</a> for my own records that allow my students to participate in this project.')); ?>
+                </div>
+                
+             
+                
+                <?php echo $this->formSubmit('form-submit', __('Contribute'), array('class' => 'submitinput')); ?>
+                <span id="help">Questions or problems? Contact us at <a href="mailto:communityofgardens">communityofgardens@si.edu</a>.</span>
+            </fieldset>
+        </form>
+	<?php endif; ?>
 
 	</div>
 
