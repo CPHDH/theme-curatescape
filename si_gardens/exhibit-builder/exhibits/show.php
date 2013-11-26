@@ -1,4 +1,4 @@
-<?php head(array('maptype'=>'none','title' => html_escape(exhibit('title') . ' : '. exhibit_page('title')), 'bodyclass' => 'show', 'bodyid' => 'exhibit')); ?>
+<?php echo head(array('maptype'=>'none','title' => html_escape(metadata('exhibit_page', 'title') . ' : '. metadata('exhibit', 'title')), 'bodyclass' => 'show', 'bodyid' => 'exhibit')); ?>
 
 <div id="content">
 <article class="page show">
@@ -11,25 +11,31 @@
 
 
 	<div id="primary" class="show" role="main">
-		<h2 class="instapaper_title"><?php echo link_to_exhibit(); ?></h2>
-	
-	    	<nav class="secondary-nav" id="exhibit-sections"> 
-	    	<?php echo exhibit_builder_section_nav();?>
-			</nav>
-			
-			<nav class="tertiary-nav" id="exhibit-pages">
-			<?php echo exhibit_builder_page_nav();?>
-			</nav>
-	
-		<h2><?php echo exhibit_page('title'); ?></h2>
+		<h2 class="instapaper_title"><?php echo metadata('exhibit_page', 'title'); ?></h2>
+		<nav id="exhibit-pages">
+		    <?php echo exhibit_builder_page_nav(); ?>
+		</nav>		
 		
-		<section id="text">
+		<nav id="exhibit-child-pages">
+		    <?php echo exhibit_builder_child_page_nav(); ?>
+		</nav>
+		
 		<?php exhibit_builder_render_exhibit_page(); ?>
-		</section>
 		
 		<div id="exhibit-page-navigation">
-		   	<?php echo exhibit_builder_link_to_previous_exhibit_page(); ?>
-	    	<?php echo exhibit_builder_link_to_next_exhibit_page(); ?>
+		    <?php if ($prevLink = exhibit_builder_link_to_previous_page()): ?>
+		    <div id="exhibit-nav-prev">
+		    <?php echo $prevLink; ?>
+		    </div>
+		    <?php endif; ?>
+		    <?php if ($nextLink = exhibit_builder_link_to_next_page()): ?>
+		    <div id="exhibit-nav-next">
+		    <?php echo $nextLink; ?>
+		    </div>
+		    <?php endif; ?>
+		    <div id="exhibit-nav-up">
+		    <?php echo exhibit_builder_page_trail(); ?>
+		    </div>
 		</div>
 	</div>
 
@@ -44,7 +50,7 @@
 	</div>	
 
 <div id="share-this" class="show">
-<?php echo mh_share_this("Share this Exhibit");?>
+<?php echo mh_share_this('Exhibit');?>
 </div>
 
 </article>
