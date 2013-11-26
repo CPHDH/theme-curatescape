@@ -1,5 +1,5 @@
 <?php 
-head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodyclass'=>'error_403')); ?>
+echo head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodyclass'=>'error_403')); ?>
 <div id="content">
 <article class="error show">
 <h2>403</h2>
@@ -33,4 +33,4 @@ head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodyclass'=>
 
 </article>
 </div> <!-- end content -->
-<?php foot(); ?>
+<?php echo foot(); ?>

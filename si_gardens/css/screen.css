@@ -316,7 +316,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,nav a,a.item-map-link {
 	border-bottom:0 none transparent;
 }
 
-h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span {
+h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span,.pagination input {
 	font-family:"Georgia","Times","Times New Roman",serif;
 	font-weight:normal;
 }
@@ -415,7 +415,7 @@ span.amp {
 
 /*HEADER*/
 #hero {
-	height:30em;
+	height:20em;
 	background:none center top no-repeat #ccc;
 	clear:both;
 	background-size:cover;
@@ -702,9 +702,33 @@ nav.secondary-nav ul li.current {
 	margin-bottom:-4px;
 }
 
+.pagination.top,.pagination.bottom{
+	background: #E8E9DF;
+}
+
+.pagination ul{
+	display: block;
+	padding: 0.5em;
+	width: 100%;
+	max-width: 10em;
+}
+
+.pagination li{
+	display: inline-block;
+}
+
 .pagination_list li {
 	display:inline-block;
 	margin-right:.15em;
+}
+
+.pagination input{
+	max-width: 3em;
+}
+
+.pagination_previous a,.pagination_next a{
+	padding:1em;
+	font-weight: bold;
 }
 
 /* SEARCH */
@@ -1576,14 +1600,26 @@ span#tour-nav-links {
 }
 
 .contribution article form #contribution-confirm-submit label{
-	display:inline-block;
+	display:inline;
 }
 .contribution article form #contribution-confirm-submit p{
 	font-size:1em;
 	font-style:italic;
 }
-.contribution form #contribution-confirm-submit label[for=terms-agree]{
+
+.contribution form input#contribution-anonymous,
+.contribution form input#contribution-anonymous label{
+	display: inline;
+	text-align: left;
+	width: auto;
+	padding: 0;
+	margin-top: 0;
+}
+
+.contribution form label[for="contribution-anonymous"],
+.contribution form #contribution-confirm-submit label[for="terms-agree"]{
 	margin-top:0;
+	display: inline;
 }
 .contribution article form input, .contribution form textarea {
 	background:#fff;
@@ -1609,12 +1645,20 @@ span#tour-nav-links {
 .contribution article form #omeka-map-form{
 	width:97% !important;	
 }
+
+.contribution article form input#geolocation_address {
+	width: 40% !important;
+}
+.contribution article form input#geolocation_address,
+.contribution article form button#geolocation_find_location_by_address{
+	margin: 1em 1em 1em 0;
+}
+
 .contribution article form button#geolocation_find_location_by_address{
 	background:#e1e2dc;
 	border-radius:.2em .2em .2em .2em;
 	border:none;
 	padding:.5em;
-	margin-top:.4em;
 }
 .contribution article form input#form-submit {
 	background:#56822a;
@@ -1637,6 +1681,7 @@ span#tour-nav-links {
 .upload-more a { font-weight:bold; font-size:.75em; text-transform:uppercase; }
 div.error { color:#fd750f; font-style:italic; padding:2px 0 10px 0; }
 .contribution article form h3 { color:#443422; padding:0; }
+
 
 
 /* FOOTER */
@@ -1829,7 +1874,7 @@ body.stealth-mode{
 
 #tile-outer-container{
 	width:100%;
-	height:30em;
+	height:20em;
 	overflow:hidden;
 }
 
@@ -2202,6 +2247,14 @@ body.contribution #hero, body.contribution #showmap {
 	/* 720px+, typical tablet viewport -- 2 col */
 	/* =================================================================================== */
 	
+	#hero{
+		height:20em;
+	}
+	
+	#map_canvas{
+		height:20em !important;
+	}
+	
 	header.main{
 		padding:0;
 		background:#e8e9df url(../images/header-grass.png) no-repeat bottom right;
@@ -2288,7 +2341,8 @@ body.contribution #hero, body.contribution #showmap {
 		float:right;
 	}
 	
-	nav#primary-nav ul li.nav-share-a-story a{
+	nav#primary-nav ul li:last-child,
+	nav#primary-nav ul li a.nav-share-a-story{
 		display:block;
 		position:absolute;
 		/*background:#0C0;*/
@@ -2465,7 +2519,12 @@ body.contribution #hero, body.contribution #showmap {
 		width:100%;
 	}
 	
+	#tile-outer-container{
+		height:30em;
+	}
+	
 	#hero {
+		height: 30em;
 		width:100%;
 		float:right;
 		clear:right;
@@ -2473,6 +2532,10 @@ body.contribution #hero, body.contribution #showmap {
 		margin-right:0;
 		box-shadow:none;
 		border-bottom:1px solid #c4c5c0;
+	}
+
+	#map_canvas{
+		height:30em !important;
 	}
 	
 	#mobile-menu-cluster {
@@ -2484,7 +2547,7 @@ body.contribution #hero, body.contribution #showmap {
 		font-size: 1.1em;
 	}
 	
-	nav#primary-nav ul li.nav-share-a-story a{
+	nav#primary-nav ul li a.nav-share-a-story{
 		height:115px;
 	}
 	
@@ -2553,7 +2616,7 @@ body.contribution #hero, body.contribution #showmap {
 	}
 	
 	#custom-block,#about-text {
-		width:70%;
+		width:55%;
 		padding-left:2%;
 		padding-right:2%
 	}
@@ -2564,7 +2627,7 @@ body.contribution #hero, body.contribution #showmap {
 		float:right;
 		min-height:42em;
 		overflow:hidden;
-		width:26%;
+		width:40%;
 		margin-right:-3.2%;
 		border-left:1px solid #e1e2dc;
 	}

@@ -6,9 +6,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-<title><?php echo settings('site_title');?></title>
+<title><?php echo option('site_title');?></title>
 
-<meta name="description" content="<?php echo settings('description'); ?>" />
+<meta name="description" content="<?php echo option('description'); ?>" />
 <meta name="keywords" content="<?php echo get_theme_option('meta_key'); ?>" /> 
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/> <!-- ICO for old browsers -->
@@ -19,8 +19,8 @@
 <!-- Stylesheets -->
 <?php 
 // also returns conditional styles from queue above
-queue_css('screen');
-display_css();
+queue_css_file('screen');
+echo head_css();
 ?>
 
 <!-- Custom CSS via theme config -->
@@ -34,12 +34,12 @@ display_css();
 
 	<header class="main">	
 		<h1 id="site-title" class="visuallyhidden">
-		<a href="<?php echo uri('');?>" ><?php echo settings('site_title');?></a>
+		<a href="<?php echo url('');?>" ><?php echo option('site_title');?></a>
 		</h1>
 		
 		<div id="stealth-logo-container" class="clearfix">
 			<div id="logo">
-				<a href="<?php echo uri('');?>" >
+				<a href="<?php echo url('');?>" >
 				<?php echo mh_the_logo();?>
 				</a>
 			</div>

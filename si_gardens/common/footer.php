@@ -5,7 +5,7 @@
 	    </ul>
 	    
     	<div id="search-wrap">
-	    	<?php echo mh_simple_search($buttonText, $formProperties=array('id'=>'footer-search'), $uri); ?>
+	    	<?php echo mh_simple_search($formProperties=array('id'=>'footer-search')); ?>
 	    </div>  
 	    
 	    <?php echo random_item_link();?>	
