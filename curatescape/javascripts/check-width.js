@@ -126,6 +126,7 @@ jQuery(document).ready(function() {
 	function doTileMontage(){
 		var yesTiles = /* these will use the tile montage */
 		(jQuery("body#tours").hasClass('browse big')) ||
+		(jQuery("body#file").hasClass('show item-file')) ||
 		(jQuery("body").hasClass('page simple-page show big')) ||
 		(jQuery("body").hasClass('page simple-page show small'));					
 		if (yesTiles) {
@@ -245,7 +246,7 @@ jQuery(document).ready(function() {
 				
 			
 			/*TOGGLE ITEM-IMAGE SIZES*/
-			jQuery(".item-file img").attr("src", function() {
+			jQuery("#items .item-file img").attr("src", function() {
 				return this.src.replace('square_thumbnails', 'fullsize');
 			});
 			
@@ -272,7 +273,7 @@ jQuery(document).ready(function() {
 		
 
 			/*TOGGLE ITEM-IMAGE SIZES*/
-			jQuery(".item-file img").attr("src", function() {
+			jQuery("#items .item-file img").attr("src", function() {
 				return this.src.replace('fullsize', 'square_thumbnails');
 			});
 

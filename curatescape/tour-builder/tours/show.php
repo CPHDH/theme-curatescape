@@ -1,11 +1,12 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
+$label = (function_exists('mh_tour_label')) ? mh_tour_label() : __('Tour');
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 } else {
    $tourTitle = '';
 }
 
-head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
+echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
    'bodyclass' => 'show tour', 'tour'=>$tour) );
 ?>
 
@@ -17,8 +18,13 @@ head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, '
 	<?php if(tour( 'Credits' )){
 		echo '<span class="tour-meta">'.__('By %s',tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
+<<<<<<< HEAD
 		echo '<span class="tour-meta">'.__('By The %s Team',settings('site_title')).'</span>';
 	}?>
+=======
+		echo '<span class="tour-meta">By The '.option('site_title').' Team</span>';
+	}else{}?>
+>>>>>>> upstream/master
 	</header>
 			
 	<div id="page-col-left">
@@ -33,21 +39,27 @@ head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, '
 		</section>
 		   
 		<section id="tour-items">
+<<<<<<< HEAD
 			<h3 class="locations"><?php echo __('Locations for ').mh_tour_label();?></h3>
+=======
+			<h3 class="locations">Locations for <?php echo $label;?></h3>
+>>>>>>> upstream/master
 	         <?php 
 	         $i=1;
-	         foreach( $tour->Items as $tourItem ): ?>
+	         foreach( $tour->getItems() as $tourItem ): 
+	        	 set_current_record( 'item', $tourItem );
+	         	$itemID=$tourItem->id
+	         ?>
 		         <article class="item-result">
-		         <?php $itemID=$tourItem->id;?>
-			         <h3><?php echo $i.'.';?> <a href="<?php echo uri('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
-			         <?php echo $this->itemMetadata( $tourItem, 'Dublin Core', 'Title' ); ?>
+			         <h3><?php echo $i.'.';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
+			         <?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 			         </a></h3>
-					<?php if ( $tourItem->hasThumbnail() ): ?>
+					<?php if ( metadata($tourItem,'has thumbnail')): ?>
 						<div class="item-thumb hidden">
-		    				<?php echo item_square_thumbnail($props = array(),$index = 0, $item = $tourItem);?>						
+		    				<?php echo item_image('square_thumbnail') ;?>						
 		    			</div>
 					<?php endif; ?>			         
-			         <div class="item-description"><?php echo snippet($this->itemMetadata( $tourItem, 'Dublin Core', 'Description' ),0,250); ?></div>
+			         <div class="item-description"><?php echo snippet(metadata( $tourItem, array('Dublin Core', 'Description') ),0,250); ?></div>
 		         </article>
 	         <?php 
 	         $i++;
@@ -64,7 +76,12 @@ head( array( 'maptype'=>'tour','title' => ''.mh_tour_label().' | '.$tourTitle, '
 </article>
 </div> <!-- end content -->
 
+<<<<<<< HEAD
 <div id="share-this" class="browse">
 <?php echo mh_share_this();?>
 </div>
 <?php foot(); ?>
+=======
+<?php echo function_exists('mh_share_this') ? '<div id="share-this" class="browse">'.mh_share_this(mh_tour_label()).'</div>' : null;?>
+<?php echo foot(); ?>
+>>>>>>> upstream/master

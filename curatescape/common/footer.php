@@ -5,7 +5,7 @@
 	    </ul>
 	    
     	<div id="search-wrap">
-	    	<?php echo mh_simple_search($buttonText, $formProperties=array('id'=>'footer-search'), $uri); ?>
+	    	<?php echo mh_simple_search($formProperties=array('id'=>'footer-search')); ?>
 	    </div>  
 	    
 	    <?php echo random_item_link();?>	
@@ -13,7 +13,7 @@
     </nav>	
  
 	<p class="default">
-		<?php echo __('Powered by ') ?><a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
+		<?php echo __('Powered by');?> <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>
 		<br>
 		<span id="copyright">&copy; <?php echo date('Y').' '.mh_owner_link();?></span> 
 		<br>
@@ -21,7 +21,7 @@
 	</p>
 	
 	<div class="custom">
-		<?php echo get_theme_option('custom footer html');?>
+		<?php echo get_theme_option('custom_footer_html');?>
 	</div>
 
 
