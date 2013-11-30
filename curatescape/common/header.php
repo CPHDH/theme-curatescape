@@ -99,10 +99,5 @@ echo head_js(false); // <-- No to Omeka default scripts
 	
 	
 	<figure id="hero">
-<<<<<<< HEAD
-		<?php echo mh_which_content($maptype); ?>	
-	</figure>
-=======
 		<?php echo mh_which_content(@$maptype); ?>	
 	</figure>
->>>>>>> upstream/master
