@@ -19,13 +19,8 @@
 		<section id="text">
 
 			<div class="item-description">
-<<<<<<< HEAD
 			<h3><?php echo __('Description'); ?></h3>
-			<?php echo item('Dublin Core', 'Description');?>
-=======
-			<h3>Description</h3>
 			<?php echo metadata($item, array('Dublin Core', 'Description'));?>
->>>>>>> upstream/master
 			</div>
 			<?php echo link_to_item_edit();?>
 		</section>
@@ -112,8 +107,4 @@
 	})
 	
 </script>
-<<<<<<< HEAD
-<?php foot(); ?>
-=======
 <?php echo foot(); ?>
->>>>>>> upstream/master

@@ -39,8 +39,4 @@
 <div id="share-this" class="browse">
 <?php echo mh_share_this();?>
 </div>
-<<<<<<< HEAD
-<?php foot(); ?>
-=======
 <?php echo foot(); ?>
->>>>>>> upstream/master

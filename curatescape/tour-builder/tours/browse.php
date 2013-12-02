@@ -5,11 +5,7 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 ?>
 <div id="content">
 <section class="browse tour">			
-<<<<<<< HEAD
-<h2><?php echo __('All %s:', mh_tour_label('plural'));?> <?php echo $total_records; ?></h2>
-=======
-<h2>All <?php echo $label;?>: <?php echo total_tours(); ?></h2>
->>>>>>> upstream/master
+<h2><?php echo __('All %s:', $label) ;?>: <?php echo total_tours(); ?></h2>
 
 	<div id="page-col-left">
 		<aside>
@@ -73,14 +69,6 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 </section>
 </div> <!-- end content -->
 
-<<<<<<< HEAD
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
-<?php foot();?>
-=======
-
 <?php echo (function_exists('mh_share_this')) ? '<div id="share-this" class="browse">'.mh_share_this().'</div>' : null; ?>
 
 <?php echo foot();?>
->>>>>>> upstream/master

@@ -33,8 +33,4 @@ echo head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodycla
 
 </article>
 </div> <!-- end content -->
-<<<<<<< HEAD
-<?php foot(); ?>
-=======
 <?php echo foot(); ?>
->>>>>>> upstream/master

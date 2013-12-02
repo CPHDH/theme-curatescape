@@ -18,13 +18,8 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	<?php if(tour( 'Credits' )){
 		echo '<span class="tour-meta">'.__('By %s',tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
-<<<<<<< HEAD
-		echo '<span class="tour-meta">'.__('By The %s Team',settings('site_title')).'</span>';
-	}?>
-=======
-		echo '<span class="tour-meta">By The '.option('site_title').' Team</span>';
+		echo '<span class="tour-meta">'.__('By The %s Team',option('site_title')).'</span>';
 	}else{}?>
->>>>>>> upstream/master
 	</header>
 			
 	<div id="page-col-left">
@@ -39,11 +34,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 		</section>
 		   
 		<section id="tour-items">
-<<<<<<< HEAD
-			<h3 class="locations"><?php echo __('Locations for ').mh_tour_label();?></h3>
-=======
-			<h3 class="locations">Locations for <?php echo $label;?></h3>
->>>>>>> upstream/master
+			<h3 class="locations"><?php echo __('Locations for ').$label;?></h3>
 	         <?php 
 	         $i=1;
 	         foreach( $tour->getItems() as $tourItem ): 
@@ -76,12 +67,5 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 </article>
 </div> <!-- end content -->
 
-<<<<<<< HEAD
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
-<?php foot(); ?>
-=======
 <?php echo function_exists('mh_share_this') ? '<div id="share-this" class="browse">'.mh_share_this(mh_tour_label()).'</div>' : null;?>
 <?php echo foot(); ?>
->>>>>>> upstream/master

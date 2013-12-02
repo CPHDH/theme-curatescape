@@ -12,26 +12,17 @@ if ( ($tag || $tags) && !($query) ) {
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
-<<<<<<< HEAD
-elseif ( ($term) && !($query) ) {
-	$title = __('Results for subject term "%s"',$term);
-=======
 elseif ( !empty($auth) ) {
-	$title = ''.mh_item_label('plural').' by author "'.$auth.'"';
+	$title = ''.mh_item_label('plural').__(' by author "%s"',$auth);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }elseif ( !empty($subj) ) {
-	$title = 'Results for subject term "'.$subj.'"';
->>>>>>> upstream/master
+	$title = __('Results for subject term "%s"',$subj);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
 elseif ($query) {
-<<<<<<< HEAD
-	$title = (!($advanced) ? __('Search Results for "%s"',$query) : __('Advanced Search Results'));
-=======
-	$title = 'Search Results for "'.$query.'"';
->>>>>>> upstream/master
+	$title =  __('Search Results for "%s"',$query);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }	
@@ -47,11 +38,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 
 <section class="browse stories items">	
 	<h2><?php 
-<<<<<<< HEAD
-	$title .= ( (total_results()) ? __(': <span class="item-number">%s</span>',total_results()) : '');
-=======
-	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
->>>>>>> upstream/master
+	$title .= ( $total_results  ? __(': <span class="item-number">%s</span>',$total_results) : '');
 	echo $title; 
 	?></h2>
 		
@@ -130,8 +117,4 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 <?php echo mh_share_this();?>
 </div>
 
-<<<<<<< HEAD
-<?php foot(); ?>
-=======
 <?php echo foot(); ?>
->>>>>>> upstream/master

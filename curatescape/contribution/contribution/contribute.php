@@ -44,23 +44,6 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 	<div id="primary" class="show" role="main">
 <?php echo flash(); ?>
     
-<<<<<<< HEAD
-    <form method="post" action="" enctype="multipart/form-data">
-        <fieldset id="contribution-item-metadata">
-            <div class="inputs">
-                <label for="contribution-type"><?php echo __('What type of item do you want to contribute?'); ?></label>
-                <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
-                <input type="submit" name="submit-type" id="submit-type" value="Select" />
-            </div>
-            <div id="contribution-type-form">
-            <?php if (isset($typeForm)): echo $typeForm; endif; ?>
-            </div>
-        </fieldset>
-        <fieldset id="contribution-contributor-metadata" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <legend><?php echo __('Personal Information'); ?></legend>
-            <div class="field">
-                <label for="contributor-name"><?php echo __('Name'); ?></label>
-=======
     <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
@@ -69,7 +52,6 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
     <?php else: ?>
         <form method="post" action="" enctype="multipart/form-data">
             <fieldset id="contribution-item-metadata">
->>>>>>> upstream/master
                 <div class="inputs">
                     <label for="contribution-type"><?php echo __("What type of item do you want to contribute?"); ?></label>
                     <?php $options = get_table_options('ContributionType' ); ?>
@@ -77,46 +59,17 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                     <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
-<<<<<<< HEAD
-            </div>
-            <div class="field">
-                <label for="contributor-email"><?php echo __('Email Address'); ?></label>
-=======
                 <div id="contribution-type-form">
                 <?php if (isset($typeForm)): echo $typeForm; endif; ?>
                 </div>
             </fieldset>
             
             <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
->>>>>>> upstream/master
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
                     <?php echo $this->formLabel('contribution-public', __('Publish my contribution on the web.')); ?>
                 </div>
-<<<<<<< HEAD
-            </div>
-        <?php
-        foreach (contribution_get_contributor_fields() as $field) {
-            echo $field;
-        }
-        ?>
-        </fieldset>
-        <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
-            <div class="inputs">
-                <?php echo $this->formCheckbox('contribution-public', $_POST['contribution-public'], null, array('1', '0')); ?>
-                <?php echo $this->formLabel('contribution-public', 'Publish my contribution on the web.'); ?>
-            </div>
-            <p><?php echo __('In order to contribute, you must read and agree to the <a href="%s" target="_blank">Terms and Conditions.</a>',uri('contribution/terms')); ?> </p>
-            <div class="inputs">
-                <?php echo $this->formCheckbox('terms-agree', $_POST['terms-agree'], null, array('1', '0')); ?>
-                <?php echo $this->formLabel('terms-agree', __('I agree to the Terms and Conditions.')); ?>
-            </div>
-            <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
-        </fieldset>
-    </form>
-=======
                 <div class="inputs">
                     <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
@@ -132,7 +85,6 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
             </fieldset>
         </form>
     <?php endif; ?>
->>>>>>> upstream/master
 
 
 	</div>
