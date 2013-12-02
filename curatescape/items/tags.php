@@ -3,7 +3,7 @@
 
 <div id="content">
 <section class="browse tags">		
-<h2>Tags: <?php echo total_records('Tags');?></h2>
+<h2><?php echo __('Tags: %s', total_records('Tags'));?></h2>
 
 	<div id="page-col-left">
 		<aside>

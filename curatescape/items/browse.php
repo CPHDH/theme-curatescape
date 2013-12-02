@@ -8,26 +8,27 @@ $bodyclass='browse';
 $maptype='focusarea';
 
 if ( ($tag || $tags) && !($query) ) {
-	$title = ''.mh_item_label('plural').' tagged "'.($tag ? $tag : $tags).'"';
+	$the_tag=($tag ? $tag : $tags);
+	$title = __('%1$s tagged "%2$s"', mh_item_label('plural'), $the_tag);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
 elseif ( !empty($auth) ) {
-	$title = ''.mh_item_label('plural').' by author "'.$auth.'"';
+	$title = __('%1$s by author "%2$s"', mh_item_label('plural'), $auth);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }elseif ( !empty($subj) ) {
-	$title = 'Results for subject term "'.$subj.'"';
+	$title = __('Results for subject term "%s"', $subj);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }
 elseif ($query) {
-	$title = 'Search Results for "'.$query.'"';
+	$title = __('Search Results for "%s"', $query);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }	
 else{
-	$title = 'All '.mh_item_label('plural').'';
+	$title = __('All %s', mh_item_label('plural'));
 	$bodyclass .=' items stories';
 }	
 echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
@@ -86,7 +87,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 
 				<?php if (metadata($item, 'has tags') ): ?>
     				<div class="item-tags">
-    				<p><span>Tags:</span> <?php echo $tags; ?></p>
+    				<p><span><?php echo __('Tags');?>:</span> <?php echo $tags; ?></p>
     				</div>
 				<?php endif; ?>
 				

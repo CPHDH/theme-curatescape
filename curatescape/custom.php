@@ -50,19 +50,19 @@ function mh_auto_discovery_link_tags() {
 
 function mh_item_label_option($which=null){
 	if($which=='singular'){
-		return ($singular=get_theme_option('item_label_singular')) ? $singular : 'Story';
+		return ($singular=get_theme_option('item_label_singular')) ? $singular : __('Story');
 		}
 	elseif($which=='plural'){
-		return ($plural=get_theme_option('item_label_plural')) ? $plural : 'Stories';
+		return ($plural=get_theme_option('item_label_plural')) ? $plural : __('Stories');
 		}		
 }
 
 function mh_tour_label_option($which=null){
 	if($which=='singular'){
-		return ($singular=get_theme_option('tour_label_singular')) ? $singular : 'Tour';
+		return ($singular=get_theme_option('tour_label_singular')) ? $singular : __('Tour');
 		}
 	elseif($which=='plural'){
-		return ($plural=get_theme_option('tour_label_plural')) ? $plural : 'Tours';
+		return ($plural=get_theme_option('tour_label_plural')) ? $plural : __('Tours');
 		}		
 }
 
@@ -95,7 +95,7 @@ function mh_tour_header(){
 	if($text=get_theme_option('tour_header')){
 		return $text;
 	}else{
-		return 'Take a '.mh_tour_label_option('singular').'';
+		return __('Take a %s', mh_tour_label_option('singular'));
 	}
 }
 /*
@@ -104,10 +104,10 @@ function mh_tour_header(){
 function mh_global_nav(){
 	if(get_theme_option('default_nav')==1){
 		return nav(array(
-			array('label'=>'Home','uri' => url('/')),
+			array('label'=>__('Home'),'uri' => url('/')),
 			array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
 			array('label'=>mh_tour_label('plural'),'uri' => url('tours/browse/')),
-			array('label'=>'About','uri' => url('about/'))
+			array('label'=>__('About'),'uri' => url('about/'))
 			));
 	}else{
 		return public_nav_main();
@@ -134,7 +134,7 @@ function mh_the_logo(){
 
 function random_item_link($text=null,$class='show'){
 	if(!$text){
-		$text='View a Random '.mh_item_label('singular');
+		$text= __('View a Random').' '.mh_item_label('singular');
 	}
 	$randitem=get_random_featured_items(1);
     $randomlink=WEB_ROOT.'/items/show/'.$randitem[0]->id;
@@ -157,7 +157,7 @@ function mh_global_header(){
 	$html .= link_to_home_page(mh_the_logo());
 	$html .= '</div>';
 
-	$html  .= '<div id="mobile-menu-button"><a class="icon-reorder"><span class="visuallyhidden"> Menu</span></a></div>';
+	$html  .= '<div id="mobile-menu-button"><a class="icon-reorder"><span class="visuallyhidden"> '.__('Menu').'</span></a></div>';
 	$html .= '</div>';
 
 
@@ -320,7 +320,7 @@ function mh_display_map($type=null){
 						'bounds': true,
 						'icon': new google.maps.MarkerImage(marker),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);">Get Directions</a><br><small><em>Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>.</em></small></div>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<div style="margin:.25em;min-width:12.5em;line-height:1.7em; "><i class="icon-map-marker"></i> <a href="https://maps.google.com/maps?saddr=current+location&daddr='+lat+','+lng+'" onclick="return !window.open(this.href);"><?php echo __('Get Directions');?></a><br><small><em><?php echo __('Be sure to read the <a href="#map-faq" class="fancybox">MAP FAQ</a>');?>.</em></small></div>' }, this);
 					});
 			});
 			jQuery.when(makemap).done(function() {
@@ -376,7 +376,7 @@ function mh_simple_search($formProperties=array(), $uri = null){
     $formProperties['method'] = 'get';
     $html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
     $html .= '<fieldset>' . "\n\n";
-    $html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput','placeholder'=>'Search '.mh_item_label('plural')));
+    $html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput','placeholder'=>__('Search %s',mh_item_label('plural'))));
     $html .= get_view()->formSubmit('submit_search', __("Search"));
     $html .= '</fieldset>' . "\n\n";
     
@@ -405,21 +405,21 @@ function mh_appstore_downloads(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		echo ($ios_app_id ?
 			'<a id="apple" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">
-		iOS App Store
+		'.__('iOS App Store').'
 		</a> ':'<a id="apple" class="app-store" href="#">
-		Coming Soon
+		'.__('Coming Soon').'
 		</a> ');
 
 		$android_app_id = get_theme_option('android_app_id');
 		echo ($android_app_id ?
 			'<a id="android" class="app-store" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">
-		Google Play
+		'.__('Google Play').'
 		</a> ':'<a id="android" class="app-store" href="#">
-		Coming Soon
+		'.__('Coming Soon').'
 		</a> ');
 
 	}else{
-		echo '<a id="coming-soon" class="app-store" href="#">iOS + Android Apps Coming Soon!</a>';
+		echo '<a id="coming-soon" class="app-store" href="#">'.__('iOS + Android Apps Coming Soon!').'</a>';
 	}
 }
 
@@ -433,16 +433,19 @@ function mh_appstore_footer(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		$android_app_id = get_theme_option('android_app_id');
 		if (($ios_app_id != false) && ($android_app_id == false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a>';
+			echo '<a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">'.__('Get the app for iPhone').'</a>';
 		}
 		elseif (($ios_app_id == false) && ($android_app_id != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
+			echo '<a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Get the app for Android').'</a>';
+
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
-			echo 'Get the app for <a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">iPhone</a> and <a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">Android</a>';
+			$iphone='<a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">'.__('iPhone').'</a>';
+			$android='<a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Android').'</a>';
+			echo __('Get the app for %1$s and %2$s', $iphone, $android);
 		}
 		else{
-			echo 'iPhone + Android Apps Coming Soon!';
+			echo __('iPhone + Android Apps Coming Soon!');
 		}
 	}
 }
@@ -457,12 +460,13 @@ function mh_mapfaq(){
 	$emailincl=($email=get_theme_option('contact_email')) ? 'at <a href="mailto:'.$email.'">'.$email.'</a> ' : '';
 	$html ='';
 	$html .='<div style="display: none"><div id="map-faq"><div id="map-faq-inner">';
-	$html .='<h2>Frequently Asked Questions <span>about the map</span></h2>';
+	$html .='<h2>'.__('Frequently Asked Questions <span>about the map</span><').'/h2>';
 	if((!get_theme_option('map_faq'))){
-		   $html .='<h3><a>Are all the locations on '.option('site_title').' publicly accessible?</a></h3>';
-		   $html .='<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>';
-		   $html .='<h3><a>How do you choose locations for each '.strtolower(mh_item_label()).'?</a> <span>or</span> <a>The location is wrong!</a></h3>';
-		   $html .='<p>Placing historical '.strtolower(mh_item_label('plural')).' on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
+		   $html .=__('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',option('site_title'));
+		   $html .=__('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
+		   $html .=__('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
+		   $html .=__('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %2$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl);
+		   
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
@@ -477,7 +481,7 @@ function mh_mapfaq(){
 */
 function mh_the_author(){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">By: ';
+		$html='<span class="story-meta byline">'.__('By').': ';
 
 		if(metadata('item',array('Dublin Core', 'Creator'))){
 			$authors=metadata('item',array('Dublin Core', 'Creator'), array('all'=>true));
@@ -510,7 +514,7 @@ function mh_the_author(){
 				$index++;
 			}
 		}else{
-			$html .= "The ".option('site_title')." team";
+			$html .= __('The %s team', option('site_title'));
 		}
 		$html .='</span>';
 
@@ -598,7 +602,7 @@ function mh_item_images($item,$index=0){
 		
 		if(in_array($mime,$img)) {
 			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
-			$filelink=link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
+			$filelink=link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
 			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
 			
@@ -614,7 +618,7 @@ function mh_item_images($item,$index=0){
 			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$photoCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
 			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
-			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
 			$html .= '</div>';
 
 			echo $html;
@@ -647,9 +651,9 @@ function mh_audio_files($item,$index=0){
 			$index++;
 		
 			$html = '<div class="item-file-container">';
-			$html .= '<audio><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>Download Audio:</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
+			$html .= '<audio><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
 			$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <i class="icon-info-sign"></i></h4>' : '';
-			$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+			$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
 			$html .= '</div>';
 			
 			echo $html;
@@ -701,7 +705,7 @@ function mh_video_files($item,$html=null) {
 	                $html .= '<source src="'.$videoFile.'" type="video/mp4">';
 	                $html .= '</video>';
 	                $html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <i class="icon-info-sign"></i></h4>' : '';
-	                $html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+	                $html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
 	                $html .= '</div>';
 					$localVid++;
 	                $videoIndex++;
@@ -732,7 +736,7 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 		$id=str_replace('v=','',$url['query']);
 		$html= '<div class="item-file-container"><div class="embed-container youtube" id="v-streaming" style="position: relative;padding-bottom: 56.25%;height: 0; overflow: hidden;"><iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src="//www.youtube.com/embed/'.$id.'" frameborder="0" width="640" height="360" allowfullscreen></iframe></div>';
 	    $html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <i class="icon-info-sign"></i></h4>' : '';
-	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
+	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
 	    $html.='</div>';
 	    return $html;		
 		}
@@ -742,7 +746,7 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 		$id=$url['path'];
 		$html= '<div class="item-file-container"><div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=333" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
 	    $html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <i class="icon-info-sign"></i></h4>' : '';
-	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
+	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
 	    $html.='</div>';	
 	    return $html;	
 		}
@@ -796,7 +800,7 @@ function mh_subjects(){
 	$subjects = metadata('item',array('Dublin Core', 'Subject'), 'all');
 	if (count($subjects) > 0){
 
-		echo '<h3>Subjects</h3>';
+		echo '<h3>'.__('Subjects').'</h3>';
 		echo '<ul>';
 		foreach ($subjects as $subject){
 			$link = WEB_ROOT;
@@ -827,7 +831,7 @@ function mh_subjects_string(){
 			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
 		}
 		
-		echo '<div class="item-subjects"><p><span>Subjects: </span>'.implode(", ", $html).'</p></div>';
+		echo '<div class="item-subjects"><p><span>'.__('Subjects').': </span>'.implode(", ", $html).'</p></div>';
 	}
 }
 
@@ -849,7 +853,7 @@ function mh_sidebar_nav(){
 function mh_tags(){
 	if (metadata('item','has tags')):
 
-		echo '<h3>Tags</h3>';
+		echo '<h3>'.__('Tags').'</h3>';
 		echo tag_cloud('item','items/browse');
 	endif;
 }
@@ -860,7 +864,7 @@ function mh_tags(){
 function mh_related_links(){
 	$relations = metadata('item',array('Dublin Core', 'Relation'), array('all' => true));
 	if ($relations){
-		echo '<h3>Related Sources</h3><ul>';
+		echo '<h3>'.__('Related Sources').'</h3><ul>';
 		foreach ($relations as $relation) {
 			echo "<li>$relation</li>";
 		}
@@ -911,8 +915,8 @@ function mh_disquss_comments(){
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
     </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <noscript><?php echo __('Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>');?></noscript>
+    <a href="http://disqus.com" class="dsq-brlink"><?php echo __('comments powered by <span class="logo-disqus">Disqus</span>');?></a>
 	<?php
 	}
 }
@@ -971,7 +975,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">View all <span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
+	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('View all <span>%1$s %2$s</span>', count($items), mh_tour_label('plural')).'</a></p>';
 
 }
 
@@ -987,7 +991,7 @@ function mh_display_random_tours($num = 20){
 function mh_display_random_featured_item($withImage=false)
 {
 	$featuredItem = get_random_featured_items(1,$withImage);
-	$html = '<h2>Featured '.mh_item_label().'</h2>';
+	$html = '<h2>'.__('Featured %s', mh_item_label()).'</h2>';
 	$html .= '<article class="item-result">';
 	if ($featuredItem) {
 		$item=$featuredItem[0];
@@ -1004,11 +1008,11 @@ function mh_display_random_featured_item($withImage=false)
 		if ($itemDescription = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))) {
 			$html .= '<div class="item-description">' . strip_tags($itemDescription) . '</div>';
 		}else{
-			$html .= '<div class="item-description empty">Preview text not available.</div>';}
+			$html .= '<div class="item-description empty">'.__('Preview text not available.').'</div>';}
 
-		$html .= '<p class="view-more-link">'. link_to_item('Continue reading <span>'.$itemTitle.'</span>', array(), 'show', $item) .'</p>';
+		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>', $itemTitle), array(), 'show', $item) .'</p>';
 	}else {
-		$html .= '<p>No featured items are available.</p>';
+		$html .= '<p>'.__('No featured items are available.').'</p>';
 	}
 	$html .= '</article>';
 
@@ -1021,7 +1025,7 @@ function mh_display_random_featured_item($withImage=false)
 ** Used on homepage
 */
 function mh_display_recent_item($num=1){
-	echo ($num <=1) ? '<h2>Newest '.mh_item_label().'</h2>' : '<h2>Newest '.mh_item_label('plural').'</h2>';
+	echo ($num <=1) ? '<h2>'.__('Newest %s',mh_item_label()).'</h2>' : '<h2>'.__('Newest %s',mh_item_label('plural')).'</h2>';
 	set_loop_records('items',get_recent_items($num));
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
@@ -1035,14 +1039,14 @@ function mh_display_recent_item($num=1){
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
 				echo '<div class="item-description">'.$desc.'</div>';
 			}else{
-				echo '<div class="item-description">Text preview unavailable.</div>';
+				echo '<div class="item-description">'.__('Text preview unavailable.').'</div>';
 			}
 
 			echo '</article>';
 
 		}
 	}
-	echo '<p class="view-more-link">'.link_to_items_browse('View all '.mh_item_label('plural').'').'</p>';
+	echo '<p class="view-more-link">'.link_to_items_browse(__('View all %s',mh_item_label('plural'))).'</p>';
 }
 
 
@@ -1052,7 +1056,7 @@ function mh_display_recent_item($num=1){
 */
 
 function mh_display_random_item($num=1){
-	echo ($num <=1) ? '<h2>Random '.mh_item_label().'</h2>' : '<h2>Random '.mh_item_label('plural').'</h2>';
+	echo ($num <=1) ? '<h2>'.__('Random %s', mh_item_label()).'</h2>' : '<h2>'.__('Random %s', mh_item_label('plural')).'</h2>';
 	set_loop_records('items',get_random_featured_items($num,true));
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
@@ -1066,7 +1070,7 @@ function mh_display_random_item($num=1){
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
 				echo '<div class="item-description">'.$desc.'</div>';
 			}else{
-				echo '<div class="item-description">Text preview unavailable.</div>';
+				echo '<div class="item-description">'.__('Text preview unavailable.').'</div>';
 			}
 
 			echo '</article>';
@@ -1075,7 +1079,7 @@ function mh_display_random_item($num=1){
 	}
 
 
-	echo '<p class="view-more-link">'.link_to_items_browse('View all '.mh_item_label('plural').'').'</p>';
+	echo '<p class="view-more-link">'.link_to_items_browse(__('View all %s',mh_item_label('plural'))).'</p>';
 }
 
 /*
@@ -1097,7 +1101,7 @@ function mh_custom_content($length=500){
 
 	$html .= '</div></article>';
 
-	$html .= '<p class="view-more-link"><a href="'.url('about').'">Read more <span>About Us</span></a></p>';
+	$html .= '<p class="view-more-link"><a href="'.url('about').'">'.__('Read more <span>About Us</span>').'</a></p>';
 
 
 	echo $html;
@@ -1118,9 +1122,9 @@ function mh_home_find_us(){
 	($youtube=get_theme_option('youtube_username')) ? array_push($service,'<a href="http://www.youtube.com/user/'.$youtube.'">Youtube</a>') : null;
 	
 	if(count($service)>0){
-		$findus='Find us on '.join(' | ',$service);
+		$findus=__('Find us on %s', join(' | ',$service));
 	}else{
-		$findus='A project by '.mh_owner_link();
+		$findus=__('A project by %s', mh_owner_link());
 	}
 	return $findus;
 }
@@ -1206,7 +1210,7 @@ function mh_about($text=null){
 		$text =
 			get_theme_option('about') ?
 			get_theme_option('about') :
-			option('site_title').' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices. ';
+			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
 }

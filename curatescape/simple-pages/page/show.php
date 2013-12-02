@@ -31,7 +31,7 @@ echo head(array('maptype'=>'none','title' => html_escape(metadata('simple_pages_
 
 	<div id="page-col-right">
 		<aside id="page-sidebar">
-			<h3>Pages</h3>
+			<h3><?php echo __('Pages');?></h3>
 			<nav>
 			<?php echo mh_sidebar_nav();?>
 			</nav>
