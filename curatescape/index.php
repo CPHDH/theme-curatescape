@@ -15,15 +15,9 @@ else{
 			<section id="custom-block">
 				<?php 
 				mh_custom_content();
-<<<<<<< HEAD
-				echo random_item_link($text,'big-button');
-				$text=__('View all ').'<span>'.total_items().' '.mh_item_label('plural').'</span>';
-				echo '<p class="view-more-link">'.link_to_browse_items($text).'</p>';	
-=======
 				echo random_item_link("View A Random ".mh_item_label('singular'),'big-button');
-				$text='View all <span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
+				$text=__('View all').'<span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
 				echo '<p class="view-more-link">'.link_to_items_browse($text).'</p>';	
->>>>>>> upstream/master
 				?>					
 			</section>
 				

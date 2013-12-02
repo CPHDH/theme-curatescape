@@ -108,12 +108,6 @@ function mh_tour_header(){
 ** Global navigation
 */
 function mh_global_nav(){
-<<<<<<< HEAD
-	return public_nav_main(array(
-			__('Home') => uri('/'),
-			mh_item_label('plural') => uri('items/browse'),
-			mh_tour_label('plural') => uri('/tour-builder/tours/browse/')));
-=======
 	if(get_theme_option('default_nav')==1){
 		return nav(array(
 			array('label'=>'Home','uri' => url('/')),
@@ -124,7 +118,6 @@ function mh_global_nav(){
 	}else{
 		return public_nav_main();
 	}
->>>>>>> upstream/master
 }
 
 /*
@@ -147,11 +140,7 @@ function mh_the_logo(){
 
 function random_item_link($text=null,$class='show'){
 	if(!$text){
-<<<<<<< HEAD
-		$text=__('View a random %s',mh_item_label());
-=======
-		$text='View a Random '.mh_item_label('singular');
->>>>>>> upstream/master
+		$text=__('View a random %s',mh_item_label('singular'));
 	}
 	$randitem=get_random_featured_items(1);
     $randomlink=WEB_ROOT.'/items/show/'.$randitem[0]->id;
@@ -382,39 +371,6 @@ function mh_display_map($type=null){
 ** Adds HTML "type" attribute
 */
 
-<<<<<<< HEAD
-function mh_simple_search($buttonText = null, $formProperties=array('id'=>'simple-search'), $uri = null)
-{
-	if (!$buttonText) {
-		$buttonText = __('Search');
-	}
-
-	// Always post the 'items/browse' page by default (though can be overridden).
-	if (!$uri) {
-		$uri = apply_filters('simple_search_default_uri', uri('items/browse'));
-	}
-
-	$searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
-	$formProperties['action'] = $uri;
-	$formProperties['method'] = 'get';
-	$html  = '<form ' . _tag_attributes($formProperties) . '>' . "\n";
-	$html .= '<fieldset>'. "\n\n";
-	$html .= __v()->formText('search', $searchQuery, array('type'=>'search','name'=>'search','class'=>'textinput','placeholder'=>__('Search %s',mh_item_label('plural')).''));
-	$html .= __v()->formSubmit('submit_search', $buttonText);
-	$html .= '</fieldset>' . "\n\n";
-
-	// add hidden fields for the get parameters passed in uri
-	$parsedUri = parse_url($uri);
-	if (array_key_exists('query', $parsedUri)) {
-		parse_str($parsedUri['query'], $getParams);
-		foreach($getParams as $getParamName => $getParamValue) {
-			$html .= __v()->formHidden($getParamName, $getParamValue);
-		}
-	}
-
-	$html .= '</form>';
-	return $html;
-=======
 function mh_simple_search($formProperties=array(), $uri = null){
     // Always post the 'items/browse' page by default (though can be overridden).
     if (!$uri) {
@@ -441,7 +397,6 @@ function mh_simple_search($formProperties=array(), $uri = null){
     
     $html .= '</form>';
     return $html;
->>>>>>> upstream/master
 }
 
 
@@ -510,17 +465,10 @@ function mh_mapfaq(){
 	$html .='<div style="display: none"><div id="map-faq"><div id="map-faq-inner">';
 	$html .='<h2>'.__('Frequently Asked Questions <span>about the map</span>').'</h2>';
 	if((!get_theme_option('map_faq'))){
-<<<<<<< HEAD
-		   $html .= __('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',settings('site_title'));
+		   $html .= __('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',option('site_title'));
 		   $html .= __('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
 		   $html .= __('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
 		   $html .= __('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %2$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl) ;
-=======
-		   $html .='<h3><a>Are all the locations on '.option('site_title').' publicly accessible?</a></h3>';
-		   $html .='<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>';
-		   $html .='<h3><a>How do you choose locations for each '.strtolower(mh_item_label()).'?</a> <span>or</span> <a>The location is wrong!</a></h3>';
-		   $html .='<p>Placing historical '.strtolower(mh_item_label('plural')).' on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us '.$emailincl.'with suggestions for improvement.</p>';
->>>>>>> upstream/master
 	}else{
 	$html .=get_theme_option('map_faq');
 	}
@@ -530,51 +478,6 @@ function mh_mapfaq(){
 
 }
 
-<<<<<<< HEAD
-
-/*
-** map figure on items/show.php
-** uses Geolocation plugin data to create Google Map
-** re-uses data to add custom links to Google Maps, Bing Maps (WindowsPhone-only) and Apple Maps (iOS-only)
-** at the moment, these links only open a view of the lat-lon coordinates (no custom pins or query titles, etc)
-** TODO: make the links open into a more useful view by incorporating query params
-*/
-function mh_item_map(){
-	if (function_exists('geolocation_get_location_for_item')){
-		$location = geolocation_get_location_for_item(get_current_item(), true);
-		if ($location) {
-			echo geolocation_public_show_item_map('100%', '20em');
-
-			$lng = $location['longitude'];
-			$lat = $location['latitude'];
-			$zoom = ($location['zoom_level']) ? '&z='.$location['zoom_level'] : '';
-			$title = (item('Dublin Core','Title')) ? ''.str_replace("&","and", html_entity_decode(item('Dublin Core','Title'))).'' : '';
-			$addr = ($location['address']) ? ' near '.str_replace("&","and", html_entity_decode($location['address'])).'' : '';
-			$query = ($title || $addr) ? '&q='.$title.$addr : ''; // this is not quite generalizable so we won't use it
-			$coords = $lat.','.$lng;
-
-			// Google Maps for all users
-			$link = '<a class="item-map-link" href="http://maps.google.com/maps?q='.$coords.$zoom.'">'.__('View in Google  Maps').'</a>';
-
-			if (strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone OS') !== false) {
-				// + Apple Maps for iOS users
-				$link .= ' <a class="item-map-link" href="http://maps.apple.com/maps?ll='.$coords.$zoom.'">'.__('Open in iOS Maps').'</a>';
-			};
-
-			if (strpos($_SERVER['HTTP_USER_AGENT'], 'Windows Phone OS') !== false) {
-				// + Bing Maps for Windows Phone users
-				$link .= ' <a class="item-map-link" href="http://bing.com/maps/default.aspx?cp='.str_replace(',','~',$coords).str_replace('z','lvl',$zoom).'&v=2">'.__('Open in Bing Maps').'</a>';
-			};
-
-			echo $link;
-
-		}
-	}
-}
-
-
-=======
->>>>>>> upstream/master
 /*
 ** author byline on items/show.php
 */
@@ -613,11 +516,7 @@ function mh_the_author(){
 				$index++;
 			}
 		}else{
-<<<<<<< HEAD
-			$html .= __('The %s team',settings('site_title'));
-=======
-			$html .= "The ".option('site_title')." team";
->>>>>>> upstream/master
+			$html .= __('The %s team',option('site_title'));
 		}
 		$html .='</span>';
 
@@ -698,18 +597,6 @@ function mh_item_images($item,$index=0){
 	});
 	</script>
 	<?php //========================//
-<<<<<<< HEAD
-	$myphoto = array();
-	$html = "";
-	while ($file = loop_files_for_item()){
-		if ($file->hasThumbnail()) {
-
-			array_push($myphoto, $file);
-
-			$photoDesc = mh_normalize_special_characters(item_file('Dublin Core', 'Description'));
-			$photoTitle = mh_normalize_special_characters(item_file('Dublin Core', 'Title'));
-			$photoSource = (item_file('Dublin Core', 'Source')) ? '<span class="source"><br><br>'.mh_normalize_special_characters(item_file('Dublin Core', 'Source')).'</span>' : '';
-=======
 
 	foreach (loop('files', $item->Files) as $file){
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
@@ -720,7 +607,6 @@ function mh_item_images($item,$index=0){
 			$filelink=link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
 			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
->>>>>>> upstream/master
 			
 			if($photoTitle){
 				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
@@ -758,35 +644,6 @@ function mh_audio_files($item,$index=0){
     $item=set_loop_records('files',$item);
     }
 	$audioTypes = array('audio/mpeg');
-<<<<<<< HEAD
-	$myaudio = array();
-	$html = "";
-	while ($file = loop_files_for_item()):
-		$audioDesc = item_file('Dublin Core','Description');
-	$audioTitle = item_file('Dublin Core','Title');
-	$mime = item_file('MIME Type');
-
-	if ( array_search($mime, $audioTypes) !== false ) {
-
-		array_push($myaudio, $file);
-
-		$html .= '<div class="item-file-container">';
-		$html .= '<audio>
-			<source src="'.file_download_uri($file).'" type="audio/mpeg" />
-			<h5 class="no-audio"><strong>'.__('Download Audio:').'</strong><a href="'.file_download_uri($file).'">'.__('MP3').'</a></h5>
-			</audio>';
-		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <i class="icon-info-sign"></i></h4>' : '';
-		$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.'</p>' : '';
-		$html .= '</div>';
-	}
-
-	endwhile;
-	$count = count($myaudio);
-	if ($count > 0) {
-		echo '<h3><i class="icon-volume-up"></i>'.(($count > 1) ? __('Audios ') : __('Audio ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3><script>audiojs.events.ready(function() {var as = audiojs.createAll();});</script>';
-		echo $html;
-	}
-=======
 	foreach (loop('files', $item->Files) as $file):
 		$audioDesc = metadata($file,array('Dublin Core','Description'));
 		$audioTitle = metadata($file,array('Dublin Core','Title'));
@@ -807,7 +664,6 @@ function mh_audio_files($item,$index=0){
 		}
 
 	endforeach;
->>>>>>> upstream/master
 }
 
 
@@ -866,10 +722,6 @@ function mh_video_files($item,$html=null) {
                 echo $html;
                 if($localVid>0) echo mh_video_ResponsifyVideoScript($localVid);
         }
-<<<<<<< HEAD
-
-}        
-=======
 }  
 
 /* 
@@ -908,7 +760,6 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 }
 
       
->>>>>>> upstream/master
 /*
 ** Script to resize the video based on desired aspect ratio and browser viewport
 ** This basically iterates a separate action for each video (see mh_video_files() loop above),
@@ -997,27 +848,6 @@ function mh_sidebar_nav(){
 
 	return mh_global_nav();
 
-<<<<<<< HEAD
-//Display item relations
-function mh_item_relations(){
-	if (function_exists('item_relations_display_item_relations')){
-		$item=get_current_item();
-		$subjectRelations = ItemRelationsPlugin::prepareSubjectRelations($item);
-		$objectRelations = ItemRelationsPlugin::prepareObjectRelations($item);
-		if ($subjectRelations || $objectRelations){
-			echo '<h3>'.__('Related ').mh_item_label('plural').'</h3>';
-			echo '<ul>';
-			foreach ($subjectRelations as $subjectRelation){
-				echo '<li><a href="'.uri('items/show/' . $subjectRelation['object_item_id']).'">'.$subjectRelation['object_item_title'].'</a></li>';
-			}
-			foreach ($objectRelations as $objectRelation){
-				echo '<li><a href="'.uri('items/show/' . $objectRelation['subject_item_id']).'">'.$objectRelation['subject_item_title'].'</a></li>';
-			}
-			echo '</ul>';
-		}
-	}
-=======
->>>>>>> upstream/master
 }
 
 
@@ -1026,19 +856,8 @@ function mh_item_relations(){
 */
 function mh_tags(){
 	if (metadata('item','has tags')):
-
-<<<<<<< HEAD
 		echo '<h3>'.__('Tags').'</h3>';
-	echo item_tags_as_cloud(
-		$order = 'alpha',
-		$tagsAreLinked = true,
-		$item=null,
-		$limit=null
-	);
-=======
-		echo '<h3>Tags</h3>';
 		echo tag_cloud('item','items/browse');
->>>>>>> upstream/master
 	endif;
 }
 
@@ -1063,11 +882,7 @@ function mh_related_links(){
 function mh_share_this($type='Page'){
 	$addthis = (get_theme_option('Add This')) ? (get_theme_option('Add This')) : 'ra-4e89c646711b8856';
 
-<<<<<<< HEAD
-	$html = '<h3>'.__('Share this Page').'</h3>';
-=======
 	$html = '<h3>'.__('Share this %s',$type).'</h3>';
->>>>>>> upstream/master
 	$html .= '<!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
 <a class="addthis_button_twitter"></a>
@@ -1163,11 +978,7 @@ function mh_display_random_tours($num = 20){
 		echo '</article>';
 	}
 
-<<<<<<< HEAD
 	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tour-builder/tours/browse/">'.__('View all <span>%1$s %2$s</span>',count($items), mh_tour_label('plural')).'</a></p>';
-=======
-	echo '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">View all <span>'.count($items).' '.mh_tour_label('plural').'</span></a></p>';
->>>>>>> upstream/master
 
 }
 
@@ -1182,13 +993,8 @@ function mh_display_random_tours($num = 20){
 */
 function mh_display_random_featured_item($withImage=false)
 {
-<<<<<<< HEAD
-	$featuredItem = random_featured_item($withImage);
-	$html = '<h2>'.__('Featured %s',mh_item_label()).'</h2>';
-=======
 	$featuredItem = get_random_featured_items(1,$withImage);
-	$html = '<h2>Featured '.mh_item_label().'</h2>';
->>>>>>> upstream/master
+	$html = '<h2>'.__('Featured %s',mh_item_label()).'</h2>';
 	$html .= '<article class="item-result">';
 	if ($featuredItem) {
 		$item=$featuredItem[0];
@@ -1207,12 +1013,8 @@ function mh_display_random_featured_item($withImage=false)
 		}else{
 			$html .= '<div class="item-description empty">'.__('Preview text not available.').'</div>';}
 
-<<<<<<< HEAD
-		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>',$itemTitle), array(), 'show', $featuredItem) .'</p>';
+		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>',$itemTitle), array(), 'show', $item) .'</p>';
 
-=======
-		$html .= '<p class="view-more-link">'. link_to_item('Continue reading <span>'.$itemTitle.'</span>', array(), 'show', $item) .'</p>';
->>>>>>> upstream/master
 	}else {
 		$html .= __('<p>No featured items are available.</p>');
 	}
@@ -1227,17 +1029,10 @@ function mh_display_random_featured_item($withImage=false)
 ** Used on homepage
 */
 function mh_display_recent_item($num=1){
-<<<<<<< HEAD
 	echo ($num <=1) ? '<h2>'.__('Newest '.mh_item_label()).'</h2>' : '<h2>'.__('Newest '.mh_item_label('plural')).'</h2>';
-	set_items_for_loop(recent_items($num));
-	if (has_items_for_loop()){
-		while (loop_items()){
-=======
-	echo ($num <=1) ? '<h2>Newest '.mh_item_label().'</h2>' : '<h2>Newest '.mh_item_label('plural').'</h2>';
 	set_loop_records('items',get_recent_items($num));
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
->>>>>>> upstream/master
 			echo '<article class="item-result">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
@@ -1265,18 +1060,10 @@ function mh_display_recent_item($num=1){
 */
 
 function mh_display_random_item($num=1){
-<<<<<<< HEAD
 	echo ($num <=1) ? '<h2>'.__('Random %s',mh_item_label()).'</h2>' : '<h2>'.__('Random %s',mh_item_label('plural')).'</h2>';
-	$items = get_items(array('random' => 1), $num);
-	set_items_for_loop($items);
-	if (has_items_for_loop()){
-		while (loop_items()){
-=======
-	echo ($num <=1) ? '<h2>Random '.mh_item_label().'</h2>' : '<h2>Random '.mh_item_label('plural').'</h2>';
 	set_loop_records('items',get_random_featured_items($num,true));
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
->>>>>>> upstream/master
 			echo '<article class="item-result">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
@@ -1294,13 +1081,7 @@ function mh_display_random_item($num=1){
 
 		}
 	}
-<<<<<<< HEAD
-	echo '<p class="view-more-link">'.link_to_browse_items(__('View all %s',mh_item_label('plural')).'').'</p>';
-=======
-
-
-	echo '<p class="view-more-link">'.link_to_items_browse('View all '.mh_item_label('plural').'').'</p>';
->>>>>>> upstream/master
+	echo '<p class="view-more-link">'.link_to_items_browse(__('View all %s',mh_item_label('plural')).'').'</p>';
 }
 
 /*
@@ -1313,11 +1094,7 @@ function mh_custom_content($length=500){
 	$html .= '<article>';
 	
 	$html .= '<header>';	
-<<<<<<< HEAD
-	$html .= '<h2><span class="hidden">'.__('About ').'</span>'.settings('site_title').'</h2>';
-=======
-	$html .= '<h2><span class="hidden">About </span>'.option('site_title').'</h2>';
->>>>>>> upstream/master
+	$html .= '<h2><span class="hidden">'.__('About ').'</span>'.option('site_title').'</h2>';
 	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
 	$html .= '</header><div class="about-snippet">';
 
@@ -1326,11 +1103,7 @@ function mh_custom_content($length=500){
 
 	$html .= '</div></article>';
 
-<<<<<<< HEAD
-	$html .= '<p class="view-more-link"><a href="'.uri('about').'">'.__('Read more <span>About Us</span>').'</a></p>';
-=======
-	$html .= '<p class="view-more-link"><a href="'.url('about').'">Read more <span>About Us</span></a></p>';
->>>>>>> upstream/master
+	$html .= '<p class="view-more-link"><a href="'.url('about').'">'.__('Read more <span>About Us</span>').'</a></p>';
 
 
 	echo $html;
@@ -1439,11 +1212,7 @@ function mh_about($text=null){
 		$text =
 			get_theme_option('about') ?
 			get_theme_option('about') :
-<<<<<<< HEAD
-			settings('site_title').__(' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.');
-=======
-			option('site_title').' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices. ';
->>>>>>> upstream/master
+			option('site_title').__(' is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.');
 	}
 	return $text;
 }
@@ -1477,14 +1246,6 @@ function mh_google_analytics($webPropertyID=null){
 */
 function link_to_item_edit($item=null)
 {
-<<<<<<< HEAD
-	$current = Omeka_Context::getInstance()->getCurrentUser();
-	if ($current->role == 'super') {
-		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">'.__('Edit this item...').'</a>';
-	}
-	elseif($current->role == 'admin'){
-		echo '<a class="edit" href="'. html_escape(uri('admin/items/edit/')).item('ID').'">'.__('Edit this item...').'</a>';
-=======
 	if (is_allowed($item, 'edit')) {
 		echo '<a class="edit" href="'. html_escape(url('admin/items/edit/')).metadata('item','ID').'">['.__('Edit').']</a>';
 	}
@@ -1497,7 +1258,6 @@ function link_to_file_edit($file=null)
 {
 	if (is_allowed($file, 'edit')) {
 		echo ' <a class="edit" href="'. html_escape(url('admin/files/edit/')).metadata('file','ID').'">['.__('Edit').']</a>';
->>>>>>> upstream/master
 	}
 }
 
