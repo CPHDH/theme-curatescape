@@ -136,10 +136,17 @@ function random_item_link($text=null,$class='show'){
 	if(!$text){
 		$text= __('View a Random').' '.mh_item_label('singular');
 	}
-	$randitem=get_random_featured_items(1);
-    $randomlink=WEB_ROOT.'/items/show/'.$randitem[0]->id;
-    $linkclass='random-story-link '.$class;
-	return link_to($randitem[0], 'show', $text, array('class'=>$linkclass));
+
+	$link = '';
+	$randitems = get_random_featured_items( 1 );
+
+	if( count( $randitems ) > 0 ){
+	   $linkclass = 'random-story-link ' . $class;
+	   $link = link_to( $randitems[0], 'show', $text,
+	   		array( 'class' => $linkclass ) );
+	}	
+   	return $link;
+
 }
 
 
@@ -532,18 +539,25 @@ function mh_the_author(){
 ** ...might need some revision for other uses
 */
 function mh_wrappable_link($string){
-
+	
+	$result = '';
+	
 	/* Find a URL in the $string and build the replacement */
 	preg_match('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/',$string, $matches);
-	$origURL = $matches[0];
-	$newURL=$origURL;
-	$newURL=preg_replace('/\//','/&#8203;', $newURL); //replace slash with slash + zero-width-space
-	$newURL=preg_replace('/\./','.&#8203;', $newURL); //replace dot with dot + zero-width-space
+	if( count( $matches ) > 0 ){
+	   $origURL = $matches[0];
+	   $newURL=$origURL;
+	   $newURL=preg_replace('/\//','/&#8203;', $newURL); //replace slash with slash + zero-width-space
+	   $newURL=preg_replace('/\./','.&#8203;', $newURL); //replace dot with dot + zero-width-space
+	
+		/* Apply the repalcement URL to the original string */
+		$result=preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/',$newURL, $string);
+	}
 
 	/* Apply the repalcement URL to the original string */
-	$string=preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/',$newURL, $string);
+	$result=preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/',$newURL, $string);
 
-	return $string;
+	return $result;
 }
 
 
