@@ -2444,6 +2444,13 @@ body#tours.browse #showmap{
 **
 ============================================================ */
 /* ===== IE Fixes  ===== */
+
+@-ms-viewport{
+	/* Fixes IE Metro snap view */
+    width: device-width;
+}
+
+
 .lte8 #wrap {
 	max-width:45em;
 }
