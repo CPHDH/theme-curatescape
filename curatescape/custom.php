@@ -140,7 +140,7 @@ function mh_the_logo(){
 
 function random_item_link($text=null,$class='show'){
 	if(!$text){
-		$text= __('View a random %s',mh_item_label('singular'));
+		$text= __('View a Random %s', mh_item_label('singular'));
 	}
 
 	$link = '';
