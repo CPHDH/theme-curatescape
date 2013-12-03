@@ -18,7 +18,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	<?php if(tour( 'Credits' )){
 		echo '<span class="tour-meta">'.__('By %s',tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
-		echo '<span class="tour-meta">'.__('By The %s Team',settings('site_title')).'</span>';
+		echo '<span class="tour-meta">'.__('By The %s Team',option('site_title')).'</span>';
 	}else{}?>
 	</header>
 			
