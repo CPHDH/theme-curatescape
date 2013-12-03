@@ -5,7 +5,7 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 ?>
 <div id="content">
 <section class="browse tour">			
-<h2><?php echo __('All %s:', $label) ;?>: <?php echo total_tours(); ?></h2>
+<h2><?php echo __('All %1$s: %2$s', $label, total_tours());?></h2>
 
 	<div id="page-col-left">
 		<aside>

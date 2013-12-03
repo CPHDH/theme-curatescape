@@ -30,7 +30,7 @@
 		<?php 
 		$record=get_record_by_id('Item', $file->item_id);
 		$title=metadata($record,array('Dublin Core','Title'));
-		echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in').': <em><strong>'.$title.'</strong></em>', array('class'=>'file-appears-in-item'), 'show', $record);	
+		echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);	
 		?> 
 		<hr>
 		
@@ -44,7 +44,7 @@
 		</div>	
 		
 		<hr>
-		<?php echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in').': <em><strong>'.$title.'</strong></em>', array('class'=>'file-appears-in-item'), 'show', $record);?> 
+		<?php echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
 		<hr>
 		
 		<!--a class="big-button reveal-button">View Full Metadata Record</a-->
@@ -79,7 +79,7 @@
 		    </div><!-- end type-metadata -->
 		</div><!-- end file-metadata -->
 	<hr>	
-	<?php echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in').': <em><strong>'.$title.'</strong></em>', array('class'=>'file-appears-in-item'), 'show', $record);?> 
+	<?php echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
 	<hr>
 	
 	</div><!-- end primary -->
@@ -100,7 +100,7 @@
 
 
 <div id="share-this" class="browse">
-<?php echo mh_share_this('File');?>
+<?php echo mh_share_this(__('File'));?>
 </div>	
 
 </div> <!-- end content -->

@@ -34,7 +34,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 		</section>
 		   
 		<section id="tour-items">
-			<h3 class="locations"><?php echo __('Locations for ').$label;?></h3>
+			<h3 class="locations"><?php echo __('Locations for %s', $label);?></h3>
 	         <?php 
 	         $i=1;
 	         foreach( $tour->getItems() as $tourItem ): 

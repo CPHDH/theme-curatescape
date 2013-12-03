@@ -81,7 +81,7 @@ echo head_js(false); // <-- No to Omeka default scripts
 <body<?php echo isset($bodyid) ? ' id="'.$bodyid.'"' : ''; ?><?php echo isset($bodyclass) ? ' class="'.$bodyclass.'"' : ''; ?>> 
 
 <div id="no-js-message">
-	<span><?php echo __('Please enable JavaScript in your browser settings.'); ?></span>
+	<span><?php echo __('Please enable JavaScript in your browser settings.');?></span>
 </div>
 
 <div id="wrap">
