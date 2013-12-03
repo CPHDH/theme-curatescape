@@ -134,7 +134,7 @@ function mh_the_logo(){
 
 function random_item_link($text=null,$class='show'){
 	if(!$text){
-		$text= __('View a Random').' '.mh_item_label('singular');
+		$text= __('View a Random %s', mh_item_label('singular'));
 	}
 
 	$link = '';
@@ -488,7 +488,7 @@ function mh_mapfaq(){
 */
 function mh_the_author(){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">'.__('By').': ';
+		$html='<span class="story-meta byline">'.__('By: ');
 
 		if(metadata('item',array('Dublin Core', 'Creator'))){
 			$authors=metadata('item',array('Dublin Core', 'Creator'), array('all'=>true));
@@ -845,7 +845,7 @@ function mh_subjects_string(){
 			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
 		}
 		
-		echo '<div class="item-subjects"><p><span>'.__('Subjects').': </span>'.implode(", ", $html).'</p></div>';
+		echo '<div class="item-subjects"><p><span>'.__('Subjects: ').'</span>'.implode(", ", $html).'</p></div>';
 	}
 }
 
