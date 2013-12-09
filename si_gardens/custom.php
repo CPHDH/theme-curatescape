@@ -699,8 +699,8 @@ function mh_item_images($item,$index=0){
 		if(in_array($mime,$img)) {
 			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
 			$filelink=link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
-			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
-			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
+			$photoDesc = metadata($file,array('Dublin Core', 'Description'));
+			$photoTitle = metadata($file,array('Dublin Core', 'Title'));
 			
 			if($photoTitle){
 				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
@@ -828,7 +828,8 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 
 	if($youtube) {
 	// assumes YouTube links look like https://www.youtube.com/watch?v=NW03FB274jg where the v query contains the video identifier
-		$id=str_replace('v=','',parse_url($youtube)['query']);
+        $url=parse_url($youtube);
+        $id=str_replace('v=','',$url['query']);
 		$html= '<div class="item-file-container"><div class="embed-container youtube" id="v-streaming" style="position: relative;padding-bottom: 56.25%;height: 0; overflow: hidden;"><iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src="//www.youtube.com/embed/'.$id.'" frameborder="0" width="640" height="360" allowfullscreen></iframe></div>';
 	    $html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <i class="icon-info-sign"></i></h4>' : '';
 	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
@@ -837,7 +838,8 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 		}
 	elseif($vimeo) {
 	// assumes the Vimeo links look like http://vimeo.com/78254514 where the path string contains the video identifier
-		$id=parse_url($vimeo)['path'];
+        $url=parse_url($vimeo);
+        $id=$url['path'];
 		$html= '<div class="item-file-container"><div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=333" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
 	    $html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <i class="icon-info-sign"></i></h4>' : '';
 	    $html .= ($desc) ? '<p class="description video-description sib">'.$desc.' '.link_to($file,'show', '<span class="view-file-link"> [View Additional File Details]</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';	
@@ -1513,7 +1515,7 @@ function mh_showmap(){
 */
 
 function mh_legal_nav($html=''){
-	$html .= '<li><a href="gardens@si.edu">Contact webmaster</a></li>';
+	$html .= '<li><a href="mailto:communityofgardens@si.edu">Contact webmaster</a></li>';
 	$html .= '<li><a href="http://www.si.edu/privacy/">Privacy Policy</a></li>';
 	$html .= '<li><a href="http://www.si.edu/Termsofuse">Terms of use</a></li>';
 	$html .= '<li><a href="'.WEB_ROOT.'/submission-agreement">Submission Agreement</a></li>';
