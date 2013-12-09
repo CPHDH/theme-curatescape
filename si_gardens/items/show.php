@@ -10,10 +10,10 @@
 		<h3 class="item-subtitle">
 		<?php echo ( metadata($item, array('Dublin Core', 'Title'), array('index'=>1))!==('[Untitled]') ) ? metadata($item, array('Dublin Core', 'Title'), array('index'=>1)) : null; ?></h3>
 	</hgroup>	
-	<?php mh_the_author();?>
+	<?php 
+	echo mh_contributor($item);
+	?>
 	</header>
-
-
 	
 	<div id="item-primary" class="show">
 		<section id="text">
@@ -55,9 +55,16 @@
 				<?php mh_tags();?>	
 				</div>
 
+
 				<div id="cite-this">
+				<?php 
+				$string = ($gw=metadata('item',array('Item Type Metadata','Garden Website'))) ? $gw : false; 
+				if( (!empty($string)) && ($url=parse_url($string)) ){
+					echo '<h3>Garden Website</h3><a href="'.($url['scheme'] ? null : 'http://').$string.'">'.$url['host'].$url['path'].'</a><br>';
+				}?>					
 				<h3>Cite this Page</h3>
 				<?php echo mh_item_citation(); ?>
+			
 				</div>	
 					
 				<div class="item-related-links">
