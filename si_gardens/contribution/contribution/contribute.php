@@ -23,24 +23,13 @@ if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfile
     queue_css_string("input.add-element {display: block}");
 }
 
-$head = array('title' => 'Contribute',
+$head = array('title' => 'Share a Story',
               'bodyclass' => 'contribution');
 echo head($head); ?>
 <script type="text/javascript">
 // <![CDATA[
 enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
 // ]]>
-</script>
-
-<script type="text/javascript">
-        //Reveal more file uploads
-        jQuery(document).ready(function() {
-                jQuery('.upload-more a').click(function(event){
-                        event.preventDefault();
-                        jQuery('.contribution article form .upload-hidden').slideDown();
-                        jQuery(this).hide();
-                });
-        });
 </script>
 
 
@@ -93,7 +82,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <div class="inputs">
                     <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
                     <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
-                    <?php echo html_entity_decode($this->formLabel('terms-agree', 'I am over the age of 13 and have read and agree to the<a href="'.url('contribution/terms').'" target="_blank">Terms and Conditions</a>. Or, I am an educator submitting work produced by my students and I have read and agree to all the Terms & Conditions and have collected the <a href="'.url('#').'" target="_blank">Parental Permission Slips</a> for my own records that allow my students to participate in this project.')); ?>
+                    <?php echo html_entity_decode($this->formLabel('terms-agree', 'I am over the age of 13 and have read and agree to the <a href="'.url('contribution/terms').'" target="_blank">Terms and Conditions</a>. Or, I am an educator submitting work produced by my students and I have read and agree to all the Terms & Conditions and have collected the <a href="'.img('CoG-parental-consent-form.pdf').'" target="_blank">Parental Permission Slips</a> for my own records that allow my students to participate in this project.')); ?>
                 </div>
                 
              

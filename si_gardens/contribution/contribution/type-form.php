@@ -144,9 +144,19 @@ if (!isset($required) && $type->isFileAllowed()):
 fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
 ?>
 </fieldset>
+<script type="text/javascript">
+    
+    jQuery(document).ready(function() {
+	    //Reveal more file uploads
+	    jQuery('.upload-more a').click(function(event){
+	            event.preventDefault();
+	            jQuery('.contribution article form .upload-hidden').slideDown();
+	            jQuery(this).hide();
+	    });	    
+		//Edit the map button text
+		jQuery(".contribution article form button#geolocation_find_location_by_address").text("Click to Confirm Location");    
+    });
 
-<script>
-	jQuery(".contribution article form button#geolocation_find_location_by_address").text("Click to Confirm Location");
 </script>
 
 <?php endif; ?>
