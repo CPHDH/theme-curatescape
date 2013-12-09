@@ -555,7 +555,22 @@ function mh_mapfaq(){
 	return $html;
 
 }
+/*
+** contributor byline
+*/
 
+function mh_contributor($item, $fallback="The Community of Gardens Team"){
+	if (plugin_is_active('Contribution')){        
+        $contribItem = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+
+        if($contribItem->anonymous) {
+            $name = "Anonymous";
+        } else {
+            $name = $contribItem->Contributor->name;
+        }
+	}        
+	return '<span class="story-meta byline">Contributed by: '.($name ? $name : $fallback).'</span>';	
+}
 
 /*
 ** author byline on items/show.php
