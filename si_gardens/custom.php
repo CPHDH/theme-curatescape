@@ -577,7 +577,7 @@ function mh_contributor($item, $fallback="The Community of Gardens Team"){
 */
 function mh_the_author(){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">By: ';
+		$html='<span class="story-meta byline">Submitted by: ';
 
 		if(metadata('item',array('Dublin Core', 'Creator'))){
 			$authors=metadata('item',array('Dublin Core', 'Creator'), array('all'=>true));
