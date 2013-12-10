@@ -379,7 +379,7 @@ section.browse #exhibits h2{
 }
 
 span.amp {
-	font-family:"Baskerville","Palatino","Book Antiqua",serif;
+	font-family:"ArtcraftURWT-Reg","Baskerville","Palatino","Book Antiqua",serif;
 	font-style:italic;
 }
 
@@ -933,7 +933,7 @@ figure#home-map {
 }
 
 #custom-block article{ font-size:1.1em; line-height:1.8em; }
-#custom-block header{margin-bottom: 2.2em;margin-top: 1.25em; padding-top:3.8em; text-align: center; background:url(../images/cog-logo-orange.png) no-repeat top center;
+#custom-block header{margin-bottom: 1.2em;margin-top: 1.25em; padding-top:3.8em; text-align: center; background:url(../images/cog-logo-orange.png) no-repeat top center;
 	-webkit-hyphens:none;
 	-moz-hyphens:none;
 	-ms-hyphens:none;
@@ -1098,7 +1098,7 @@ figure#home-map {
 	font-family:"ArtcraftURWT-Reg","Georgia","Times","Times New Roman",serif;
 	color:#fff;
 	font-size:1.8em;
-	width:70%;
+	width:100%;
 	text-align:center;
 	margin:.5em auto;
 	border-bottom:0 none transparent;
@@ -1560,6 +1560,20 @@ span#tour-nav-links {
 
 
 /* Contribution Form */
+#flash ul{
+	margin-left:0;
+	padding-left: 0;
+}
+#flash li.error{
+    background: none repeat scroll 0 0 #FF0000;
+    color: #FFFFFF;
+    list-style: none outside none;
+    margin-top: 0.5em;
+    padding: 0 0.5em;
+    text-shadow: 1px 1px 0 #A52A2A;	
+}
+
+
 .contribution article form fieldset {
 	width:94%;
 	background:#f9f9f8;
@@ -1906,7 +1920,7 @@ body#tours.browse #showmap{
 	display: none;
 }
 
-body.contribution #hero, body.contribution #showmap {
+body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	display:none !important;	
 }
 
@@ -2271,7 +2285,7 @@ body.contribution #hero, body.contribution #showmap {
 	
 	.random-story-link.big-button {
 		font-size:1.8em;
-		width:70%;
+		width:100%;
 	}
 	
 	/*#featured-story h2 {
@@ -2454,7 +2468,11 @@ body.contribution #hero, body.contribution #showmap {
 	}
 	
 	#homepage #custom-block .view-more-link {
-		border-bottom:1px solid #e1e2dc;
+		border-bottom:none;
+		padding:0;
+		margin: 0;
+		display: none;
+		
 	}
 	
 	#featured-story .item-thumb {
