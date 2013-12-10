@@ -1,10 +1,12 @@
-<?php echo head(); ?>
+<?php echo head(array('bodyclass' => 'no-hero')); ?>
 
 
 <div id="content">
 <article class="page show">
 <h2 class="instapaper_title"><?php echo __('My Contributions');?></h2>
-
+	
+	<?php echo mh_contribution_user_nav();?>
+		
 	<div id="page-col-left">
 		<aside>
 		<!-- add left sidebar content here -->

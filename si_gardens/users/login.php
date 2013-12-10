@@ -1,7 +1,7 @@
 <?php
 queue_js_file('login');
 $pageTitle = __('Log In');
-echo head(array('bodyclass' => 'login', 'title' => $pageTitle), $header);
+echo head(array('bodyclass' => 'login no-hero', 'title' => $pageTitle), $header);
 ?>
 <div id="content">
 <article class="page show">

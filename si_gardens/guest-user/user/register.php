@@ -4,11 +4,13 @@ queue_css_file('skeleton');
 $css = "form > div { clear: both; padding-top: 10px;} .two.columns {width: 30%;} ";
 queue_css_string($css);
 $pageTitle = __('Register');
-echo head(array('bodyclass' => 'register', 'title' => $pageTitle));
+echo head(array('bodyclass' => 'register no-hero', 'title' => $pageTitle));
 ?>
 <div id="content">
 <article class="page show">
 <h2 class="instapaper_title"><?php echo $pageTitle; ?></h2>
+
+	<p><em>Already have an account? <a href="/guest-user/user/login">Login now</a>.</em></p>
 
 	<div id="page-col-left">
 		<aside>

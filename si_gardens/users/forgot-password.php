@@ -1,6 +1,6 @@
 <?php
 $pageTitle = __('Forgot Password');
-echo head(array('title' => $pageTitle, 'bodyclass' => 'login'), $header);
+echo head(array('title' => $pageTitle, 'bodyclass' => 'login no-hero'), $header);
 ?>
 <div id="content">
 <article class="page show">

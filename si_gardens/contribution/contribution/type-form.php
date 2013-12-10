@@ -91,7 +91,7 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php else: ?>
 
 
-    <?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
+    <?php echo __('You are logged in as: <a href="/guest-user/user/me/">%s</a>', metadata($user, 'name')); ?>
     
     <?php 
     //pull in the user profile form if it is set

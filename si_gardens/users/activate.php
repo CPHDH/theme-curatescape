@@ -1,6 +1,6 @@
 <?php
 $pageTitle = __('User Activation');
-echo head(array('title' => $pageTitle), $header);
+echo head(array('title' => $pageTitle, 'bodyclass' => 'contribution'), $header);
 ?>
 
 <div id="content">

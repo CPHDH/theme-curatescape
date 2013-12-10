@@ -37,6 +37,8 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 <article class="page show">
 <h2 class="instapaper_title"><?php echo $head['title']; ?></h2>
 
+	<?php echo mh_contribution_user_nav();?>
+
 	<div id="page-col-left">
 		<aside>
 		<!-- add left sidebar content here -->
