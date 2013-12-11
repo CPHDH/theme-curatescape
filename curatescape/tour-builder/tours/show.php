@@ -1,6 +1,6 @@
 <?php
 $tourTitle = strip_formatting( tour( 'title' ) );
-$label = (function_exists('mh_tour_label')) ? mh_tour_label() : __('Tour');
+$label = mh_tour_label();
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 } else {
    $tourTitle = '';
@@ -67,5 +67,8 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 </article>
 </div> <!-- end content -->
 
-<?php echo function_exists('mh_share_this') ? '<div id="share-this" class="browse">'.mh_share_this(mh_tour_label()).'</div>' : null;?>
+<div id="share-this" class="browse">
+<?php echo mh_share_this(mh_tour_label()); ?>
+</div>
+
 <?php echo foot(); ?>

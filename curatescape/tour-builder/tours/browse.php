@@ -1,5 +1,5 @@
 <?php
-$label=(function_exists('mh_tour_label')) ? mh_tour_label('plural') : __('Tours');
+$label=mh_tour_label('plural');
 echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
    'bodyclass' => 'browse' ) );
 ?>
@@ -57,7 +57,7 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 
 	<div id="page-col-right">
 	<?php 
-	if(function_exists('mh_display_recent_item') && ($tourimg<10)){
+	if($tourimg<10){
 		// if there aren't 10 tour images to fill out the collage, grab some item images to fill it out
 		$num=10-$tourimg; 
 		mh_display_recent_item($num);
@@ -69,7 +69,8 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 </section>
 </div> <!-- end content -->
 
-
-<?php echo (function_exists('mh_share_this')) ? '<div id="share-this" class="browse">'.mh_share_this().'</div>' : null; ?>
+<div id="share-this" class="browse">
+<?php echo mh_share_this(); ?>
+</div>
 
 <?php echo foot();?>
