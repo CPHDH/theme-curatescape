@@ -7,7 +7,7 @@
         $fileTitle = '';
     }
     $fileTitle = __('File #%s', metadata('file', 'id')) . $fileTitle;
-	echo head(array('maptype'=>'none','bodyid'=>'file','bodyclass'=>'show item-file','title' => $fileTitle )); 
+	echo head(array('file'=>$file, 'maptype'=>'none','bodyid'=>'file','bodyclass'=>'show item-file','title' => $fileTitle )); 
 ?>
 <div id="content">
 

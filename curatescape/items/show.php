@@ -1,4 +1,4 @@
-<?php echo head(array('maptype'=>'story','bodyid'=>'items','bodyclass'=>'show item-story','title' => metadata($item,array('Dublin Core', 'Title')))); ?>
+<?php echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass'=>'show item-story','title' => metadata($item,array('Dublin Core', 'Title')))); ?>
 <div id="content">
 
 <article class="story item show instapaper_body hentry" role="main">
