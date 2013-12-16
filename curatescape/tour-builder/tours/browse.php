@@ -33,7 +33,7 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 		
 			$tourdesc = nls2p( tour( 'description' ) );
 		
-			echo '<article id="item-result-'.$i.'" class="item-result">';
+			echo '<article id="item-result-'.$i.'" class="item-result has-image">';
 			echo '<h3>'.link_to_tour().'</h3>';
 					
 			if($i<=10){
