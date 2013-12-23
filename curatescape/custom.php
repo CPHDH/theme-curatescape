@@ -46,8 +46,14 @@ function mh_seo_pageimg($item=null){
 ** Introduces item limit to avoid excessive memory use
 */
 function mh_auto_discovery_link_tags() {
-    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('rss2')) .'&per_page=15" />';
-    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New %s: Atom',mh_item_label('plural')) .'" href="'. html_escape(items_output_url('atom')) .'&per_page=15" />';
+	// if "Super RSS" output is available use it.
+    if(plugin_is_active('SuperRSS')){
+    	$html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('srss')) .'&per_page=15" />';
+    }else{
+	    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('rss2')) .'&per_page=15" />';
+	    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New %s: Atom',mh_item_label('plural')) .'" href="'. html_escape(items_output_url('atom')) .'&per_page=15" />';
+	    return $html;
+    }
     return $html;
 }
 
