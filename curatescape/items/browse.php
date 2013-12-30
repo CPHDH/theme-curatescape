@@ -67,12 +67,13 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
 			$thumblink=link_to_item(item_image('square_thumbnail') );
 			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
+			$hasImage=metadata($item, 'has thumbnail');
 			?>
-			<article class="item-result" id="item-result-<?php echo $index;?>">
+			<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
 			
 				<h3><?php echo $titlelink; ?></h3>
 				
-				<?php if (metadata($item, 'has thumbnail') && mh_reducepayload($index,$showImgNum)): ?>
+				<?php if ($hasImage && mh_reducepayload($index,$showImgNum)): ?>
 					<div class="item-thumb">
 	    				<?php echo $thumblink; ?>						
 	    			</div>

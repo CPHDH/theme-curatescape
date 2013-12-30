@@ -39,13 +39,14 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         $i=1;
 	         foreach( $tour->getItems() as $tourItem ): 
 	        	 set_current_record( 'item', $tourItem );
-	         	$itemID=$tourItem->id
+	         	$itemID=$tourItem->id;
+	         	$hasImage=metadata($tourItem,'has thumbnail');
 	         ?>
-		         <article class="item-result">
+		         <article class="item-result <?php echo $hasImage ? 'has-image' : null;?>">
 			         <h3><?php echo $i.'.';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
 			         <?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 			         </a></h3>
-					<?php if ( metadata($tourItem,'has thumbnail')): ?>
+					<?php if ( $hasImage ): ?>
 						<div class="item-thumb hidden">
 		    				<?php echo item_image('square_thumbnail') ;?>						
 		    			</div>

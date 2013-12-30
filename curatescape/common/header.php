@@ -12,22 +12,29 @@
 
 <link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/>
 <?php echo mh_auto_discovery_link_tags(); ?>
+
+<?php
+isset($title) ? $title : $title=null;
+isset($tour) ? $tour : $tour=null;
+isset($item) ? $item : $item=null;
+isset($file) ? $file : $file=null;
+?>
     
-<title><?php echo (isset($title)) ?  $title.' | '.option('site_title') : option('site_title'); ?></title>
-<meta name="description" content="<?php echo mh_seo_pagedesc(@$item,@$tour); ?>" />
+<title><?php echo ($title) ?  $title.' | '.option('site_title') : option('site_title'); ?></title>
+<meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>" />
 <meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
 
 <!-- FB Open Graph stuff -->
-<meta property="og:title" content="<?php echo mh_seo_pagetitle(@$title); ?>"/>
-<meta property="og:image" content="<?php echo mh_seo_pageimg(@$item);?>"/>
+<meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
+<meta property="og:image" content="<?php echo mh_seo_pageimg($item);?>"/>
 <meta property="og:site_name" content="<?php echo option('site_title');?>"/>
-<meta property="og:description" content="<?php echo mh_seo_pagedesc(@$item,@$tour); ?>"/>
+<meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>"/>
 
 <!-- Twitter Card stuff-->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="<?php echo mh_seo_pagetitle(@$title); ?>">
-<meta name="twitter:description" content="<?php echo mh_seo_pagedesc(@$item,@$tour); ?>">
-<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg(@$item);?>">
+<meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title); ?>">
+<meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>">
+<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item);?>">
 <?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="'.$twitter.'"> ' : '';?> 
 <?php echo ($ios=get_theme_option('ios_app_id')) ?  '<meta name="twitter:app:id:iphone" content="'.$ios.'"> ' : '';?> 
 <?php echo ($play=get_theme_option('android_app_id')) ?  '<meta name="twitter:app:id:googleplay" content="'.$play.'"> ' : '';?> 

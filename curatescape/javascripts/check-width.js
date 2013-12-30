@@ -10,11 +10,11 @@ jQuery(document).ready(function() {
 			return this.src.replace('square_thumbnails', 'fullsize');
 		});
 		var titles = []; // get the titles
-		jQuery(".item-result h3").each(function(index) {
+		jQuery(".item-result.has-image h3").each(function(index) {
 			titles[index] = '<span class="title">' + jQuery(this).html() + '</span>';
 		});
 		var images = []; // get the images
-		jQuery(".item-result img").each(function(index) {
+		jQuery(".item-result.has-image img").each(function(index) {
 			images[index] = jQuery(this).attr('src');
 		});
 		var slideCount = images.length; // use number of images to set number of slides	

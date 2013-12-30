@@ -8,13 +8,16 @@ add_translation_source(dirname(__FILE__) . '/languages');
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
 
 // SEO Page description
-function mh_seo_pagedesc($item=null,$tour=null){
-	if($item){
+function mh_seo_pagedesc($item=null,$tour=null,$file=null){
+	if($item != null){
 		$itemdesc=snippet(metadata('item',array('Dublin Core', 'Description')),0,500,"...");
 		return strip_tags($itemdesc);
-	}elseif($tour){
+	}elseif($tour != null){
 		$tourdesc=snippet(tour('Description'),0,500,"...");
 		return strip_tags($tourdesc);
+	}elseif($file != null){
+		$filedesc=snippet(metadata('file',array('Dublin Core', 'Description')),0,500,"...");
+		return strip_tags($filedesc);		
 	}else{
 		return mh_seo_sitedesc();
 	}
@@ -49,8 +52,14 @@ function mh_seo_pageimg($item=null){
 ** Introduces item limit to avoid excessive memory use
 */
 function mh_auto_discovery_link_tags() {
-    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('rss2')) .'&per_page=15" />';
-    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New %s: Atom',mh_item_label('plural')) .'" href="'. html_escape(items_output_url('atom')) .'&per_page=15" />';
+	// if "Super RSS" output is available use it.
+    if(plugin_is_active('SuperRSS')){
+    	$html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('srss')) .'&per_page=15" />';
+    }else{
+	    $html = '<link rel="alternate" type="application/rss+xml" title="'. __('New %s: RSS',mh_item_label('plural')) . '" href="'. html_escape(items_output_url('rss2')) .'&per_page=15" />';
+	    $html .= '<link rel="alternate" type="application/atom+xml" title="'. __('New %s: Atom',mh_item_label('plural')) .'" href="'. html_escape(items_output_url('atom')) .'&per_page=15" />';
+	    return $html;
+    }
     return $html;
 }
 
@@ -1012,7 +1021,7 @@ function mh_display_random_featured_item($withImage=false)
 {
 	$featuredItem = get_random_featured_items(1,$withImage);
 	$html = '<h2>'.__('Featured %s', mh_item_label()).'</h2>';
-	$html .= '<article class="item-result">';
+	$html .= '<article class="item-result '.($withImage ? "has-image" : null).'">';
 	if ($featuredItem) {
 		$item=$featuredItem[0];
 		$itemTitle = metadata($item, array('Dublin Core', 'Title'));
@@ -1046,10 +1055,11 @@ function mh_display_random_featured_item($withImage=false)
 */
 function mh_display_recent_item($num=1){
 	echo ($num <=1) ? '<h2>'.__('Newest %s',mh_item_label()).'</h2>' : '<h2>'.__('Newest %s',mh_item_label('plural')).'</h2>';
-	set_loop_records('items',get_recent_items($num));
+	set_loop_records('Item',get_records('Item',array('recent'=>true,'hasImage'=>true), $num));
+	
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
-			echo '<article class="item-result">';
+			echo '<article class="item-result has-image">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
 
@@ -1080,7 +1090,7 @@ function mh_display_random_item($num=1){
 	set_loop_records('items',get_random_featured_items($num,true));
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
-			echo '<article class="item-result">';
+			echo '<article class="item-result has-image">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
 
