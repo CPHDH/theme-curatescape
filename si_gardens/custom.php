@@ -775,8 +775,6 @@ function mh_video_files($item,$html=null) {
         $localVid=0;
         $videoTypes = array('video/mp4','video/mpeg','video/quicktime');
         $videoPoster = mh_poster_url();
-        $videoJS = js_tag('video-js/video.min');
-        $videoSWF= '<script> _V_.options.flash.swf = "'. WEB_ROOT .'/themes/si_gardens/javascripts/video-js/video-js.swf"</script>';
 
 
         foreach (loop('files', $item->Files) as $file):
@@ -810,9 +808,9 @@ function mh_video_files($item,$html=null) {
         endforeach;
         if ($videoIndex > 0) {
         		echo '<h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
-                if($localVid>0) echo $videoJS.$videoSWF;
+                if($localVid>0) //echo $videoJS.$videoSWF;
                 echo $html;
-                if($localVid>0) echo mh_video_ResponsifyVideoScript($localVid);
+                //if($localVid>0) echo mh_video_ResponsifyVideoScript($localVid);
         }
 }  
 
@@ -852,41 +850,6 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 }
 
       
-/*
-** Script to resize the video based on desired aspect ratio and browser viewport
-** This basically iterates a separate action for each video (see mh_video_files() loop above),
-** which is not very efficient, but having more than one video per record is not very common here
-*/
-function mh_video_ResponsifyVideoScript($videoIndex, $aspectRatio='360/640'){
-?>
-
-
-	<script>
-	var vidCount=<?php echo $videoIndex; ?>-1;
-	var aspectRatio=<?php echo $aspectRatio; ?>;
-
-	for (var i=0;i<=vidCount;i++){
-		var vidID = "#video-"+i+"";
-
-	    _V_(vidID).ready(function(i){
-	      var myVid = this;
-
-	      function resizeVideoJS(i){
-	        var width = document.getElementById(myVid.id).parentElement.offsetWidth;
-	        myVid.width(width).height( width * aspectRatio );
-	      }
-	      resizeVideoJS(i);
-
-	      var $window = jQuery(window);
-	      jQuery($window).resize(resizeVideoJS);
-
-	    });
-	}
-
-	</script>
-
-<?php
-}
 
 /*
 ** Display subjects as links
