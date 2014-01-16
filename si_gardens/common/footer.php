@@ -1,8 +1,6 @@
 <footer class="main">
 	<nav id="footer-nav">
-    	<ul class="navigation">
-	    	<?php echo mh_global_nav(); ?>      	
-	    </ul>
+	    	<?php echo mh_global_nav(); ?>
 	    
     	<div id="search-wrap">
 	    	<?php echo mh_simple_search($formProperties=array('id'=>'footer-search')); ?>

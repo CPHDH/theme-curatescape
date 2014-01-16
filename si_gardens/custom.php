@@ -110,7 +110,7 @@ function mh_global_nav(){
 			array('label'=>'About','uri' => url('/about')),
 			array('label'=>'FAQs','uri' => url('/faq')),
 			array('label'=>'Education','uri' => url('/education')),
-			array('label'=>'Blog','uri' => 'http://communityofgardens.tumblr.com/'),
+			array('label'=>'Tumblr','uri' => 'http://communityofgardens.tumblr.com/','target' => '_blank'),
 			array('label'=>'Share A Story','uri' => url('/contribution'),'class'=>'nav-share-a-story')
 			));
 	}else{
@@ -1516,8 +1516,8 @@ function mh_showmap(){
 
 function mh_legal_nav($html=''){
 	$html .= '<li><a href="mailto:communityofgardens@si.edu">Contact webmaster</a></li>';
-	$html .= '<li><a href="http://www.si.edu/privacy/">Privacy Policy</a></li>';
-	$html .= '<li><a href="http://www.si.edu/Termsofuse">Terms of use</a></li>';
+	$html .= '<li><a href="http://www.si.edu/privacy/" target="_blank">Privacy Policy</a></li>';
+	$html .= '<li><a href="http://www.si.edu/Termsofuse" target="_blank">Terms of use</a></li>';
 	$html .= '<li><a href="'.WEB_ROOT.'/submission-agreement">Submission Agreement</a></li>';
 	
 	return $html;
@@ -1527,13 +1527,13 @@ function mh_legal_nav($html=''){
 */
 
 function social_media($html=''){
-	$html .= '<a href="http://www.gardens.si.edu" class="icon-sg-logo"></a>';
+	$html .= '<a href="http://www.gardens.si.edu" class="icon-sg-logo" target="_blank"></a>';
 	$html .= '<br>';
-	$html .= '<a href="https://www.facebook.com/SmithsonianGardens" class="icon-fb"></a>';
-	$html .= '<a href="https://twitter.com/SIGardens" class="icon-tw"></a>';
-	$html .= '<a href="http://instagram.com/SmithsonianGardens" class="icon-instagram"></a>';
-	$html .= '<a href="http://www.pinterest.com/sigardens/" class="icon-pinterest"></a>';
-	$html .= '<a href="http://www.tumblr.com/tagged/smithsonian-gardens" class="icon-tumblr"></a>';
+	$html .= '<a href="https://www.facebook.com/SmithsonianGardens" class="icon-fb" target="_blank"></a>';
+	$html .= '<a href="https://twitter.com/SIGardens" class="icon-tw" target="_blank"></a>';
+	$html .= '<a href="http://instagram.com/SmithsonianGardens" class="icon-instagram" target="_blank"></a>';
+	$html .= '<a href="http://www.pinterest.com/sigardens/" class="icon-pinterest" target="_blank"></a>';
+	$html .= '<a href="http://www.tumblr.com/tagged/smithsonian-gardens" class="icon-tumblr" target="_blank"></a>';
 	
 	return $html;
 }
