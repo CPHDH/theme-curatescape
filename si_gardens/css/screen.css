@@ -928,7 +928,7 @@ figure#home-map {
 #custom-block .item-text,#featured-story .item-text {
 }
 
-#custom-block article{ font-size:1.1em; line-height:1.8em; }
+#custom-block article{ font-size:1.1em; line-height:1.8em; padding-bottom: .5em;}
 #custom-block header{margin-bottom: 1.2em;margin-top: 1.25em; padding-top:3.8em; text-align: center; background:url(../images/cog-logo-orange.png) no-repeat top center;
 	-webkit-hyphens:none;
 	-moz-hyphens:none;
@@ -2534,11 +2534,11 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	}
 	
 	#tile-outer-container{
-		height:30em;
+		height:20em;
 	}
 	
 	#hero {
-		height: 30em;
+		height: 20em;
 		width:100%;
 		float:right;
 		clear:right;
@@ -2547,9 +2547,15 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		box-shadow:none;
 		border-bottom:1px solid #c4c5c0;
 	}
+	#home #hero {
+		height: 28em;
+	}
 
 	#map_canvas{
-		height:30em !important;
+		height:20em !important;
+	}
+	#home #map_canvas{
+		height:28em !important;
 	}
 	
 	#mobile-menu-cluster {
@@ -2630,7 +2636,7 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	}
 	
 	#custom-block,#about-text {
-		width:55%;
+		width:70%;
 		padding-left:2%;
 		padding-right:2%
 	}
@@ -2641,7 +2647,7 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		float:right;
 		min-height:42em;
 		overflow:hidden;
-		width:40%;
+		width:26%;
 		margin-right:-3.2%;
 		border-left:1px solid #e1e2dc;
 	}
