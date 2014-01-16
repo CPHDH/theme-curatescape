@@ -42,6 +42,14 @@
 
 </div><!--end wrap-->
 
+<!-- begin webtrends-->
+<?php
+// Add a single quote: 
+$root=$_SERVER['DOCUMENT_ROOT'];
+include("$root/webtrends/webtrends.php");
+?>
+<!-- end webtrends -->
+
 </body>
 
 </html>
