@@ -40,4 +40,9 @@ echo head(array('bodyclass' => 'update-account no-hero', 'title' => $pageTitle))
 
 </article>
 </div> <!-- end content -->
+
+<script>
+	jQuery('.field:nth-child(3) .inputs p.explanation').append('.<br><em>We strongly recommend only providing your first name and last initial.</em>');
+</script>
+
 <?php echo foot(); ?>
