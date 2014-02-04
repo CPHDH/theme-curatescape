@@ -1468,8 +1468,8 @@ footer.main p{
 }
 
 footer.main p.default {
-	line-height:0;
-	margin:3em auto 1em;
+	line-height:.5em;
+	margin:1em auto 1em;
 	width: 100%;
 	
 }
@@ -1478,8 +1478,7 @@ footer.main p.default {
 	width:100%;
 	display:block;
 	padding:.75em 0;
-	margin-top:.5em;
-	margin-bottom:-1em;
+	font-style: italic;
 }
 
 footer.main span {
