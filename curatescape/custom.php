@@ -452,7 +452,7 @@ function mh_appstore_footer(){
 			echo '<a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">'.__('Get the app for iPhone').'</a>';
 		}
 		elseif (($ios_app_id == false) && ($android_app_id != false)) {
-			echo '<a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Get the app for Android').'</a>';
+			echo '<a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Get the app for Android').'</a>';
 
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
@@ -624,7 +624,7 @@ function mh_item_images($item,$index=0){
 		$mime = metadata($file,'MIME Type');
 		
 		if(in_array($mime,$img)) {
-			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
+			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Images <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
 			$filelink=link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
 			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
@@ -1237,6 +1237,33 @@ function mh_about($text=null){
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
+}
+
+/*
+**
+*/
+function mh_license(){
+	$cc_license=get_theme_option('cc_license');
+	$cc_version=get_theme_option('cc_version');
+	$cc_readable=array(
+		'1'=>'1.0',
+		'2'=>'2.0',
+		'2-5'=>'2.5',
+		'3'=>'3.0',
+		'4'=>'4.0',
+		'by'=>'Attribution',
+		'by-sa'=>'Attribution-ShareAlike',
+		'by-nd'=>'Attribution-NoDerivs',
+		'by-nc'=>'Attribution-NonCommercial',
+		'by-nc-sa'=>'Attribution-NonCommercial-ShareAlike',
+		'by-nc-nd'=>'Attribution-NonCommercial-NoDerivs'		
+		);
+	if($cc_license != 'none'){
+		$cc_version_readable= strtr($cc_version, $cc_readable);
+		return __('This work is licensed by '.mh_owner_link().' under a <a rel="license" href="http://creativecommons.org/licenses/'.$cc_license.'/'.$cc_version_readable.'/deed.en_US">Creative Commons '.strtr($cc_license, $cc_readable).' '.$cc_version_readable.' International License</a>.');
+	}else{
+		return __('&copy; %1$s %2$s', date('Y'), mh_owner_link() );	
+	}
 }
 
 
