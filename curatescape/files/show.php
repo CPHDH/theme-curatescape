@@ -1,12 +1,6 @@
 <?php
     $fileTitle = metadata('file', array('Dublin Core', 'Title')) ? strip_formatting(metadata('file', array('Dublin Core', 'Title'))) : metadata('file', 'original filename');
 
-    if ($fileTitle != '') {
-        $fileTitle = ': &quot;' . $fileTitle . '&quot; ';
-    } else {
-        $fileTitle = '';
-    }
-    $fileTitle = __('File #%s', metadata('file', 'id')) . $fileTitle;
 	echo head(array('file'=>$file, 'maptype'=>'none','bodyid'=>'file','bodyclass'=>'show item-file','title' => $fileTitle )); 
 ?>
 <div id="content">
@@ -17,6 +11,9 @@
 		<h2 class="item-title"><?php echo $fileTitle; ?></h2>
 		<?php 
 		$info = array();
+		
+		($fileid=metadata('file', 'id')) ? $info[]='<span class="file-id">ID: '.$fileid.'</span>' : null;
+		
 		($source=metadata('file', array('Dublin Core','Source'))) ? $info[] = '<span class="file-source">Source: '.$source.'</span>' : null;
 		($creator=metadata('file', array('Dublin Core','Creator'))) ? $info[] = '<span class="file-creator">Creator: '.$creator.'</span>' : null;
 
@@ -34,11 +31,13 @@
 		?> 
 		<hr>
 		
+
 		<?php echo file_markup($file, array('imageSize'=>'fullsize')); ?>
+
 		
 		<div id="key-file-metadata">
 		<?php  
-		echo ($desc=metadata('file', array('Dublin Core','Description'))) ? '<span class="file-desc">'.$desc.'</span>' : null; 
+		echo ($desc=metadata('file', array('Dublin Core','Description'))) ? '<p class="file-desc">'.$desc.'</p>' : null; 
 		echo link_to_file_edit($file);
 		?>	
 		</div>	
@@ -52,7 +51,7 @@
 		<div id="file-metadata">
 			<?php echo all_element_texts('file'); ?> 		
 	
-		    <div id="format-metadata">
+		    <div id="format-metadata" class="element-set">
 		        <h2><?php echo __('Format Metadata'); ?></h2>
 		        <div id="original-filename" class="element">
 		            <h3><?php echo __('Original Filename'); ?></h3>
@@ -66,7 +65,7 @@
 		
 		    </div><!-- end format-metadata -->
 		    
-		    <div id="type-metadata" class="section">
+		    <div id="type-metadata" class="section element-set">
 		        <h2><?php echo __('Type Metadata'); ?></h2>
 		        <div id="mime-type-browser" class="element">
 		            <h3><?php echo __('Mime Type'); ?></h3>
@@ -77,6 +76,7 @@
 		            <div class="element-text"><?php echo metadata('file', 'Type OS'); ?></div>
 		        </div>
 		    </div><!-- end type-metadata -->
+		    
 		</div><!-- end file-metadata -->
 	<hr>	
 	<?php echo link_to_item('<i class="icon-chevron-left"></i> '.__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
