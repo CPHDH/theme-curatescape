@@ -26,7 +26,7 @@ isset($file) ? $file : $file=null;
 
 <!-- FB Open Graph stuff -->
 <meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
-<meta property="og:image" content="<?php echo mh_seo_pageimg($item);?>"/>
+<meta property="og:image" content="<?php echo mh_seo_pageimg($item,$file);?>"/>
 <meta property="og:site_name" content="<?php echo option('site_title');?>"/>
 <meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>"/>
 
@@ -34,7 +34,7 @@ isset($file) ? $file : $file=null;
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title); ?>">
 <meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>">
-<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item);?>">
+<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item,$file);?>">
 <?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="'.$twitter.'"> ' : '';?> 
 <?php echo ($ios=get_theme_option('ios_app_id')) ?  '<meta name="twitter:app:id:iphone" content="'.$ios.'"> ' : '';?> 
 <?php echo ($play=get_theme_option('android_app_id')) ?  '<meta name="twitter:app:id:googleplay" content="'.$play.'"> ' : '';?> 
@@ -65,8 +65,6 @@ echo mh_custom_css(); ?>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<link href="http://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.3/video.js"></script>
 <?php
 queue_js_file('audiojs/audiojs/audio.min'); 	
 queue_js_file('libraries.min'); // <-- combined: Modernizr, jQuery UI Maps, Swipe.js, Fancybox
