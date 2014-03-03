@@ -382,6 +382,25 @@ span.amp {
 	margin-bottom:3em;
 	}
 
+#tours.show span.number {
+    font-size: 1em;
+    line-height: 1.5em;
+    background: #333;
+    color: #fff;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 1px 1px 0px #000;
+    margin-right: 0.5em;
+}	
+
+#tours.show #slider span.number{
+	margin: .15em .15em 0 0;
+	line-height: 1.45em;
+}	
+
 #map-faq-inner p a {
 	font-variant:small-caps;
 	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
@@ -471,7 +490,7 @@ img#hero_loading{
 	color:#fafafa;
 }
 
-#slider li div span {
+#slider li div span.title {
 	background:#000;
 	box-shadow:0 0 1em #333;
 	color:#fafafa;
@@ -1406,6 +1425,14 @@ audio {
 	line-height: 1.4em;
 	background: #e2e2e2;
 	padding: 1em;
+}
+
+#file-metadata .element-set{
+	display:none;
+}
+
+#file-metadata .element-set:first-child{
+	display:inline;
 }
 
 a.file-appears-in-item{
