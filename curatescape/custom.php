@@ -28,14 +28,19 @@ function mh_seo_pagetitle($title){
 }
 
 // SEO Page image
-function mh_seo_pageimg($item=null){
+function mh_seo_pageimg($item=null,$file=null){
 	if($item){
 		if(metadata($item, 'has thumbnail')){
 			$itemimg=item_image('square_thumbnail') ;	
 			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
 			$itemimg=array_pop($result);
 		}
-	}
+	}elseif($file){
+		if($itemimg=file_image('square_thumbnail') ){
+			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
+			$itemimg=array_pop($result);
+		}
+	}	
 	return isset($itemimg) ? $itemimg : mh_lg_logo_url();
 }
 
@@ -577,6 +582,39 @@ function mh_item_citation(){
 	return mh_wrappable_link(html_entity_decode(metadata('item', 'citation')));
 }
 
+/*
+** Build caption from description, source, and creator
+*/
+function mh_file_caption($file,$inlineTitle=true){
+   
+   $caption=array();
+
+   if( $inlineTitle !== false ){
+	   $title = metadata( $file, array( 'Dublin Core', 'Title' ) ) ? metadata( $file, array( 'Dublin Core', 'Title' ) ) : null;
+   }   
+   
+   $description = metadata( $file, array( 'Dublin Core', 'Description' ) );
+   if( $description ) {
+      $caption[]= $description;
+   }
+      
+   $source = metadata( $file, array( 'Dublin Core', 'Source' ) );
+   if( $source ) {
+   		$caption[]= __('Source: %s',$source);
+   }
+   
+
+   $creator = metadata( $file, array( 'Dublin Core', 'Creator' ) );
+   if( $creator ) {
+   		$caption[]= __('Creator: %s', $creator);
+   }   
+   
+   if( count($caption) ){
+	   return ($inlineTitle ? $title.': ' : null).implode(" | ", $caption);
+   }else{
+	   return $inlineTitle ? $title : null;
+   }	
+}
 
 /*
 ** Loop through and display image files
@@ -626,19 +664,19 @@ function mh_item_images($item,$index=0){
 		if(in_array($mime,$img)) {
 			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Images <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
 			$filelink=link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
-			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
+			$photoDesc = mh_normalize_special_characters(mh_file_caption($file,false));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
 			
 			if($photoTitle){
-				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
-				$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$filelink;
+				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
+				$fancyboxCaption = '<span class="main">'.strip_tags($fancyboxCaption).'</span>'.$filelink;
 				}else{
-					$photoCaption = '<span class="main">Image '.($index+1).'</span>';	
+					$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';	
 				}
 
 			$html = '<div class="item-file-container">';
 
-			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$photoCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
+			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
 			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
 			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
@@ -664,7 +702,7 @@ function mh_audio_files($item,$index=0){
     }
 	$audioTypes = array('audio/mpeg');
 	foreach (loop('files', $item->Files) as $file):
-		$audioDesc = metadata($file,array('Dublin Core','Description'));
+		$audioDesc = strip_tags(mh_file_caption($file,false));
 		$audioTitle = metadata($file,array('Dublin Core','Title'));
 		$mime = metadata($file,'MIME Type');
 
@@ -711,7 +749,7 @@ function mh_video_files($item,$html=null) {
 		        $videoFile = file_display_url($file,'original');
 		        $videoTitle = metadata($file,array('Dublin Core', 'Title'));
 		        $videoClass = (($videoIndex==0) ? 'first' : 'not-first');
-		        $videoDesc = metadata($file,array('Dublin Core','Description'));
+		        $videoDesc = mh_file_caption($file,false);
 		        $videoTitle = metadata($file,array('Dublin Core','Title'));	        
 	        	$embeddable=embeddableVersion($file,$videoTitle,$videoDesc);
 	        	if($embeddable){
@@ -734,7 +772,8 @@ function mh_video_files($item,$html=null) {
 	        }
         endforeach;
         if ($videoIndex > 0) {
-        		echo '<h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
+        		echo '<link href="http://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.3/video.js"></script><h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
                 echo $html;
         }
 }  
