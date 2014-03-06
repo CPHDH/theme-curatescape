@@ -46,11 +46,16 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 			         <h3><?php echo '<span class="number">'.$i.'</span>';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
 			         <?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 			         </a></h3>
-					<?php if ( $hasImage ): ?>
-						<div class="item-thumb hidden">
-		    				<?php echo item_image('square_thumbnail') ;?>						
-		    			</div>
-					<?php endif; ?>			         
+
+					<?php
+					if ($hasImage){
+						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+						$item_image = array_pop($result);				
+					}
+					echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; 
+					?>
+				
+						         
 			         <div class="item-description"><?php echo snippet(metadata( $tourItem, array('Dublin Core', 'Description') ),0,250); ?></div>
 		         </article>
 	         <?php 

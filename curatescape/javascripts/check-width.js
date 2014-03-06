@@ -6,16 +6,15 @@ jQuery(document).ready(function() {
 	};
 	
 	function buildSwipeJS(){
-		jQuery(".item-result img").attr("src", function() {
-			return this.src.replace('square_thumbnails', 'fullsize');
-		});
+
 		var titles = []; // get the titles
+		
 		jQuery(".item-result.has-image h3").each(function(index) {
 			titles[index] = '<span class="title">' + jQuery(this).html() + '</span>';
 		});
 		var images = []; // get the images
-		jQuery(".item-result.has-image img").each(function(index) {
-			images[index] = jQuery(this).attr('src');
+		jQuery(".item-result.has-image .item-image").each(function(index) {
+			images[index] = jQuery(this).css('background-image');
 		});
 		var slideCount = images.length; // use number of images to set number of slides	
 		var slideNav = '';
@@ -23,7 +22,8 @@ jQuery(document).ready(function() {
 			var slideDiv;
 			slideDiv = '<div id="slider"><ul>';
 			for (var i = 0; i < slideCount; i++) {
-				slideDiv += '<li style="display:block;background-image:url(' + images[i] + ')"><div>' + titles[i] + '</div></li>';
+
+				slideDiv += '<li style="display:block;background-image:' + images[i].replace(/"/g, "'") + '"><div>' + titles[i] + '</div></li>';
 				current = (i == 0) ? 'class="current"' : '';
 				slideNav += '<li ' + current + '  onclick="mySwipe.slide('+i+', 300)"><em>' + i + '</em></li>';
 			}
@@ -32,7 +32,6 @@ jQuery(document).ready(function() {
 			if(!jQuery('#hero #swipenav').exists()){
 				slideDiv += '<nav id="swipenav"><ul id="position">' + slideNav + '</ul></nav>';
 			}
-			
 			
 			jQuery('#hero').append(slideDiv);
 			window.mySwipe = new Swipe(document.getElementById('slider'), {
@@ -68,9 +67,6 @@ jQuery(document).ready(function() {
 	 function buildTileMontage(){
 			if (!jQuery('#tile-outer-container').exists()){
 			
-				jQuery(".item-result img").attr("src", function() {
-					return this.src.replace('square_thumbnails', 'fullsize');
-				});
 				var tileLinks = []; // get the titles
 				jQuery(".item-result h3 a").each(function(index) {
 					tileLinks[index] = jQuery(this).attr('href');
@@ -82,8 +78,8 @@ jQuery(document).ready(function() {
 				});
 				
 				var tileImages = []; // get the images
-				jQuery(".item-result img").each(function(index) {
-					tileImages[index] = jQuery(this).attr('src');
+				jQuery(".item-result.has-image .item-image").each(function(index) {
+					tileImages[index] = jQuery(this).css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 				});
 				
 				var tileCount = tileImages.length; 			
@@ -125,7 +121,7 @@ jQuery(document).ready(function() {
 
 	function doTileMontage(){
 		var yesTiles = /* these will use the tile montage */
-		(jQuery("body#tours").hasClass('browse big')) ||
+		(jQuery("body#tours").hasClass('browse')) ||
 		(jQuery("body#file").hasClass('show item-file')) ||
 		(jQuery("body").hasClass('page simple-page show big')) ||
 		(jQuery("body").hasClass('page simple-page show small'));					
@@ -161,7 +157,6 @@ jQuery(document).ready(function() {
 		(jQuery("body#items").hasClass('browse items stories small')) || 
 		(jQuery("body#subject-browse").hasClass('subject-browse browse subjects small')) || 
 		(jQuery("body#items").hasClass('browse tags small')) || 
-		(jQuery("body#tours").hasClass('browse small')) || 
 		(jQuery("body#items").hasClass('browse queryresults small')) || 
 		(jQuery("body#tours").hasClass('show tour small'));
 		//grabs the "recent stories" content to build the slider and swaps it into the #hero div on homepage

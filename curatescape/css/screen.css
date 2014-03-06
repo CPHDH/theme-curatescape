@@ -522,10 +522,6 @@ img#hero_loading{
 #swipenav #position{margin:-2em auto 3em; padding:0;width: auto; text-align: right;z-index: 999;position: relative;}
 
 
-#items.browse .item-thumb img {
-	display:none;
-}
-
 /* NAV */
 #mobile-menu-button,.random-story-link.show {
 	display:none;
@@ -587,13 +583,14 @@ ul.pagination li.page-input form{
 ul.pagination li.page-input form input{
 	padding: .25em;
 	max-width:4em;
+	margin-right: .25em;
 }
 
 ul.pagination li a{
     background: #555;
     display: inline-block;
     min-width: 2em;
-    padding: 1.5em 0.5em;
+    padding: 0.65em 0.5em;
     text-align: center;
     color:#fafafa;
     border-bottom: 0px none transparent;
@@ -919,29 +916,50 @@ figure#home-map {
 }
 
 /* ITEM RESULTS on both HOMEPAGE and ITEMS-BROWSE */
-.item-result {
+.browse .item-result {
 	display:block;
 	clear:both;
-	margin:5% auto;
+	margin:3em auto;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: .75em;
 }
 
-.item-result .item-description {
+.browse .item-result .item-description {
+	overflow: hidden;
+
 }
 
-.item-thumb img {
-	padding:.25%;
-	background:#fff;
-	border:1px solid #ccc;
-	box-shadow:0 0 .15em #777;
-	float:left;
-	margin-right:5%;
-	max-width:32.5%;
+.small.browse .item-result .item-image,
+#tours.show.small .item-result .item-image{
+	display: none;
+	height: 0;
 }
-
-
 
 .item-result h3 {
-	display:inline-block;
+	display:block;
+}
+
+.browse .item-result .item-meta-browse{
+	clear: both;
+	display: block;
+	margin-top: .5em;
+	padding-top: .5em;
+}
+
+
+.browse .item-result .item-image,
+#tours.show .item-result .item-image{
+	background-repeat: no-repeat;
+	width: 23%;
+	height: 7em;
+	float: right;
+	margin: 0 0 0 1.5em;
+	background-position: top center;
+	background-size: cover;	
+	clear: left;
+	display: block;
+	overflow: hidden;
+	box-shadow: 0 0 0 .25em #fff, 0 0 .25em .15em #777;
 }
 
 /* Random links and "big buttons" */

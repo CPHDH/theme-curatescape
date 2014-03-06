@@ -37,8 +37,10 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			echo '<h3>'.link_to_tour().'</h3>';
 					
 			if($i<=10){
-			    echo display_tour_thumb($tour,$i,$userDefined=null);
-			    $tourimg++;
+				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', display_tour_thumb($tour,$i,$userDefined=null), $result);
+				$tourimg = array_pop($result);	
+				echo isset($tourimg) ? link_to_tour('<span class="item-image hidden" style="background-image:url('.$tourimg.');"></span>') : null;					
+				$tourimg++;
 			}
 			
 			echo '<div class="item-description"><p>'.snippet($tourdesc,0,300).'</p></div>'; 

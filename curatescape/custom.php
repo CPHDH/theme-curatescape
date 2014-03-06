@@ -1052,11 +1052,21 @@ function mh_display_recent_item($num=1){
 	
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
+
 			echo '<article class="item-result has-image">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
+			
+	
+			$hasImage=metadata($item, 'has thumbnail');
+			if ($hasImage){
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
+			}			
 
-			echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
+			echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null;
+			
+			//echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
 
 
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
@@ -1087,7 +1097,13 @@ function mh_display_random_item($num=1){
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
 
-			echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
+			$hasImage=metadata($item, 'has thumbnail');
+			if ($hasImage){
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
+			}			
+
+			echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null;
 
 
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
