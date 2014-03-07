@@ -937,6 +937,7 @@ figure#home-map {
 
 .item-result h3 {
 	display:block;
+	clear:both;
 }
 
 .browse .item-result .item-meta-browse{
@@ -960,6 +961,10 @@ figure#home-map {
 	display: block;
 	overflow: hidden;
 	box-shadow: 0 0 0 .25em #fff, 0 0 .25em .15em #777;
+}
+
+#tours.show .item-result .item-image{
+	margin-bottom: .5em;
 }
 
 /* Random links and "big buttons" */
@@ -1925,6 +1930,22 @@ body#tours.browse #showmap{
 		max-height: 210px;
 	}
 	
+	#custom-block article{
+		background: #fff;
+		position: relative;
+		background-color: #fff;
+		box-shadow: 0 0 .1em #bcbcbc, inset 0 0 1em #fafafa;	
+	}
+	
+	#custom-block .about-snippet{
+		padding: 0 1em 1em;
+	}	
+	
+	#custom-block header{
+		margin-top: 1em;
+		padding-top: 1.25em;
+	}	
+	
 	#featured-story h2 {
 		background:transparent;
 		display:block;
@@ -2147,6 +2168,10 @@ body#tours.browse #showmap{
 		float:left;
 	}
 	
+	#custom-block header{
+		margin-top: 0;
+	}	
+	
 	#desktop-block {
 		width:74%;
 		float:right;
@@ -2155,21 +2180,6 @@ body#tours.browse #showmap{
 		margin-right:0;
 		background:#eaeaea;
 		color:#222;
-	}
-	
-	#custom-block article{
-		background: #fff;
-		position: relative;
-		background-color: #fff;
-		box-shadow: 0 0 .1em #bcbcbc, inset 0 0 1em #fafafa;	
-	}
-	
-	#custom-block header{
-		margin-top: 0;
-		padding-top: 1.25em;
-	}
-	#custom-block .about-snippet{
-		padding: 0 1em 1em;
 	}
 	
 	#custom-block,#featured-story,#about-text {
