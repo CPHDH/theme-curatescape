@@ -160,7 +160,7 @@ function random_item_link($text=null,$class='show'){
 	   		array( 'class' => $linkclass ) );
 	}else{
 		$linkclass = 'random-story-link ' . $class;
-	   $link = link_to( $record, $action, 'Publish some items to activate this link',
+	   $link = link_to( $record, $action, __('Publish some items to activate this link'),
 	   		array( 'class' => $linkclass ) );
 	}
    	return $link;
@@ -668,12 +668,12 @@ function mh_item_images($item,$index=0){
 		if(in_array($mime,$img)) {
 			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Images <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
 			$filelink=link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
-			$photoDesc = mh_normalize_special_characters(mh_file_caption($file,false));
+			$photoDesc = mh_normalize_special_characters(strip_tags(mh_file_caption($file,false),'<a><strong><em><i><b>'));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
 			
 			if($photoTitle){
 				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
-				$fancyboxCaption = '<span class="main">'.strip_tags($fancyboxCaption).'</span>'.$filelink;
+				$fancyboxCaption = '<span class="main">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b>').'</span>'.$filelink;
 				}else{
 					$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';	
 				}
@@ -1038,7 +1038,7 @@ function mh_display_random_featured_item($withImage=false)
 
 		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>', $itemTitle), array(), 'show', $item) .'</p>';
 	}else {
-		$html .= '<p>'.__('No featured items are available.').'</p>';
+		$html .= '<div class="item-thumb clearfix"></div><div class="item-description"><p>'.__('No featured items are available.').'</p></div>';
 	}
 	$html .= '</article>';
 
@@ -1448,23 +1448,10 @@ function mh_normalize_special_characters( $str )
 	# Quotes cleanup
 	$str = str_replace( chr(ord("`")), "'", $str );        # `
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-	$str = str_replace( chr(ord("?")), ",", $str );        # ?
 	$str = str_replace( chr(ord("`")), "'", $str );        # `
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-	$str = str_replace( chr(ord("?")), "\"", $str );        # ?
-	$str = str_replace( chr(ord("?")), "\"", $str );        # ?
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-
-	$unwanted_array = array(    '?'=>'S', '?'=>'s', '?'=>'Z', '?'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
-		'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
-		'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-		'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y');
-
-	$str = strtr( $str, $unwanted_array );
-
-	#For reasons yet unknown, only some servers may require an additional $unwanted_array item: 'height'=>'h&#101;ight'
-
+	
 	# Bullets, dashes, and trademarks
 	$str = str_replace( chr(149), "&#8226;", $str );    # bullet ?
 	$str = str_replace( chr(150), "&ndash;", $str );    # en dash
@@ -1475,6 +1462,17 @@ function mh_normalize_special_characters( $str )
 	$str = str_replace( "&quot;", "\"", $str );        # "
 	$str = str_replace( "&apos;", "\'", $str );        # '
 	$str = str_replace( "&#039;", "'", $str );        # '
+	$str = str_replace( "£", "&#163;", $str );        # pounds £ '	
+
+	$unwanted_array = array(    '?'=>'S', '?'=>'s', '?'=>'Z', '?'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+		'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+		'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+		'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y');
+
+	$str = strtr( $str, $unwanted_array );
+
+	#For reasons yet unknown, only some servers may require an additional $unwanted_array item: 'height'=>'h&#101;ight'
 
 	return $str;
 }
