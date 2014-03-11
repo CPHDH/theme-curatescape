@@ -102,6 +102,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 			</article> 
 		<?php 
 		$index++;
+		$item_image=null;
 		endforeach; 
 		?>
 		

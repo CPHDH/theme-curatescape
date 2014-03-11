@@ -158,7 +158,11 @@ function random_item_link($text=null,$class='show'){
 	   $linkclass = 'random-story-link ' . $class;
 	   $link = link_to( $randitems[0], 'show', $text,
 	   		array( 'class' => $linkclass ) );
-	}	
+	}else{
+		$linkclass = 'random-story-link ' . $class;
+	   $link = link_to( $record, $action, 'Publish some items to activate this link',
+	   		array( 'class' => $linkclass ) );
+	}
    	return $link;
 
 }

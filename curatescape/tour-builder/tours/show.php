@@ -60,6 +60,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 		         </article>
 	         <?php 
 	         $i++;
+	         $item_image=null;
 	         endforeach; ?>
 		</section>
 				<div class="comments">
