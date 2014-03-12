@@ -974,6 +974,8 @@ figure#home-map {
 	list-style-type: none;
 	margin-bottom: .25em;	
 	font-size: small;
+	font-style: italic;
+	color:#777;
 }
 
 #search-filters li{
@@ -984,7 +986,6 @@ figure#home-map {
 #search-filters ul li{
 	margin-left: 0;
 	display: inline-block; 
-	background: #eaeaea;
 	border-radius: .15em;
 	margin-bottom: .5em;
 	text-shadow: 1px 1px 0 #fff;
@@ -994,8 +995,7 @@ figure#home-map {
 }
 
 #search-filters ul li ul,#search-filters ul li ul li{
-	display: inline;
-	margin-bottom: 0;
+	margin: 0;
 }
 
 #search-filters ul li ul li:last-child:after{
