@@ -316,7 +316,7 @@ h1 a,h2 a,h3 a,h4 a,h5 a,nav a,a.item-map-link {
 	border-bottom:0 none transparent;
 }
 
-h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span {
+h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span,thead {
 	font-family:"Arial Narrow","Segoe UI","Franklin Gothic Medium",Tahoma,"Arial","Helvetica",sans-serif;
 	font-variant:small-caps;
 }
@@ -965,6 +965,58 @@ figure#home-map {
 
 #tours.show .item-result .item-image{
 	margin-bottom: .5em;
+}
+
+#search-filters ul{
+	padding-left: 0;
+	margin: .25em 0 1em;
+	display: inline-block;
+	list-style-type: none;
+	margin-bottom: .25em;	
+	font-size: small;
+}
+
+#search-filters li{
+	padding: 0 .25em;
+	line-height: auto;
+}
+
+#search-filters ul li{
+	margin-left: 0;
+	display: inline-block; 
+	background: #eaeaea;
+	border-radius: .15em;
+	margin-bottom: .5em;
+	text-shadow: 1px 1px 0 #fff;
+}
+#search-filters ul li ul li:after{
+	content:',';
+}
+
+#search-filters ul li ul,#search-filters ul li ul li{
+	display: inline;
+	margin-bottom: 0;
+}
+
+#search-filters ul li ul li:last-child:after{
+	content:'';
+}
+table#search-results{
+	margin: 1em 0 2em;
+	width: 100%;
+}
+table#search-results thead{
+	border-bottom: 1px dashed #ccc;
+	padding: 0 0 .5em;
+	text-align: left;
+	margin-bottom: 1em;
+}
+
+table#search-results tr.item,table#search-results tr.tour{
+	font-weight: bold;
+}
+table#search-results tr.file{
+	font-size: small;
 }
 
 /* Random links and "big buttons" */

@@ -194,29 +194,31 @@ jQuery(document).ready(function() {
 
 	function itemMapToggle(){
 		// ShowMap script for "mobile" views
-		jQuery('#hero').after('<div id="showmap" class=""><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>').fadeIn('slow');
-		jQuery('#showmap a').click(function(){
-			
-			jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
-	            var map = jQuery('#map_canvas').gmap('get', 'map');
-	            var bounds=map.getBounds();
-	            var center=bounds.getCenter();
-	            var znum=map.getZoom();
-	            if( (jQuery('body#tours')) && (znum<10)){
-		            // for whatever reason, we need to manually tweak the zoom level on the tour maps
-		            znum=10;
-	            }
-	            google.maps.event.trigger(map, "resize");
-	                	map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-		                map.fitBounds(bounds);
-		                map.setZoom(eval(znum));
-						});
-						
-			jQuery('#slider').slideToggle('fast', 'linear');
-			jQuery('#swipenav').slideToggle('fast', 'linear');	
-			jQuery('#showmap a').toggleClass('mapview');
-			jQuery('#showmap a i').toggleClass('hidden');
-		 });
+		if(jQuery("body#search").exists() !== true){
+			jQuery('#hero').after('<div id="showmap" class=""><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>').fadeIn('slow');
+			jQuery('#showmap a').click(function(){
+				
+				jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
+		            var map = jQuery('#map_canvas').gmap('get', 'map');
+		            var bounds=map.getBounds();
+		            var center=bounds.getCenter();
+		            var znum=map.getZoom();
+		            if( (jQuery('body#tours')) && (znum<10)){
+			            // for whatever reason, we need to manually tweak the zoom level on the tour maps
+			            znum=10;
+		            }
+		            google.maps.event.trigger(map, "resize");
+		                	map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+			                map.fitBounds(bounds);
+			                map.setZoom(eval(znum));
+							});
+							
+				jQuery('#slider').slideToggle('fast', 'linear');
+				jQuery('#swipenav').slideToggle('fast', 'linear');	
+				jQuery('#showmap a').toggleClass('mapview');
+				jQuery('#showmap a i').toggleClass('hidden');
+			 });
+		 }
 	 }
 
 	// Function to handle changes to style classes based on window width
@@ -237,7 +239,12 @@ jQuery(document).ready(function() {
 			
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").show();
-			jQuery('#map_canvas').hide(); 
+			
+			if(jQuery("body#search").exists()){
+				jQuery('#map_canvas').show(); 
+				}else{
+				jQuery('#map_canvas').hide(); 
+				}
 				
 			
 			/*TOGGLE ITEM-IMAGE SIZES*/
