@@ -1150,7 +1150,8 @@ function mh_custom_content($length=500){
 	echo $html;
 
 	echo '<div id="rr_home-items" class="hidden">';
-	echo mh_random_or_recent();
+
+	echo mh_random_or_recent(($mode=get_theme_option('random_or_recent') ? get_theme_option('random_or_recent') : 'random'));
 	echo '</div>';
 }
 
