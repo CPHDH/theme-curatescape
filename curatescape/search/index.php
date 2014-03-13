@@ -40,7 +40,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		<table id="search-results">
 		    <thead>
 		        <tr>
-		            <th><?php echo __('Record Type');?></th>
+		            <th><?php echo __('Type');?></th>
 		            <th><?php echo __('Title');?></th>
 		        </tr>
 		    </thead>

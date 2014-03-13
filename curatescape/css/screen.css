@@ -36,6 +36,11 @@ h3 .icon-camera-retro:before,h3 .icon-film:before,h3 .icon-volume-up:before,h3 .
 	padding-right:.5em;
 }
 
+#showmap a i.icon-camera-retro:before{
+	padding-left: 0;
+	margin-left: -2px;
+}
+
 .icon-chevron-down:before,.icon-chevron-right:before,.big .icon-info-sign:before {
 	padding-left:.5em;
 }
@@ -967,6 +972,7 @@ figure#home-map {
 	margin-bottom: .5em;
 }
 
+/* Search */
 #search-filters ul{
 	padding-left: 0;
 	margin: .25em 0 1em;
@@ -1011,12 +1017,18 @@ table#search-results thead{
 	text-align: left;
 	margin-bottom: 1em;
 }
+table#search-results thead th{
+	min-width: 4em;
+}
 
 table#search-results tr.item,table#search-results tr.tour{
 	font-weight: bold;
 }
 table#search-results tr.file{
 	font-size: small;
+}
+#advanced-search-form{
+	margin-bottom: 3em;
 }
 
 /* Random links and "big buttons" */
@@ -1594,6 +1606,20 @@ div#map-block p.map-notification {
 	padding-top:9em;
 	text-align:center;
 	text-shadow:.01em .025em 0 #fafafa;
+}
+
+/* Inline login form */
+#login-form{
+	margin: 0px auto 3em;
+	width: 100%;
+	max-width: 15em;
+	display: block;
+}
+p#login-links{
+	text-align: center;
+}
+.login #wrap > h1{
+	color:transparent;
 }
 
 
