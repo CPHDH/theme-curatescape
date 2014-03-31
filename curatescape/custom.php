@@ -152,7 +152,7 @@ function random_item_link($text=null,$class='show'){
 	}
 
 	$link = '';
-	$randitems = get_random_featured_items( 1 );
+	$randitems = get_records('Item', array( 'sort_field' => 'random', 'hasImage' => true), 1);
 
 	if( count( $randitems ) > 0 ){
 	   $linkclass = 'random-story-link ' . $class;
