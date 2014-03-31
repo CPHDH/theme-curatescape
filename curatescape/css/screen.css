@@ -292,6 +292,11 @@ a,a:hover,a:active {
 	hyphens:auto;
 }
 
+p, section#text, section.meta, .about-snippet, .item-description,.fancybox-inner{
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
 #cite-this,.item-related-links a {
 /* let's try to avoid hyphenating URLs */
 	-webkit-hyphens:none;
