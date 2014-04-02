@@ -1,6 +1,6 @@
 <?php
 $user = current_user();
-$pageTitle =  get_option('guest_user_dashboard_label');
+$pageTitle =  'My Account';
 echo head(array('title' => $pageTitle, 'bodyclass' => 'contribution'));
 ?>
 <div id="content">

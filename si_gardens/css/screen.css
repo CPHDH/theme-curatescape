@@ -1580,6 +1580,13 @@ ul.error{
 	padding-left: 0;
 }
 
+table{
+	margin: 1em 0 1em;
+}
+th,td{
+	padding-right:1em;
+}
+
 .contribution article form fieldset {
 	width:94%;
 	background:#f9f9f8;
