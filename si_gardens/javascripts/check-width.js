@@ -232,6 +232,7 @@ jQuery(document).ready(function() {
 		// Beakpoint for assigning small or big class
 		var breakpoint = 720;
 		
+		
 		if ($window.width() < breakpoint) {
 			
 			/*TOGGLE CLASSES*/
@@ -285,6 +286,8 @@ jQuery(document).ready(function() {
 	}
 	// Execute on load
 	checkWidth();
+	// Prevent auto-complete
+	jQuery('input#username, input#password, input#new_password, input#new_password_confirm, input#email').attr('autocomplete','off');
 	// Bind event listener
 	jQuery($window).resize(checkWidth);
 	jQuery($window).load(function() {
