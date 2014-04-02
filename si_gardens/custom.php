@@ -1423,7 +1423,7 @@ function mh_ios_smart_banner(){
 		$numericID=str_replace('id', '', mh_app_id());
 		if (!isset($_COOKIE[$AppBanner])){
 			echo '<meta name="apple-itunes-app" content="app-id='.$numericID.'">';
-			setcookie($AppBanner, true,  time()+86400); // 1 day
+			setcookie($AppBanner, true,  time()+86400,$path,$domain,true); // 1 day
 		}
 	}
 }

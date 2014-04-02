@@ -58,11 +58,11 @@ echo mh_custom_css(); ?>
 <?php echo fire_plugin_hook('public_head',array('view'=>$this)); ?>
 
 <!-- JavaScripts -->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-<link href="http://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/4.3/video.js"></script>
+<link href="https://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/4.3/video.js"></script>
 <?php
 queue_js_file('audiojs/audiojs/audio.min'); 	
 queue_js_file('libraries.min'); // <-- combined: Modernizr, jQuery UI Maps, Swipe.js, Fancybox
