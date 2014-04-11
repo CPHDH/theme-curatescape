@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
-<link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/>
+<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <?php echo mh_auto_discovery_link_tags(); ?>
 
 <?php
@@ -57,7 +57,7 @@ echo head_css();
 <!-- Custom CSS via theme config -->
 <?php 
 if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
-	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/archive/theme_uploads/'.$uploaded_stylesheet.'" />';
+	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
 	}
 echo mh_custom_css(); ?>
 
