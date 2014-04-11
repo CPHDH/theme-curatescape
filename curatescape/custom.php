@@ -116,7 +116,7 @@ function mh_tour_header(){
 ** Global navigation
 */
 function mh_global_nav(){
-	if(get_theme_option('default_nav')==1){
+	if(get_theme_option('default_nav')!==0){
 		return nav(array(
 			array('label'=>__('Home'),'uri' => url('/')),
 			array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
@@ -321,7 +321,12 @@ function mh_display_map($type=null){
 			'zoomControlOptions': {
 			  'style': google.maps.ZoomControlStyle.SMALL,
 			  'position': google.maps.ControlPosition.TOP_RIGHT
-			}
+			},
+		    'streetViewControl': true,
+		    'streetViewControlOptions': {
+			  'style': google.maps.ZoomControlStyle.SMALL,
+			  'position': google.maps.ControlPosition.TOP_RIGHT
+		    }			
 		}).bind('init', function() {
 
 			if(type == 'story'){
@@ -1129,7 +1134,7 @@ function mh_display_random_item($num=1){
 ** Display the customizable "About" content on homepage
 ** also sets content for mobile slideshow, via mh_random_or_recent()
 */
-function mh_custom_content($length=500){
+function mh_custom_content($length=650){
 	$html ='';
 	
 	$html .= '<article>';
@@ -1140,7 +1145,8 @@ function mh_custom_content($length=500){
 	$html .= '</header><div class="about-snippet">';
 
 	$html .= '<div id="inline-logo"><img alt="'.option('site_title').' logo" src="'.mh_apple_icon_logo_url().'"/></div>';
-	$html .= snippet(mh_about(),0,$length,"...");
+	$html .= substr(mh_about(),0,$length);
+	$html .= ($length < strlen(mh_about())) ? '...' : null;
 
 	$html .= '</div></article>';
 
@@ -1183,9 +1189,8 @@ function mh_owner_link(){
 	$authname_fallback=(option('author')) ? option('author') : option('site_title');
 	
 	$authname=(get_theme_option('sponsor_name')) ? get_theme_option('sponsor_name') : $authname_fallback;
-	$authlink=(get_theme_option('sponsor_link')) ? '<a href="'.get_theme_option('sponsor_link').'">'.$authname.'</a>' : $authname;
 	
-	return $authlink;
+	return $authname;
 }
 
 /*
@@ -1217,9 +1222,10 @@ function mh_custom_css(){
 	.vjs-default-skin .vjs-play-progress,.vjs-default-skin .vjs-volume-level,
 	#swipenav #position li.current, .random-story-link.big-button{
 		background-color:'.mh_link_color().' !important;}
-	a,blockquote{
+	a{
 		color:'.mh_link_color().'
 		}
+	blockquote{border-left-color:'.mh_link_color().'}	
 	a:hover,#items #tour-nav-links a{
 		color:'.mh_secondary_link_color().'
 		}'.get_theme_option('custom_css').
