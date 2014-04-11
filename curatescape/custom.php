@@ -1272,6 +1272,7 @@ function mh_about($text=null){
 function mh_license(){
 	$cc_license=get_theme_option('cc_license');
 	$cc_version=get_theme_option('cc_version');
+	$cc_jurisdiction=get_theme_option('cc_jurisdiction');
 	$cc_readable=array(
 		'1'=>'1.0',
 		'2'=>'2.0',
@@ -1285,9 +1286,15 @@ function mh_license(){
 		'by-nc-sa'=>'Attribution-NonCommercial-ShareAlike',
 		'by-nc-nd'=>'Attribution-NonCommercial-NoDerivs'		
 		);
+	$cc_jurisdiction_readable=array(
+		'intl'=>'International',
+		'ca'=>'Canada',
+		'au'=>'Australia',
+		'uk'=>'United Kingdom (England and Whales)',
+		'us'=>'United States'	
+		);		
 	if($cc_license != 'none'){
-		$cc_version_readable= strtr($cc_version, $cc_readable);
-		return __('This work is licensed by '.mh_owner_link().' under a <a rel="license" href="http://creativecommons.org/licenses/'.$cc_license.'/'.$cc_version_readable.'/deed.en_US">Creative Commons '.strtr($cc_license, $cc_readable).' '.$cc_version_readable.' International License</a>.');
+		return __('This work is licensed by '.mh_owner_link().' under a <a rel="license" href="http://creativecommons.org/licenses/'.$cc_license.'/'.$cc_readable[$cc_version].'/'.($cc_jurisdiction !== 'intl' ? $cc_jurisdiction : null).'">Creative Commons '.$cc_readable[$cc_license].' '.$cc_readable[$cc_version].' '.$cc_jurisdiction_readable[$cc_jurisdiction].' License</a>.');
 	}else{
 		return __('&copy; %1$s %2$s', date('Y'), mh_owner_link() );	
 	}
