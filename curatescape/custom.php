@@ -908,7 +908,8 @@ function mh_related_links(){
 ** www.addthis.com
 */
 function mh_share_this($type='Page'){
-	$addthis = (get_theme_option('Add This')) ? (get_theme_option('Add This')) : 'ra-4e89c646711b8856';
+	$addthis = get_theme_option('Add This') ? '#pubid='.get_theme_option('Add This') : null;
+	$tracking= ($addthis && get_theme_option('track_address_bar')) ? '"data_track_addressbar":true' : null;
 
 	$html = '<h3>'.__('Share this %s',$type).'</h3>';
 	$html .= '<!-- AddThis Button BEGIN -->
@@ -918,8 +919,8 @@ function mh_share_this($type='Page'){
 <a class="addthis_button_email"></a>
 <a class="addthis_button_compact"></a>
 </div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid='.$addthis.'"></script>
+<script type="text/javascript">var addthis_config = {'.$tracking.'};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js'.$addthis.'"></script>
 <!-- AddThis Button END -->';
 
 
