@@ -52,9 +52,8 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
 						$item_image = array_pop($result);				
 					}
-					echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; 
+					echo isset($item_image) ? '<a href="'. url('/') .'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><span class="item-image" style="background-image:url('.$item_image.');"></span></a>' : null; 
 					?>
-				
 						         
 			         <div class="item-description"><?php echo snippet(metadata( $tourItem, array('Dublin Core', 'Description') ),0,250); ?></div>
 		         </article>
