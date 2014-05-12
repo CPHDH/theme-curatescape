@@ -43,21 +43,28 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         	$hasImage=metadata($tourItem,'has thumbnail');
 	         ?>
 		         <article class="item-result <?php echo $hasImage ? 'has-image' : null;?>">
-			         <h3><?php echo $i.'.';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
+			         <h3><?php echo '<span class="number">'.$i.'</span>';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
 			         <?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 			         </a></h3>
-					<?php if ( $hasImage ): ?>
-						<div class="item-thumb hidden">
-		    				<?php echo item_image('square_thumbnail') ;?>						
-		    			</div>
-					<?php endif; ?>			         
+
+					<?php
+					if ($hasImage){
+						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+						$item_image = array_pop($result);				
+					}
+					echo isset($item_image) ? '<a href="'. url('/') .'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><span class="item-image" style="background-image:url('.$item_image.');"></span></a>' : null; 
+					?>
+						         
 			         <div class="item-description"><?php echo snippet(metadata( $tourItem, array('Dublin Core', 'Description') ),0,250); ?></div>
 		         </article>
 	         <?php 
 	         $i++;
+	         $item_image=null;
 	         endforeach; ?>
 		</section>
-			   
+				<div class="comments">
+				<?php echo (get_theme_option('tour_comments') ==1) ? mh_disquss_comments() : null;?>
+				</div>			   
 	</div>
 
 

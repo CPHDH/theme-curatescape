@@ -65,20 +65,19 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 		foreach(loop('Items') as $item): 
 			$description = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>250));
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
-			$thumblink=link_to_item(item_image('square_thumbnail') );
 			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
 			$hasImage=metadata($item, 'has thumbnail');
+			if ($hasImage){
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
+			}
+			
 			?>
 			<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
 			
 				<h3><?php echo $titlelink; ?></h3>
 				
-				<?php if ($hasImage && mh_reducepayload($index,$showImgNum)): ?>
-					<div class="item-thumb">
-	    				<?php echo $thumblink; ?>						
-	    			</div>
-				<?php endif; ?>
-
+				<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
 				
 				<?php if ($description): ?>
     				<div class="item-description">
@@ -86,21 +85,24 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
     				</div>
 				<?php endif; ?>
 
-				<?php if (metadata($item, 'has tags') ): ?>
-    				<div class="item-tags">
-    				<p><span><?php echo __('Tags');?>:</span> <?php echo $tags; ?></p>
-    				</div>
-				<?php endif; ?>
-				
-				<?php 
-				if(get_theme_option('subjects_on_browse')==1){
-					mh_subjects_string();
-					}
-				?>
+				<div class="item-meta-browse">
+					<?php if (metadata($item, 'has tags') ): ?>
+	    				<div class="item-tags">
+	    				<p><span><?php echo __('Tags');?>:</span> <?php echo $tags; ?></p>
+	    				</div>
+					<?php endif; ?>
+					
+					<?php 
+					if(get_theme_option('subjects_on_browse')==1){
+						mh_subjects_string();
+						}
+					?>
+				</div>
 				
 			</article> 
 		<?php 
 		$index++;
+		$item_image=null;
 		endforeach; 
 		?>
 		

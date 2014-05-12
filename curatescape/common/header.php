@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
-<link rel="shortcut icon" href="<?php echo img('favicon.ico');?>"/>
+<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <?php echo mh_auto_discovery_link_tags(); ?>
 
 <?php
@@ -26,7 +26,7 @@ isset($file) ? $file : $file=null;
 
 <!-- FB Open Graph stuff -->
 <meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
-<meta property="og:image" content="<?php echo mh_seo_pageimg($item);?>"/>
+<meta property="og:image" content="<?php echo mh_seo_pageimg($item,$file);?>"/>
 <meta property="og:site_name" content="<?php echo option('site_title');?>"/>
 <meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>"/>
 
@@ -34,7 +34,7 @@ isset($file) ? $file : $file=null;
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title); ?>">
 <meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>">
-<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item);?>">
+<meta name="twitter:image:src" content="<?php echo mh_seo_pageimg($item,$file);?>">
 <?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="'.$twitter.'"> ' : '';?> 
 <?php echo ($ios=get_theme_option('ios_app_id')) ?  '<meta name="twitter:app:id:iphone" content="'.$ios.'"> ' : '';?> 
 <?php echo ($play=get_theme_option('android_app_id')) ?  '<meta name="twitter:app:id:googleplay" content="'.$play.'"> ' : '';?> 
@@ -57,7 +57,7 @@ echo head_css();
 <!-- Custom CSS via theme config -->
 <?php 
 if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
-	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/archive/theme_uploads/'.$uploaded_stylesheet.'" />';
+	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
 	}
 echo mh_custom_css(); ?>
 

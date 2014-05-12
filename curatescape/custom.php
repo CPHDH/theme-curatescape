@@ -34,14 +34,19 @@ function mh_seo_pagetitle($title){
 }
 
 // SEO Page image
-function mh_seo_pageimg($item=null){
+function mh_seo_pageimg($item=null,$file=null){
 	if($item){
 		if(metadata($item, 'has thumbnail')){
 			$itemimg=item_image('square_thumbnail') ;	
 			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
 			$itemimg=array_pop($result);
 		}
-	}
+	}elseif($file){
+		if($itemimg=file_image('square_thumbnail') ){
+			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
+			$itemimg=array_pop($result);
+		}
+	}	
 	return isset($itemimg) ? $itemimg : mh_lg_logo_url();
 }
 
@@ -117,7 +122,7 @@ function mh_tour_header(){
 ** Global navigation
 */
 function mh_global_nav(){
-	if(get_theme_option('default_nav')==1){
+	if(get_theme_option('default_nav')!==0){
 		return nav(array(
 			array('label'=>__('Home'),'uri' => url('/')),
 			array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
@@ -153,13 +158,17 @@ function random_item_link($text=null,$class='show'){
 	}
 
 	$link = '';
-	$randitems = get_random_featured_items( 1 );
+	$randitems = get_records('Item', array( 'sort_field' => 'random', 'hasImage' => true), 1);
 
 	if( count( $randitems ) > 0 ){
 	   $linkclass = 'random-story-link ' . $class;
 	   $link = link_to( $randitems[0], 'show', $text,
 	   		array( 'class' => $linkclass ) );
-	}	
+	}else{
+		$linkclass = 'random-story-link ' . $class;
+	   $link = link_to( $record, $action, __('Publish some items to activate this link'),
+	   		array( 'class' => $linkclass ) );
+	}
    	return $link;
 
 }
@@ -318,7 +327,12 @@ function mh_display_map($type=null){
 			'zoomControlOptions': {
 			  'style': google.maps.ZoomControlStyle.SMALL,
 			  'position': google.maps.ControlPosition.TOP_RIGHT
-			}
+			},
+		    'streetViewControl': true,
+		    'streetViewControlOptions': {
+			  'style': google.maps.ZoomControlStyle.SMALL,
+			  'position': google.maps.ControlPosition.TOP_RIGHT
+		    }			
 		}).bind('init', function() {
 
 			if(type == 'story'){
@@ -457,7 +471,7 @@ function mh_appstore_footer(){
 			echo '<a id="apple-text-link" class="app-store-footer" href="https://itunes.apple.com/us/app/'.$ios_app_id.'">'.__('Get the app for iPhone').'</a>';
 		}
 		elseif (($ios_app_id == false) && ($android_app_id != false)) {
-			echo '<a id="apple-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Get the app for Android').'</a>';
+			echo '<a id="android-text-link" class="app-store-footer" href="http://play.google.com/store/apps/details?id='.$android_app_id.'">'.__('Get the app for Android').'</a>';
 
 		}
 		elseif (($ios_app_id != false)&&($android_app_id != false)) {
@@ -582,6 +596,39 @@ function mh_item_citation(){
 	return mh_wrappable_link(html_entity_decode(metadata('item', 'citation')));
 }
 
+/*
+** Build caption from description, source, and creator
+*/
+function mh_file_caption($file,$inlineTitle=true){
+   
+   $caption=array();
+
+   if( $inlineTitle !== false ){
+	   $title = metadata( $file, array( 'Dublin Core', 'Title' ) ) ? metadata( $file, array( 'Dublin Core', 'Title' ) ) : null;
+   }   
+   
+   $description = metadata( $file, array( 'Dublin Core', 'Description' ) );
+   if( $description ) {
+      $caption[]= $description;
+   }
+      
+   $source = metadata( $file, array( 'Dublin Core', 'Source' ) );
+   if( $source ) {
+   		$caption[]= __('Source: %s',$source);
+   }
+   
+
+   $creator = metadata( $file, array( 'Dublin Core', 'Creator' ) );
+   if( $creator ) {
+   		$caption[]= __('Creator: %s', $creator);
+   }   
+   
+   if( count($caption) ){
+	   return ($inlineTitle ? $title.': ' : null).implode(" | ", $caption);
+   }else{
+	   return $inlineTitle ? $title : null;
+   }	
+}
 
 /*
 ** Loop through and display image files
@@ -629,21 +676,21 @@ function mh_item_images($item,$index=0){
 		$mime = metadata($file,'MIME Type');
 		
 		if(in_array($mime,$img)) {
-			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Photos <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
+			if($index==0) echo '<h3><i class="icon-camera-retro"></i>Images <span class="toggle instapaper_ignore">Show <i class="icon-chevron-right"></i></span></h3>';		
 			$filelink=link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow'));	
-			$photoDesc = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Description')));
+			$photoDesc = mh_normalize_special_characters(strip_tags(mh_file_caption($file,false),'<a><strong><em><i><b>'));
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
 			
 			if($photoTitle){
-				$photoCaption= $photoTitle.(($photoDesc) ? ': '.$photoDesc : '').' ';
-				$photoCaption = '<span class="main">'.strip_tags($photoCaption).'</span>'.$filelink;
+				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
+				$fancyboxCaption = '<span class="main">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b>').'</span>'.$filelink;
 				}else{
-					$photoCaption = '<span class="main">'.__('Image %s',($index+1)).'</span>';	
+					$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';	
 				}
 
 			$html .= '<div class="item-file-container">';
 
-			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$photoCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
+			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
 			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
 			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
@@ -671,7 +718,7 @@ function mh_audio_files($item,$index=0){
     }
 	$audioTypes = array('audio/mpeg');
 	foreach (loop('files', $item->Files) as $file):
-		$audioDesc = metadata($file,array('Dublin Core','Description'));
+		$audioDesc = strip_tags(mh_file_caption($file,false));
 		$audioTitle = metadata($file,array('Dublin Core','Title'));
 		$mime = metadata($file,'MIME Type');
 
@@ -709,8 +756,6 @@ function mh_video_files($item,$html=null) {
         $localVid=0;
         $videoTypes = array('video/mp4','video/mpeg','video/quicktime');
         $videoPoster = mh_poster_url();
-        $videoJS = js_tag('video-js/video.min');
-        $videoSWF= '<script> _V_.options.flash.swf = "'. WEB_ROOT .'/themes/curatescape/javascripts/video-js/video-js.swf"</script>';
 
 
         foreach (loop('files', $item->Files) as $file):
@@ -720,7 +765,7 @@ function mh_video_files($item,$html=null) {
 		        $videoFile = file_display_url($file,'original');
 		        $videoTitle = metadata($file,array('Dublin Core', 'Title'));
 		        $videoClass = (($videoIndex==0) ? 'first' : 'not-first');
-		        $videoDesc = metadata($file,array('Dublin Core','Description'));
+		        $videoDesc = mh_file_caption($file,false);
 		        $videoTitle = metadata($file,array('Dublin Core','Title'));	        
 	        	$embeddable=embeddableVersion($file,$videoTitle,$videoDesc);
 	        	if($embeddable){
@@ -743,10 +788,9 @@ function mh_video_files($item,$html=null) {
 	        }
         endforeach;
         if ($videoIndex > 0) {
-        		echo '<h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
-                if($localVid>0) echo $videoJS.$videoSWF;
+        		echo '<link href="http://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.3/video.js"></script><h3><i class="icon-film"></i>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';
                 echo $html;
-                if($localVid>0) echo mh_video_ResponsifyVideoScript($localVid);
         }
 }  
 
@@ -785,42 +829,6 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 	}	
 }
 
-      
-/*
-** Script to resize the video based on desired aspect ratio and browser viewport
-** This basically iterates a separate action for each video (see mh_video_files() loop above),
-** which is not very efficient, but having more than one video per record is not very common here
-*/
-function mh_video_ResponsifyVideoScript($videoIndex, $aspectRatio='360/640'){
-?>
-
-
-	<script>
-	var vidCount=<?php echo $videoIndex; ?>-1;
-	var aspectRatio=<?php echo $aspectRatio; ?>;
-
-	for (var i=0;i<=vidCount;i++){
-		var vidID = "#video-"+i+"";
-
-	    _V_(vidID).ready(function(i){
-	      var myVid = this;
-
-	      function resizeVideoJS(i){
-	        var width = document.getElementById(myVid.id).parentElement.offsetWidth;
-	        myVid.width(width).height( width * aspectRatio );
-	      }
-	      resizeVideoJS(i);
-
-	      var $window = jQuery(window);
-	      jQuery($window).resize(resizeVideoJS);
-
-	    });
-	}
-
-	</script>
-
-<?php
-}
 
 /*
 ** Display subjects as links
@@ -906,7 +914,8 @@ function mh_related_links(){
 ** www.addthis.com
 */
 function mh_share_this($type='Page'){
-	$addthis = (get_theme_option('Add This')) ? (get_theme_option('Add This')) : 'ra-4e89c646711b8856';
+	$addthis = get_theme_option('Add This') ? '#pubid='.get_theme_option('Add This') : null;
+	$tracking= ($addthis && get_theme_option('track_address_bar')) ? '"data_track_addressbar":true' : null;
 
 	$html = '<h3>'.__('Share this %s',$type).'</h3>';
 	$html .= '<!-- AddThis Button BEGIN -->
@@ -916,8 +925,8 @@ function mh_share_this($type='Page'){
 <a class="addthis_button_email"></a>
 <a class="addthis_button_compact"></a>
 </div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid='.$addthis.'"></script>
+<script type="text/javascript">var addthis_config = {'.$tracking.'};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js'.$addthis.'"></script>
 <!-- AddThis Button END -->';
 
 
@@ -1041,7 +1050,7 @@ function mh_display_random_featured_item($withImage=false)
 
 		$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>', $itemTitle), array(), 'show', $item) .'</p>';
 	}else {
-		$html .= '<p>'.__('No featured items are available.').'</p>';
+		$html .= '<div class="item-thumb clearfix"></div><div class="item-description"><p>'.__('No featured items are available.').'</p></div>';
 	}
 	$html .= '</article>';
 
@@ -1059,11 +1068,21 @@ function mh_display_recent_item($num=1){
 	
 	if (has_loop_records('items')){
 		foreach (loop('items') as $item){
+
 			echo '<article class="item-result has-image">';
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
+			
+	
+			$hasImage=metadata($item, 'has thumbnail');
+			if ($hasImage){
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
+			}			
 
-			echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
+			echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null;
+			
+			//echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
 
 
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
@@ -1094,7 +1113,13 @@ function mh_display_random_item($num=1){
 
 			echo '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title'))).'</h3>';
 
-			echo '<div class="item-thumb">'.link_to_item(item_image('square_thumbnail')).'</div>';
+			$hasImage=metadata($item, 'has thumbnail');
+			if ($hasImage){
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
+			}			
+
+			echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null;
 
 
 			if($desc = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>200))){
@@ -1116,7 +1141,7 @@ function mh_display_random_item($num=1){
 ** Display the customizable "About" content on homepage
 ** also sets content for mobile slideshow, via mh_random_or_recent()
 */
-function mh_custom_content($length=500){
+function mh_custom_content($length=650){
 	$html ='';
 	
 	$html .= '<article>';
@@ -1127,7 +1152,8 @@ function mh_custom_content($length=500){
 	$html .= '</header><div class="about-snippet">';
 
 	$html .= '<div id="inline-logo"><img alt="'.option('site_title').' logo" src="'.mh_apple_icon_logo_url().'"/></div>';
-	$html .= snippet(mh_about(),0,$length,"...");
+	$html .= substr(mh_about(),0,$length);
+	$html .= ($length < strlen(mh_about())) ? '...' : null;
 
 	$html .= '</div></article>';
 
@@ -1137,7 +1163,8 @@ function mh_custom_content($length=500){
 	echo $html;
 
 	echo '<div id="rr_home-items" class="hidden">';
-	echo mh_random_or_recent();
+
+	echo mh_random_or_recent(($mode=get_theme_option('random_or_recent') ? get_theme_option('random_or_recent') : 'random'));
 	echo '</div>';
 }
 
@@ -1169,9 +1196,8 @@ function mh_owner_link(){
 	$authname_fallback=(option('author')) ? option('author') : option('site_title');
 	
 	$authname=(get_theme_option('sponsor_name')) ? get_theme_option('sponsor_name') : $authname_fallback;
-	$authlink=(get_theme_option('sponsor_link')) ? '<a href="'.get_theme_option('sponsor_link').'">'.$authname.'</a>' : $authname;
 	
-	return $authlink;
+	return $authname;
 }
 
 /*
@@ -1200,11 +1226,13 @@ function mh_custom_css(){
 		background:url('.mh_bg_url().') repeat-x fixed center top #CCCCCC;
 		box-shadow:none;
 	}
+	.vjs-default-skin .vjs-play-progress,.vjs-default-skin .vjs-volume-level,
 	#swipenav #position li.current, .random-story-link.big-button{
-		background-color:'.mh_link_color().'}
-	a,blockquote{
+		background-color:'.mh_link_color().' !important;}
+	a{
 		color:'.mh_link_color().'
 		}
+	blockquote{border-left-color:'.mh_link_color().'}	
 	a:hover,#items #tour-nav-links a{
 		color:'.mh_secondary_link_color().'
 		}'.get_theme_option('custom_css').
@@ -1243,6 +1271,40 @@ function mh_about($text=null){
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
+}
+
+/*
+**
+*/
+function mh_license(){
+	$cc_license=get_theme_option('cc_license');
+	$cc_version=get_theme_option('cc_version');
+	$cc_jurisdiction=get_theme_option('cc_jurisdiction');
+	$cc_readable=array(
+		'1'=>'1.0',
+		'2'=>'2.0',
+		'2-5'=>'2.5',
+		'3'=>'3.0',
+		'4'=>'4.0',
+		'by'=>'Attribution',
+		'by-sa'=>'Attribution-ShareAlike',
+		'by-nd'=>'Attribution-NoDerivs',
+		'by-nc'=>'Attribution-NonCommercial',
+		'by-nc-sa'=>'Attribution-NonCommercial-ShareAlike',
+		'by-nc-nd'=>'Attribution-NonCommercial-NoDerivs'		
+		);
+	$cc_jurisdiction_readable=array(
+		'intl'=>'International',
+		'ca'=>'Canada',
+		'au'=>'Australia',
+		'uk'=>'United Kingdom (England and Whales)',
+		'us'=>'United States'	
+		);		
+	if($cc_license != 'none'){
+		return __('This work is licensed by '.mh_owner_link().' under a <a rel="license" href="http://creativecommons.org/licenses/'.$cc_license.'/'.$cc_readable[$cc_version].'/'.($cc_jurisdiction !== 'intl' ? $cc_jurisdiction : null).'">Creative Commons '.$cc_readable[$cc_license].' '.$cc_readable[$cc_version].' '.$cc_jurisdiction_readable[$cc_jurisdiction].' License</a>.');
+	}else{
+		return __('&copy; %1$s %2$s', date('Y'), mh_owner_link() );	
+	}
 }
 
 
@@ -1407,23 +1469,10 @@ function mh_normalize_special_characters( $str )
 	# Quotes cleanup
 	$str = str_replace( chr(ord("`")), "'", $str );        # `
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-	$str = str_replace( chr(ord("?")), ",", $str );        # ?
 	$str = str_replace( chr(ord("`")), "'", $str );        # `
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-	$str = str_replace( chr(ord("?")), "\"", $str );        # ?
-	$str = str_replace( chr(ord("?")), "\"", $str );        # ?
 	$str = str_replace( chr(ord("´")), "'", $str );        # ´
-
-	$unwanted_array = array(    '?'=>'S', '?'=>'s', '?'=>'Z', '?'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
-		'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
-		'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
-		'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y');
-
-	$str = strtr( $str, $unwanted_array );
-
-	#For reasons yet unknown, only some servers may require an additional $unwanted_array item: 'height'=>'h&#101;ight'
-
+	
 	# Bullets, dashes, and trademarks
 	$str = str_replace( chr(149), "&#8226;", $str );    # bullet ?
 	$str = str_replace( chr(150), "&ndash;", $str );    # en dash
@@ -1434,6 +1483,17 @@ function mh_normalize_special_characters( $str )
 	$str = str_replace( "&quot;", "\"", $str );        # "
 	$str = str_replace( "&apos;", "\'", $str );        # '
 	$str = str_replace( "&#039;", "'", $str );        # '
+	$str = str_replace( "£", "&#163;", $str );        # pounds £ '	
+
+	$unwanted_array = array(    '?'=>'S', '?'=>'s', '?'=>'Z', '?'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+		'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+		'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+		'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y');
+
+	$str = strtr( $str, $unwanted_array );
+
+	#For reasons yet unknown, only some servers may require an additional $unwanted_array item: 'height'=>'h&#101;ight'
 
 	return $str;
 }

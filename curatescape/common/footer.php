@@ -13,11 +13,12 @@
     </nav>	
  
 	<p class="default">
-		<?php echo __('Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>');?> 
-		<br>
-		<span id="copyright"><?php echo __('&copy; %1$s %2$s', date('Y'), mh_owner_link() );?></span> 
-		<br>
 		<span id="app-store-links"><?php mh_appstore_footer(); ?></span>
+		<br>
+		<?php echo __('Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>');?> 
+		<br>		
+		<span id="copyright"><?php echo mh_license();?></span> 
+		
 	</p>
 	
 	<div class="custom">
