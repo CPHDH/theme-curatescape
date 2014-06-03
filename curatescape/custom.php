@@ -256,17 +256,17 @@ function mh_display_map($type=null){
 
 	case 'focusarea':
 		/* all stories, map is centered on focus area (plugin center) */
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=tiny-mobile-json&per_page=999';
 		break;
 
 	case 'global':
 		/* all stories, map is bounded according to content */
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=tiny-mobile-json&per_page=999';
 		break;
 
 	case 'story':
 		/* single story */
-		$json_source='?output=mobile-json';
+		$json_source='?output=tiny-mobile-json';
 		break;
 
 	case 'tour':
@@ -276,11 +276,11 @@ function mh_display_map($type=null){
 
 	case 'queryresults': 
 		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
-		$json_source=$_SERVER['REQUEST_URI'].'&output=mobile-json&per_page=999';
+		$json_source=$_SERVER['REQUEST_URI'].'&output=tiny-mobile-json&per_page=999';
 		break;
 
 	default:
-		$json_source='/items/browse?output=mobile-json&per_page=999';
+		$json_source='/items/browse?output=tiny-mobile-json&per_page=999';
 
 	}
 	
@@ -362,7 +362,9 @@ function mh_display_map($type=null){
 			// Set bounds to true unless it's the homepage or a "browse all" page, each of which use the "focusarea" view
 			var bounds = (type == 'focusarea') ? false : true;
 			var makemap=jQuery.getJSON( source, function(data) {
+
 				jQuery.each( data.items, function(i, item) {
+					
 					jQuery('#map_canvas').gmap('addMarker', {
 						'position': new google.maps.LatLng(item.latitude, item.longitude),
 						'bounds': bounds,
