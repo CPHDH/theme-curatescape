@@ -287,7 +287,7 @@ function mh_display_map($type=null){
 	if(get_theme_option('custom_marker')){
 		$marker='/files/theme_uploads/'.get_theme_option('custom_marker');
 	}else{
-		$marker='/themes/curatescape/images/map-icn.png';
+		$marker='/themes/curatescape/images/marker.png';
 	}
 ?>
 		<script type="text/javascript">
