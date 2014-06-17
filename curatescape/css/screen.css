@@ -1652,7 +1652,6 @@ p#login-links{
 .stealth-mode #logo,
 .stealth-mode #logo img{
 	float: none;
-	width: 100%;
 	max-width: 100%;	
 }
 
