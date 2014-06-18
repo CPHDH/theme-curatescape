@@ -306,6 +306,8 @@ function mh_display_map($type=null){
 		var fallbacklat='<?php echo $pluginlat ;?>';
 		var fallbacklng='<?php echo $pluginlng ;?>';
 		var fallbackmarker=null;
+		var use_featured_marker=<?php echo get_theme_option('featured_marker') ? 'true' : 'false';?>;
+		var featured_marker=root+"<?php echo '/files/theme_uploads/'.get_theme_option('featured_marker');?>";
 		
 		jQuery(document).ready(function() {
 
@@ -364,13 +366,22 @@ function mh_display_map($type=null){
 			var makemap=jQuery.getJSON( source, function(data) {
 
 				jQuery.each( data.items, function(i, item) {
+				
+					if( (use_featured_marker==true) && (item.featured == 1) ){
+						var browse_marker= featured_marker;
+						var featured_icon='<i class="icon-star-o"></i> ' ;						
+					}else{
+						var browse_marker=marker;
+						var featured_icon='';
+					}
+
 					
 					jQuery('#map_canvas').gmap('addMarker', {
 						'position': new google.maps.LatLng(item.latitude, item.longitude),
 						'bounds': bounds,
-						'icon': new google.maps.MarkerImage(marker),
+						'icon': new google.maps.MarkerImage(browse_marker),
 					}).click(function() {
-						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<a href="' + root + '/items/show/' + item.id +'">' + item.title + '</a>' }, this);
+						jQuery('#map_canvas').gmap('openInfoWindow', { 'content': '<a href="' + root + '/items/show/' + item.id +'">'+ featured_icon + item.title + '</a>' }, this);
 					});
 				});
 			});
