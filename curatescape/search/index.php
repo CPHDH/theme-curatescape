@@ -3,7 +3,7 @@ $query = (isset($_GET['query']) ? $_GET['query'] : null);
 $searchRecordTypes = get_search_record_types();
 $title = __('Search Results for "%s"', $query);
 $bodyclass ='browse queryresults';
-$maptype='queryresults';
+$maptype='none';
 
 
 echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclass'=>$bodyclass)); 
