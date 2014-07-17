@@ -599,9 +599,15 @@ function mh_wrappable_link($string){
 
 /*
 ** Custom item citation
+** Optionally, set $wrappableDomain to true to allow domain names to wrap lines
+** Helpful for long (sub)domains like name-of-project.department.university.co.uk
 */
-function mh_item_citation(){
-	return mh_wrappable_link(html_entity_decode(metadata('item', 'citation')));
+function mh_item_citation($wrappableDomain=false){
+	if($wrappableDomain==true){
+			return mh_wrappable_link(html_entity_decode(metadata('item', 'citation')));
+		}else{
+			return html_entity_decode(metadata('item', 'citation'));
+		}
 }
 
 /*
