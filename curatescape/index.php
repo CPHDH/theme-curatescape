@@ -16,7 +16,7 @@ else{
 				<?php 
 				mh_custom_content();
 				echo random_item_link("View A Random ".mh_item_label('singular'),'big-button');
-				$text='View all <span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
+				$text=__('View all').'<span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
 				echo '<p class="view-more-link">'.link_to_items_browse($text).'</p>';	
 				?>					
 			</section>

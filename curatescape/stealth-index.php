@@ -60,11 +60,10 @@ echo head_css();
 			</header>
 			
 				<p><span class="soon"><?php echo __('Coming Soon!');?></span> <?php echo mh_about();?></p>		
-							
 			</section>
 			
 			<section id="contact">
-			<header><h2>Contact</h2></header>
+			<header><h2><?php echo __('Contact'); ?></h2></header>
 			
 				<?php 
 				$contact_address = get_theme_option('contact_address');
@@ -74,7 +73,7 @@ echo head_css();
 					echo ($contact_email ? '<div id="homecol-email"><span class="contact-item">'.__('Email').':</span> <a href="mailto:'.$contact_email.'">'.$contact_email.'</a></div>' : '');
 					
 				$twitter_username = get_theme_option('twitter_username');
-					echo ($twitter_username ? '<div id="homecol-twitter"><span class="contact-item">Twitter:</span> <a href="http://twitter.com/'.$twitter_username.'">@'.$twitter_username.'</a></div>' : '');
+					echo ($twitter_username ? '<div id="homecol-twitter"><span class="contact-item">'.__('Twitter:').'</span> <a href="http://twitter.com/'.$twitter_username.'">@'.$twitter_username.'</a></div>' : '');
 	
 				$contact_phone = get_theme_option('contact_phone');
 					echo ($contact_phone ? '<div id="homecol-phone"><span class="contact-item">'.__('Phone').':</span> '.$contact_phone.'</div>' : '');

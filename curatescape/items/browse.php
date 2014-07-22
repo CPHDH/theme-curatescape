@@ -39,7 +39,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 
 <section class="browse stories items">	
 	<h2><?php 
-	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
+	$title .= ( $total_results  ? __(': <span class="item-number">%s</span>',$total_results) : '');
 	echo $title; 
 	?></h2>
 		

@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Add Curatescape translations directory for all requests.
+ */
+add_translation_source(dirname(__FILE__) . '/languages');
+
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
 
 // SEO Page description
@@ -443,7 +449,7 @@ function mh_simple_search($formProperties=array(), $uri = null){
 function mh_appstore_downloads(){
 	if (get_theme_option('enable_app_links')){
 
-		echo '<h2>Downloads</h2>';
+		echo '<h2>'.__('Downloads').'</h2>';
 
 		$ios_app_id = get_theme_option('ios_app_id');
 		echo ($ios_app_id ?
@@ -460,7 +466,6 @@ function mh_appstore_downloads(){
 		</a> ':'<a id="android" class="app-store" href="#">
 		'.__('Coming Soon').'
 		</a> ');
-
 	}else{
 		echo '<a id="coming-soon" class="app-store" href="#">'.__('iOS + Android Apps Coming Soon!').'</a>';
 	}
@@ -702,7 +707,7 @@ function mh_item_images($item,$index=0){
 					$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';	
 				}
 
-			$html = '<div class="item-file-container">';
+			$html .= '<div class="item-file-container">';
 
 			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
@@ -710,17 +715,19 @@ function mh_item_images($item,$index=0){
 			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.' '.link_to($file,'show', '<span class="view-file-link"> ['.__('View Additional File Details').']</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
 			$html .= '</div>';
 
-			echo $html;
-			$index++;
-
 		}
+	}
+	$count = count($myphoto);
+	if ($count > 0) {
+		echo '<h3><i class="icon-camera-retro"></i>'.(($count > 1) ? __('Photos ') : __('Photo ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<i class="icon-chevron-right"></i></span></h3>';			
+		echo $html;
 	}
 }
 
 
 /*
-** Loop through and display audio files
-** FYI: adding "controls" to html <audio> tag causes a
+ ** Loop through and display audio files
+ ** FYI: adding "controls" to html <audio> tag causes a
 ** display error when used in combination w/ Fancybox
 ** image viewer
 */
@@ -753,7 +760,7 @@ function mh_audio_files($item,$index=0){
 
 
 /*
-** Loop through and display video files
+ ** Loop through and display video files
 ** Please use H.264 video format
 ** Browsers that do not support H.264 will fallback to Flash
 ** We accept multiple H.264-related MIME-types because Omeka MIME detection is sometimes spotty
@@ -902,7 +909,6 @@ function mh_sidebar_nav(){
 */
 function mh_tags(){
 	if (metadata('item','has tags')):
-
 		echo '<h3>'.__('Tags').'</h3>';
 		echo tag_cloud('item','items/browse');
 	endif;
@@ -1160,7 +1166,7 @@ function mh_custom_content($length=650){
 	$html .= '<article>';
 	
 	$html .= '<header>';	
-	$html .= '<h2><span class="hidden">About </span>'.option('site_title').'</h2>';
+	$html .= '<h2><span class="hidden">'.__('About ').'</span>'.option('site_title').'</h2>';
 	$html .= '<span class="find-us">'.mh_home_find_us().'</span>';
 	$html .= '</header><div class="about-snippet">';
 
