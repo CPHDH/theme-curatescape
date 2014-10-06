@@ -1503,7 +1503,7 @@ function social_media($html=''){
 
 function mh_contribution_user_nav(){
 	if (current_user()) {
-		return '<a href="/guest-user/user/me">&larr; Manage Account and Contributions</a> | <a href="/admin/users/logout">Logout</a>';
+		return '<a href="/guest-user/user/me">&larr; Manage Account and Contributions</a> | <a href="/users/logout">Logout</a>';
 	}
 }
 

@@ -23,7 +23,7 @@ echo head(array('title' => $pageTitle, 'bodyclass' => 'contribution'));
 		<li><a href="/guest-user/user/update-account/">Update account info and password</a></li>
 		<li><a href="/contribution/my-contributions/">Manage my story contributions</a></li>
 		<li><a href="/contribution/">Share a new story</a></li>
-		<li><a href="/admin/users/logout/">Logout</a>
+		<li><a href="/users/logout/">Logout</a>
 		</ul>
 
 	</div>
