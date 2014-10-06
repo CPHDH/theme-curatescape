@@ -30,48 +30,17 @@ if (!isset($required) && $type->isFileAllowed()):
 <fieldset>
 <h3>Upload Files</h3>
 <span id="upload">Please upload any files that illustrate your story. You can upload up to ten photo or audio files. The maximum file size is 7 MB. If you would like to share a video, or larger audio files, please email it directly to <a href="mailto:communityofgardens@si.edu" target="_blank">communityofgardens@si.edu</a> with the name of the garden in the subject line. </span>
-<div class="field">
-        <?php echo $this->formLabel('contributed_file_01', 'Upload a file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_01', array('class' => 'fileinput')); ?>
-</div>
-<div class="upload-hidden">
-<div class="field">
-<?php echo $this->formLabel('contributed_file_02', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_02', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_03', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_03', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_04', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_04', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_05', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_05', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_06', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_06', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_07', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_07', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_08', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_08', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_09', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_09', array('class' => 'fileinput')); ?>
-</div>
-<div class="field">
-<?php echo $this->formLabel('contributed_file_10', 'Upload another file (Optional)'); ?>
-<?php echo $this->formFile('contributed_file_10', array('class' => 'fileinput')); ?>
-</div>
-</div>
+
+
+<?php for($i = 1; $i <= 5; $i++){
+	$name="contributed_file_$i";
+	
+    echo '<div class="field '.($i>1 ? 'upload-hidden' : null).'">';
+    	echo $this->formLabel($name, 'Upload a file'.($i>1 ? ' (Optional)' : null));
+		echo $this->formFile($name, array('class' => 'fileinput'));
+	echo '</div>';
+}?>
+
 <div class="upload-more"><a style="cursor:pointer">Upload Additional Files +</a></div>
 </fieldset>
 
