@@ -431,7 +431,7 @@ function mh_display_map($type=null){
 
         </script>
 		<div id="hm-map">
-			<div id="map_canvas" style="height:30em;">		
+			<div id="map_canvas" style="height:20em;">		
 			</div>
             <div id="map_key">
             <div id="zoom-text"><span class="zoom-text">At This Zoom level, private gardens are not shown as we do not ask for a specific address to protect privacy</span></div>
@@ -560,7 +560,7 @@ function mh_mapfaq(){
 */
 
 function mh_contributor($item, $fallback="The Community of Gardens Team"){
-	if (plugin_is_active('Contribution')){        
+	if (plugin_is_active('Contribution') && plugin_is_active('Guest User')){        
         $contribItem = get_db()->getTable('ContributionContributedItem')->findByItem($item);
 
         if($contribItem->anonymous) {

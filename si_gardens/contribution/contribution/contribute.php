@@ -30,49 +30,46 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 // ]]>
 </script>
 
+<div id="content"><!--EB: add HTML-->
+<article class="page show"><!--EB: add HTML-->
+<h2 class="instapaper_title"><?php echo $head['title']; ?></h2><!--EB: add HTML-->
 
-<div id="content">
-<article class="page show">
-<h2 class="instapaper_title"><?php echo $head['title']; ?></h2>
-
-	<?php echo mh_contribution_user_nav();?>
-
-
-	<div id="primary" class="show" role="main">
-	<?php echo flash(); ?>
+	<?php echo mh_contribution_user_nav();?><!--EB: add user subnav-->
+	
+<div id="primary">
+<?php echo flash(); ?>
+    
     <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>
         <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>        
     <?php else: ?>
-    
-<form method="post" action="" enctype="multipart/form-data">
-            
-            <fieldset id="contribution-item-metadata">
-                <div class="inputs hidden">
+        <form method="post" action="" enctype="multipart/form-data">
+            <!--fieldset id="contribution-item-metadata"--><!--EB: modify HTML structure-->
+                <div class="inputs hidden"> <!--EB: add hidden class-->
                     <label for="contribution-type"><?php echo __("What type of item do you want to contribute?"); ?></label>
                     <?php $options = get_table_options('ContributionType' ); ?>
                     <?php $typeId = isset($type) ? $type->id : '' ; ?>
                     <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
-                <div id="contribution-type-form">
+                <!--div id="contribution-type-form"--><!--EB: modify HTML structure-->
                 <?php if(isset($type)) { include('type-form.php'); }?>
-                </div>
-            </fieldset>
+                <!--/div--><!--EB: modify HTML structure-->
+            <!--/fieldset--><!--EB: modify HTML structure-->
 
             <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
                 <?php if(isset($captchaScript)): ?>
                     <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
                 <?php endif; ?>
-                <div class="inputs hidden">
-                    <?php $public = 1; ?>
+                <div class="inputs hidden"> <!--EB: add hidden class -->
+                    <?php $public = 1; //EB: always make public, hide the checkbox so it cannot be modified ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
                     <?php echo $this->formLabel('contribution-public', __('Publish my contribution on the web.')); ?>
                 </div>
-                <div class="inputs hidden">
-                    <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
+                <div class="inputs hidden"> <!--EB: add hidden class-->
+                    <?php $anonymous = 0; ?>
                     <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
                     <?php echo $this->formLabel('contribution-anonymous', __("Contribute anonymously.")); ?>
                 </div>
@@ -80,27 +77,18 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <div class="inputs">
                     <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
                     <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
+                    <!--EB: replace terms description-->
                     <?php echo html_entity_decode($this->formLabel('terms-agree', 'I am over the age of 18 and have read and agree to the <a href="'.url('submission-agreement').'" target="_blank">Submission Agreement</a>. Or, I am an educator submitting work produced by my students and I have read and agreed to the Submission Agreement and have collected the <a href="'.img('CoG-parental-consent-form.pdf').'" target="_blank">Parental Permission Slips</a> for my own records that allow my students to participate in this project.')); ?>
                 </div>
                 <?php echo $this->formSubmit('form-submit', __('Contribute'), array('class' => 'submitinput')); ?>
-                <span id="help">Questions or problems? Contact us at <a href="mailto:communityofgardens">communityofgardens@si.edu</a>.</span>
-                
+                <span id="help">Questions or problems? Contact us at <a href="mailto:communityofgardens">communityofgardens@si.edu</a>.</span> <!--EB: add HTML-->
             </fieldset>
             <?php echo $csrf; ?>
         </form>
-	<?php endif; ?>
-
-	</div>
-
-
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-
-		</aside>	
-	</div>	
-
-</article>
-</div> <!-- end content -->
+    <?php endif; ?>
+</div>
 
 
-<?php echo foot(); ?>
+</article><!--EB: add HTML-->
+</div><!--EB: add HTML-->
+<?php echo foot();

@@ -47,9 +47,6 @@
 	
 		<div id="item-metadata" class="item instapaper_ignore">
 			<section class="meta">
-				<!--div id="subjects">  	
-				<?php //mh_subjects(); ?>
-				</div-->	
 				
 				<div id="tags">
 				<?php mh_tags();?>	
@@ -75,10 +72,7 @@
 				
 				<div class="comments">
 				<?php mh_disquss_comments();?>
-				</div>
-				
-				<?php// echo function_exists('tour_nav') ? tour_nav(null,mh_tour_label()) : null; ?>
-				
+				</div>				
 									
 			</section>	
 				
@@ -88,9 +82,6 @@
 
 <div class="clearfix"></div>
 
-<!--div id="share-this" class="instapaper_ignore">
-<?php// echo mh_share_this(mh_item_label());?>
-</div-->	
 </article>
 </div> <!-- end content -->
 

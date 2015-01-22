@@ -453,7 +453,7 @@ img#hero_loading{
 	height:20em;
 }
 
-#map_canvas a {
+#map_canvas .gm-style-iw a {
 	color:#443422;
 	font-size:1.5em;
 	line-height:1.3em;
@@ -506,7 +506,7 @@ img#hero_loading{
 }
 #map_canvas a.directions-link {
 	color:#56822a;
-	font-size:1em;
+	font-size:.9em;
 	font-family:"Georgia","Times","Times New Roman",serif;
 	font-weight:bold;
 	font-style:italic;
@@ -1981,7 +1981,7 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		width:100%;
 		height:12em;
 	}
-	#map_canvas{max-height:12em;}
+	#map_canvas{height:12em;max-height:12em;}
 	#hm-map #map_key {display:none}
 	
 	#slider li div {
@@ -2295,13 +2295,16 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	/* 720px+, typical tablet viewport -- 2 col */
 	/* =================================================================================== */
 	
-	#hero{
-		height:20em;
+	#hero,#home #hero{
+		height:20em !important;
+		max-height:20em !important;
 	}
 	
-	#map_canvas{
+	#map_canvas,#home #map_canvas{
 		height:20em !important;
+		max-height:20em !important;
 	}
+
 	
 	header.main{
 		padding:0;
@@ -2583,16 +2586,24 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		box-shadow:none;
 		border-bottom:1px solid #c4c5c0;
 	}
-	#home #hero {
-		height: 28em;
-	}
 
 	#map_canvas{
 		height:20em !important;
 	}
+	
+	
+	#home #hero {
+		height: 28em !important;
+		max-height: 28em !important;
+	}
+	
 	#home #map_canvas{
 		height:28em !important;
-	}
+		max-height: 28em !important;
+	}	
+
+
+
 	
 	#mobile-menu-cluster {
 		max-width:65%;
@@ -2696,8 +2707,8 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		
 	#featured-story .view-more-link{ 
 		font-size:.8em;
-		padding-left:1.5em;
-		padding-right:1.5em;
+		padding: 0 9%;
+		max-width: 82%;
 	}	
 	
 	#featured-story .item-description {

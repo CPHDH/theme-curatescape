@@ -50,7 +50,7 @@ echo head_css();
 <!-- Custom CSS via theme config -->
 <?php 
 if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
-	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/archive/theme_uploads/'.$uploaded_stylesheet.'" />';
+	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
 	}
 echo mh_custom_css(); ?>
 
@@ -103,7 +103,6 @@ echo head_js(false); // <-- No to Omeka default scripts
 	</header>
 
 	
-	
 	<figure id="hero">
 		<?php echo mh_which_content(@$maptype); ?>	
-	</figure>
+	</figure>	
