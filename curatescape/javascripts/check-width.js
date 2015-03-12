@@ -64,89 +64,17 @@ jQuery(document).ready(function() {
 		}		
 	}
 
-	 function buildTileMontage(){
-			if (!jQuery('#tile-outer-container').exists()){
-			
-				var tileLinks = []; // get the titles
-				jQuery(".item-result h3 a").each(function(index) {
-					tileLinks[index] = jQuery(this).attr('href');
-				});
-	
-				var tileTitles = []; // get the titles
-				jQuery(".item-result h3").each(function(index) {
-					tileTitles[index] = jQuery(this).text();
-				});
-				
-				var tileImages = []; // get the images
-				jQuery(".item-result.has-image .item-image").each(function(index) {
-					tileImages[index] = jQuery(this).css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-				});
-				
-				var tileCount = tileImages.length; 			
-				
-				var tileDiv;
-				tileDiv ='<div id="tile-outer-container" style=""><div class="tile-container" id="tile-container">';
-				for (var i = 0; i < tileCount; i++) {
-					tileDiv += '<div class="box"><a class="tile-item" href="'+ tileLinks[i] +'"><img src="'+ tileImages[i] +'" title="'+ tileTitles[i] +'"></img></a></div>';
-				}	
-				
-				
-				tileDiv +='</div></div>';				
-				
-				undoSwipeJS();
-				jQuery('#hero').prepend(tileDiv);
-				
-				/* 
-				the ideal "safe" number of images to use here is about 15-20, 
-				since we have 5 (CSS) columns, each of which will include 2-3 images, 
-				depending on their size...
-				if the number of tours is low, we'll repeat the tile html...
-				*/
-				var safeNum=20;
-				if((tileCount<safeNum)&&tileCount>0){
-					var n= safeNum/parseInt(tileCount);
-					var repeater='';
-					for(i=0;i<n;i++){
-						repeater += jQuery('#hero .tile-container').html();	
-					}
-					jQuery('#hero .tile-container').append(repeater);
-				}	
-				
-							
-			}else{
-				jQuery('#tile-outer-container').show();
-			}		 
-	 }
 
-
-	function doTileMontage(){
-		var yesTiles = /* these will use the tile montage */
-		(jQuery("body#tours").hasClass('browse')) ||
-		(jQuery("body#file").hasClass('show item-file')) ||
-		(jQuery("body").hasClass('page simple-page show big')) ||
-		(jQuery("body").hasClass('page simple-page show small'));					
-		if (yesTiles) {
-			buildTileMontage();
-			undoSwipeJS();	
-			jQuery('#tile-outer-container').show();	
-			jQuery('#tile-container').show();		
-			jQuery(window).load(function(){
-				jQuery('.box').fadeIn('slow');
-				jQuery('#hero_loading').fadeOut('slow');
-				});
-			//we use CSS to create the tile montage thing...
-			} 
-	}
 	
 
-	function itemShowHeroImg(){
+	function itemShowHeroImg(hasImage){
 		//find the first image for the item and set it as the background to the #hero div on items/show
-		if (jQuery("body#items").hasClass('show item-story small')) {
-			var imageUrl = jQuery("#item-photos .item-file img").attr('src');
-			var styles = {
-				'background-image': 'url(' + imageUrl + ')'
-			};
-			jQuery('#hero').css(styles);
+		if (jQuery("body#items").hasClass('show')) {
+			if(hasImage){
+				var styles = {'background-image': 'url(' + hasImage + ')'};
+				jQuery('#hero').css(styles);
+			}
+
 		} //endif  
 	}
 
@@ -158,17 +86,16 @@ jQuery(document).ready(function() {
 		(jQuery("body#subject-browse").hasClass('subject-browse browse subjects small')) || 
 		(jQuery("body#items").hasClass('browse tags small')) || 
 		(jQuery("body#items").hasClass('browse queryresults small')) || 
-		(jQuery("body#tours").hasClass('show tour small'));
+		(jQuery("body#tours").is('.show, .small'));
 		//grabs the "recent stories" content to build the slider and swaps it into the #hero div on homepage
 		if (yesSwipe) {
-			undoTileMontage();
 			buildSwipeJS();
 		} 
 	}
 			
 	function toggleDescriptions(){
 		// toggle media file description visibility (speach audio/video bubbles)
-		if (jQuery("body#items").hasClass('show item-story big')) {
+		if (jQuery("body#items").is('.show,.big')) {
 			jQuery('h4.sib').each(function() {
 				jQuery('h4.sib').toggle(
 
@@ -187,46 +114,20 @@ jQuery(document).ready(function() {
 			jQuery('#hero #swipenav').hide();
 	}
 	
-	function undoTileMontage(){           
-			jQuery('#tile-outer-container').hide();	
-			jQuery('#tile-container').hide();
-	}	
 
-	function itemMapToggle(){
-		// ShowMap script for "mobile" views
-		if(jQuery("body#search").exists() !== true){
-			jQuery('#hero').after('<div id="showmap" class=""><a style="cursor:pointer" ><i class="icon-map-marker"></i><i class="icon-camera-retro hidden"></i></a></div>').fadeIn('slow');
-			jQuery('#showmap a').click(function(){
-				
-				jQuery('#map_canvas').slideToggle('fast', 'linear',function(){
-		            var map = jQuery('#map_canvas').gmap('get', 'map');
-		            var bounds=map.getBounds();
-		            var center=bounds.getCenter();
-		            var znum=map.getZoom();
-		            if( (jQuery('body#tours')) && (znum<10)){
-			            // for whatever reason, we need to manually tweak the zoom level on the tour maps
-			            znum=10;
-		            }
-		            google.maps.event.trigger(map, "resize");
-		                	map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-			                map.fitBounds(bounds);
-			                map.setZoom(eval(znum));
-							});
-							
-				jQuery('#slider').slideToggle('fast', 'linear');
-				jQuery('#swipenav').slideToggle('fast', 'linear');	
-				jQuery('#showmap a').toggleClass('mapview');
-				jQuery('#showmap a i').toggleClass('hidden');
-			 });
-		 }
-	 }
+
 
 	// Function to handle changes to style classes based on window width
 	// Also swaps in thumbnails for larger views where user can utilize Fancybox image viewer
 	// Also swaps #hero images in items/show header
 
 	function checkWidth() {
-	
+		
+		var hasImage=jQuery("#item-photos .item-file img").attr('src');
+		if(!hasImage){
+			jQuery('body#items.show').addClass('no-image-for-hero');
+		}	
+		
 		// Beakpoint for assigning small or big class
 		var breakpoint = 720;
 		
@@ -234,17 +135,13 @@ jQuery(document).ready(function() {
 			
 			/*TOGGLE CLASSES*/
 			jQuery('body').removeClass('big').addClass('small');
-			jQuery('.item-file a').removeClass('fancybox');	
-			jQuery('#showmap').removeClass('hidden');	
+			jQuery('content .item-file a').removeClass('fancybox');	
 			
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").show();
 			
-			if(jQuery("body#search").exists()){
-				jQuery('#map_canvas').show(); 
-				}else{
-				jQuery('#map_canvas').hide(); 
-				}
+			jQuery('#map_canvas').hide(); 
+
 				
 			
 			/*TOGGLE ITEM-IMAGE SIZES*/
@@ -253,11 +150,10 @@ jQuery(document).ready(function() {
 			});
 			
 			/*FUNCTIONS*/
-			itemShowHeroImg();
-
+			itemShowHeroImg(hasImage);
+			
 			doSwipeJS();
 			
-			doTileMontage();
 			
 			
 		}
@@ -265,8 +161,8 @@ jQuery(document).ready(function() {
 		
 			/*TOGGLE CLASSES*/
 			jQuery('body').removeClass('small').addClass('big');
-			jQuery('.item-file a').addClass('fancybox');
-			jQuery('#showmap').addClass('hidden');
+			jQuery('#content .item-file a').addClass('fancybox');
+
 			
 			/*TOGGLE VISIBILITY*/
 			jQuery("#item-photos .description , #item-photos .title").hide();
@@ -281,16 +177,14 @@ jQuery(document).ready(function() {
 
 			/*FUNCTIONS*/			
 			toggleDescriptions(); 
-		
-			doTileMontage();		
-		
+				
 		}
+				
 	}
 	// Execute on load
 	checkWidth();
+	
 	// Bind event listener
 	jQuery($window).resize(checkWidth);
-	jQuery($window).load(function() {
-	    itemMapToggle();
-		});	
+
 });

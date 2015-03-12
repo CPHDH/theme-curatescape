@@ -71,15 +71,6 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 	</section>	
 	</div><!-- end primary -->
 
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-			
-			<!-- Grab some recent images for the image tile montage -->
-			<?php mh_display_recent_item(10);?>
-			
-		</aside>	
-	</div>	
-
 </section>
 </div> <!-- end content -->
 

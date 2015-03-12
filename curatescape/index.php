@@ -1,5 +1,6 @@
 <?php
 if ((get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true)){
+queue_css_file('stealth');
 include_once('stealth-index.php');
 }
 else{
@@ -7,35 +8,26 @@ else{
 ?>
 <?php echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>'home')); ?>
 
+<?php mh_map_actions();?>
 	
-<div id="content">
+<div id="content" role="main">
 <article id="homepage">
+										
+	<section id="about"><?php echo mh_home_about();?></section>
 
-	<div id="desktop-block">
-			<section id="custom-block">
-				<?php 
-				mh_custom_content();
-				echo random_item_link("View A Random ".mh_item_label('singular'),'big-button');
-				$text='View all <span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
-				echo '<p class="view-more-link">'.link_to_items_browse($text).'</p>';	
-				?>					
-			</section>
-				
-			<section id="featured-story"> 
-				<?php echo mh_display_random_featured_item(true); ?>
-			</section>	
-					
-	</div>	
-			<section id="home-tours">
-				<?php mh_display_random_tours(11); ?>
-			</section>			
-	
-			<section id="downloads">
-				<?php mh_appstore_downloads(); ?>
-			</section> 	
-	
+	<?php echo homepage_widget_sections();?>
+
 </article>
 </div> <!-- end content -->
+
+<script>
+	// add map overlay for click function if map is not already expanded
+	jQuery('body:not(.expand-map) #hm-map').append('<div class="home-map-overlay"></div>');
+	jQuery('#hm-map .home-map-overlay').click(function(){
+		jQuery('#home').addClass('expand-map');
+		jQuery('.home-map-overlay').remove();
+	});
+</script>
 
 <?php echo foot(); ?>
 

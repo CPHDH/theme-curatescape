@@ -6,12 +6,6 @@ echo head(array('maptype'=>'none','title' => html_escape(metadata('simple_pages_
 <article class="page show">
 <h2 class="instapaper_title"><?php echo metadata('simple_pages_page', 'title'); ?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="show" role="main">
 		<section id="text">
@@ -23,24 +17,11 @@ echo head(array('maptype'=>'none','title' => html_escape(metadata('simple_pages_
 		    } else {
 		        echo eval('?>' . $text);
 		    }
-		    ?>			    
+		    ?>					    
 
 		</section>    
 	</div>
 
-
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-			<h3><?php echo __('Pages');?></h3>
-			<nav>
-			<?php echo mh_sidebar_nav();?>
-			</nav>
-			
-			<!-- Grab some recent images for the image tile montage -->
-			<?php mh_display_recent_item(10);?>
-			
-		</aside>	
-	</div>	
 
 </article>
 </div> <!-- end content -->

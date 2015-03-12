@@ -5,10 +5,12 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 } else {
    $tourTitle = '';
 }
-
+$dc = get_theme_option('dropcap')!==0 ? 'dropcap' : null;
 echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
-   'bodyclass' => 'show tour', 'tour'=>$tour) );
+   'bodyclass' => 'show tour '.$dc, 'tour'=>$tour ) );
 ?>
+
+<?php mh_map_actions(null,$tour);?>
 
 <div id="content">
 <article class="tour show" role="main">
@@ -16,9 +18,9 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	<header id="tour-header">
 	<h2 class="tour-title instapaper_title"><?php echo $tourTitle; ?></h2>
 	<?php if(tour( 'Credits' )){
-		echo '<span class="tour-meta">'.__('By %s',tour( 'Credits' )).'</span>';
+		echo '<span class="tour-meta">'.__('%1s curated by: %2s', mh_tour_label_option('singular'),tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
-		echo '<span class="tour-meta">'.__('By The %s Team',option('site_title')).'</span>';
+		echo '<span class="tour-meta">'.__('%1s curated by: The %2s Team',mh_tour_label_option('singular'),option('site_title')).'</span>';
 	}else{}?>
 	</header>
 			
@@ -43,7 +45,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         	$hasImage=metadata($tourItem,'has thumbnail');
 	         ?>
 		         <article class="item-result <?php echo $hasImage ? 'has-image' : null;?>">
-			         <h3><?php echo '<span class="number">'.$i.'</span>';?> <a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
+			         <h3><a class="permalink" href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>"><?php echo '<span class="number">'.$i.'</span>';?> 
 			         <?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 			         </a></h3>
 
@@ -55,7 +57,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 					echo isset($item_image) ? '<a href="'. url('/') .'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><span class="item-image" style="background-image:url('.$item_image.');"></span></a>' : null; 
 					?>
 						         
-			         <div class="item-description"><?php echo snippet(metadata( $tourItem, array('Dublin Core', 'Description') ),0,250); ?></div>
+			         <div class="item-description"><?php echo snippet(mh_the_text($tourItem),0,250); ?></div>
 		         </article>
 	         <?php 
 	         $i++;
