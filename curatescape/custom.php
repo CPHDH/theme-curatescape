@@ -358,18 +358,18 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 	case 'focusarea':
 		/* all stories, map is centered on focus area (plugin center) */
-		$json_source=WEB_ROOT.'/items/browse?output=tiny-mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
 		break;
 
 	case 'global':
 		/* all stories, map is bounded according to content */
-		$json_source=WEB_ROOT.'/items/browse?output=tiny-mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
 		break;
 
 	case 'queryresults':
 		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
 		$uri=$_SERVER['REQUEST_URI'];
-		$uri=$uri.'&output=tiny-mobile-json&per_page=999';
+		$uri=$uri.'&output=mobile-json&per_page=999';
 		$json_source=WEB_ROOT.query_param_minus_pagination($uri);
 		break;		
 
@@ -384,7 +384,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		break;
 
 	default:
-		$json_source=WEB_ROOT.'/items/browse?output=tiny-mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
 	}
 
 	if(get_theme_option('custom_marker')){
