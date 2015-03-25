@@ -5,12 +5,6 @@
 <article class="page show">
 <h2 class="instapaper_title"><?php echo __('My Contributions');?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="show" role="main">
 <form method='post'>
@@ -42,13 +36,6 @@
     <input id="save-changes" class="submit big button" type="submit" value="Save Changes" name="submit">
 </form>
 	</div>
-
-
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-
-		</aside>	
-	</div>	
 
 </article>
 </div> <!-- end content -->

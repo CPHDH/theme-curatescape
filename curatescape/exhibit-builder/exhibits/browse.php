@@ -37,14 +37,6 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=
 	$title .= ( ($total_results) ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>
-		
-		
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="browse">
 	<section id="results">
@@ -97,8 +89,6 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=
 	</section>	
 	</div><!-- end primary -->
 
-	<div id="page-col-right">
-	</div>	
 
 </section>
 </div> <!-- end content -->

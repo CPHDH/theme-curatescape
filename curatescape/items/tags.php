@@ -5,12 +5,6 @@
 <section class="browse tags">		
 <h2><?php echo __('Tags: %s', total_records('Tags'));?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="browse">
 	<section id="tags">
@@ -25,13 +19,6 @@
 	</section> 
 	</div><!-- end primary -->
 
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-			<section id="recent-story" class="hidden">
-				<?php mh_display_recent_item(3); /* Used for swipe.js slider script */ ?>
-			</section>
-		</aside>
-	</div>	
 
 </section>	
 </div> <!-- end content -->

@@ -17,8 +17,8 @@
 		($source=metadata('file', array('Dublin Core','Source'))) ? $info[] = '<span class="file-source">Source: '.$source.'</span>' : null;
 		($creator=metadata('file', array('Dublin Core','Creator'))) ? $info[] = '<span class="file-creator">Creator: '.$creator.'</span>' : null;
 
-		echo count($info) ? '<span id="file-header-info" class="story-meta byline">'.implode(" | ", $info).'</span>' : null;
-		
+		echo count($info) ? '<span id="file-header-info" class="story-meta byline">'.implode(" | ", $info).link_to_file_edit($file,' ').'</span>' : null;
+				
 		?>
 	</header>
 
@@ -32,13 +32,14 @@
 		<hr>
 		
 
-		<?php echo file_markup($file, array('imageSize'=>'fullsize')); ?>
+		<?php echo mh_single_file_show($file); ?>
 
+		<?php if( $rights = metadata('file', array('Dublin Core','Rights')) ) echo '<div class="rights-caption">'.$rights.'</div>';?>
 		
 		<div id="key-file-metadata">
 		<?php  
 		echo ($desc=metadata('file', array('Dublin Core','Description'))) ? '<p class="file-desc">'.$desc.'</p>' : null; 
-		echo link_to_file_edit($file);
+		//echo link_to_file_edit($file);
 		?>	
 		</div>	
 		
@@ -84,17 +85,6 @@
 	
 	</div><!-- end primary -->
 	
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-			
-			<!-- Grab some recent images for the image tile montage -->
-			<?php mh_display_recent_item(10);?>
-			
-		</aside>	
-	</div>		
-	
-		
-
 
 </article>
 

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en"  class="ie ie6 lte9 lte8 lte7 no-js"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en"  class="ie ie7 lte9 lte8 lte7 no-js"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en"  class="ie ie8 lte9 lte8 no-js"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en"  class="ie ie9 lte9 no-js"> <![endif]-->
+<!--[if lt IE 7 ]><html lang="en"  class="ie ie6 lte9 lte8 lte7 no-js"> <![endif]-->
+<!--[if IE 7 ]><html lang="en"  class="ie ie7 lte9 lte8 lte7 no-js"> <![endif]-->
+<!--[if IE 8 ]><html lang="en"  class="ie ie8 lte9 lte8 no-js"> <![endif]-->
+<!--[if IE 9 ]><html lang="en"  class="ie ie9 lte9 no-js"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--><html lang="en" class="notie no-js"> <!--<![endif]-->
 <head>
 <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
 <link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
-<?php echo mh_auto_discovery_link_tags(); ?>
+<?php echo auto_discovery_link_tags(); ?>
 
 <?php
 isset($title) ? $title : $title=null;
@@ -22,7 +22,6 @@ isset($file) ? $file : $file=null;
     
 <title><?php echo ($title) ?  $title.' | '.option('site_title') : option('site_title'); ?></title>
 <meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>" />
-<meta name="keywords" content="<?php echo get_theme_option('meta_key') ;?>" /> 
 
 <!-- FB Open Graph stuff -->
 <meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
@@ -47,42 +46,40 @@ isset($file) ? $file : $file=null;
 <meta name="msapplication-TileColor" content="#ffffff"/>
 <meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
 
+<!-- Stylesheet -->
+<?php echo mh_theme_css();?>	
 
-<!-- Stylesheets -->
-<?php 
-queue_css_file('screen');
-echo head_css();
-?>
+<!-- Fonts -->
+<?php echo mh_web_font_loader();?>
 
 <!-- Custom CSS via theme config -->
 <?php 
+echo mh_custom_css();
 if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
 	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
-	}
-echo mh_custom_css(); ?>
+}
+?>
 
 <!-- JavaScripts -->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <?php
-queue_js_file('audiojs/audiojs/audio.min'); 	
-queue_js_file('libraries.min'); // <-- combined: Modernizr, jQuery UI Maps, Swipe.js, Fancybox
+queue_js_file('libraries.min'); // <-- Modernizr, jQuery UI Maps, Swipe.js, iSOnScreen, LoadJS, LoadCSS
 queue_js_file('check-width');
 echo head_js(false); // <-- No to Omeka default scripts
+// Fancybox, VideoJS (CDN) and AudioJS are loaded asyncronously as needed
 ?>
 <!--[if lte IE 9]>
 <?php echo js_tag('ie-polyfills.min');?>
 <![endif]-->
 
-<!-- TypeKit -->
-<?php echo mh_typekit();?>
 
 <!-- Google Analytics -->
 <?php echo mh_google_analytics();?>
 
 <!-- Plugin Stuff -->
-<?php echo fire_plugin_hook('public_header', array('view'=>$this)); ?>
+<?php echo fire_plugin_hook('public_head', array('view'=>$this)); ?>
 
 </head>
 <body<?php echo isset($bodyid) ? ' id="'.$bodyid.'"' : ''; ?><?php echo isset($bodyclass) ? ' class="'.$bodyclass.'"' : ''; ?>> 
@@ -91,20 +88,20 @@ echo head_js(false); // <-- No to Omeka default scripts
 	<span><?php echo __('Please enable JavaScript in your browser settings.');?></span>
 </div>
 
+
+<header class="main active" role="banner">	
+	<?php echo mh_global_header();?>
+	<script>
+	    jQuery(".main .menu").removeClass("active");
+	    jQuery("#mobile-menu-button a").click(function () {
+	    	jQuery(".main .menu").toggleClass("active");
+	    });
+	</script>
+</header>
+
+
 <div id="wrap">
 
-	<header class="main">	
-		<?php echo mh_global_header();?>
-		<script>
-		    jQuery("#mobile-menu-cluster").removeClass("active");
-		    jQuery("#mobile-menu-button a").click(function () {
-		    	jQuery("#mobile-menu-cluster").toggleClass("active");
-		    });
-		</script>
-	</header>
-
-	
-	
 	<figure id="hero">
-		<?php echo mh_which_content(@$maptype); ?>	
+		<?php echo mh_which_content($maptype,$item,$tour); ?>	
 	</figure>

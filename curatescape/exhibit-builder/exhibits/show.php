@@ -3,12 +3,6 @@
 <div id="content">
 <article class="page show">
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="show" role="main">
 		<h2 class="instapaper_title"><?php echo metadata('exhibit_page', 'title'); ?></h2>
@@ -39,15 +33,6 @@
 		</div>
 	</div>
 
-
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-
-			<!-- Grab some recent images for the image tile montage -->
-			<?php mh_display_recent_item(10);?>
-			
-		</aside>	
-	</div>	
 
 <div id="share-this" class="show">
 <?php echo mh_share_this();?>

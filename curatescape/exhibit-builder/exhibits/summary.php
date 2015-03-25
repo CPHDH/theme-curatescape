@@ -4,11 +4,6 @@
 <article class="exhibit show">
 <h2 class="instapaper_title"><?php echo metadata('exhibit', 'title'); ?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
 
 
 	<div id="primary" class="show" role="main">
@@ -38,9 +33,7 @@
 
 	
 	</div>
-	
-	<div id="page-col-right">
-	</div>		
+
 		
 <div id="share-this" class="show">
 <?php echo mh_share_this();?>

@@ -7,12 +7,6 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 <section class="browse tour">			
 <h2><?php echo __('All %1$s: %2$s', $label, total_tours());?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="browse">
 	
@@ -34,16 +28,22 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			$tourdesc = nls2p( tour( 'description' ) );
 		
 			echo '<article id="item-result-'.$i.'" class="item-result has-image">';
-			echo '<h3>'.link_to_tour().'</h3>';
-					
-			if($i<=10){
-				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', display_tour_thumb($tour,$i,$userDefined=null), $result);
-				$tourimg = array_pop($result);	
-				echo isset($tourimg) ? link_to_tour('<span class="item-image hidden" style="background-image:url('.$tourimg.');"></span>') : null;					
-				$tourimg++;
-			}
+			echo '<h3>'.link_to_tour(null,array('class'=>'permalink')).'</h3>';
 			
-			echo '<div class="item-description"><p>'.snippet($tourdesc,0,300).'</p></div>'; 
+			echo '<span class="tour-meta-browse">';
+			if(tour( 'Credits' )){
+				echo __('%1s curated by: %2s', mh_tour_label_option('singular'),tour( 'Credits' ));
+			}elseif(get_theme_option('show_author') == true){
+				echo __('%1s curated by: The %2s Team',mh_tour_label_option('singular'),option('site_title'));
+			}		
+			echo ' | '.count($tour->Items).' '.__('Locations').'</span>';
+
+//				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', display_tour_thumb($tour,1,$userDefined=null), $result);
+//				$tourimg = array_pop($result);	
+//				echo isset($tourimg) ? link_to_tour('<span class="item-image" style="background-image:url('.$tourimg.');"></span>') : null;					
+//				$tourimg++;
+
+			echo '<div class="item-description"><p>'.snippet($tourdesc,0,250).'</p></div>'; 
 			echo '</article>';
 			$i++;
 		
@@ -57,14 +57,6 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 	</section>
     </div>
 
-	<div id="page-col-right">
-	<?php 
-	if($tourimg<10){
-		// if there aren't 10 tour images to fill out the collage, grab some item images to fill it out
-		$num=10-$tourimg; 
-		mh_display_recent_item($num);
-	}?>
-	</div>	
 	
 	<div class="pagination bottom"><?php echo pagination_links(); ?></div>
 

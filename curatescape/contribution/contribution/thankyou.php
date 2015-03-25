@@ -4,12 +4,6 @@
 <div id="content">
 <article class="page show">
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="show" role="main">
 
@@ -22,13 +16,6 @@
 	<?php endif; ?>
 
 	</div>
-
-
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-
-		</aside>	
-	</div>	
 
 
 

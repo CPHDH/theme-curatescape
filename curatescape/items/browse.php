@@ -34,6 +34,7 @@ else{
 echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
 ?>
 
+<?php mh_map_actions();?>
 
 <div id="content">
 
@@ -42,12 +43,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>
-		
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
+
 
 
 	<div id="primary" class="browse">
@@ -63,7 +59,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 		$index=1; // set index to one so we can use zero as an argument below
 		$showImgNum= 3; // show this many images on the browse results page; used for slider on mobile devices
 		foreach(loop('Items') as $item): 
-			$description = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>250));
+			$description = mh_the_text($item,array('snippet'=>250));
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
 			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
 			$hasImage=metadata($item, 'has thumbnail');
@@ -86,6 +82,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 				<?php endif; ?>
 
 				<div class="item-meta-browse">
+					<!--span class="author-browse"><?php echo mh_the_byline($item,true);?></span-->
 					<?php if (metadata($item, 'has tags') ): ?>
 	    				<div class="item-tags">
 	    				<p><span><?php echo __('Tags');?>:</span> <?php echo $tags; ?></p>
@@ -111,8 +108,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 	</section>	
 	</div><!-- end primary -->
 
-	<div id="page-col-right">
-	</div>	
+
 
 </section>
 </div> <!-- end content -->

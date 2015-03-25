@@ -52,7 +52,6 @@ echo head_css();
 
 
 		
-		<div id="columns">
 				
 			<section id="about">
 			<header>
@@ -84,8 +83,8 @@ echo head_css();
 			</section>
 								
 		
-		</div> <!-- end columns -->
-
-<a href="http://curatescape.org/" style="border:none; opacity:.65; color:transparent;"><img title="<?php echo __('Powered by Curatescape');?>" alt="<?php echo __('Powered by Curatescape');?>" style="width:85%; max-width: 10em; margin: 1em 0 1em;" src="<?php echo img('curatescape-logo.png');?>"></a>
+<footer>
+<a id="curatescape-logo" href="http://curatescape.org/"><img title="<?php echo __('Powered by Curatescape');?>" alt="<?php echo __('Powered by Curatescape');?>" src="<?php echo img('curatescape-logo.png');?>"></a>
+</footer>
 
 </div> <!-- end content -->

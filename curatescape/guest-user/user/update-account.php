@@ -17,12 +17,6 @@ echo head(array('bodyclass' => 'update-account', 'title' => $pageTitle));
 <article class="page show">
 <h2 class="instapaper_title"><?php echo $head['title']; ?></h2>
 
-	<div id="page-col-left">
-		<aside>
-		<!-- add left sidebar content here -->
-		</aside>
-	</div>
-
 
 	<div id="primary" class="show" role="main">
 		<?php echo flash(); ?>
@@ -30,11 +24,6 @@ echo head(array('bodyclass' => 'update-account', 'title' => $pageTitle));
 	</div>
 
 
-	<div id="page-col-right">
-		<aside id="page-sidebar">
-
-		</aside>	
-	</div>	
 
 </article>
 </div> <!-- end content -->
