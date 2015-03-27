@@ -1702,7 +1702,7 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 {
 	$featuredItem = get_random_featured_items($num,$withImage);
 	$html = '<h2 class="hidden">'.__('Featured %s', mh_item_label()).'</h2>';
-	$class=get_theme_option('featured_tint')!==0 ? 'tint' : 'no-tint';
+	$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
 	
 	if ($featuredItem) {
 	
