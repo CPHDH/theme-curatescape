@@ -149,8 +149,7 @@ function random_item_link($text=null,$class='show'){
 			array( 'class' => $linkclass ) );
 	}else{
 		$linkclass = 'random-story-link ' . $class;
-		$link = link_to( $record, $action, __('Publish some items to activate this link'),
-			array( 'class' => $linkclass ) );
+		$link = '<a href="/" class="random-story-link big-button">'.__('Publish some items to activate this link').'</a>';
 	}
 	return $link;
 
@@ -647,7 +646,7 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 		
 		<!-- Directions link -->
 		<?php
-		$directions_link= (isset($show_directions)) ? '<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="'.__('Get Directions on Google Maps').'" target="_blank" href="https://maps.google.com/maps?saddr='.$saddr.'+location&daddr='.($street_address ? urlencode($street_address) : $coords).'"><span class="icon-external-link-square" aria-hidden="true"></span> <span class="label">'.__('Get Directions').'</span><span class="alt">'.__('Directions').'</span></a> ' : null;	
+		$directions_link= ($show_directions==1) ? '<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="'.__('Get Directions on Google Maps').'" target="_blank" href="https://maps.google.com/maps?saddr='.$saddr.'+location&daddr='.($street_address ? urlencode($street_address) : $coords).'"><span class="icon-external-link-square" aria-hidden="true"></span> <span class="label">'.__('Get Directions').'</span><span class="alt">'.__('Directions').'</span></a> ' : null;	
 		echo ( $coords && ($item || $tour) ) ? $directions_link : null;	
 		?>
 		
