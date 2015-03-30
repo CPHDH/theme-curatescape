@@ -1758,7 +1758,7 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 ** Display the customizable "About" content on homepage
 ** also sets content for mobile slideshow, via mh_random_or_recent()
 */
-function mh_home_about($length=650,$html=null){
+function mh_home_about($length=530,$html=null){
 
 	$html .= '<div class="about-text">';
 		$html .= '<article>';
