@@ -54,7 +54,7 @@ body.small { } body.big { }
 
 /*! FONTS */
 #custom-block .find-us,.view-more-link,.stealth-mode #about .soon,.stealth-mode #contact,#items .tour-nav,header.main #header-search input,header.main,.random-story-link.show,.big-button,h1,h2,h3,h4,h5,nav,#search-wrap input,#map_canvas a,#slider li div span,thead,#map-faq-inner p a,.marker-content,.app-store,#story-header .item-subtitle,#tour-header .tour-subtitle,.view-more-link span,#story-header .story-meta, #tour-header .tour-meta {font-family:"Droid Serif","Georgia","Times","Times New Roman",serif;font-weight: normal;}
-body,#custom-block .find-us a,.item-related-links{font-family:"PT Serif","Georgia","Times","Times New Roman",serif;}span.amp{font-family:"Baskerville"}
+body,#custom-block .find-us a,.item-related-links{font-family:"PT Serif","Georgia","Times","Times New Roman",serif;}span.amp{font-family:"Baskerville","Palatino","Book Antiqua";font-style: italic;}
 
 /*! ===== BASIC CONTAINER LAYOUT ===== */
 body{margin:0;display:block;background:#eaeaea}#wrap{margin:0em auto 4em;display:block;background:#fff;max-width:50em;box-shadow:0 0 .15em #333;}header.main,#content,footer.main{display:block;clear:both;margin:0 auto;}#content{margin-bottom:0;min-height:20em;padding:1em 5% 0}
