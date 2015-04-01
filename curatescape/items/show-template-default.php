@@ -94,7 +94,11 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 				<div class="item-related-links">
 				<?php mh_related_links();?>
 				</div>
-								
+				
+				<div class="date-stamp">
+				<?php echo mh_post_date(); ?>				
+				</div>
+				
 				<div class="comments">
 				<?php mh_disquss_comments();?>
 				</div>
