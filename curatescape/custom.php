@@ -1021,6 +1021,16 @@ function mh_wrappable_link($string){
 	return $result;
 }
 
+function mh_post_date(){
+
+	if(get_theme_option('show_datestamp')==1){
+		$a=format_date(metadata('item', 'added'));
+		$m=format_date(metadata('item', 'modified'));	
+	
+		return '<span class="post-date">'.__('Published on %s.', $a ).( ($a!==$m) ? ' '.__('Last updated on %s.', $m ) : null ).'</span>';	
+	}
+}
+
 
 /*
 ** Custom item citation
@@ -1030,6 +1040,7 @@ function mh_wrappable_link($string){
 function mh_item_citation($wrappableDomain=true){
 	
 	$header='<h3>'.__('Cite this Page: ').'</h3>';
+	
 	if($wrappableDomain==true){
 		return $header.mh_wrappable_link(html_entity_decode(metadata('item', 'citation')));
 	}else{
@@ -1178,8 +1189,8 @@ function mh_item_images($item,$index=0,$html=null){
 			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
 
 			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
-			$html .= ($photoDesc) ? '<p class="description image-description">'.$photoDesc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
-			$html .= '</div>';
+			$html .= '<p class="description image-description">'.( ($photoDesc) ? $photoDesc : '');
+			$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
 
 			//echo $html;
 			$index++;
@@ -1238,8 +1249,8 @@ function mh_audio_files($item,$index=0,$html=null){
 		$html .= '<div class="item-file-container">';
 		$html .= '<audio controls><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
 		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-		$html .= ($audioDesc) ? '<p class="description audio-description sib">'.$audioDesc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
-		$html .= '</div>';
+		$html .= '<p class="description audio-description sib">'.( ($audioDesc) ? $audioDesc : '');
+		$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
 
 	}
 
@@ -1290,8 +1301,8 @@ function mh_video_files($item,$html=null) {
 			$html .= '<source src="'.$videoFile.'" type="video/mp4">';
 			$html .= '</video>';
 			$html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-			$html .= ($videoDesc) ? '<p class="description video-description sib">'.$videoDesc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
-			$html .= '</div>';
+			$html .= '<p class="description video-description sib">'.( ($videoDesc) ? $videoDesc : '');
+			$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
 			$localVid++;
 			$videoIndex++;
 		}
