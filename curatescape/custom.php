@@ -1798,6 +1798,19 @@ function mh_home_about($length=530,$html=null){
 }
 
 /*
+** Tag cloud for homepage
+*/
+function mh_home_popular_tags($num=50){
+	
+	$tags=get_records('Tag',array('sort_field' => 'count', 'sort_dir' => 'd'),$num);
+	
+	return '<div id="home-tags" class="browse tags">'.tag_cloud($tags,url('items/browse')).'<p class="view-more-link"><a href="'.url('items/tags').'">'.__('View all <span>%s Tags</span>',total_records('Tags')).'</a></p></div>';
+	
+}
+
+	
+
+/*
 ** List of recent or random items for homepage
 ** Listed in inline homepage section and used in the slider at mobile viewport sizes
 */
@@ -1893,6 +1906,7 @@ function homepage_widget_sections($html=null){
 		$recent_or_random_isset=0; 
 		$tours_isset=0;
 		$featured_isset=0;
+		$popular_tags=0;
 		
 		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3()) as $setting){
 			
@@ -1909,6 +1923,11 @@ function homepage_widget_sections($html=null){
 			        $html.= ($recent_or_random_isset==0) ? '<section id="home-item-list">'.mh_home_item_list().'</section>' : null;
 			        $recent_or_random_isset++;
 			        break;
+			    case 'popular_tags':
+			        $html.= ($popular_tags==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
+			        $popular_tags++;
+			        break;
+
 			    default:
 			    	$html.=null;
 			}
