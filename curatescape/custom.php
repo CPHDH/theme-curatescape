@@ -1691,8 +1691,10 @@ function mh_display_random_tours($num = 20){
 			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. $items[$i]['id'].'">' . $items[$i]['title'] . '</a></h3>';
 			$html .= '</article>';
 		}
-	
-		$html .= '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($items), mh_tour_label('plural')).'</a></p>';
+		$total_tours=count($items);
+		if($total_tours>1){
+			$html .= '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', $total_tours, mh_tour_label('plural')).'</a></p>';
+		}
 	}else{
 		$html .= '<article class="home-tour-result none">';
 		$html .= '<p>'.__('No tours are available.').'</p>';
