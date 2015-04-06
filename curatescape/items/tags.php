@@ -1,4 +1,7 @@
-<?php echo head(array('maptype'=>'focusarea', 'title'=>'Browse by Tag','bodyid'=>'items','bodyclass'=>'browse tags')); ?>
+<?php 
+	$tags=get_records('Tag',array('sort_field' => 'count', 'sort_dir' => 'd'),0);
+	echo head(array('maptype'=>'focusarea', 'title'=>'Browse by Tag','bodyid'=>'items','bodyclass'=>'browse tags')); 
+	?>
 
 
 <div id="content">
