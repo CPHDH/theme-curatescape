@@ -1170,7 +1170,7 @@ function mh_item_images($item,$index=0,$html=null){
 
 		if(in_array($mime,$img)) {
 			if($index==0) {
-				$html .= '<h3><span class="icon-camera-retro" aria-hidden="true"></span>Images <span class="toggle instapaper_ignore">Show <span class="icon-chevron-right" aria-hidden="true"></span></span></h3>';
+				$html .= '<h3><span class="icon-camera-retro" aria-hidden="true"></span>Images </span></h3>';
 
 
 				
@@ -1224,7 +1224,7 @@ function mh_audio_files($item,$index=0,$html=null){
 	if ( array_search($mime, $audioTypes) !== false ) {
 
 		if ($index==0){ ?>
-		<h3><span class="icon-volume-up" aria-hidden="true"></span>Audio <span class="toggle instapaper_ignore">Show <span class="icon-chevron-right" aria-hidden="true"></span></span></h3>
+		<h3><span class="icon-volume-up" aria-hidden="true"></span>Audio </span></h3>
 		
 		<script>
 		jQuery.ajaxSetup({
@@ -1320,7 +1320,7 @@ function mh_video_files($item,$html=null) {
 		<?php 
 		
 		echo '<figure id="item-video">';
-		echo '<h3><span class="icon-film" aria-hidden="true"></span>'.(($videoIndex > 1) ? __('Videos ') : __('Video ')).'<span class="toggle instapaper_ignore">'.__('Show ').'<span class="icon-chevron-right" aria-hidden="true"></span></span></h3>';
+		echo '<h3><span class="icon-film" aria-hidden="true"></span>'.(($videoIndex > 1) ? __('Video ') : __('Video ')).'</span></h3>';
 		echo $html;
 		echo '</figure>';
 	}

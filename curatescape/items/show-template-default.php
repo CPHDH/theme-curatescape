@@ -121,23 +121,6 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 </div> <!-- end content -->
 
 <script>
-	//Toggle the media files and their metadata to reduce scrolling on mobile	
-		
-	var loopSelector = ['#item-video','#item-audio','#item-photos'];	
-	
-	jQuery.each(loopSelector,function(index,value){
-		jQuery('#item-media '+value+' h3 span.toggle').html('Hide <i class="icon-chevron-down"></i>');
-	
-		jQuery('#item-media '+value+' h3 span.toggle').toggle( 
-		function() {
-			jQuery(''+value+' .item-file-container').hide('fast','linear');
-			jQuery('#item-media '+value+' h3 span.toggle').html('Show <i class="icon-chevron-right"></i>');
-		},
-		function() {
-			jQuery(''+value+' .item-file-container').show('fast','linear');
-			jQuery('#item-media '+value+' h3 span.toggle').html('Hide <i class="icon-chevron-down"></i>');
-		})				
-	});
 	
 	if(jQuery('.tour-nav').length > 0){
 		jQuery(window).scroll(function() {
