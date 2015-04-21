@@ -441,7 +441,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					    
 						var lat=data.latitude;
 						var lng=data.longitude;
-						var thumbnail=data.thumbnail ? '<a href="#item-media"><img src="'+data.thumbnail+'"></a>' : '';
+						var thumbnail=data.thumbnail ? '<a class="item-media" href="#item-media"><img style="width:7em;height:7em;" src="'+data.thumbnail+'"></a>' : '';
 						var iw_address = data.address ? data.address : null;
 						var iw_location= iw_address ? iw_address.substring(0,30)+'&hellip;' : lat+','+lng;
 						var access_info=(jQuery('#access-info h3').length) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> <?php echo __('Access Information');?></a> ' : '';
@@ -543,7 +543,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 						}
 						var item_href=root + '/items/show/' + item.id;
 						var marker_subtitle = item.subtitle ? '<br><div class="marker-subtitle">'+item.subtitle+'</div>' : '';
-						var thumbnail = item.thumbnail ? '<a href="' + item_href +'"><img src="'+item.thumbnail+'"></a>' : '';
+						var thumbnail=item.thumbnail ? '<a class="item-media" href="'+item_href+'"><img style="width:7em;height:7em;" src="'+item.thumbnail+'"></a>' : '';
 						
 						var iw_address = item.address ? item.address : null;
 						var iw_location= iw_address ? iw_address.substring(0,30)+'&hellip;' : item.latitude+','+item.longitude;					
@@ -581,7 +581,9 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					// Open the single item infoWindow after the map is done loading
 					jQuery('.big #map_canvas').gmap('find', 'markers', { 'property': 'id', 'value': 'single' }, 
 					function(marker, found) {
-						if(marker.id=='single') jQuery(marker).triggerEvent('click');
+						if(marker.id=='single'){
+							jQuery(marker).triggerEvent('click');
+							}
 					});
 				});
 			});	
