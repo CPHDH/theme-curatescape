@@ -1090,14 +1090,16 @@ function mh_footer_scripts_init(){
 			//===========================// ?>
 			<script>
 			// the fancybox caption minimize/expand button
-			function hideText(){
+			function toggleText(){
 				var link = jQuery('a.fancybox-hide-text');
-				jQuery(".fancybox-title span.main").fadeToggle(function(){
+				jQuery(".fancybox-title span.main").slideToggle(function(){
+		            		            		            
 		            if (jQuery(this).is(":visible")) {
-		                 link.html('<span class="icon-close" aria-hidden="true"></span> Hide Caption').removeClass('active');;
+		                 link.html('<span class="icon-close" aria-hidden="true"></span> Hide Caption').addClass('active');
 		            } else {
-		                 link.html('&hellip;').addClass('active');
+		                 link.html('<span class="icon-chevron-up" aria-hidden="true"></span> Show Caption').addClass('active');
 		            }
+		            
 				});
 			}
 			
@@ -1112,7 +1114,7 @@ function mh_footer_scripts_init(){
 			        beforeShow: function () {
 			            if (this.title) {
 			                // Add caption close button
-			                this.title += '<a class="fancybox-hide-text" onclick="hideText()"><span class="icon-close" aria-hidden="true"></span> Hide Caption</a> ';
+			                this.title += '<a class="fancybox-hide-text active" onclick="toggleText()"><span class="icon-chevron-up" aria-hidden="true"></span> Show Caption</a> ';
 			            }
 			        },
 			        padding:3,
@@ -1181,7 +1183,7 @@ function mh_item_images($item,$index=0,$html=null){
 
 			if($photoTitle){
 				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
-				$fancyboxCaption = '<span class="main">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b><span>').'</span>'.$filelink;
+				$fancyboxCaption = '<span class="main"><div class="caption-inner">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b><span>').'</div></span>'.$filelink;
 			}else{
 				$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';
 			}
