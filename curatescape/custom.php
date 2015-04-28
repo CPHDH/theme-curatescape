@@ -602,7 +602,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 */
 function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 	
-
+		$show_directions=null;
+		$street_address=null;
 		
 		if($item!==null){
 			
