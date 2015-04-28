@@ -2266,9 +2266,9 @@ function mh_lg_logo_url()
 
 
 /*
-** Icon file for iOS devices
-** Used when the user saves a link to the website to their homescreen
-** May also be used by other iOS apps, including a few RSS Readers (e.g. Reeder)
+** Icon file for mobile devices
+** Used when the user saves the website to their device homescreen
+** May also be used by other apps, including a few RSS Readers
 */
 function mh_apple_icon_logo_url()
 {
