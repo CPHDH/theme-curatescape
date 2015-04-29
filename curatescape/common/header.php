@@ -47,7 +47,7 @@ isset($file) ? $file : $file=null;
 <meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
 
 <!-- Installable //// TODO: update icon sizes="192px x 192px" and "128px x 128px" -->
-<meta name="mobile-web-app-capable" content="yes">
+<!--meta name="mobile-web-app-capable" content="yes"-->
 <!--link rel="manifest" href="<?php echo WEB_ROOT; ?>/themes/curatescape/manifest.json.php"-->
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
 
