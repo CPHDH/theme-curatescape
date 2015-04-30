@@ -72,7 +72,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 			<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
 			
 				<h3><?php echo $titlelink; ?></h3>
-				<div class="browse-meta-top"><?php echo (mh_the_subtitle($item) !=='') ? '<div class="subtitle-browse">'.mh_the_subtitle($item).'</div>' : null; ?><?php echo mh_the_byline($item,true);?></div>
+				<div class="browse-meta-top"><?php echo mh_the_byline($item,true);?></div>
 				<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
 				
 				<?php if ($description): ?>
