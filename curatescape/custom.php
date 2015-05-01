@@ -23,8 +23,9 @@ function mh_seo_sitedesc(){
 }
 
 // SEO Page Title
-function mh_seo_pagetitle($title){
-	return $title ? $title.' | '.option('site_title') : option('site_title');
+function mh_seo_pagetitle($title,$item){
+	$subtitle=$item ? (mh_the_subtitle($item) ? ' - '.mh_the_subtitle($item) : null) : null;
+	return $title ? $title.$subtitle.' | '.option('site_title') : option('site_title');
 }
 
 // SEO Page image

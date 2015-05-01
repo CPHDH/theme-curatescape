@@ -20,11 +20,11 @@ isset($item) ? $item : $item=null;
 isset($file) ? $file : $file=null;
 ?>
     
-<title><?php echo ($title) ?  $title.' | '.option('site_title') : option('site_title'); ?></title>
+<title><?php echo mh_seo_pagetitle($title,$item); ?></title>
 <meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>" />
 
 <!-- FB Open Graph stuff -->
-<meta property="og:title" content="<?php echo mh_seo_pagetitle($title); ?>"/>
+<meta property="og:title" content="<?php echo mh_seo_pagetitle($title,$item); ?>"/>
 <meta property="og:image" content="<?php echo mh_seo_pageimg($item,$file);?>"/>
 <meta property="og:site_name" content="<?php echo option('site_title');?>"/>
 <meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>"/>
