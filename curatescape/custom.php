@@ -1551,7 +1551,7 @@ function mh_factoid($item='item',$html=null){
 		if($factoids){
 			
 			foreach($factoids as $factoid){
-				$html.='<div class="factoid"><span class="icon-lightbulb" aria-hidden="true"></span> '.$factoid.'</div>';
+				$html.='<div class="factoid"><span class="icon-lightbulb" aria-hidden="true"></span> <span class="fi">'.$factoid.'</span></div>';
 			}
 			
 			return $html;
