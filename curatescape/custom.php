@@ -26,7 +26,7 @@ function mh_seo_sitedesc(){
 function mh_seo_pagetitle($title,$item){
 	$subtitle=$item ? (mh_the_subtitle($item) ? ' - '.mh_the_subtitle($item) : null) : null;
 	$pt = $title ? $title.$subtitle.' | '.option('site_title') : option('site_title');
-	return addslashes( strip_tags($pt) );
+	return strip_tags($pt);
 }
 
 // SEO Page image
