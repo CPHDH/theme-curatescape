@@ -1180,16 +1180,19 @@ function mh_item_images($item,$index=0,$html=null){
 				
 			}	
 			$filelink=link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow'));
-			$photoDesc = mh_normalize_special_characters(strip_tags(mh_file_caption($file,false),'<a><strong><em><i><b><span>'));
+			$photoDesc = mh_normalize_special_characters(
+				strip_tags( mh_file_caption($file,false ),
+				'<a><strong><em><i><b><span>') 
+				);
 			$photoTitle = mh_normalize_special_characters(metadata($file,array('Dublin Core', 'Title')));
 
 			if($photoTitle){
 				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
 				$fancyboxCaption = '<span class="main"><div class="caption-inner">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b><span>').'</div></span>'.$filelink;
 			}else{
-				$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>';
+				$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>'.$filelink;
 			}
-
+						
 			$html .= '<div class="item-file-container">';
 
 			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
@@ -1222,8 +1225,8 @@ function mh_audio_files($item,$index=0,$html=null){
 	$audioTypes = array('audio/mpeg');
 	foreach (loop('files', $item->Files) as $file):
 		$audioDesc = strip_tags(mh_file_caption($file,false),'<span>');
-	$audioTitle = metadata($file,array('Dublin Core','Title'));
-	$mime = metadata($file,'MIME Type');
+		$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
+		$mime = metadata($file,'MIME Type');
 
 	if ( array_search($mime, $audioTypes) !== false ) {
 
@@ -1293,7 +1296,7 @@ function mh_video_files($item,$html=null) {
 		$videoTitle = metadata($file,array('Dublin Core', 'Title'));
 		$videoClass = (($videoIndex==0) ? 'first' : 'not-first');
 		$videoDesc = mh_file_caption($file,false);
-		$videoTitle = metadata($file,array('Dublin Core','Title'));
+		$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
 		$embeddable=embeddableVersion($file,$videoTitle,$videoDesc);
 		if($embeddable){
 			// If a video has an embeddable streaming version, use it.
