@@ -1932,7 +1932,7 @@ function homepage_widget_sections($html=null){
 			        $featured_isset++;
 			        break;
 			    case 'tours':
-			        $html.= ($tours_isset==0) ? '<section id="home-tours">'.mh_display_random_tours(7).'</section>' : null;
+			        $html.= ($tours_isset==0) ? '<section id="home-tours">'.mh_display_homepage_tours().'</section>' : null;
 			        $tours_isset++;
 			        break;
 			    case 'recent_or_random':
