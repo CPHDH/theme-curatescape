@@ -144,14 +144,14 @@ function random_item_link($text=null,$class='show'){
 
 	$link = '';
 	$randitems = get_records('Item', array( 'sort_field' => 'random', 'hasImage' => true), 1);
-
+	$linkclass = 'random-story-link ' . $class;
+	
 	if( count( $randitems ) > 0 ){
-		$linkclass = 'random-story-link ' . $class;
 		$link = link_to( $randitems[0], 'show', $text,
 			array( 'class' => $linkclass ) );
 	}else{
-		$linkclass = 'random-story-link ' . $class;
-		$link = '<a href="/" class="random-story-link big-button">'.__('Publish some items to activate this link').'</a>';
+		$link = link_to( '/', 'show', __('Publish some items to activate this link'),
+			array( 'class' => $linkclass ) );
 	}
 	return $link;
 
