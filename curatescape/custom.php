@@ -1671,8 +1671,10 @@ function mh_reducepayload($index,$showThisMany){
 /*
 ** Display the Tours list
 */
-function mh_display_random_tours($num = 20){
-
+function mh_display_homepage_tours($num=7, $scope='random'){
+	
+	$scope=get_theme_option('homepage_tours_scope') ? get_theme_option('homepage_tours_scope') : $scope;
+	
 	// Get the database.
 	$db = get_db();
 
@@ -1681,12 +1683,20 @@ function mh_display_random_tours($num = 20){
 
 	// Build the select query.
 	$select = $table->getSelect();
-	$select->from(array(), 'RAND() as rand');
 	$select->where('public = 1');
+	switch($scope){
+		case 'random':
+			$select->from(array(), 'RAND() as rand');
+			break;
+		case 'featured':
+			$select->where('featured = 1');
+			break;
+	}
+	
 
 	// Fetch some items with our select.
 	$items = $table->fetchObjects($select);
-	shuffle($items);
+	if($scope=='random') shuffle($items);
 	$num = (count($items)<$num)? count($items) : $num;
 	$html=null;
 	
