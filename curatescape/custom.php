@@ -772,7 +772,7 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 function mh_simple_search($formProperties=array(), $uri = null){
 	// Always post the 'items/browse' page by default (though can be overridden).
 	if (!$uri) {
-		$uri = url('items/browse');
+		$uri = url('items/browse?sort_field=relevance');
 	}
 
 	$searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
@@ -781,7 +781,6 @@ function mh_simple_search($formProperties=array(), $uri = null){
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
 	$html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput','placeholder'=>__('Search %s',mh_item_label('plural'))));
-	$html .= get_view()->formSubmit('submit_search', __("Search"));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -967,7 +966,7 @@ function mh_the_byline($itemObj='item',$include_sponsor=false,$include_edit_link
 
 			foreach ($authors as $author){
 				if($authlink==1){
-					$href='/items/browse?search=&advanced[0][element_id]=39&advanced[0][type]=is+exactly&advanced[0][terms]='.$author.'&submit_search=Search';
+					$href='/items/browse?search=&advanced[0][element_id]=39&advanced[0][type]=is+exactly&advanced[0][terms]='.$author;
 					$author='<a href="'.$href.'">'.$author.'</a>';
 				}
 
@@ -1466,7 +1465,6 @@ function mh_subjects(){
 			$link .= rawurlencode($subject);
 			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
 			$link .= urlencode(str_replace('&amp;','&',$subject));
-			$link .= htmlentities('&submit_search=Search');
 			echo '<li><a href="'.$link.'">'.$subject.'</a></li> ';
 		}
 		echo '</ul>';
@@ -1485,7 +1483,6 @@ function mh_subjects_string(){
 			$link .= rawurlencode($subject);
 			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
 			$link .= urlencode(str_replace('&amp;','&',$subject));
-			$link .= htmlentities('&submit_search=Search');
 			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
 		}
 
