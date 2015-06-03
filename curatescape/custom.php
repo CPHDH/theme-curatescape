@@ -107,7 +107,8 @@ function mh_tour_header(){
 ** Global navigation
 */
 function mh_global_nav(){
-	if(get_theme_option('default_nav')!==0){
+	$curatenav=get_theme_option('default_nav');
+	if( $curatenav==1 || !isset($curatenav) ){
 		return nav(array(
 				array('label'=>__('Home'),'uri' => url('/')),
 				array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
