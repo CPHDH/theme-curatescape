@@ -1685,6 +1685,11 @@ function mh_display_homepage_tours($num=7, $scope='random'){
 	// Build the select query.
 	$select = $table->getSelect();
 	$select->where('public = 1');
+	
+	// Get total count
+	$public = $table->fetchObjects($select);		
+	
+	// Continue, get scope
 	switch($scope){
 		case 'random':
 			$select->from(array(), 'RAND() as rand');
@@ -1709,9 +1714,8 @@ function mh_display_homepage_tours($num=7, $scope='random'){
 			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. $items[$i]['id'].'">' . $items[$i]['title'] . '</a></h3>';
 			$html .= '</article>';
 		}
-		$total_tours=count($items);
-		if($total_tours>1){
-			$html .= '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', $total_tours, mh_tour_label('plural')).'</a></p>';
+		if(count($public)>1){
+			$html .= '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
 		}
 	}else{
 		$html .= '<article class="home-tour-result none">';
