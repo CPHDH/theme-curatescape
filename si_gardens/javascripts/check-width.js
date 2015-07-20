@@ -126,6 +126,8 @@ jQuery(document).ready(function() {
 	function doTileMontage(){
 		var yesTiles = /* these will use the tile montage */
 		(jQuery("body#tours").hasClass('browse big')) ||
+		(jQuery("body").hasClass('page exhibits show big')) ||
+		(jQuery("body").hasClass('page exhibits show small')) ||
 		(jQuery("body").hasClass('page simple-page show big')) ||
 		(jQuery("body").hasClass('page simple-page show small'));					
 		if (yesTiles) {
