@@ -111,7 +111,8 @@ function mh_global_nav(){
 			array('label'=>'FAQs','uri' => url('/faq')),
 			array('label'=>'Education','uri' => url('/education')),
 			array('label'=>'Tumblr','uri' => 'http://communityofgardens.tumblr.com/','target' => '_blank'),
-			array('label'=>'Share A Story','uri' => url('/contribution'),'class'=>'nav-share-a-story')
+			array('label'=>'Share A Story','uri' => url('/contribution')),
+			array('label'=>'Share A Story','uri' => url('/contribution?nav-sign'),'class'=>'nav-share-a-story')
 			));
 	}else{
 		return public_nav_main();
