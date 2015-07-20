@@ -422,8 +422,8 @@ span.amp {
 	box-shadow:0 0 1em #333 inset;
 }
 
-#exhibit #hero{
-	display: none;
+#exhibit #hero, #exhibit #showmap{
+	display: none !important;
 	visibility: hidden;
 	height: 0;
 }
@@ -691,7 +691,7 @@ nav.secondary-nav ul {
 
 nav#primary-nav ul li,nav#footer-nav ul li {
 	display:inline;
-	padding:1em .5em;
+	padding:1em .4em;
 }
 
 nav.secondary-nav ul li {
@@ -1839,6 +1839,141 @@ div#map-block p.map-notification {
 	text-shadow:.01em .025em 0 #fafafa;
 }
 
+/* EXHIBITS */
+#exhibit #content {
+	padding-left: 3%;
+	padding-right: 3%;
+}
+#exhibit #secondary {
+	background:#f0f1ea;
+	color:#443422;
+	border-top: 4px solid #4c2c10;
+	float:left;
+	/*min-height:42em;
+	overflow:hidden;*/
+	width:20%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	/*margin-top: 2.5em;*/
+}
+#exhibit #primary {
+	float: right;
+	width:77%;
+	padding-left:2%;
+}
+.exhibit-block img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+#exhibit h1 {
+	font-family:"ArtcraftURW-Bol","Georgia","Times","Times New Roman",serif;
+	margin-top: .7em;
+}
+#exhibit h2 {
+	margin-top: 0;
+	margin-bottom: .5em;
+	font-size: 2em;
+	color:#56822a;
+}
+#exhibit aside {
+	padding: 10px 15px;
+	font-size: 14px;
+	line-height: 1.4em;
+}
+#exhibit aside h3 {
+	margin: 0 0 .5em 0;
+	padding: 0;
+	text-transform: uppercase;
+	color:#443422;
+	font-size: 13px;
+}
+#exhibit aside p {
+	margin: .5em 0;
+}
+#exhibit .navigation .exhibit-title {
+	display: none;
+}
+#exhibit .navigation ul, #exhibit #exhibit-pages ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#exhibit .navigation ul li a, #exhibit #exhibit-pages ul li a {
+	display: block;
+	border-bottom:1px solid #d7d9cb;
+	padding: .5em 0;
+}
+#exhibit .navigation ul li:first-child a, #exhibit #exhibit-pages ul li:first-child a {
+	border-top:1px solid #d7d9cb;
+}
+#exhibit .exhibit-item-caption {
+	background: #f0f1ea;
+	padding: .5em;
+	margin-bottom: 2em;
+}
+#exhibit .exhibit-item-caption p {
+	padding: .5em .8em;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #443422;
+	margin: 0;
+}
+#exhibit .gallery {
+	margin: 0 -1%;
+}
+#exhibit .exhibit-gallery-item {
+	float: left;
+	width:31%;
+	margin: 0 1%;
+}
+#exhibit .gallery .exhibit-item-caption {
+	margin-bottom: 1em;
+}
+#exhibit-page-navigation {
+	clear: both;
+}
+/*Exhibit Index*/
+#exhibits {
+	margin: 0 -1%;
+}
+#exhibits .exhibit {
+	float: left;
+	width:31%;
+	margin: 0 1% 2% 1%;
+	background: #f0f1ea;
+	padding: 0 0 1em 0;
+}
+#exhibits .exhibit img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+#exhibits .exhibit h2 {
+	margin: 0;
+	padding: .5em 1em 0 1em;
+	font-size: 18px;
+	line-height: 1.3;
+}
+section.browse #exhibits h2 {
+	margin: 10px 0 0 0;
+}
+#exhibits .exhibit p {
+	padding: .5em 1.5em;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #443422;
+	margin: 0;
+}
+#exhibits .exhibit p.read-more {
+	text-transform: uppercase;
+	font-size: 13px;
+	padding-top: 0;
+}
+#exhibits .exhibit .tags {
+	font-size: 13px;
+}
 
 
 /* STEALTH MODE */
@@ -1957,6 +2092,32 @@ body#tours.browse #showmap{
 body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	display:none !important;	
 }
+
+/*=== Custom Styles - JULY 2015 ===*/
+
+body.contribution #hero, body.contribution #showmap, body.no-hero #hero, body.no-hero #showmap {
+    display: none !important;
+}
+
+.contribution fieldset .field{
+    max-width:97%;
+}
+
+.small.contribution article form input.fileinput{
+    max-width: 20em;
+    font-size: 0.8em;
+}
+
+.small.contribution article form input#geolocation_address {
+    width: 97% !important;
+    margin-bottom: 0;
+}
+
+.small.contribution article form button#geolocation_find_location_by_address{
+     margin-top:.5em;
+}
+
+/*=== End Custom Styles ===*/
 
 /*
 **
@@ -2202,6 +2363,10 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		text-align:center;
 	}
 	
+	nav#primary-nav ul li a.nav-share-a-story{
+		display: none;
+	}
+	
 	#mobile-menu-cluster #search-wrap {
 		width:100%;
 		margin-bottom:1em;
@@ -2273,7 +2438,21 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 		width:96%;
 	}
 	#hm-map #map_key {display:none}
-	
+	#exhibit #secondary {
+		width:100%;
+		border-right:none;
+		margin-bottom: 20px;
+	}
+	#exhibit #primary {
+		width:100%;
+	}
+	#exhibit .exhibit-gallery-item {
+		width: 48%;
+	}
+	#exhibits .exhibit {
+		width:100%;
+		margin: 0 0 5% 0;
+	}
 	
 }
 
@@ -2387,7 +2566,7 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	}
 	
 	nav#primary-nav ul {
-		font-size: 1em;
+		font-size: .9em;
 		line-height:1.2em;
 		float:right;
 	}
@@ -2396,7 +2575,6 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero {
 	nav#primary-nav ul li a.nav-share-a-story{
 		display:block;
 		position:absolute;
-		/*background:#0C0;*/
 		width:115px;
 		height:105px;
 		right:5px;
