@@ -25,7 +25,8 @@ if ($type->isFileRequired()):
 
 <?php
 foreach ($type->getTypeElements() as $contributionTypeElement) {
-    echo $this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement'=>$contributionTypeElement));
+/* 02/09/15 Ed Monk: Added the html_entity_decode to the statement below.  The labels were showing HRML in production */
+    echo html_entity_decode($this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement'=>$contributionTypeElement)));
 }
 ?>
 </fieldset><!--EB: add HTML-->

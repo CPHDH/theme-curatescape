@@ -26,7 +26,7 @@ else{
 	$title = __('All Exhibits');
 	$bodyclass .=' items stories';
 }	
-echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
+echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclass'=>$bodyclass)); 
 ?>
 
 
@@ -52,33 +52,22 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=
 
 	<?php if (count($exhibits) > 0): ?>
 	
-		<nav class="secondary-nav" id="item-browse"> 
-		    <?php echo nav(array(
-		        array(
-		            'label' => __('All'),
-		            'uri' => url('exhibits')
-		        ),
-		        array(
-		            'label' => __('Tags'),
-		            'uri' => url('exhibits/tags')
-		        )
-		    )); ?>
-		</nav>    
-    
-	
-    <div class="pagination"><?php echo pagination_links(); ?></div>
-	
     <div id="exhibits">	
 		<?php $exhibitCount = 0; ?>
 		<?php foreach (loop('exhibit') as $exhibit): ?>
 		    <?php $exhibitCount++; ?>
 		    <div class="exhibit <?php if ($exhibitCount%2==1) echo ' even'; else echo ' odd'; ?>">
-		        <h2><?php echo link_to_exhibit(); ?></h2>
+				
+				<?php if ($exhibitImage = record_image($exhibit, 'fullsize')): ?>
+					<?php echo exhibit_builder_link_to_exhibit($exhibit, $exhibitImage, array('class' => 'image')); ?>
+            	<?php endif; ?>
+				
+				<h2><?php echo link_to_exhibit(); ?></h2>
 		        <?php if ($exhibitDescription = metadata('exhibit', 'description', array('no_escape' => true))): ?>
-		        <div class="description"><?php echo $exhibitDescription; ?></div>
+					<div class="description"><?php echo $exhibitDescription; ?> <p class="read-more"><a href="<?php echo exhibit_builder_exhibit_uri(); ?>">Read More &raquo;</a></p></div>
 		        <?php endif; ?>
 		        <?php if ($exhibitTags = tag_string('exhibit', 'exhibits')): ?>
-		        <p class="tags"><?php echo $exhibitTags; ?></p>
+		        	<p class="tags">TAGS: <?php echo $exhibitTags; ?></p>
 		        <?php endif; ?>
 		    </div>
 		<?php endforeach; ?>

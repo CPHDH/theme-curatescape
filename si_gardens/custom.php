@@ -101,9 +101,9 @@ function mh_tour_header(){
 /*
 ** Global navigation
 */
-function mh_global_nav(){
+function mh_global_nav($includeExtra=true){
 	if(get_theme_option('default_nav')==1){
-		return nav(array(
+		$navLinks=array(
 			array('label'=>'Home','uri' => url('/')),
 			array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
 			//array('label'=>'Exhibits','uri' => url('/exhibits')),
@@ -111,8 +111,12 @@ function mh_global_nav(){
 			array('label'=>'FAQs','uri' => url('/faq')),
 			array('label'=>'Education','uri' => url('/education')),
 			array('label'=>'Tumblr','uri' => 'http://communityofgardens.tumblr.com/','target' => '_blank'),
-			array('label'=>'Share A Story','uri' => url('/contribution'),'class'=>'nav-share-a-story')
-			));
+			array('label'=>'Share A Story','uri' => url('/contribution'))
+			);
+		if($includeExtra==true){
+			$navLinks[]=array('label'=>'Share A Story','uri' => url('/contribution?nav-sign'),'class'=>'nav-share-a-story');
+		}	
+		return nav($navLinks);
 	}else{
 		return public_nav_main();
 	}

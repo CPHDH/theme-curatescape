@@ -1,15 +1,25 @@
-<?php echo head(array('maptype'=>'none','title' => metadata('exhibit', 'title'), 'bodyclass'=>'exhibits summary show','bodyid' => 'exhibit')); ?>
+<?php echo head(array('maptype'=>'none','title' => metadata('exhibit', 'title'), 'bodyclass'=>'summary show','bodyid' => 'exhibit')); ?>
 
 <div id="content">
-<article class="exhibit show">
-<h2 class="instapaper_title"><?php echo metadata('exhibit', 'title'); ?></h2>
+<article class="page show">
 
-	<div id="page-col-left">
-		<aside>
+	<h1><?php echo metadata('exhibit', 'title'); ?></h1>
+	
+	<div id="secondary">
+		<aside class="navigation">
 		<!-- add left sidebar content here -->
+			<h3><?php echo __('Sections'); ?></h3>
+			<ul>
+		        <?php set_exhibit_pages_for_loop_by_exhibit(); ?>
+		        <?php foreach (loop('exhibit_page') as $exhibitPage): ?>
+		        <?php echo exhibit_builder_page_summary($exhibitPage); ?>
+		        <?php endforeach; ?>
+		    </ul>
+		</aside>
+		<aside>
+			<a href="<?php echo absolute_url('exhibits'); ?>">More online exhibits</a>
 		</aside>
 	</div>
-
 
 	<div id="primary" class="show" role="main">
 			
@@ -21,13 +31,14 @@
 		
 		<?php if (($exhibitCredits = metadata('exhibit', 'credits'))): ?>
 		<div class="exhibit-credits">
-		    <h3><?php echo __('Credits'); ?></h3>
+		    <h3><?php echo __('Author'); ?></h3>
 		    <p><?php echo $exhibitCredits; ?></p>
 		</div>
 		<?php endif; ?>
 
 
 		<nav id="exhibit-pages">
+			<h3><?php echo __('Sections'); ?></h3>
 		    <ul>
 		        <?php set_exhibit_pages_for_loop_by_exhibit(); ?>
 		        <?php foreach (loop('exhibit_page') as $exhibitPage): ?>
@@ -37,10 +48,7 @@
 		</nav>
 
 	
-	</div>
-	
-	<div id="page-col-right">
-	</div>		
+	</div>	
 		
 <div id="share-this" class="show">
 <?php echo mh_share_this('Exhibit');?>
