@@ -1106,6 +1106,7 @@ function mh_footer_scripts_init(){
 				});
 			}
 			
+			
 			loadCSS('/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.css');
 			loadJS('/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.pack.js', function(){
 				// checkWidth.js sets 'big' and 'small' body classes
@@ -1380,6 +1381,7 @@ function mh_single_file_show($file=null){
 		
 		// SINGLE VIDEO FILE	
 		}elseif(array_search($mime, $videoTypes) !== false){
+			$html=null;
 			$videoIndex = 0;
 			$localVid=0;
 			$videoTypes = array('video/mp4','video/mpeg','video/quicktime');
@@ -1389,7 +1391,7 @@ function mh_single_file_show($file=null){
 			$videoClass = (($videoIndex==0) ? 'first' : 'not-first');
 			$videoDesc = mh_file_caption($file,false);
 			$videoTitle = metadata($file,array('Dublin Core','Title'));
-			$embeddable=embeddableVersion($file,$videoTitle,$videoDesc);
+			$embeddable=embeddableVersion($file,$videoTitle,$videoDesc,array('Dublin Core','Relation'),false);
 			if($embeddable){
 				// If a video has an embeddable streaming version, use it.
 				$html.= $embeddable;
@@ -1422,30 +1424,44 @@ function mh_single_file_show($file=null){
 ** Because YouTube and Vimeo have better compression, etc.
 ** returns string $html | false
 */
-function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Core','Relation')){
+function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Core','Relation'),$caption=true){
 
 	$youtube= (strpos(metadata($file,$field), 'youtube.com')) ? metadata($file,$field) : false;
+	$youtube_shortlink= (strpos(metadata($file,$field), 'youtu.be')) ? metadata($file,$field) : false;
 	$vimeo= (strpos(metadata($file,$field), 'vimeo.com')) ? metadata($file,$field) : false;
 
 	if($youtube) {
 		// assumes YouTube links look like https://www.youtube.com/watch?v=NW03FB274jg where the v query contains the video identifier
 		$url=parse_url($youtube);
 		$id=str_replace('v=','',$url['query']);
-		$html= '<div class="item-file-container"><div class="embed-container youtube" id="v-streaming" style="position: relative;padding-bottom: 56.25%;height: 0; overflow: hidden;"><iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src="//www.youtube.com/embed/'.$id.'" frameborder="0" width="725" height="410" allowfullscreen></iframe></div>';
-		$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-		$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
-		$html.='</div>';
-		return $html;
+		$html= '<div class="embed-container youtube" id="v-streaming" style="position: relative;padding-bottom: 56.25%;height: 0; overflow: hidden;"><iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src="//www.youtube.com/embed/'.$id.'" frameborder="0" width="725" height="410" allowfullscreen></iframe></div>';
+		if($caption==true){
+			$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
+			$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+		}
+		return '<div class="item-file-container">'.$html.'</div>';
+	}
+	elseif($youtube_shortlink) {
+		// assumes YouTube links look like https://www.youtu.be/NW03FB274jg where the path string contains the video identifier
+		$url=parse_url($youtube_shortlink);
+		$id=$url['path'];
+		$html= '<div class="embed-container youtube" id="v-streaming" style="position: relative;padding-bottom: 56.25%;height: 0; overflow: hidden;"><iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src="//www.youtube.com/embed/'.$id.'" frameborder="0" width="725" height="410" allowfullscreen></iframe></div>';
+		if($caption==true){
+			$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
+			$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+		}
+		return '<div class="item-file-container">'.$html.'</div>';
 	}
 	elseif($vimeo) {
 		// assumes the Vimeo links look like http://vimeo.com/78254514 where the path string contains the video identifier
 		$url=parse_url($vimeo);
 		$id=$url['path'];
-		$html= '<div class="item-file-container"><div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=333" width="725" height="410" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
-		$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-		$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
-		$html.='</div>';
-		return $html;
+		$html= '<div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=333" width="725" height="410" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+		if($caption==true){
+			$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
+			$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
+		}
+		return '<div class="item-file-container">'.$html.'</div>';
 	}
 	else{
 		return false;
