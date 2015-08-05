@@ -32,11 +32,11 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			
 			echo '<span class="tour-meta-browse">';
 			if(tour( 'Credits' )){
-				echo __('%1s curated by: %2s', mh_tour_label_option('singular'),tour( 'Credits' ));
+				echo __('%1s curated by: %2s', mh_tour_label_option('singular'),tour( 'Credits' )).' | ';
 			}elseif(get_theme_option('show_author') == true){
 				echo __('%1s curated by: The %2s Team',mh_tour_label_option('singular'),option('site_title'));
 			}		
-			echo ' | '.count($tour->Items).' '.__('Locations').'</span>';
+			echo count($tour->Items).' '.__('Locations').'</span>';
 
 //				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', display_tour_thumb($tour,1,$userDefined=null), $result);
 //				$tourimg = array_pop($result);	
