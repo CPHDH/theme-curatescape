@@ -1107,8 +1107,8 @@ function mh_footer_scripts_init(){
 			}
 			
 			
-			loadCSS('/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.css');
-			loadJS('/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.pack.js', function(){
+			loadCSS('<?php echo WEB_ROOT;?>/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.css');
+			loadJS('<?php echo WEB_ROOT;?>/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.pack.js', function(){
 				// checkWidth.js sets 'big' and 'small' body classes
 				// FancyBox is used only when the body class is 'big' or with the 'map faq' link at any size
 				jQuery("body.big .fancybox, body.small .faq .fancybox").fancybox({
