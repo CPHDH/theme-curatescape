@@ -1795,7 +1795,7 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 			
 	}else {
 		$html .= '<article class="featured-story-result none">';
-		$html .= '<div class="item-thumb clearfix"></div><div class="item-description"><p>'.__('No featured items are available.').'</p></div>';
+		$html .= '<div class="item-thumb clearfix"></div><div class="item-description empty"><p>'.__('No featured items are available.').'</p></div>';
 		$html .= '</article>';
 	}
 	
