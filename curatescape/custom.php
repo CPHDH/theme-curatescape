@@ -1637,8 +1637,10 @@ addthis.addEventListener(\'addthis.ready\', addthisReady);
 */
 function mh_disquss_comments(){
 	$shortname=get_theme_option('comments_id');
+	$preface=get_theme_option('comments_text');
 	if ($shortname){
 ?>
+    <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         
