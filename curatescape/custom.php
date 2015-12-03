@@ -1567,12 +1567,15 @@ function mh_factoid($item='item',$html=null){
 	if (element_exists('Item Type Metadata','Factoid')){
 		$factoids=metadata($item,array('Item Type Metadata','Factoid'),array('all'=>true));
 		if($factoids){
-			
+			$html.='<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>';
+			$tweetable=get_theme_option('tweetable_factoids');
+			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
 			foreach($factoids as $factoid){
-				$html.='<div class="factoid"><span class="icon-lightbulb" aria-hidden="true"></span> <span class="fi">'.$factoid.'</span></div>';
+				$html.='<style type="text/css">div.factoid{position:relative}.twitter-share-button{position:absolute !important;bottom:5px;right:5px;box-shadow:5px 5px 0 #333;font-size:.5em;}</style>';
+				$html.='<div class="factoid"><span class="icon-lightbulb" aria-hidden="true"></span> <span class="fi">'.$factoid.'</span>'.($tweetable ? '<a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="'.urlencode($factoid).'"'.$via.'">Tweet this factoid</a>' : '').'</div>';
 			}
 			
-			return $html;
+			return $html."<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 		}
 	} 
 
