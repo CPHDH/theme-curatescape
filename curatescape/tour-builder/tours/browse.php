@@ -38,11 +38,6 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			}		
 			echo count($tour->Items).' '.__('Locations').'</span>';
 
-//				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', display_tour_thumb($tour,1,$userDefined=null), $result);
-//				$tourimg = array_pop($result);	
-//				echo isset($tourimg) ? link_to_tour('<span class="item-image" style="background-image:url('.$tourimg.');"></span>') : null;					
-//				$tourimg++;
-
 			echo '<div class="item-description"><p>'.snippet($tourdesc,0,250).'</p></div>'; 
 			echo '</article>';
 			$i++;
