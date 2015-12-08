@@ -348,7 +348,7 @@ function mh_which_content($maptype='none',$item=null,$tour=null){
 ** Render the map using Google Maps API via jQuery-UI-Map http://code.google.com/p/jquery-ui-map/
 ** Source feed generated from Mobile JSON plugin
 ** Location data (LatLon and Zoom) created and stored in Omeka using stock Geolocation plugin
-** Per_page limits overridden, set to 999
+** Per_page limits are now overridden in the CuratescapeJSON plugin
 */
 function mh_display_map($type=null,$item=null,$tour=null){
 	$pluginlng=get_option( 'geolocation_default_longitude' );
@@ -360,18 +360,18 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 	case 'focusarea':
 		/* all stories, map is centered on focus area (plugin center) */
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 		break;
 
 	case 'global':
 		/* all stories, map is bounded according to content */
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 		break;
 
 	case 'queryresults':
 		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
 		$uri=$_SERVER['REQUEST_URI'];
-		$uri=$uri.'&output=mobile-json&per_page=999';
+		$uri=$uri.'&output=mobile-json';
 		$json_source=WEB_ROOT.query_param_minus_pagination($uri);
 		break;		
 
@@ -386,7 +386,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		break;
 
 	default:
-		$json_source=WEB_ROOT.'/items/browse?output=mobile-json&per_page=999';
+		$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 	}
 
 	if(get_theme_option('custom_marker')){
