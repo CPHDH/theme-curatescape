@@ -952,6 +952,30 @@ function mh_the_access_information($item='item'){
 		
 }
 
+function mh_format_creators_string($creators){
+		$total=count($creators);
+		$html=null;
+		$index=1;
+		foreach ($creators as $creator){
+			switch ($index){
+			case ($total):
+				$delim ='';
+				break;
+	
+			case ($total-1):
+				$delim =' <span class="amp">&amp;</span> ';
+				break;
+	
+			default:
+				$delim =', ';
+				break;
+		}
+		$html .= $creator.$delim;
+		$index++;
+	}
+	return $html;
+}
+
 /*
 ** author byline for the item
 */
