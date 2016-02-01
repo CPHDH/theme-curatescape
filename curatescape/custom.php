@@ -1899,7 +1899,7 @@ function mh_social_array(){
 	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a class="ext-social-link twitter" href="https://twitter.com/'.$twitter.'"><span class="icon-twitter" aria-hidden="true"></span><span class="social_label"> Twitter</span></a>') : null;
 	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a class="ext-social-link pinterest" href="http://www.pinterest.com/'.$pinterest.'"><span class="icon-pinterest" aria-hidden="true"></span><span class="social_label"> Pinterest</span></a>') : null;	
 	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a class="ext-social-link facebook" href="'.$facebook.'"><span class="icon-facebook" aria-hidden="true"></span><span class="social_label"> Facebook</span></a>') : null;
-	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a class="ext-social-link youtube" href="http://www.youtube.com/user/'.$youtube.'"><span class="icon-youtube-play" aria-hidden="true"></span><span class="social_label"> Youtube</span></a>') : null;	
+	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a class="ext-social-link youtube" href="'.$youtube.'"><span class="icon-youtube-play" aria-hidden="true"></span><span class="social_label"> Youtube</span></a>') : null;	
 	($email=get_theme_option('contact_email')) ? array_push($services,'<a class="ext-social-link email" href="mailto:'.$email.'"><span class="icon-envelope" aria-hidden="true"></span><span class="social_label"> Email Us</span></a>') : null;		
 
 	if(count($services)>0){
