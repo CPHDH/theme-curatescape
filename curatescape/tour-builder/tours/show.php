@@ -43,7 +43,10 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         <?php 
 	         $i=1;
 	         foreach( $tour->getItems() as $tourItem ): 
-	        	 set_current_record( 'item', $tourItem );
+	        	if($tourItem->public){
+		        	
+	        	
+	        	set_current_record( 'item', $tourItem );
 	         	$itemID=$tourItem->id;
 	         	$hasImage=metadata($tourItem,'has thumbnail');
 	         ?>
@@ -65,6 +68,8 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         <?php 
 	         $i++;
 	         $item_image=null;
+	         
+	         }
 	         endforeach; ?>
 		</section>
 				<div class="comments">
