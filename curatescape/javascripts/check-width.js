@@ -82,6 +82,7 @@ jQuery(document).ready(function() {
 		// Determine the state of the slider for specific pages/viewports
 		var yesSwipe = /* these will use the slider */
 		(jQuery("body#home").hasClass('home small')) || 
+		(jQuery("body#home").hasClass('home expand-map small')) || 
 		(jQuery("body#items").hasClass('browse items stories small')) || 
 		(jQuery("body#subject-browse").hasClass('subject-browse browse subjects small')) || 
 		(jQuery("body#items").hasClass('browse tags small')) || 

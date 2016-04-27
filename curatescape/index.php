@@ -6,7 +6,15 @@ include_once('stealth-index.php');
 else{
 //if not stealth mode, do everything else
 ?>
-<?php echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>'home')); ?>
+<?php 
+$classname='home';
+if(get_theme_option('expand_map')==1){
+	$classname = 'home expand-map';
+}else{
+	$classname = 'home';
+}
+echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>$classname)); 
+?>
 
 <?php mh_map_actions();?>
 	

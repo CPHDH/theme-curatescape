@@ -204,7 +204,7 @@ function mh_get_tour_json($tour=null){
 			foreach($tour->Items as $item){
 				$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 				$address = ( element_exists('Item Type Metadata','Street Address') ) 
-			? metadata( $item, array( 'Item Type Metadata','Street Address' )) : null;
+			? preg_replace( "/\r|\n/", "", strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) )) : null;
 				if($location){
 					$tourItems[] = array(
 						'id'		=> $item->id,
@@ -238,7 +238,7 @@ function mh_get_item_json($item=null){
 			$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 			
 			$address= ( element_exists('Item Type Metadata','Street Address') ) 
-			? metadata( 'item', array( 'Item Type Metadata','Street Address' )) : null;
+			? preg_replace( "/\r|\n/", "", strip_tags(metadata( 'item', array( 'Item Type Metadata','Street Address' )) ))  : null;
 			
 			$title=html_entity_decode( strip_formatting( metadata( 'item', array( 'Dublin Core', 'Title' ))));
 			
@@ -2094,10 +2094,6 @@ function mh_custom_css(){
 		background:url('.$bg_url.') repeat-x fixed right top #CCCCCC;
 		background-size:cover;
 		}
-	.big #hero{
-		background:url('.$bg_url.') repeat-x fixed center top #CCCCCC;
-		box-shadow:none;
-	}
 	.look-at-me{
 		border-color:'.$color_secondary.';
 	}
