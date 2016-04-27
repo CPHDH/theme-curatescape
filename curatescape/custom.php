@@ -413,8 +413,20 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var fallbackmarker=null;
 		var use_featured_marker=<?php echo get_theme_option('featured_marker') ? 'true' : 'false';?>;
 		var featured_marker=root+"<?php echo '/files/theme_uploads/'.get_theme_option('featured_marker');?>";
+		var isSecure = window.location.protocol == 'https:' ? true : false;
+
+		function getChromeVersion () {  
+			// Chrome v.50+ requires secure origins for geolocation   
+		    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+		    return raw ? parseInt(raw[2], 10) : 0; // return 0 for not-Chrome
+		}
 
 		jQuery(document).ready(function() {
+
+		if (getChromeVersion()>=50 && !isSecure){
+			// Hide the geolocation button on insecure sites for Chrome 50+ users
+			jQuery('.map-actions a.location').addClass('hidden');
+		}
 
 		jQuery('#hero_loading').fadeIn('slow');
 
