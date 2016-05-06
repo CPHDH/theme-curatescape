@@ -596,7 +596,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			});
 			jQuery(document).keyup(function(e) {
 				if ( e.keyCode == 27 ){ // exit fullscreen
-					jQuery('.map-actions .fullscreen').click();
+					if(jQuery('body').hasClass('fullscreen-map')) jQuery('.map-actions .fullscreen').click();
 				}
 			});
 			
