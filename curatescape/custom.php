@@ -240,6 +240,8 @@ function mh_get_item_json($item=null){
 			$address= ( element_exists('Item Type Metadata','Street Address') ) 
 			? preg_replace( "/\r|\n/", "", strip_tags(metadata( 'item', array( 'Item Type Metadata','Street Address' )) ))  : null;
 			
+			$accessinfo= ( element_exists('Item Type Metadata','Access Information') && metadata($item, array('Item Type Metadata','Access Information')) ) ? true : false;
+			
 			$title=html_entity_decode( strip_formatting( metadata( 'item', array( 'Dublin Core', 'Title' ))));
 			
 			if(metadata($item, 'has thumbnail')){
@@ -255,6 +257,7 @@ function mh_get_item_json($item=null){
 					'longitude'   => $location[ 'longitude' ],
 					'title'       => addslashes($title),
 					'address'	  => addslashes($address),
+					'accessinfo'  => $accessinfo,
 					'thumbnail'   => $thumbnail,
 				);		
 				
