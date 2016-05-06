@@ -1,5 +1,5 @@
 <?php 
-$dc = get_theme_option('dropcap')!==0 ? 'dropcap' : null;
+$dc = get_theme_option('dropcap')==1 ? 'dropcap' : null;
 echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass'=>'show item-story '.$dc,'title' => metadata($item,array('Dublin Core', 'Title')))); ?>
 
 <?php mh_map_actions($item,null);?>
