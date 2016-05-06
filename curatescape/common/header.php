@@ -68,7 +68,6 @@ if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
 <!-- JavaScripts -->
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <?php
 queue_js_file('libraries.min'); // <-- Modernizr, jQuery UI Maps, Swipe.js, iSOnScreen, LoadJS, LoadCSS
 queue_js_file('check-width');
