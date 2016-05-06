@@ -57,7 +57,12 @@ body.small { } body.big { }
 body,#custom-block .find-us a,.item-related-links{font-family:"PT Serif","Georgia","Times","Times New Roman",serif;}span.amp{font-family:"Baskerville","Palatino","Book Antiqua";font-style: italic;}
 
 /*! ===== BASIC CONTAINER LAYOUT ===== */
-body{margin:0;display:block;background:#eaeaea}#wrap{margin:0em auto 4em;display:block;background:#fff;max-width:50em;box-shadow:0 0 .15em #333;}header.main,#content,footer.main{display:block;clear:both;margin:0 auto;}#content{margin-bottom:0;min-height:20em;padding:1em 5% 0}article.item-result{width:100%;}
+body{margin:0;display:block;background-color: #eaeaea;
+background-image: -o-linear-gradient(top, #fff 0%, #ccc 700px);
+background-image: -moz-linear-gradient(top, #fff 0%, #ccc 700px);
+background-image: -webkit-linear-gradient(top, #fff 0%, #ccc 700px);
+background-image: -ms-linear-gradient(top, #fff 0%, #ccc 700px);
+background-image: linear-gradient(top, #fff 0%, #ccc 700px);}#wrap{margin:0em auto 4em;display:block;background:#fff;max-width:50em;box-shadow:0 0 .15em #333;}header.main,#content,footer.main{display:block;clear:both;margin:0 auto;}#content{margin-bottom:0;min-height:20em;padding:1em 5% 0}article.item-result{width:100%;}
 #items.show #content{padding:1em 0 0;}#items.show #content article header,#items.show #content article > div,#items.show #content article #item-media .media{padding-left: 8%;padding-right: 8%;padding-bottom: .5em;}#items.show #content article #item-media{padding-left:0;padding-right:0;width:100%;}article.tour.show,article.file.show,article.page.show{padding: 0 3%;}article.page.show{padding-top: 1em;}@media only screen and (max-width:50em){body{background-image:none !important;background:#fff !important}body #wrap{box-shadow:none;margin-top:0;padding-top:0;margin-bottom:0;}#items.show #content article header,#items.show #content article > div,#items.show #content article #item-media .media{padding-left: 4%;padding-right: 4%;}article.tour.show,article.file.show,article.page.show{padding: 0;}}
 
 /*! Comments */

@@ -2070,12 +2070,15 @@ function mh_random_or_recent($mode='recent',$num=4){
 */
 function mh_custom_css(){
 	$bg_url=mh_bg_url();
+	$bg = $bg_url ? 'background-image: url('.$bg_url.');background-attachment: fixed; ' : '';
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
 	$user_css= get_theme_option('custom_css') ? '/* Theme Option CSS */ '.get_theme_option('custom_css') : null;
 	return '<style type="text/css">
 	body{
-		background:url('.$bg_url.') repeat-x fixed right top #CCCCCC;
+		'.$bg.'
+		background-position: left bottom;
+		background-repeat: no-repeat;
 		background-size:cover;
 		}
 	.look-at-me{
@@ -2329,7 +2332,7 @@ function mh_bg_url()
 {
 	$bg_image = get_theme_option('bg_img');
 
-	$img_url = $bg_image ? WEB_ROOT.'/files/theme_uploads/'.$bg_image : img('bg-home.png');
+	$img_url = $bg_image ? WEB_ROOT.'/files/theme_uploads/'.$bg_image : null;
 
 	return $img_url;
 }
