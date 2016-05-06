@@ -538,10 +538,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			        
 				}else{ // single items
 					map.setView([data.latitude,data.longitude],zoom+3);	
-					console.log(data);
 			        var address = data.address ? data.address : data.latitude+','+data.longitude;
 			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
-			        console.log((data.accessinfo === true));
 
 			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-media" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');"></a>' : '';
 
