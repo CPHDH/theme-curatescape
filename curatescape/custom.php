@@ -1035,6 +1035,7 @@ function mh_footer_scripts_init(){
 			
 			//===========================// ?>
 			<script>
+				
 			// the fancybox caption minimize/expand button
 			function toggleText(){
 				var link = jQuery('a.fancybox-hide-text');
@@ -1053,15 +1054,15 @@ function mh_footer_scripts_init(){
 			loadCSS('<?php echo WEB_ROOT;?>/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.css');
 			loadJS('<?php echo WEB_ROOT;?>/themes/curatescape/javascripts/fancybox/source/jquery.fancybox.pack.js', function(){
 				// checkWidth.js sets 'big' and 'small' body classes
-				// FancyBox is used only when the body class is 'big' or with the 'map faq' link at any size
-				jQuery("body.big .fancybox, body.small .faq .fancybox").fancybox({
+				// FancyBox is used only when the body class is 'big'
+				jQuery("body.big .fancybox").fancybox({
 			        beforeLoad: function() {
 			            this.title = jQuery(this.element).attr('data-caption');
 			        },
 			        beforeShow: function () {
 			            if (this.title) {
 			                // Add caption close button
-			                this.title += '<a class="fancybox-hide-text active" onclick="toggleText()"><span class="icon-chevron-up" aria-hidden="true"></span> Show Caption</a> ';
+			                this.title += '<a class="fancybox-hide-text " onclick="toggleText()"><span class="icon-chevron-up" aria-hidden="true"></span> Show Caption</a> ';
 			            }
 			        },
 			        padding:3,
@@ -1135,7 +1136,7 @@ function mh_item_images($item,$index=0,$html=null){
 				$fancyboxCaption= mh_normalize_special_characters(mh_file_caption($file,true));
 				$fancyboxCaption = '<span class="main"><div class="caption-inner">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b><span>').'</div></span>'.$filelink;
 			}else{
-				$fancyboxCaption = '<span class="main">Image '.($index+1).'</span>'.$filelink;
+				$fancyboxCaption = '<span class="main"><div class="caption-inner">Image '.($index+1).'</div></span>'.$filelink;
 			}
 						
 			$html .= '<div class="item-file-container">';
