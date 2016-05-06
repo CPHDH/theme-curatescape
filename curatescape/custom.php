@@ -486,6 +486,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					if(useClusters==true){
 						var markers = L.markerClusterGroup({
 							zoomToBoundsOnClick:true,
+							disableClusteringAtZoom: 15,
 							polygonOptions: {
 								'stroke': false,
 								'color': '#000',
