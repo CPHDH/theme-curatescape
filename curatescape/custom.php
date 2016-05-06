@@ -321,19 +321,17 @@ function mh_get_multiple_items_json(){
 */
 function mh_which_content($maptype='none',$item=null,$tour=null){
 
-	$loading = '<img id="hero_loading" src="'.img('map_loading.gif').'">';
-
 	if ($maptype == 'focusarea') {
-		return $loading.mh_display_map('focusarea',null,null);
+		return mh_display_map('focusarea',null,null);
 	}
 	elseif ($maptype == 'story') {
-		return $loading.mh_display_map('story',$item,null,null);
+		return mh_display_map('story',$item,null,null);
 	}
 	elseif ($maptype == 'queryresults') {
-		return $loading.mh_display_map('queryresults',null,null);
+		return mh_display_map('queryresults',null,null);
 	}
 	elseif ($maptype == 'tour') {
-		return $loading.mh_display_map('tour',null,$tour);
+		return mh_display_map('tour',null,$tour);
 	}
 	elseif ($maptype == 'none') {
 		return null;
@@ -353,8 +351,10 @@ function mh_which_content($maptype='none',$item=null,$tour=null){
 function mh_display_map($type=null,$item=null,$tour=null){
 	$pluginlng=get_option( 'geolocation_default_longitude' );
 	$pluginlat=get_option( 'geolocation_default_latitude' );
-	$plugincenter = $pluginlat .','. $pluginlng;
 	$zoom=(get_option('geolocation_default_zoom_level')) ? get_option('geolocation_default_zoom_level') : 12;
+	$color=get_theme_option('marker_color') ? get_theme_option('marker_color') : '#333';
+	$featured_color=get_theme_option('featured_marker_color') ? get_theme_option('featured_marker_color') : $color;
+
 
 	switch($type){
 
@@ -398,23 +398,18 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		<script type="text/javascript">
 
 		var type =  '<?php echo $type ;?>';
-		var mapstyle = '<?php echo 'google.maps.MapTypeId.'.get_theme_option('map_style') ;?>';
-
+		var color = '<?php echo $color ;?>';
+		var featured_color = '<?php echo $featured_color ;?>';
 		var root = '<?php echo WEB_ROOT ;?>';
 		var source ='<?php echo $json_source ;?>';
-		
-		var center ='<?php echo $plugincenter ;?>';
+		var center =[<?php echo $pluginlat.','.$pluginlng ;?>];
 		var zoom = <?php echo $zoom ;?>;
+		var featuredStar = <?php echo get_theme_option('featured_marker_star');?>;
+		var useClusters = <?php echo get_theme_option('clustering');?>; 
+		var clusterTours = <?php echo get_theme_option('tour_clustering');?>; 
+		var alwaysFit = <?php echo get_theme_option('fitbounds');?>; 
 
-		var marker = root+"<?php echo $marker ;?>";
-
-		var fallbacklat='<?php echo $pluginlat ;?>';
-		var fallbacklng='<?php echo $pluginlng ;?>';
-		var fallbackmarker=null;
-		var use_featured_marker=<?php echo get_theme_option('featured_marker') ? 'true' : 'false';?>;
-		var featured_marker=root+"<?php echo '/files/theme_uploads/'.get_theme_option('featured_marker');?>";
 		var isSecure = window.location.protocol == 'https:' ? true : false;
-
 		function getChromeVersion () {  
 			// Chrome v.50+ requires secure origins for geolocation   
 		    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
@@ -423,193 +418,233 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 		jQuery(document).ready(function() {
 
-		if (getChromeVersion()>=50 && !isSecure){
-			// Hide the geolocation button on insecure sites for Chrome 50+ users
-			jQuery('.map-actions a.location').addClass('hidden');
-		}
+			if (getChromeVersion()>=50 && !isSecure){
+				// Hide the geolocation button on insecure sites for Chrome 50+ users
+				jQuery('.map-actions a.location').addClass('hidden');
+			}	
 
-		jQuery('#hero_loading').fadeIn('slow');
-
-		/* setup the default map */
-		jQuery('#map_canvas').gmap({
-			'center': center,
-			'zoom': zoom,
-			'mapTypeId': eval(mapstyle),
-			'disableDefaultUI':false,
-			'zoomControl': true,
-			'zoomControlOptions': {
-			  'style': google.maps.ZoomControlStyle.SMALL,
-			  'position': google.maps.ControlPosition.TOP_RIGHT
-			},
-		    'streetViewControl': true,
-		    'streetViewControlOptions': {
-			  'style': google.maps.ZoomControlStyle.SMALL,
-			  'position': google.maps.ControlPosition.TOP_RIGHT
-		    }
-		}).bind('init', function() {
-
-			if(type == 'story'){
+			var terrain = L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>'
+			});		
 			
-				var makemap=function(source) {
-					    
-					    var data = jQuery.parseJSON(source);
-					    
-						var lat=data.latitude;
-						var lng=data.longitude;
-						var thumbnail=data.thumbnail ? '<a class="item-media" href="#item-media"><img style="width:7em;height:7em;" src="'+data.thumbnail+'"></a>' : '';
-						var iw_address = data.address ? data.address : null;
-						var iw_location= iw_address ? iw_address.substring(0,30)+'&hellip;' : lat+','+lng;
-						var access_info=(jQuery('#access-info h3').length) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> <?php echo __('Access Information');?></a> ' : '';
-						
-						var map_faq='<span class="faq"><span class="icon-question-circle" aria-hidden="true"></span> <a href="#map-faq" class="fancybox">'+(access_info ? '<?php echo __('Map FAQ');?>' : '<?php echo __('Read the Map FAQ');?>')+'</a></span><br>';
-											
-						var infowindow_footer='<div class="infowindow_footer"><small>'+access_info+map_faq+'<span class="truncate coords"><span class="icon-map-marker" aria-hidden="true"></span> '+iw_location+'</span></small></div>';
-						
-						var marker_html = '<div class="marker-content ' + ( (data.thumbnail) ? 'has-image' : '' ) + '"><div class="marker-title">'+thumbnail+data.title+'</div>'+infowindow_footer+'</div>';
-	
-						
-						if( (!lat) || (!lng) ){
-							lat= fallbacklat;
-							lng= fallbacklng;
-							marker= fallbackmarker;
-							jQuery('body').addClass('no-location');
-						};
-						
-	
-						var newmarker = jQuery('#map_canvas').gmap('addMarker', {
-							'id':'single',
-							'position': new google.maps.LatLng(lat, lng),
-							'bounds': true,
-							'icon': new google.maps.MarkerImage(marker),				
-						});
-						
-						
-						newmarker.click(function() {
-							jQuery('#map_canvas').gmap('openInfoWindow', { 'content': marker_html }, this);
-						});
-						
-
-					};
-								
-					jQuery.when(makemap(source)).done(function() {
-						jQuery('#map_canvas').gmap('option', 'zoom', 15);						
-					});
-			
-			}else if(type == 'tour'){
-
-	
-				var bounds = true;
-				var path=window.location.pathname;
-				var n=0;
-				
-				function makemap(source) {
-
-					var data = jQuery.parseJSON(source);
-							
-					jQuery.each( data.items, function(i, item) {
-					
-						var lat=item.latitude;
-						var lng=item.longitude;
-						var iw_address = item.address ? item.address : null;
-						var iw_location= iw_address ? iw_address.substring(0,30)+'&hellip;' : lat+','+lng;
-											
-						var tour_stop_num = '<span class="number">'+(n+1)+'</span> ';
-						var tour_nav_append_to_link = '?tour='+data.id+'&index='+n;
-						n++;
-	
-						var item_href=root + '/items/show/' + item.id;
-						
-						var infowindow_footer='<div class="infowindow_footer"><small><span class="faq"><span class="icon-question-circle" aria-hidden="true"></span> <a href="#map-faq" class="fancybox"><?php echo __('Read the Map FAQ');?></a></span><br><span class="truncate coords"><span class="icon-map-marker" aria-hidden="true"></span> '+iw_location+'</span></small></div>';
-						
-						var marker_html='<div class="marker-content"><div class="marker-title"><a href="' + item_href + tour_nav_append_to_link + '">'+ tour_stop_num + item.title + '</a></div>'+infowindow_footer+'</div>';
-	
-						jQuery('#map_canvas').gmap('addMarker', {
-							'position': new google.maps.LatLng(item.latitude, item.longitude),
-							'bounds': bounds,
-							'icon': new google.maps.MarkerImage(marker),
-							
-						}).click(function() {
-							jQuery('#map_canvas').gmap('openInfoWindow', { 'content': marker_html }, this);
-						});
-					});
-				} makemap(source);
-
-
-
-
-				
-				}else{
-					
-	
-					var bounds = (type == 'focusarea') ? false : true;
-					var makemap = jQuery.getJSON( source, function(data) {
-				
-
-
-						jQuery.each( data.items, function(i, item) {
-							
-	
-						if( (use_featured_marker==true) && (item.featured == 1) ){
-							var browse_marker= featured_marker;
-							var featured_icon='<span class="featured"><span class="icon-star" aria-hidden="true"></span> Featured</span><br>' ;
-						}else{
-							var browse_marker=marker;
-							var featured_icon='';
-						}
-						var item_href=root + '/items/show/' + item.id;
-						var marker_subtitle = item.subtitle ? '<br><div class="marker-subtitle">'+item.subtitle+'</div>' : '';
-						var thumbnail=item.thumbnail ? '<a class="item-media" href="'+item_href+'"><img style="width:7em;height:7em;" src="'+item.thumbnail+'"></a>' : '';
-						
-						var iw_address = item.address ? item.address : null;
-						var iw_location= iw_address ? iw_address.substring(0,30)+'&hellip;' : item.latitude+','+item.longitude;					
-						var infowindow_footer='<div class="infowindow_footer"><small>' + featured_icon + '<span class="faq"><span class="icon-question-circle" aria-hidden="true"></span> <a href="#map-faq" class="fancybox"><?php echo __('Read the Map FAQ');?></a></span><br><span class="truncate coords"><span class="icon-map-marker" aria-hidden="true"></span> '+iw_location+'</span></small></div>';
-						
-						var marker_html='<div class="marker-content '+ ( item.thumbnail ? 'has-image' : '' ) +'"><div class="marker-title">'+thumbnail+'<a href="' + item_href + '">' + item.title + '</a></div>'+infowindow_footer+'</div>'
-	
-						jQuery('#map_canvas').gmap('addMarker', {
-							'position': new google.maps.LatLng(item.latitude, item.longitude),
-							'bounds': bounds,
-							'icon': new google.maps.MarkerImage(browse_marker),
-							
-						}).click(function() {
-							jQuery('#map_canvas').gmap('openInfoWindow', { 'content': marker_html }, this);
-						});
-						
-						});
-						
-
-
-					});
-					
-							
-				}
-			
-			var map=jQuery('#map_canvas').gmap('get', 'map');
-			google.maps.event.addListener(map,'geolocation', function() {
-				// Close the infoWindow(s) when map bounds change for user geolocation
-				jQuery('#map_canvas').gmap('closeInfoWindow');
-			});					
-			google.maps.event.addListenerOnce(map,'idle', function() {
-				// Fade the loading image as soon as the map data has been delivered
-				jQuery('#hero_loading').fadeOut('slow');
-				google.maps.event.addListenerOnce(map,'tilesloaded', function() {
-					// Open the single item infoWindow after the map is done loading
-					jQuery('.big #map_canvas').gmap('find', 'markers', { 'property': 'id', 'value': 'single' }, 
-					function(marker, found) {
-						if(marker.id=='single'){
-							jQuery(marker).triggerEvent('click');
-							}
-					});
-				});
+			var toner = L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}{retina}.png', {
+				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
+				retina: (L.Browser.retina) ? '@2x' : '',
+			});		
+			var pioneer = L.tileLayer('http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}{retina}.png', {
+				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://www.thunderforest.com/">Thunderforest</a>',
+				retina: (L.Browser.retina) ? '@2x' : '',
 			});	
-		});
-		});
+							
+			var carto = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{retina}.png', {
+			    attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
+			    retina: (L.Browser.retina) ? '@2x' : '',
+			});
 
+			var mapBounds; // keep track of changing bounds
+
+			// Build the base map
+			var map = L.map('map_canvas',{
+				layers: carto,
+				minZoom: 3
+			}).setView(center, zoom);
+			
+			// Layer controls
+			L.control.layers({
+				"Terrain":terrain,
+				"Street":carto,
+			}).addTo(map);
+			
+			//carto.addTo(map);
+			
+			
+			// Center marker and popup on open
+			map.on('popupopen', function(e) {
+				// find the pixel location on the map where the popup anchor is
+			    var px = map.project(e.popup._latlng); 
+			    // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+			    px.y -= e.popup._container.clientHeight/2;
+			    // pan to new center
+			    map.panTo(map.unproject(px),{animate: true}); 
+			});				
+			// Add Markers
+			var addMarkers = function(data){				
+		        function icon(color,markerInner){ 
+			        return L.MakiMarkers.icon({
+			        	icon: markerInner, 
+						color: color, 
+						size: "m",
+						accessToken: "pk.eyJ1IjoiZWJlbGxlbXBpcmUiLCJhIjoiY2ludWdtOHprMTF3N3VnbHlzODYyNzh5cSJ9.w3AyewoHl8HpjEaOel52Eg"
+			    		});	
+			    }				
+				if(typeof(data.items)!="undefined"){ // tours and other multi-item maps
+					
+					var group=[];
+					if(useClusters==true){
+						var markers = L.markerClusterGroup({
+							zoomToBoundsOnClick:true,
+							polygonOptions: {
+								'stroke': false,
+								'color': '#000',
+								'fillOpacity': .1
+							}
+						});
+					}
+					
+			        jQuery.each(data.items,function(i,item){
+							
+				        var address = item.address ? item.address : '';
+						var c = (item.featured==1 && featured_color) ? featured_color : color;
+						var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
+				        if(typeof(item.thumbnail)!="undefined"){
+					        var image = '<a href="/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
+					    }else{
+						    var image = '';
+					    }
+					    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
+				        var html = image+number+'<a class="curatescape-infowindow-title" href="/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
+						
+						
+						var marker = L.marker([item.latitude,item.longitude],{icon: icon(c,inner)}).bindPopup(html);
+						
+						group.push(marker);  
+						
+						if(useClusters==true) markers.addLayer(marker);
+
+			        });
+			        
+			        if(useClusters==true && type!=='tour' || type=='tour' && clusterTours==true){
+				        map.addLayer(markers);
+				        mapBounds = markers.getBounds();
+				    }else{
+			        	group=new L.featureGroup(group); 
+						group.addTo(map);	
+						mapBounds = group.getBounds();				    
+				    }
+			        
+					// Fit map to markers as needed			        
+			        if((type == 'queryresults'|| type == 'tour') || alwaysFit==true){
+				        if(useClusters==true){
+					        map.fitBounds(markers.getBounds());
+					    }else{
+						    map.fitBounds(group.getBounds());
+					    }
+			        }
+			        
+			        
+				}else{ // single items
+					map.setView([data.latitude,data.longitude],zoom+3);	
+					console.log(data);
+			        var address = data.address ? data.address : data.latitude+','+data.longitude;
+			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
+			        console.log((data.accessinfo === true));
+
+			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-media" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');"></a>' : '';
+
+			        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+accessInfo+'</div>';
+					
+					var marker = L.marker([data.latitude,data.longitude],{icon: icon(color,"circle")}).bindPopup(html);					
+					
+					marker.addTo(map).bindPopup(html);
+					if(jQuery('body').hasClass('big')) marker.openPopup();
+					mapBounds = map.getBounds();
+					
+				}
+				
+			}		
+			
+			if(type=='story'){
+				var data = jQuery.parseJSON(source);
+				addMarkers(data);
+				
+			}else if(type=='tour'){
+				var data = jQuery.parseJSON(source);
+				addMarkers(data);
+				
+			}else if(type=='focusarea'){
+				jQuery.getJSON( source, function(data) {
+					var data = data;
+					addMarkers(data);
+				});
+				
+			}else if(type=='queryresults'){
+				jQuery.getJSON( source, function(data) {
+					var data = data;
+					addMarkers(data);
+				});
+				
+			}else{
+				jQuery.getJSON( source, function(data) {
+					var data = data;
+					addMarkers(data);
+				});
+			}
+
+			/* Map Action Buttons */
+			
+			// Fullscreen
+			jQuery('.map-actions .fullscreen').click(function(){
+				jQuery('#slider').slideToggle('fast', 'linear');
+				jQuery('#swipenav').slideToggle('fast', 'linear');	
+				jQuery('.small #map_canvas').toggle(); // in case it's hidden by checkwidth.js
+				jQuery("body").toggleClass("fullscreen-map");
+				jQuery(".map-actions a.fullscreen i").toggleClass('icon-expand').toggleClass('icon-compress');
+				map.invalidateSize();
+			});
+			jQuery(document).keyup(function(e) {
+				if ( e.keyCode == 27 ){ // exit fullscreen
+					jQuery('.map-actions .fullscreen').click();
+				}
+			});
+			
+			// Geolocation
+			jQuery('.map-actions .location').click(function(){
+				var options = {
+					enableHighAccuracy: true,
+					maximumAge: 30000,
+					timeout: 5000
+				};
+				navigator.geolocation.getCurrentPosition(function(pos) {
+					
+					var userLocation = [pos.coords.latitude, pos.coords.longitude];					
+					
+					// adjust map view
+					if(type=='story'|| type=='tour' || type == 'queryresults'){
+						if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
+						var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
+						map.fitBounds(newBounds);
+					}else{
+						map.panTo(userLocation);
+					}
+					
+					// add/update user location indicator
+					if(typeof(userMarker)==='undefined') {
+						userMarker = new L.circleMarker(userLocation,{
+						  radius: 8,
+						  fillColor: "#4a87ee",
+						  color: "#ffffff",
+						  weight: 3,
+						  opacity: 1,
+						  fillOpacity: 0.8,
+						}).addTo(map);
+					}else{
+						userMarker.setLatLng(userLocation);
+					}
+				
+				}, function(error) {
+					var errorMessage = error.message ? ' Error message: "' + error.message + '"' : '';
+					alert(errorMessage);
+				}, options);
+			});
+
+		});
         </script>
+        
+		<!-- Map Container -->
 		<div id="hm-map">
-			<div id="map_canvas">
-			</div>
+			<div id="map_canvas"></div>
 		</div>
+		
 <?php }
 
 /*
@@ -656,11 +691,11 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 		
 
 		<!-- Fullscreen -->
-		<a onclick="toggle_fullscreen();" class="fullscreen"><span class="icon-expand" aria-hidden="true"></span> <span class="label"><?php echo __('Fullscreen Map');?></span><span class="alt"><?php echo __('Map');?></span></a>
+		<a class="fullscreen"><span class="icon-expand" aria-hidden="true"></span> <span class="label"><?php echo __('Fullscreen Map');?></span><span class="alt"><?php echo __('Map');?></span></a>
 		
 				
 		<!-- Geolocation -->
-		<a onclick="get_user_location();" class="location"><span class="icon-location-arrow" aria-hidden="true"></span> <span class="label"><?php echo __('Show Current Location');?></span><span class="alt"><?php echo __('My Location');?></span></a> 
+		<a class="location"><span class="icon-location-arrow" aria-hidden="true"></span> <span class="label"><?php echo __('Show Current Location');?></span><span class="alt"><?php echo __('My Location');?></span></a> 
 		
 		<!-- Directions link -->
 		<?php
@@ -670,107 +705,7 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 		
 	
 	</div>
-	
-	<script>
 
-		function toggle_fullscreen(){	
-			jQuery('#slider').slideToggle('fast', 'linear');
-			jQuery('#swipenav').slideToggle('fast', 'linear');	
-			jQuery('.small #map_canvas').toggle(); // in case it's hidden by checkwidth.js
-			jQuery("body").toggleClass("fullscreen-map");
-			jQuery(".map-actions a.fullscreen i").toggleClass('icon-expand').toggleClass('icon-compress');
-			var map = jQuery('#map_canvas').gmap('get', 'map');
-			var center = map.getCenter();
-			google.maps.event.trigger(map, "resize");
-			map.panTo(center);		
-		}
-	
-	
-	
-	
-		function get_user_location(){	
-
-			var options = {
-			  enableHighAccuracy: true,
-			  timeout: 15000,
-			  maximumAge: 30000
-			};
-		
-				
-			function error(err) {
-			  				  
-				  console.warn(err.message);
-				  
-				  alert('Oops! Something went wrong.\n\n'+err.message);
-				  
-				  jQuery('.map-actions a.location i').removeClass('working')
-				  	.toggleClass('icon-location-arrow').toggleClass('icon-spinner'); 
-			  
-			};
-		
-			function success(position) {
-										
-				var newLatLng = new google.maps.LatLng(position.coords.latitude , position.coords.longitude); 
-				
-				
-				var marker = new google.maps.Marker({
-				    position: newLatLng,
-				    map: map,
-				    icon: {
-				      path: google.maps.SymbolPath.CIRCLE,
-				      scale: 10,
-				      strokeColor: '#FFFFFF',
-				      strokeOpacity: 1.0,
-				      strokeWeight: 4,
-				      fillColor: '#4285F4',
-				      fillOpacity: 1.0,
-				    },
-		
-				});		
-							
-				google.maps.event.trigger(map, "geolocation");
-				marker.setPosition(newLatLng);
-				map.panTo(newLatLng);
-				var zoom = map.getZoom();
-				var is_query=jQuery('body.queryresults').length;
-				var is_item=jQuery('body#items.show').length;
-				var is_tour=jQuery('body#tours.show').length;
-				if ( !(is_item||is_tour||is_query) ){
-					map.setZoom(14);
-				}else{
-					var bounds = new google.maps.LatLngBounds();
-					bounds.extend(oldLatLng);
-					bounds.extend(newLatLng);
-					map.fitBounds(bounds);					
-				}
-				
-				jQuery('.map-actions a.location i').removeClass('working')
-					.toggleClass('icon-location-arrow').toggleClass('icon-spinner'); 	
-						
-			}	
-							
-			if(navigator.geolocation) {
-		
-				jQuery('.map-actions a.location i').addClass('working')
-					.toggleClass('icon-location-arrow').toggleClass('icon-spinner');
-				
-				var map = jQuery('#map_canvas').gmap('get', 'map');
-				var oldLatLng = map.getCenter();	
-				
-				navigator.geolocation.getCurrentPosition(success,error,options);		
-			
-			
-				}
-			}
-
-		jQuery( "body" ).keypress(function(event) {
-			if ( event.keyCode == 27 ){
-				jQuery("body").removeClass("fullscreen-map");
-				return false;
-			}
-		});
-		
-	</script>
 	
 	<?php	
 }
