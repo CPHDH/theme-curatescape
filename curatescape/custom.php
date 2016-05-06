@@ -868,34 +868,6 @@ function mh_appstore_footer(){
 
 
 /*
-** Map FAQ
-** used for item map marker onclick
-** may be customized by site owner
-*/
-function mh_mapfaq(){
-	$emailincl=($email=get_theme_option('contact_email')) ? 'at <a href="mailto:'.$email.'">'.$email.'</a> ' : '';
-	$html ='';
-	$html .='<div style="display: none"><div id="map-faq"><div id="map-faq-inner">';
-	$html .='<h2>'.__('Frequently Asked Questions <span>about the map</span><').'/h2>';
-	if((!get_theme_option('map_faq'))){
-		$html .=__('<h3><a>Are all the locations on %s publicly accessible?</a></h3>',option('site_title'));
-		$html .=__('<p>Not necessarily. It is up to you to determine if any given location is one you can physically visit.</p>');
-		$html .=__('<h3><a>How do you choose locations for each %s?</a> <span>or</span> <a>The location is wrong!</a></h3>',strtolower(mh_item_label()));
-		$html .=__('<p>Placing historical %1$s on a map can be tricky. We choose locations based on what we think makes the most sense. Sometimes we get it wrong (and sometimes there is no "right" answer). Feel free to email us %2$s with suggestions for improvement.</p>',strtolower(mh_item_label('plural')),$emailincl);
-		
-		$html .=__('<h3><a>The &#8220;show current location&#8221; button does not work.</a> <span>or</span> <a>The map displays an incorrect position for my current location.</a></h3>',option('site_title'));
-		$html .=__('<p>Browser geolocation is a relatively new technology. Some older web browsers may not be able to use this feature. Sometimes even the best, newest web browsers fail to load a correct location (or any location at all). Functionality depends on a number of additional factors, including the presence of conflicting browser plugins, network conditions, privacy settings, and more.</p>');
-
-	}else{
-		$html .=get_theme_option('map_faq');
-	}
-	$html.='</div></div></div>';
-
-	return $html;
-
-}
-
-/*
 ** Replace BR tags, wrapping text in P tags instead
 */
 function replace_br($data) {

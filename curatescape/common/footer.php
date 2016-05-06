@@ -27,9 +27,7 @@
 		<?php echo get_theme_option('custom_footer_html');?>
 	</div>
 
-	<?php 
-		echo mh_mapfaq(); 
-		
+	<?php 		
 		echo mh_footer_scripts_init(); 
 	?>
 	
