@@ -421,8 +421,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 		jQuery(document).ready(function() {
 
-			if (getChromeVersion()>=50 && !isSecure){
-				// Hide the geolocation button on insecure sites for Chrome 50+ users
+			if ((getChromeVersion()>=50 && !isSecure) || !navigator.geolocation){
+				// Hide the geolocation button on insecure sites for Chrome 50+ users and for browsers with no support
 				jQuery('.map-actions a.location').addClass('hidden');
 			}	
 
@@ -601,43 +601,44 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			});
 			
 			// Geolocation
-			jQuery('.map-actions .location').click(function(){
+			jQuery('.map-actions .location').click(
+				function(){
 				var options = {
 					enableHighAccuracy: true,
 					maximumAge: 30000,
 					timeout: 5000
 				};
-				navigator.geolocation.getCurrentPosition(function(pos) {
-					
-					var userLocation = [pos.coords.latitude, pos.coords.longitude];					
-					
-					// adjust map view
-					if(type=='story'|| type=='tour' || type == 'queryresults'){
-						if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
-						var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
-						map.fitBounds(newBounds);
-					}else{
-						map.panTo(userLocation);
-					}
-					
-					// add/update user location indicator
-					if(typeof(userMarker)==='undefined') {
-						userMarker = new L.circleMarker(userLocation,{
-						  radius: 8,
-						  fillColor: "#4a87ee",
-						  color: "#ffffff",
-						  weight: 3,
-						  opacity: 1,
-						  fillOpacity: 0.8,
-						}).addTo(map);
-					}else{
-						userMarker.setLatLng(userLocation);
-					}
-				
-				}, function(error) {
-					var errorMessage = error.message ? ' Error message: "' + error.message + '"' : '';
-					alert(errorMessage);
-				}, options);
+				navigator.geolocation.getCurrentPosition(
+					function(pos) {
+						var userLocation = [pos.coords.latitude, pos.coords.longitude];					
+						// adjust map view
+						if(type=='story'|| type=='tour' || type == 'queryresults'){
+							if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
+							var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
+							map.fitBounds(newBounds);
+						}else{
+							map.panTo(userLocation);
+						}
+						// add/update user location indicator
+						if(typeof(userMarker)==='undefined') {
+							userMarker = new L.circleMarker(userLocation,{
+							  radius: 8,
+							  fillColor: "#4a87ee",
+							  color: "#ffffff",
+							  weight: 3,
+							  opacity: 1,
+							  fillOpacity: 0.8,
+							}).addTo(map);
+						}else{
+							userMarker.setLatLng(userLocation);
+						}
+					}, 
+					function(error) {
+						console.log(error);
+						var errorMessage = error.message ? ' Error message: "' + error.message + '"' : 'Oops! We were unable to determine your current location.';
+						alert(errorMessage);
+					}, 
+					options);
 			});
 
 		});
