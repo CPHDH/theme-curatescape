@@ -449,7 +449,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			// Build the base map
 			var map = L.map('map_canvas',{
 				layers: carto,
-				minZoom: 3
+				minZoom: 3,
+				scrollWheelZoom: false,
 			}).setView(center, zoom);
 			
 			// Layer controls
