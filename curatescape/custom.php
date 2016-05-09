@@ -412,6 +412,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var clusterTours = <?php echo get_theme_option('tour_clustering');?>; 
 		var clusterIntensity = <?php echo get_theme_option('cluster_intensity') ? get_theme_option('cluster_intensity') : 15;?>; 
 		var alwaysFit = <?php echo get_theme_option('fitbounds');?>; 
+		var markerSize = '<?php echo get_theme_option('marker_size') ? get_theme_option('marker_size') : "m";?>'; 
 
 		var isSecure = window.location.protocol == 'https:' ? true : false;
 		function getChromeVersion () {  
@@ -478,7 +479,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			        return L.MakiMarkers.icon({
 			        	icon: markerInner, 
 						color: color, 
-						size: "m",
+						size: markerSize,
 						accessToken: "pk.eyJ1IjoiZWJlbGxlbXBpcmUiLCJhIjoiY2ludWdtOHprMTF3N3VnbHlzODYyNzh5cSJ9.w3AyewoHl8HpjEaOel52Eg"
 			    		});	
 			    }				
