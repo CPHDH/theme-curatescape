@@ -410,6 +410,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var featuredStar = <?php echo get_theme_option('featured_marker_star');?>;
 		var useClusters = <?php echo get_theme_option('clustering');?>; 
 		var clusterTours = <?php echo get_theme_option('tour_clustering');?>; 
+		var clusterIntensity = <?php echo get_theme_option('cluster_intensity') ? get_theme_option('cluster_intensity') : 15;?>; 
 		var alwaysFit = <?php echo get_theme_option('fitbounds');?>; 
 
 		var isSecure = window.location.protocol == 'https:' ? true : false;
@@ -487,7 +488,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					if(useClusters==true){
 						var markers = L.markerClusterGroup({
 							zoomToBoundsOnClick:true,
-							disableClusteringAtZoom: 15,
+							disableClusteringAtZoom: clusterIntensity,
 							polygonOptions: {
 								'stroke': false,
 								'color': '#000',
