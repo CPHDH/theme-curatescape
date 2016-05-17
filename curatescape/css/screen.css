@@ -118,7 +118,7 @@ header.main{width:100%;max-width:50em;min-height:6.5em;display:block;font-varian
 .curatescape-infowindow-address.single-item{padding-top:8px;min-width:14em;}
 #tours.show .curatescape-infowindow-address{padding:0 4px 4px 32px;}
 #tours.show .leaflet-popup-content .number{margin-right:0;}
-.curatescape-infowindow-image{background-color:#eaeaea;background-size:cover;width:100%;height:7.5em;display: block;}
+.curatescape-infowindow-image{background-color:#eaeaea;background-size:cover;width:100%;height:7.5em;display: block;background-position: center}
 #map_canvas .access-anchor {
     background: #efefef;
     color: #777;
