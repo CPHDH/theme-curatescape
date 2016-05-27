@@ -1984,7 +1984,7 @@ function mh_random_or_recent($mode='recent',$num=4){
 
 
 			if($desc = mh_the_text($item,array('snippet'=>200))){
-				$html.= '<div class="item-description">'.$desc.'</div>';
+				$html.= '<div class="item-description">'.strip_tags($desc).'</div>';
 			}else{
 				$html.= '<div class="item-description">'.__('Text preview unavailable.').'</div>';
 			}
