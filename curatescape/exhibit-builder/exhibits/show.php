@@ -1,4 +1,4 @@
-<?php echo head(array('maptype'=>'none','title' => html_escape(metadata('exhibit_page', 'title') . ' : '. metadata('exhibit', 'title')), 'bodyclass' => 'show', 'bodyid' => 'exhibit')); ?>
+<?php echo head(array('maptype'=>'none','title' => html_escape(metadata('exhibit_page', 'title') . ' : '. metadata('exhibit', 'title')), 'bodyclass' => 'exhibits show', 'bodyid' => 'exhibit')); ?>
 
 <div id="content">
 <article class="page show">

@@ -24,9 +24,9 @@ elseif (isset($query)) {
 }	
 else{
 	$title = __('All Exhibits');
-	$bodyclass .=' items stories';
+	$bodyclass .=' exhibits stories';
 }	
-echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
+echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclass'=>$bodyclass)); 
 ?>
 
 

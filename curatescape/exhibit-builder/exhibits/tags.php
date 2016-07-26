@@ -1,6 +1,6 @@
 <?php 
 $title = __('Browse Exhibits by Tag');
-echo head(array('maptype'=>'none','title' => $title, 'bodyid' => 'exhibit', 'bodyclass' => 'tags browse'));
+echo head(array('maptype'=>'none','title' => $title, 'bodyid' => 'exhibit', 'bodyclass' => 'exhibits tags browse'));
 ?>
 
 
