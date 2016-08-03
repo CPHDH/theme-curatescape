@@ -356,8 +356,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 	case 'queryresults':
 		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
-		$uri=$_SERVER['REQUEST_URI'];
-		$uri=$uri.'&output=mobile-json';
+		$uri=WEB_ROOT.$_SERVER['REQUEST_URI'];
+		$json_source=$uri.'&output=mobile-json';
 		break;		
 
 	case 'story':
@@ -477,12 +477,12 @@ function mh_display_map($type=null,$item=null,$tour=null){
 						var c = (item.featured==1 && featured_color) ? featured_color : color;
 						var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
 				        if(typeof(item.thumbnail)!="undefined"){
-					        var image = '<a href="/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
+					        var image = '<a href="<?php echo WEB_ROOT;?>/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
 					    }else{
 						    var image = '';
 					    }
 					    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
-				        var html = image+number+'<a class="curatescape-infowindow-title" href="/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
+				        var html = image+number+'<a class="curatescape-infowindow-title" href="<?php echo WEB_ROOT;?>/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
 						
 						
 						var marker = L.marker([item.latitude,item.longitude],{icon: icon(c,inner)}).bindPopup(html);
