@@ -413,15 +413,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			var terrain = L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
 				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>'
 			});		
-			
-			var toner = L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}{retina}.png', {
-				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
-				retina: (L.Browser.retina) ? '@2x' : '',
-			});		
-			var pioneer = L.tileLayer('http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}{retina}.png', {
-				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://www.thunderforest.com/">Thunderforest</a>',
-				retina: (L.Browser.retina) ? '@2x' : '',
-			});	
 							
 			var carto = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{retina}.png', {
 			    attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
