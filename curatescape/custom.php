@@ -173,23 +173,6 @@ function mh_global_header($html=null){
 
 }
 
-/*
-** Removes pagination query param from request URI
-** Prevents empty map results on non-first search result pages
-** Usage: query_param_minus_pagination($_SERVER['REQUEST_URI'])
-** See: mh_display_map()
-*/
-function query_param_minus_pagination($s=null,$n=null){
-
-	$s=explode('&',$s);
-	foreach($s as $key => $value){
-		if( (substr( $value, 0, 5 ) === "page=") == false ){ 
-			$n[]=$value;
-	    }
-	}
-	return implode('&',$n);    
-	
-}	
 
 /*
 ** Tour JSON
@@ -375,7 +358,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		/* browsing by tags, subjects, search results, etc, map is bounded according to content */
 		$uri=$_SERVER['REQUEST_URI'];
 		$uri=$uri.'&output=mobile-json';
-		$json_source=WEB_ROOT.query_param_minus_pagination($uri);
 		break;		
 
 	case 'story':
