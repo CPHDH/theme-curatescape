@@ -517,7 +517,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			        var address = data.address ? data.address : data.latitude+','+data.longitude;
 			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
 
-			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-media" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');"></a>' : '';
+			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-media" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Skip to media files"></a>' : '';
 
 			        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+accessInfo+'</div>';
 					
@@ -707,7 +707,8 @@ function mh_simple_search($formProperties=array(), $uri = null){
 	$formProperties['method'] = 'get';
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
-	$html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput','placeholder'=>__('Search %s',mh_item_label('plural'))));
+	$html .= '<label for "search" class="visuallyhidden">Search</label>';
+	$html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput search','placeholder'=>__('Search %s',mh_item_label('plural'))));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -1701,7 +1702,7 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 					$html .= '<article class="featured-story-result">';
 					$html .= '<div class="featured-decora-outer">' ;
 						$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')"></div>' ;
-						$html .= '<div class="featured-decora-img"'.link_to_item(item_image('square_thumbnail',array(),0, $item), array(), 'show', $item).'</div>';
+						$html .= '<div class="featured-decora-img">'.link_to_item(item_image('square_thumbnail',array('alt'=>''),0, $item), array(), 'show', $item).'</div>';
 					
 						$html .= '<div class="featured-decora-text"><div class="featured-decora-text-inner">';
 							$html .= '<header><h3>' . link_to_item($itemTitle, array(), 'show', $item) . '<span class="featured-item-author">'.mh_the_byline($item,false).'</span></h3></header>';
