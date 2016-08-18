@@ -31,7 +31,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	<div id="primary" class="show">
 	    <section id="text">
 		   <div id="tour-description">
-		    <?php echo nls2p( tour( 'Description' ) ); ?>
+		    <?php echo htmlspecialchars_decode(nls2p( tour( 'Description' ) )); ?>
 		   </div>
 		   <div id="tour-postscript">
 		    <?php echo htmlspecialchars_decode(metadata('tour','Postscript Text')); ?>
