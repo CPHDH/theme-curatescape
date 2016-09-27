@@ -25,7 +25,7 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 		foreach( $tours as $tour ){ 
 		set_current_record( 'tour', $tour );
 		
-			$tourdesc = nls2p( tour( 'description' ) );
+			$tourdesc = strip_tags( htmlspecialchars_decode(tour( 'description' )) );
 		
 			echo '<article id="item-result-'.$i.'" class="item-result has-image">';
 			echo '<h3>'.link_to_tour(null,array('class'=>'permalink')).'</h3>';
