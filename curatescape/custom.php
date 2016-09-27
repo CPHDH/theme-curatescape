@@ -188,7 +188,7 @@ function mh_get_tour_json($tour=null){
 				$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 				$address = ( element_exists('Item Type Metadata','Street Address') ) 
 			? preg_replace( "/\r|\n/", "", strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) )) : null;
-				if($location){
+				if($location && $item->public){
 					$tourItems[] = array(
 						'id'		=> $item->id,
 						'title'		=> addslashes(metadata($item,array('Dublin Core','Title'))),
