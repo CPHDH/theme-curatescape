@@ -79,7 +79,10 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 				<?php echo mh_item_citation(); ?>
 				</div>	
 				
-				<?php echo function_exists('tours_for_item') ? tours_for_item($item->id) : null; ?>
+				<?php if(function_exists('tours_for_item')){
+					 $label=mh_tour_label_option('plural');
+					 echo tours_for_item($item->id, __('Related %s', $label)); 
+				}?>
 					
 				<div id="subjects">  	
 				<?php mh_subjects(); ?>
