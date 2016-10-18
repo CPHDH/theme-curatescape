@@ -402,11 +402,24 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
 		    return raw ? parseInt(raw[2], 10) : 0; // return 0 for not-Chrome
 		}
+		function getSafariVersion () {  
+			// Safari v.9.3+ requires secure origins for geolocation   
+		    var raw = navigator.userAgent.match(/Safari\/([-+]?[0-9]*\.?[0-9]+)\./);
+		    console.log(parseFloat(raw[1]));
+		    return raw ? parseFloat(raw[1]) : 0; // return 0 for not-Safari
+		}		
 
 		jQuery(document).ready(function() {
 
-			if ((getChromeVersion()>=50 && !isSecure) || !navigator.geolocation){
-				// Hide the geolocation button on insecure sites for Chrome 50+ users and for browsers with no support
+			if (
+				(getChromeVersion()>=50 && !isSecure) || 
+				(getSafariVersion()>=601.6 && !isSecure) || 
+				!navigator.geolocation
+				){
+				/* Hide the geolocation button on insecure sites for... 
+				** Safari 9.3+ users, Chrome 50+ users, and for browsers with no support
+				** TODO: eventually, this will need to be applied to all insecure origins
+				*/
 				jQuery('.map-actions a.location').addClass('hidden');
 			}	
 
