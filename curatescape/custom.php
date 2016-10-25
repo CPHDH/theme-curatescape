@@ -405,7 +405,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		function getSafariVersion () {  
 			// Safari v.9.3+ requires secure origins for geolocation   
 		    var raw = navigator.userAgent.match(/Safari\/([-+]?[0-9]*\.?[0-9]+)\./);
-		    console.log(parseFloat(raw[1]));
 		    return raw ? parseFloat(raw[1]) : 0; // return 0 for not-Safari
 		}		
 
@@ -1260,8 +1259,8 @@ function mh_video_files($item,$html=null) {
 		
 		?>
 		<script>
-			loadCSS('http://vjs.zencdn.net/4.3/video-js.css');
-			loadJS('http://vjs.zencdn.net/4.3/video.js');
+			loadCSS('//vjs.zencdn.net/4.3/video-js.css');
+			loadJS('//vjs.zencdn.net/4.3/video.js');
 		</script>	
 		<?php 
 		
@@ -1337,8 +1336,8 @@ function mh_single_file_show($file=null){
 			}else{
 				?>
 				<script>
-					loadCSS('http://vjs.zencdn.net/4.3/video-js.css');
-					loadJS('http://vjs.zencdn.net/4.3/video.js');
+					loadCSS('//vjs.zencdn.net/4.3/video-js.css');
+					loadJS('//vjs.zencdn.net/4.3/video.js');
 				</script>	
 				<?php 	
 				$html .= '<div class="item-file-container">';
