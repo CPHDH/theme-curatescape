@@ -430,12 +430,14 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			    attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
 			    retina: (L.Browser.retina) ? '@2x' : '',
 			});
+			
+			var defaultMapLayer=<?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : 'carto';?>;
 
 			var mapBounds; // keep track of changing bounds
 
 			// Build the base map
 			var map = L.map('map_canvas',{
-				layers: carto,
+				layers: defaultMapLayer,
 				minZoom: 3,
 				scrollWheelZoom: false,
 			}).setView(center, zoom);
