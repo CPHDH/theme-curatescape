@@ -393,7 +393,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var useClusters = <?php echo get_theme_option('clustering');?>; 
 		var clusterTours = <?php echo get_theme_option('tour_clustering');?>; 
 		var clusterIntensity = <?php echo get_theme_option('cluster_intensity') ? get_theme_option('cluster_intensity') : 15;?>; 
-		var alwaysFit = <?php echo get_theme_option('fitbounds');?>; 
+		var alwaysFit = <?php echo get_theme_option('fitbounds') ? get_theme_option('fitbounds') : 0;?>; 
 		var markerSize = '<?php echo get_theme_option('marker_size') ? get_theme_option('marker_size') : "m";?>'; 
 
 		var isSecure = window.location.protocol == 'https:' ? true : false;
@@ -422,8 +422,9 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				jQuery('.map-actions a.location').addClass('hidden');
 			}	
 
-			var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {
-				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>'
+			var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
+				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
+				retina: (L.Browser.retina) ? '@2x' : '',
 			});		
 							
 			var carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
@@ -446,10 +447,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			L.control.layers({
 				"Terrain":terrain,
 				"Street":carto,
-			}).addTo(map);
-			
-			//carto.addTo(map);
-			
+			}).addTo(map);			
 			
 			// Center marker and popup on open
 			map.on('popupopen', function(e) {
@@ -496,7 +494,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 						    var image = '';
 					    }
 					    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
-				        var html = image+number+'<a class="curatescape-infowindow-title" href="<?php echo WEB_ROOT;?>/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
+				        var html = image+number+'<span><a class="curatescape-infowindow-title" href="<?php echo WEB_ROOT;?>/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
 						
 						
 						var marker = L.marker([item.latitude,item.longitude],{icon: icon(c,inner)}).bindPopup(html);
@@ -527,7 +525,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			        
 			        
 				}else{ // single items
-					map.setView([data.latitude,data.longitude],zoom+3);	
+					defaultItemZoom=<?php echo get_theme_option('map_zoom_single') ? (int)get_theme_option('map_zoom_single') : 14;?>;
+					map.setView([data.latitude,data.longitude],defaultItemZoom);	
 			        var address = data.address ? data.address : data.latitude+','+data.longitude;
 			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
 
@@ -674,7 +673,7 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 			$waypoints=implode('+to:', $coords);
 			$coords=$daddr.'+to:'.$waypoints;	
 			
-			$show_directions=get_theme_option('show_tour_dir');
+			$show_directions=get_theme_option('show_tour_dir') ? get_theme_option('show_tour_dir') : 0;
 			
 		}
 	
