@@ -546,7 +546,11 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			
 			if(type=='story'){
 				var data = jQuery.parseJSON(source);
-				addMarkers(data);
+				if(data){
+					addMarkers(data);	
+				}else{
+					jQuery('#hero, .map-actions').hide();
+				}
 				
 			}else if(type=='tour'){
 				var data = jQuery.parseJSON(source);
