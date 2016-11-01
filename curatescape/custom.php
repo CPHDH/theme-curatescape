@@ -598,7 +598,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				var options = {
 					enableHighAccuracy: true,
 					maximumAge: 30000,
-					timeout: 3000
+					timeout: 15000
 				};
 				navigator.geolocation.getCurrentPosition(
 					function(pos) {
