@@ -43,7 +43,15 @@ function mh_seo_pageimg($item=null,$file=null){
 			$itemimg=array_pop($result);
 		}
 	}
-	return isset($itemimg) ? $itemimg : mh_lg_logo_url();
+	return isset($itemimg) ? $itemimg : mh_seo_pageimg_custom();
+}
+
+function mh_seo_pageimg_custom(){
+	$custom_img = get_theme_option('custom_meta_img');
+
+	$custom_img_url = $custom_img ? WEB_ROOT.'/files/theme_uploads/'.$custom_img : mh_lg_logo_url();
+	
+	return $custom_img_url;
 }
 
 // Get theme CSS link with version number
