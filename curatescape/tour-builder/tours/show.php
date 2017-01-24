@@ -73,7 +73,7 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	         endforeach; ?>
 		</section>
 				<div class="comments">
-				<?php echo (get_theme_option('tour_comments') ==1) ? mh_disquss_comments() : null;?>
+				<?php echo (get_theme_option('tour_comments') ==1) ? mh_display_comments() : null;?>
 				</div>			   
 	</div>
 

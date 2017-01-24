@@ -103,7 +103,7 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 				</div>
 				
 				<div class="comments">
-				<?php mh_disquss_comments();?>
+				<?php mh_display_comments();?>
 				</div>
 					
 									

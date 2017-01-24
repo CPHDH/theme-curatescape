@@ -1587,33 +1587,60 @@ addthis.addEventListener(\'addthis.ready\', addthisReady);
 ** DISQUS COMMENTS
 ** disqus.com
 */
-function mh_disquss_comments(){
-	$shortname=get_theme_option('comments_id');
+function mh_disquss_comments($shortname){
 	$preface=get_theme_option('comments_text');
 	if ($shortname){
-?>
+	?>
     <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
     <div id="disqus_thread"></div>
     <script type="text/javascript">
-        
         var disqus_shortname = '<?php echo $shortname;?>'; 
-
         (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        
     </script>
-    
     <noscript><?php echo __('Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>');?></noscript>
-    
     <a href="http://disqus.com" class="dsq-brlink"><?php echo __('comments powered by <span class="logo-disqus">Disqus</span>');?></a>
     
 	<?php
 	}
 }
 
+/*
+** INTENSE DEBATE COMMENTS
+** intensedebate.com
+*/	
+function mh_intensedebate_comments($intensedebate_id){
+	$preface=get_theme_option('comments_text');
+	if ($intensedebate_id){ ?>
+	    <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
+	    <div id="disqus_thread"></div>
+	
+		<script>
+		var idcomments_acct = '<?php echo $intensedebate_id;?>';
+		var idcomments_post_id;
+		var idcomments_post_url;
+		</script>
+		<span id="IDCommentsPostTitle" style="display:none"></span>
+		<script type='text/javascript' src='https://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+		<?php
+	}
+}
+
+/*
+** DISPLAY COMMENTS
+*/	
+function mh_display_comments(){
+	if(get_theme_option('comments_id')){
+		return mh_disquss_comments(get_theme_option('comments_id'));
+	}else if(get_theme_option('intensedebate_site_account')){
+		return mh_intensedebate_comments(get_theme_option('intensedebate_site_account'));
+	}else{
+		return '';
+	}
+}
 
 /*
 ** Subnavigation for items/browse pages
