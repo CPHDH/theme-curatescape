@@ -5,13 +5,13 @@
 function mh_seo_pagedesc($item=null,$tour=null,$file=null){
 	if($item != null){
 		$itemdesc=snippet(mh_the_text($item),0,500,"...");
-		return strip_tags($itemdesc);
+		return htmlspecialchars(strip_tags($itemdesc));
 	}elseif($tour != null){
 		$tourdesc=snippet(tour('Description'),0,500,"...");
-		return strip_tags($tourdesc);
+		return htmlspecialchars(strip_tags($tourdesc));
 	}elseif($file != null){
 		$filedesc=snippet(metadata('file',array('Dublin Core', 'Description')),0,500,"...");
-		return strip_tags($filedesc);
+		return htmlspecialchars(strip_tags($filedesc));
 	}else{
 		return mh_seo_sitedesc();
 	}
