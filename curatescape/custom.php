@@ -33,12 +33,12 @@ function mh_seo_pagetitle($title,$item){
 function mh_seo_pageimg($item=null,$file=null){
 	if($item){
 		if(metadata($item, 'has thumbnail')){
-			$itemimg=item_image('square_thumbnail') ;
+			$itemimg=item_image('fullsize') ;
 			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
 			$itemimg=array_pop($result);
 		}
 	}elseif($file){
-		if($itemimg=file_image('square_thumbnail') ){
+		if($itemimg=file_image('fullsize') ){
 			preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $itemimg, $result);
 			$itemimg=array_pop($result);
 		}
