@@ -236,9 +236,10 @@ function mh_get_item_json($item=null){
 			$title=html_entity_decode( strip_formatting( metadata( 'item', array( 'Dublin Core', 'Title' ))));
 			
 			if(metadata($item, 'has thumbnail')){
-				$thumbnail = (preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('square_thumbnail'), $result)) 
-				? array_pop($result) : null;
-				}else{$thumbnail=null;}
+				$thumbnail = (preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('square_thumbnail'), $result)) ? array_pop($result) : null;
+			}else{ 
+				$thumbnail=''; 
+			}
 							
 			if($location){
 				$itemMetadata = array(

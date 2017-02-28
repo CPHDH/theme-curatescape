@@ -113,8 +113,8 @@ header.main{width:100%;max-width:50em;min-height:6.5em;display:block;font-varian
 .leaflet-container a{color:inherit !important;}
 .leaflet-popup-content{margin: 0 !important;min-width:12em;max-width:15em;}
 #tours.show .leaflet-popup-content{display:flex;min-width: 10em;max-width:26em;padding:8px 8px 4px;line-height: 2em;}
-.curatescape-infowindow-title{padding:0 8px 0;display: inline-block;font-variant: small-caps;line-height: 1.2em;}
-.curatescape-infowindow-address{padding:4px 8px 8px;font-size:.65em;text-transform: uppercase;color:#bababa; white-space:nowrap;overflow: hidden;text-overflow: ellipsis;width: 90%;}
+.curatescape-infowindow-title{padding:8px 8px 0;display: inline-block;font-variant: small-caps;line-height: 1.2em;}
+.curatescape-infowindow-address{padding:2px 8px 8px;font-size:.65em;text-transform: uppercase;color:#bababa; white-space:nowrap;overflow: hidden;text-overflow: ellipsis;width: 90%;}
 .curatescape-infowindow-address.single-item{padding-top:8px;min-width:14em;}
 #tours.show .curatescape-infowindow-address{padding:0 4px 4px 8px;line-height: 1.4em;max-width:26em;}
 #tours.show .leaflet-popup-content .number{min-width:2em;margin: 4px 0 0}
