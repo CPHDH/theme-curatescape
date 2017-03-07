@@ -56,10 +56,11 @@ echo mh_custom_css(); ?>
 
 <!-- Plugin Stuff -->
 <!-- we need this for the map on the contribution form-->
-<?php echo fire_plugin_hook('public_head',array('view'=>$this)); ?> 
+<?php echo ($bodyclass == 'contribution' || $bodyid == 'exhibit') ? fire_plugin_hook('public_head',array('view'=>$this)) : null; ?> 
 
 <!-- JavaScripts -->
-<?php echo ($bodyclass !== 'contribution') ? '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>' : null;?>
+<?php echo ($bodyclass !== 'contribution' && $bodyid !== 'exhibit') ? '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>' : null;?>
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <link href="https://vjs.zencdn.net/4.3/video-js.css" rel="stylesheet">

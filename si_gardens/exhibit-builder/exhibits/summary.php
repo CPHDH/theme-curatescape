@@ -1,24 +1,50 @@
-<?php echo head(array('maptype'=>'none','title' => metadata('exhibit', 'title'), 'bodyclass'=>'summary show','bodyid' => 'exhibit')); ?>
+<?php echo head(array('maptype'=>'none','title' => metadata('exhibit', 'title'), 'bodyclass'=>'summary show exhibit','bodyid' => 'exhibit')); ?>
 
 <div id="content">
 <article class="page show">
 
 	<h1><?php echo metadata('exhibit', 'title'); ?></h1>
 	
-	<div id="secondary">
-		<aside class="navigation">
+	<div class="secondary" id="secondary">
+		<aside class="sidebar navigation">
 		<!-- add left sidebar content here -->
-			<h3><?php echo __('Sections'); ?></h3>
-			<ul>
+			<input type="checkbox" value="selected" id="nav-header" class="nav-header-input">
+			<label for="nav-header" class="nav-header-label"><?php echo __('Sections'); ?></label>
+			<ul class="nav-set">
 		        <?php set_exhibit_pages_for_loop_by_exhibit(); ?>
 		        <?php foreach (loop('exhibit_page') as $exhibitPage): ?>
 		        <?php echo exhibit_builder_page_summary($exhibitPage); ?>
-		        <?php endforeach; ?>
+		        <?php endforeach;
+				// reset current page
+				set_current_record('exhibit_page', $exhibit_page);?>
 		    </ul>
+			<?php echo exhibit_builder_page_nav(); ?>
 		</aside>
-		<aside>
-			<a href="<?php echo absolute_url('exhibits'); ?>">More online exhibits</a>
+		
+		<?php
+		// loop through pages and find one with slug sidebar
+		set_exhibit_pages_for_loop_by_exhibit();
+		foreach (loop('exhibit_page') as $exhibitPage):
+			$slug_name = metadata($exhibitPage, 'slug');
+			if ($slug_name == "resources") { ?>
+				<aside class="sidebar resources">
+				<?php exhibit_builder_render_exhibit_page(); ?>
+				</aside>
+			<?php }
+		endforeach;
+		// reset current page
+		set_current_record('exhibit_page', $exhibit_page);
+		?>
+		
+		<aside class="sidebar">
+			<a href="<?php echo absolute_url('exhibits'); ?>">MORE EXHIBITS &#8594;</a>
 		</aside>
+		
+		<aside class="sidebar" id="share-this">
+			<?php echo mh_share_this('Exhibit');?>
+		</aside>
+		
+		
 	</div>
 
 	<div id="primary" class="show" role="main">
@@ -39,20 +65,11 @@
 
 		<nav id="exhibit-pages">
 			<h3><?php echo __('Sections'); ?></h3>
-		    <ul>
-		        <?php set_exhibit_pages_for_loop_by_exhibit(); ?>
-		        <?php foreach (loop('exhibit_page') as $exhibitPage): ?>
-		        <?php echo exhibit_builder_page_summary($exhibitPage); ?>
-		        <?php endforeach; ?>
-		    </ul>
+		    <?php echo exhibit_builder_page_nav(); ?>
 		</nav>
 
 	
-	</div>	
-		
-<div id="share-this" class="show">
-<?php echo mh_share_this('Exhibit');?>
-</div>
+	</div>
 
 </article>
 </div> <!-- end content -->

@@ -1,4 +1,5 @@
 jQuery(document).ready(function() {
+	
 	var $window = jQuery(window);
 	// exists? function
 	jQuery.fn.exists = function() {

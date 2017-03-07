@@ -25,8 +25,8 @@ elseif (isset($query)) {
 else{
 	$title = __('All Exhibits');
 	$bodyclass .=' items stories';
-}	
-echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclass'=>$bodyclass)); 
+}
+echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclass'=>$bodyclass));
 ?>
 
 
@@ -64,7 +64,7 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
 				
 				<h2><?php echo link_to_exhibit(); ?></h2>
 		        <?php if ($exhibitDescription = metadata('exhibit', 'description', array('no_escape' => true))): ?>
-					<div class="description"><?php echo $exhibitDescription; ?> <p class="read-more"><a href="<?php echo exhibit_builder_exhibit_uri(); ?>">Read More &raquo;</a></p></div>
+					<div class="description"><?php echo $exhibitDescription; ?> <p class="read-more"><a href="<?php echo exhibit_builder_exhibit_uri(); ?>">Read More &#8594;</a></p></div>
 		        <?php endif; ?>
 		        <?php if ($exhibitTags = tag_string('exhibit', 'exhibits')): ?>
 		        	<p class="tags">TAGS: <?php echo $exhibitTags; ?></p>
