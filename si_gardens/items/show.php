@@ -11,7 +11,7 @@
 		<?php echo ( metadata($item, array('Dublin Core', 'Title'), array('index'=>1))!==('[Untitled]') ) ? metadata($item, array('Dublin Core', 'Title'), array('index'=>1)) : null; ?></h3>
 	</hgroup>	
 	<?php 
-	echo mh_the_author($item);
+	echo mh_contributor($item);
 	?>
 	</header>
 	
