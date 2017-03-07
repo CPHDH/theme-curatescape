@@ -55,10 +55,13 @@
 
 				<div id="cite-this">
 				<?php 
-				$string = ($gw=metadata('item',array('Item Type Metadata','Garden Website'))) ? $gw : false; 
-				if( (!empty($string)) && ($url=parse_url($string)) ){
-					echo '<h3>Garden Website</h3><a href="'.($url['scheme'] ? null : 'http://').$string.'">'.$url['host'].($url['path'] ? $url['path'] : null).'</a><br>';
-				}?>					
+				if(element_exists('Item Type Metadata','Garden Website')){
+					$string = ($gw=metadata('item',array('Item Type Metadata','Garden Website'))) ? $gw : false; 
+					if( (!empty($string)) && ($url=parse_url($string)) ){
+						echo '<h3>Garden Website</h3><a href="'.($url['scheme'] ? null : 'http://').$string.'">'.$url['host'].($url['path'] ? $url['path'] : null).'</a><br>';
+					}
+				}
+				?>					
 				<h3>Cite this Page</h3>
 				<?php echo mh_item_citation(); ?>
 			
