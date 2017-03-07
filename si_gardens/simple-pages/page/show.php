@@ -18,13 +18,17 @@ echo head(array('maptype'=>'none','title' => html_escape(metadata('simple_pages_
 
 		    <?php
 		    $text = metadata('simple_pages_page', 'text', array('no_escape' => true));
-		    if (metadata('simple_pages_page', 'use_tiny_mce')) {
+			
+			echo $this->shortcodes($text);
+				
+		    /*if (metadata('simple_pages_page', 'use_tiny_mce')) {
 		        echo $text;
 		    } else {
 		        echo eval('?>' . $text);
-		    }
-		    ?>			    
-
+		    }*/
+			
+		    ?>
+			
 		</section>    
 	</div>
 

@@ -40,14 +40,13 @@
 
 </div><!--end wrap-->
 
-<!-- begin webtrends-->
+<!-- begin webtrends, NOTE: add the actual webtrends code in here and reference webtrends folder on top level!!!! -->
 <?php
 // Add a single quote: 
 $root=$_SERVER['DOCUMENT_ROOT'];
 include("$root/webtrends/webtrends.php");
 ?>
 <!-- end webtrends -->
-
 </body>
 
 </html>

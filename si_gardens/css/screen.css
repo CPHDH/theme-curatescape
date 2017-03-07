@@ -422,7 +422,7 @@ span.amp {
 	box-shadow:0 0 1em #333 inset;
 }
 
-#exhibit #hero, #exhibit #showmap{
+#exhibit #hero, #exhibit #showmap, #exhibits #hero, #exhibits #showmap{
 	display: none !important;
 	visibility: hidden;
 	height: 0;
@@ -1845,16 +1845,42 @@ div#map-block p.map-notification {
 	padding-right: 3%;
 }
 #exhibit #secondary {
-	background:#f0f1ea;
-	color:#443422;
-	border-top: 4px solid #4c2c10;
 	float:left;
-	/*min-height:42em;
-	overflow:hidden;*/
 	width:20%;
 	padding-top: 5px;
-	padding-bottom: 5px;
-	/*margin-top: 2.5em;*/
+	/*padding-bottom: 5px;*/
+}
+#exhibit #secondary .sidebar {
+	background:#f0f1ea;
+	color:#443422;
+	margin-bottom: .8em;
+}
+#exhibit #secondary .sidebar.navigation {
+	border-top: 4px solid #4c2c10;
+}
+#exhibit #secondary .sidebar.resources {
+	font-size: .8em;
+}
+#exhibit #secondary .sidebar.resources > div > div a {
+	display: block;
+	background: #56822a;
+	color:#fff;
+	margin: .5em 0 .7em 0;
+	padding: .7em .5em;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 1.2;
+}
+#exhibit #secondary .sidebar.resources > div > div a:hover {
+	background: #df7a11;
+}
+#exhibit #secondary .sidebar.more {
+	text-transform: uppercase;
+	font-size: .8em;
+}
+#exhibit #secondary .sidebar#share-this {
+	margin-top: 0;
+	border-radius: 0;
 }
 #exhibit #primary {
 	float: right;
@@ -1882,17 +1908,24 @@ div#map-block p.map-notification {
 	font-size: 14px;
 	line-height: 1.4em;
 }
-#exhibit aside h3 {
+#exhibit aside h3, #exhibit .nav-header-label {
 	margin: 0 0 .5em 0;
 	padding: 0;
 	text-transform: uppercase;
 	color:#443422;
 	font-size: 13px;
+	display: block;
+}
+.nav-header-input {
+	display: none;
 }
 #exhibit aside p {
 	margin: .5em 0;
 }
-#exhibit .navigation .exhibit-title {
+/*#exhibit .navigation .exhibit-title {
+	display: none;
+}*/
+#exhibit .navigation ul.nav-set {
 	display: none;
 }
 #exhibit .navigation ul, #exhibit #exhibit-pages ul {
@@ -1905,8 +1938,20 @@ div#map-block p.map-notification {
 	border-bottom:1px solid #d7d9cb;
 	padding: .5em 0;
 }
-#exhibit .navigation ul li:first-child a, #exhibit #exhibit-pages ul li:first-child a {
+#exhibit .navigation ul li.current, #exhibit #exhibit-pages ul li.current {
+	background: #fff;
+}
+#exhibit .navigation ul li.current a, #exhibit #exhibit-pages ul li.current a {
+	padding-left: .5em;
+}
+#exhibit .navigation ul li ul li:last-child a, #exhibit #exhibit-pages ul li ul li:last-child a {
+	border-bottom:none;
+}
+#exhibit .navigation ul.navigation, #exhibit #exhibit-pages ul.navigation {
 	border-top:1px solid #d7d9cb;
+}
+#exhibit .navigation ul.navigation > li:first-child {
+	display: none;
 }
 #exhibit .exhibit-item-caption {
 	background: #f0f1ea;
@@ -1932,7 +1977,21 @@ div#map-block p.map-notification {
 	margin-bottom: 1em;
 }
 #exhibit-page-navigation {
+	float: left;
+	width: 100%;
 	clear: both;
+	border-top: 1px solid #d7d9cb;
+	padding: .5em 0 0 0;
+	margin-top: 1em;
+	line-height: 1.2;
+}
+#exhibit-nav-prev {
+	float: left;
+	margin-bottom: .8em;
+}
+#exhibit-nav-next {
+	float: right;
+	margin-bottom: .8em;
 }
 /*Exhibit Index*/
 #exhibits {
@@ -2118,6 +2177,61 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero, body.no
 }
 
 /*=== End Custom Styles ===*/
+
+/* Simple Page Layouts */
+.simple-page article.page h2 {
+	text-align: center;
+}
+.simple-page .record {
+	padding: 0 1em 1em 1em;
+	float: left;
+}
+.simple-page .record:not(:nth-of-type(1)) {
+	margin: 3%;
+	background: #fff;
+	border-top: 2px solid #4c2c10;
+	text-align: center;
+	-moz-box-shadow:    1px 1px 3px rgba(0,0,0,0.3);
+  	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  	box-shadow:         1px 1px 3px rgba(0,0,0,0.3);
+}
+.simple-page .record:nth-of-type(1) {
+	background: #f0f1ea;
+	margin: 0 0 3% 0;
+}
+.simple-page .record h3 {
+	line-height: 1.3;
+}
+.simple-page .record:nth-of-type(1) h3 {
+	margin-bottom: 0.5em;
+}
+.simple-page .record img {
+	float: left;
+	margin: .4em 1em .3em 0;
+	width: 130px;
+	height: auto;
+}
+.simple-page .record p {
+	font-size: 14px;
+	line-height: 1.5;
+	color: #443422;
+	margin: 0;
+	text-align: left;
+}
+.simple-page h3.callout {
+	margin: 0;
+	background: #d0812e;
+	color: #fff;
+	font-family:"ArtcraftURW-Reg","Georgia","Times","Times New Roman",serif;
+	padding: .5em 1em .4em 1em;
+	font-size: 1.3em;
+	line-height: 1;
+	text-shadow: .08em .08em 0 #89541e;
+}
+.simple-page h3.callout + p, .simple-page h3.callout + p + p {
+	margin: 0;
+}
+
 
 /*
 **
@@ -2452,6 +2566,31 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero, body.no
 	#exhibits .exhibit {
 		width:100%;
 		margin: 0 0 5% 0;
+	}
+	/* Toggle nav visability */
+	/* Header as checkbox to avoid javascript errors on server */
+	.nav-header-input:not(checked) ~ .exhibit-page-nav {
+		display: none;
+	}
+	.nav-header-input:checked ~ .exhibit-page-nav {
+		display: block;
+	}
+	#exhibit .nav-header-label {
+		display: block;
+		cursor: pointer;
+	}
+	.nav-header-label:after {
+		content: "+";
+		display: block;
+		float: right;
+		font-size: 1.5em;
+	}
+	.nav-header-input:checked ~ .nav-header-label:after {
+		content: "-";
+	}
+	
+	.simple-page #text .record:last-of-type {
+		margin-bottom: 8%;
 	}
 	
 }
@@ -2789,7 +2928,7 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero, body.no
 	}
 	
 	nav#primary-nav ul {
-		font-size: 1.1em;
+		font-size: 1.05em;
 	}
 	
 	nav#primary-nav ul li a.nav-share-a-story{
@@ -3176,13 +3315,43 @@ body.contribution #hero, body.contribution #showmap, body.no-hero #hero, body.no
 		text-align:center;
 	}
 	
+	.simple-page article.page h2 {
+		font-size: 3em;
+	}
+	.simple-page .record {
+		width: 26.5%;
+	}
+	.simple-page .record:not(:nth-of-type(1)) {
+		margin: 1.5%;
+		height: 260px;
+		overflow: hidden;
+	}
+	.simple-page .record:nth-of-type(1) {
+		float: right;
+		margin: 0 -1.8em 1.5% 3%;
+		clear: both;
+	}
+	.simple-page .record img {
+		width: 100px;
+	}
+	.simple-page h3.callout {
+		float: right;
+		margin: 0.5em -1.4em 0 3%;
+		width: 25.7%;
+		color: #fff;
+	}
 	
 }
 
 @media only screen and (min-width: 80em) {
 	/* 1280px+, larger widescreen desktop/laptop viewport */
 	/* =================================================================================== */
-	
+	.simple-page .record {
+		width: 26.7%;
+	}
+	.simple-page .record:not(:nth-of-type(1)) {
+		height: 240px;
+	}
 }
 
 /* ===== MEDIA QUERIES for RETINA and HIDPI displays ===== */

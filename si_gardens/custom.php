@@ -106,7 +106,7 @@ function mh_global_nav($includeExtra=true){
 		$navLinks=array(
 			array('label'=>'Home','uri' => url('/')),
 			array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
-			//array('label'=>'Exhibits','uri' => url('/exhibits')),
+			array('label'=>'Exhibits','uri' => url('/exhibits')),
 			array('label'=>'About','uri' => url('/about')),
 			array('label'=>'FAQs','uri' => url('/faq')),
 			array('label'=>'Education','uri' => url('/education')),
@@ -121,6 +121,7 @@ function mh_global_nav($includeExtra=true){
 		return public_nav_main();
 	}
 }
+
 
 /*
 ** Get the correct logo for the page
