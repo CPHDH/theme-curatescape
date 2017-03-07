@@ -565,7 +565,7 @@ function mh_mapfaq(){
 */
 
 function mh_contributor($item, $fallback="The Community of Gardens Team"){
-	if (plugin_is_active('Contribution') && plugin_is_active('Guest User')){        
+	if (plugin_is_active('Contribution') && plugin_is_active('GuestUser')){        
         $contribItem = get_db()->getTable('ContributionContributedItem')->findByItem($item);
 
         if($contribItem->anonymous) {
