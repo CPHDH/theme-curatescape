@@ -31,7 +31,7 @@ isset($file) ? $file : $file=null;
 
 <!-- Twitter Card stuff-->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title); ?>">
+<meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title,$item); ?>">
 <meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>">
 <meta name="twitter:image" content="<?php echo mh_seo_pageimg($item,$file);?>">
 <?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="@'.$twitter.'"> ' : '';?> 
