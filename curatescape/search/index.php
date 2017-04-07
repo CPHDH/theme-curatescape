@@ -48,7 +48,6 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		        <?php foreach (loop('search_texts') as $searchText): ?>
 		        <?php 
 			        $type_label=str_replace(__('Item'),mh_item_label('singular'),$searchRecordTypes[$searchText['record_type']]);
-			        $type_label=str_replace(__('Simple Page'),__('Page'),$searchRecordTypes[$searchText['record_type']]);
 		        ?>
 		        <?php $record = get_record_by_id($searchText['record_type'], $searchText['record_id']); ?>
 		        <tr class="<?php echo strtolower($searchText['record_type']);?>">

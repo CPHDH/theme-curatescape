@@ -1,6 +1,13 @@
 <?php
+// Relabel Simple Page as Page
+add_filter('search_record_types', 'mh_search_record_types');
+function mh_search_record_types($recordTypes)
+{
+    $recordTypes['SimplePagesPage'] = __('Page');
+    return $recordTypes;
+}	
+	
 // Build some custom data for Facebook Open Graph, Twitter Cards, general SEO, etc...
-
 // SEO Page description
 function mh_seo_pagedesc($item=null,$tour=null,$file=null){
 	if($item != null){
@@ -723,10 +730,15 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 */
 
 function mh_simple_search($formProperties=array(), $uri = null){
-	// Always post the 'items/browse' page by default (though can be overridden).
+	
+	$advanced = (get_theme_option('use_advanced_search') == 1) ? 1 : 0;	
+	$qname = ($advanced==1) ? 'query' : 'search';
+	$searchUri = ($advanced==1) ? url('search') : url('items/browse',null,array('sort_field'=>'relevance'));
+	
 	if (!$uri) {
-		$uri = url('items/browse?sort_field=relevance');
+		$uri = $searchUri;
 	}
+	
 
 	$searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
 	$formProperties['action'] = $uri;
@@ -734,13 +746,13 @@ function mh_simple_search($formProperties=array(), $uri = null){
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
 	$html .= '<label for "search" class="visuallyhidden">Search</label>';
-	$html .= get_view()->formText('search', $searchQuery, array('name'=>'search','class'=>'textinput search','placeholder'=>__('Search %s',mh_item_label('plural'))));
+	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'class'=>'textinput search','placeholder'=>__('Search %s',mh_item_label('plural'))));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
 	$parsedUri = parse_url($uri);
-	if (array_key_exists('query', $parsedUri)) {
-		parse_str($parsedUri['query'], $getParams);
+	if (array_key_exists($qname, $parsedUri)) {
+		parse_str($parsedUri[$qname], $getParams);
 		foreach($getParams as $getParamName => $getParamValue) {
 			$html .= get_view()->formHidden($getParamName, $getParamValue);
 		}
@@ -1651,6 +1663,7 @@ function mh_item_browse_subnav(){
 	echo nav(array(
 			array('label'=>'All' ,'uri'=> url('items/browse')),
 			array('label'=>'Tags', 'uri'=> url('items/tags')),
+			array('label'=>'Advanced Search', 'uri'=> url('items/search')),
 		));
 }
 
