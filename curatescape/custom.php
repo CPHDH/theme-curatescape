@@ -1661,9 +1661,10 @@ function mh_display_comments(){
 
 function mh_item_browse_subnav(){
 	echo nav(array(
-			array('label'=>'All' ,'uri'=> url('items/browse')),
-			array('label'=>'Tags', 'uri'=> url('items/tags')),
-			array('label'=>'Advanced Search', 'uri'=> url('items/search')),
+			array('label'=>__('All') ,'uri'=> url('items/browse')),
+			array('label'=>__('Tags'), 'uri'=> url('items/tags')),
+			array('label'=>__('%s Search', mh_item_label('singular')), 'uri'=> url('items/search')),
+			array('label'=>__('Sitewide Search'), 'uri'=> url('search')),
 		));
 }
 
