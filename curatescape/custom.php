@@ -1,9 +1,21 @@
 <?php
-// Relabel Simple Page as Page
+// Relabel Search Record Types
 add_filter('search_record_types', 'mh_search_record_types');
 function mh_search_record_types($recordTypes)
 {
-    $recordTypes['SimplePagesPage'] = __('Page');
+    if(plugin_is_active('SimplePages')) $recordTypes['SimplePagesPage'] = __('Page');
+    $recordTypes['Item'] = mh_item_label('singular');
+    if(plugin_is_active('TourBuilder','1.6','>=')) $recordTypes['Tour'] = mh_tour_label('singular');
+    return $recordTypes;
+}
+// Set Default Search Record Types
+add_filter('search_form_default_record_types', 'mh_search_form_default_record_types');
+function mh_search_form_default_record_types($recordTypes)
+{
+	$recordTypes=array();
+    $recordTypes[]='Item';
+    if(plugin_is_active('TourBuilder','1.6','>=')) $recordTypes[]='Tour';
+
     return $recordTypes;
 }	
 	
@@ -727,26 +739,28 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 ** Modified search form
 ** Adds HTML "placeholder" attribute
 ** Adds HTML "type" attribute
+** Includes settings for simple and advanced search via theme options
 */
 
 function mh_simple_search($formProperties=array(), $uri = null){
 	
 	$advanced = (get_theme_option('use_advanced_search') == 1) ? 1 : 0;	
 	$qname = ($advanced==1) ? 'query' : 'search';
-	$searchUri = ($advanced==1) ? url('search') : url('items/browse',null,array('sort_field'=>'relevance'));
-	
+	$searchUri = ($advanced==1) ? url('search') : url('items/browse?sort_field=relevance');
+	$placeholder = ($advanced==1) ? __('Search Site') : __('Search %s',mh_item_label('plural'));	
+	$default_record_types = mh_search_form_default_record_types($recordTypes);
+
 	if (!$uri) {
 		$uri = $searchUri;
 	}
-	
 
-	$searchQuery = array_key_exists('search', $_GET) ? $_GET['search'] : '';
+	$searchQuery = array_key_exists($qname, $_GET) ? $_GET[$qname] : '';
 	$formProperties['action'] = $uri;
 	$formProperties['method'] = 'get';
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
 	$html .= '<label for "search" class="visuallyhidden">Search</label>';
-	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'class'=>'textinput search','placeholder'=>__('Search %s',mh_item_label('plural'))));
+	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -757,9 +771,15 @@ function mh_simple_search($formProperties=array(), $uri = null){
 			$html .= get_view()->formHidden($getParamName, $getParamValue);
 		}
 	}
-
+	if($advanced==1 && count($default_record_types)){
+		foreach($default_record_types as $drt){
+			$html .= get_view()->formHidden('record_types[]', $drt);
+		}
+	}
+	
 	$html .= '</form>';
-	return $html;
+	return $html;	
+	
 }
 
 
