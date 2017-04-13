@@ -751,8 +751,8 @@ function mh_simple_search($formProperties=array(), $uri = null){
 
 	// add hidden fields for the get parameters passed in uri
 	$parsedUri = parse_url($uri);
-	if (array_key_exists($qname, $parsedUri)) {
-		parse_str($parsedUri[$qname], $getParams);
+	if (array_key_exists('query', $parsedUri)) {
+		parse_str($parsedUri['query'], $getParams);
 		foreach($getParams as $getParamName => $getParamValue) {
 			$html .= get_view()->formHidden($getParamName, $getParamValue);
 		}
