@@ -1739,24 +1739,10 @@ function mh_display_homepage_tours($num=7, $scope='random'){
 
 }
 
-
-
-/*
-** Display random featured item
-** Used on homepage
-*/
-function mh_display_random_featured_item($withImage=false,$num=1)
-{
-	$featuredItem = get_random_featured_items($num,$withImage);
-	$html = '<h2 class="hidden">'.__('Featured %s', mh_item_label()).'</h2>';
-	$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
-	
-	if ($featuredItem) {
-	
-	foreach($featuredItem as $item):
-
+function mh_homepage_hero_item($item){
 			$itemTitle = metadata($item, array('Dublin Core', 'Title'));
 			$itemDescription = mh_the_text($item,array('snippet'=>200));
+			$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
 			
 	
 			if (metadata($item, 'has thumbnail') ) {
@@ -1777,7 +1763,6 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 							$html .= '<div class="item-description">' . strip_tags($itemDescription) . '</div>';
 							}else{
 							$html .= '<div class="item-description">'.__('Preview text not available.').'</div>';
-							$html .= '<p class="view-more-link">'. link_to_item(__('Continue reading <span>%s</span>', $itemTitle), array(), 'show', $item) .'</p>';
 						}
 	
 						$html .= '</div></div>' ;
@@ -1786,6 +1771,25 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 					$html .= '</article>';
 				$html .= '</div>';
 			}
+			
+			return $html;
+				
+}
+
+/*
+** Display random featured item
+** Used on homepage
+*/
+function mh_display_random_featured_item($withImage=false,$num=1)
+{
+	$featuredItem = get_random_featured_items($num,$withImage);
+	$html = '<h2 class="hidden">'.__('Featured %s', mh_item_label()).'</h2>';
+	
+	if ($featuredItem) {
+	
+	foreach($featuredItem as $item):
+
+		$html.=mh_homepage_hero_item($item);
 			
 	endforeach;		
 			
