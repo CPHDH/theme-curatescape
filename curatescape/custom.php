@@ -1139,6 +1139,10 @@ function mh_footer_scripts_init(){
 				    }
 				  });
 				});	
+				jQuery('.sitewide-search-edit').on('click',function(e){
+					jQuery('form#sitewide-search-filters').toggleClass('hidden');
+					e.preventDefault();
+				});
 			});
 			</script>
 			<?php //========================//
@@ -1702,6 +1706,34 @@ function mh_reducepayload($index,$showThisMany){
 }
 
 /*
+** Display the Tours search results
+*/
+function mh_tour_preview($s){
+	$html=null;
+	$record=get_record_by_id($s['record_type'], $s['record_id']);
+	set_current_record( 'tour', $record );
+	$html.=  '<article>';
+	$html.=  '<h3 class="tour-result-title"><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h3>';
+	$html.=  '<span class="tour-meta-browse">';
+	if(tour('Credits') ){
+		$html.=  __('%1s curated by: %2s', mh_tour_label_option('singular'),tour('Credits') ).' | ';
+	}elseif(get_theme_option('show_author') == true){
+		$html.=  __('%1s curated by: The %2s Team',mh_tour_label_option('singular'),option('site_title')).' | ';
+	}		
+	$html.=  count($record->Items).' '.__('Locations').'</span><br>';
+	$html.=  ($text=tour('Description')) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
+	$i=0;
+	$html.=  '<span class="tour-thumbs-container">';
+	foreach($record->Items as $mini_thumb){
+		$html.=  metadata($mini_thumb, 'has thumbnail') ? '<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : null;
+	}
+	$html.=  '</span>';
+	$html.= '</article>';	
+	return $html;
+}	
+
+
+/*
 ** Display the Tours list
 */
 function mh_display_homepage_tours($num=7, $scope='random'){
@@ -2096,7 +2128,7 @@ function mh_custom_css(){
 		border-color:'.$color_secondary.';
 	}
 	.vjs-default-skin .vjs-play-progress,.vjs-default-skin .vjs-volume-level,
-	#swipenav #position li.current, .random-story-link.big-button,#home-tours h2,.tint .featured-decora-outer,a.edit,a.access-anchor:hover,header.main .random-story-link.show,ul.pagination a:hover,.show #tags li a,.show #tour-for-item li a:hover{
+	#swipenav #position li.current, .random-story-link.big-button,#home-tours h2,.tint .featured-decora-outer,a.edit,a.access-anchor:hover,header.main .random-story-link.show,ul.pagination a:hover,.show #tags li a,.show #tour-for-item li a:hover,.sitewide-search-edit,#submit_search:hover,#submit_search_advanced[type="submit"]:hover{
 		background-color:'.$color_primary.' !important;
 		}
 	.show #tags li a:hover{
