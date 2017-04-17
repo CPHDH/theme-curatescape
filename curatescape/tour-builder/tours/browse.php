@@ -39,6 +39,16 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			echo count($tour->Items).' '.__('Locations').'</span>';
 
 			echo '<div class="item-description"><p>'.snippet($tourdesc,0,250).'</p></div>'; 
+			if(get_theme_option('show_tour_item_thumbs') == true){
+				$html=  '<span class="tour-thumbs-container">';
+				foreach($tour->Items as $mini_thumb){
+					$html.=  metadata($mini_thumb, 'has thumbnail') ? 
+					'<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : 
+					null;
+				}
+				$html.=  '</span>';
+				echo $html;
+			}			
 			echo '</article>';
 			$i++;
 		

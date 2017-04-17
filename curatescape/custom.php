@@ -1722,12 +1722,15 @@ function mh_tour_preview($s){
 	}		
 	$html.=  count($record->Items).' '.__('Locations').'</span><br>';
 	$html.=  ($text=tour('Description')) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
-	$i=0;
-	$html.=  '<span class="tour-thumbs-container">';
-	foreach($record->Items as $mini_thumb){
-		$html.=  metadata($mini_thumb, 'has thumbnail') ? '<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : null;
+	if(get_theme_option('show_tour_item_thumbs') == true){
+		$html.=  '<span class="tour-thumbs-container">';
+		foreach($record->Items as $mini_thumb){
+			$html.=  metadata($mini_thumb, 'has thumbnail') ? 
+			'<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : 
+			null;
+		}
+		$html.=  '</span>';
 	}
-	$html.=  '</span>';
 	$html.= '</article>';	
 	return $html;
 }	
