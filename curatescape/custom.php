@@ -744,10 +744,10 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 
 function mh_simple_search($formProperties=array(), $uri = null){
 	
-	$advanced = (get_theme_option('use_advanced_search') == 1) ? 1 : 0;	
-	$qname = ($advanced==1) ? 'query' : 'search';
-	$searchUri = ($advanced==1) ? url('search') : url('items/browse?sort_field=relevance');
-	$placeholder = ($advanced==1) ? __('Search Site') : __('Search %s',mh_item_label('plural'));	
+	$sitewide = (get_theme_option('use_sitewide_search') == 1) ? 1 : 0;	
+	$qname = ($sitewide==1) ? 'query' : 'search';
+	$searchUri = ($sitewide==1) ? url('search') : url('items/browse?sort_field=relevance');
+	$placeholder = ($sitewide==1) ? __('Search Site') : __('Search %s',mh_item_label('plural'));	
 	$default_record_types = mh_search_form_default_record_types($recordTypes);
 
 	if (!$uri) {
@@ -771,7 +771,7 @@ function mh_simple_search($formProperties=array(), $uri = null){
 			$html .= get_view()->formHidden($getParamName, $getParamValue);
 		}
 	}
-	if($advanced==1 && count($default_record_types)){
+	if($sitewide==1 && count($default_record_types)){
 		foreach($default_record_types as $drt){
 			$html .= get_view()->formHidden('record_types[]', $drt);
 		}

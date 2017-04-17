@@ -27,7 +27,7 @@
 		<?php 
 		$record=get_record_by_id('Item', $file->item_id);
 		$title=metadata($record,array('Dublin Core','Title'));
-		echo link_to_item(__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);	
+		echo link_to_item(__('This file appears in: <span>%s<span>', $title), array('class'=>'file-appears-in-item'), 'show', $record);	
 		?> 
 		<hr>
 		
@@ -44,7 +44,7 @@
 		</div>	
 
 	<hr>	
-	<?php echo link_to_item(__('This file appears in: <em><strong>%s</strong></em>', $title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
+	<?php echo link_to_item(__('This file appears in: <span>%s<span>', $title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
 	<hr>
 	<?php echo mh_homepage_hero_item($record);?>
 	
