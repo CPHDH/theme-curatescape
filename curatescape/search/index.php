@@ -1,6 +1,6 @@
 <?php 
 $query = (isset($_GET['query']) ? $_GET['query'] : null);
-$title = $query ? __('Search Results for "%s"', $query) : __('Search');
+$title = $query ? __('Search Results for "%s"', $query) : __('Sitewide Search');
 $bodyclass ='browse queryresults';
 $maptype='none';
 
@@ -43,14 +43,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				$filters.= '<div><input type="checkbox" '.$checked.' id="'.$record_type.'" value="'.$record_type.'" name="record_types[]"/><label for="'.$record_type.'" class="record_types">'.$record_label.'</label></div>';
 			}
 			echo $filters.'</div>'; 
-/*
 
-			echo '<span class="sitewide-search-legend">'.__('Search Type').':</span> ';
-			$qtypes='<div class="fieldset">';
-
-			echo $qtypes.'</div>'; 
-*/
-			
 			echo '<input hidden name="query" value="'.$query.'"><input type="submit" value="Resubmit" id="submit_search">';
 			echo '</form>';
 			echo '</div>';
