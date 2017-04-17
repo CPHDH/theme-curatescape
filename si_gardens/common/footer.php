@@ -24,6 +24,7 @@
 		<span id="copyright">Copyright &copy; <?php echo date('Y').' '.mh_owner_link();?></span> 
 		<br>
 		<span id="app-store-links"><?php mh_appstore_footer(); ?></span>
+		<a href="http://s.si.edu/communityofgardensapp" target="_blank"><img src="<?php echo img('Download_on_the_App_Store_Badge_US-UK_135x40.svg'); ?>" alt="Download on the app store"></a>
 	</p>
 	
 	<div class="custom">

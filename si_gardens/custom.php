@@ -110,7 +110,7 @@ function mh_global_nav($includeExtra=true){
 			array('label'=>'About','uri' => url('/about')),
 			array('label'=>'FAQs','uri' => url('/faq')),
 			array('label'=>'Education','uri' => url('/education')),
-			array('label'=>'Tumblr','uri' => 'http://communityofgardens.tumblr.com/','target' => '_blank'),
+			array('label'=>'Mobile App','uri' => 'http://s.si.edu/communityofgardensapp','target' => '_blank'),
 			array('label'=>'Share A Story','uri' => url('/contribution'))
 			);
 		if($includeExtra==true){
