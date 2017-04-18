@@ -14,8 +14,9 @@ function mh_search_form_default_record_types($recordTypes)
 {
 	$recordTypes=array();
     $recordTypes[]='Item';
-    if(plugin_is_active('TourBuilder','1.6','>=')) $recordTypes[]='Tour';
-
+    if(plugin_is_active('TourBuilder','1.6','>=') && get_theme_option('default_tour_search')) $recordTypes[]='Tour';
+	if(plugin_is_active('SimplePages') && get_theme_option('default_page_search')) $recordTypes[]='SimplePagesPage';
+	if(get_theme_option('default_file_search')) $recordTypes[]='File';
     return $recordTypes;
 }	
 	
