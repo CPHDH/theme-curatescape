@@ -3,6 +3,7 @@ $tag = (isset($_GET['tag']) ? $_GET['tag'] : null); // items --> browse
 $tags = (isset($_GET['tags']) ? $_GET['tags'] : null); // tags/items --> show
 $subj = ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 49 )  ? $_GET['advanced'][0]['terms'] : null );
 $auth= ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 39 )  ? $_GET['advanced'][0]['terms'] : null );
+$collection = (isset($_GET['collection']) ? $_GET['collection'] : null);
 $query = (isset($_GET['search']) ? $_GET['search'] : null);
 $bodyclass='browse';
 $maptype='focusarea';
@@ -19,6 +20,12 @@ elseif ( !empty($auth) ) {
 	$maptype='queryresults';
 }elseif ( !empty($subj) ) {
 	$title = __('Results for subject term "%s"', $subj);
+	$bodyclass .=' queryresults';
+	$maptype='queryresults';
+}elseif ( !empty($collection) ) {
+	$c=get_record_by_id('collection',$collection);
+	$collection_title=metadata($c,array('Dublin Core','Title'));
+	$title = __('%1s in "%2s"', mh_item_label('plural'), $collection_title);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
 }

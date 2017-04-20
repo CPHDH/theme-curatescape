@@ -348,6 +348,9 @@ function mh_which_content($maptype='none',$item=null,$tour=null){
 	elseif ($maptype == 'tour') {
 		return mh_display_map('tour',null,$tour);
 	}
+	elseif ($maptype == 'collection') {
+		return mh_display_map('queryresults',null,null);
+	}	
 	elseif ($maptype == 'none') {
 		return null;
 	}
@@ -675,7 +678,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 /*
 ** Add the map actions toolbar
 */
-function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
+function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',$coords=null){
 	
 		$show_directions=null;
 		$street_address=null;
@@ -708,6 +711,8 @@ function mh_map_actions($item=null,$tour=null,$saddr='current',$coords=null){
 			
 			$show_directions=get_theme_option('show_tour_dir') ? get_theme_option('show_tour_dir') : 0;
 			
+		}else{
+			$show_directions= 0;
 		}
 	
 	?>
@@ -1693,6 +1698,16 @@ function mh_item_browse_subnav(){
 		));
 }
 
+
+/*
+** Subnavigation for collections/browse pages
+*/
+
+function mh_collection_browse_subnav(){
+	echo nav(array(
+			array('label'=>__('All') ,'uri'=> url('collections/browse')),
+		));
+}
 
 /*
 ** See where you're at in a loop and conditionally load content
