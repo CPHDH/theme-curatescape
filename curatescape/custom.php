@@ -219,8 +219,8 @@ function mh_get_tour_json($tour=null){
 				if($location && $item->public){
 					$tourItems[] = array(
 						'id'		=> $item->id,
-						'title'		=> addslashes(metadata($item,array('Dublin Core','Title'))),
-						'address'	=> addslashes($address),
+						'title'		=> trim(html_entity_decode(strip_formatting(addslashes(metadata($item,array('Dublin Core','Title')))))),
+						'address'	=> trim(html_entity_decode(strip_formatting(addslashes($address)))),
 						'latitude'	=> $location[ 'latitude' ],
 						'longitude'	=> $location[ 'longitude' ],
 						);
