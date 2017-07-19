@@ -14,10 +14,10 @@
 <?php echo auto_discovery_link_tags(); ?>
 
 <?php
-isset($title) ? $title : $title=null;
-isset($tour) ? $tour : $tour=null;
-isset($item) ? $item : $item=null;
-isset($file) ? $file : $file=null;
+$title = (isset($title)) ? $title : null;
+$item = (isset($item)) ? $item : null;
+$tour = (isset($tour)) ? $tour : null;
+$file = (isset($file)) ? $file : null;
 ?>
     
 <title><?php echo mh_seo_pagetitle($title,$item); ?></title>
@@ -98,7 +98,7 @@ echo head_js(false); // <-- No to Omeka default scripts
 </div>
 
 
-<header class="main active" role="banner">	
+<header class="main active" role="banner">
 	<?php echo mh_global_header();?>
 	<script>
 	    jQuery(".main .menu").removeClass("active");
@@ -112,5 +112,5 @@ echo head_js(false); // <-- No to Omeka default scripts
 <div id="wrap">
 
 	<figure id="hero">
-		<?php echo mh_which_content($maptype,$item,$tour); ?>	
+		<?php echo mh_map_type($maptype,$item,$tour); ?>	
 	</figure>

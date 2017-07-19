@@ -20,7 +20,7 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 		
 	</div>	
 	
-	<?php echo mh_the_byline($item,true,true); echo item_is_private($item);?>
+	<?php echo mh_the_byline($item,true); echo item_is_private($item);?>
 	
 	</header>
 
@@ -80,7 +80,7 @@ echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass
 				</div>	
 				
 				<?php if(function_exists('tours_for_item')){
-					 $label=mh_tour_label_option('plural');
+					 $label=mh_tour_label('plural');
 					 echo tours_for_item($item->id, __('Related %s', $label)); 
 				}?>
 					

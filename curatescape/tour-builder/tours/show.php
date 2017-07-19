@@ -18,9 +18,9 @@ echo head( array( 'maptype'=>'tour','title' => ''.$label.' | '.$tourTitle, 'cont
 	<header id="tour-header">
 	<h2 class="tour-title instapaper_title"><?php echo $tourTitle; ?></h2>
 	<?php if(tour( 'Credits' )){
-		echo '<span class="tour-meta">'.__('%1s curated by: %2s', mh_tour_label_option('singular'),tour( 'Credits' )).'</span>';
+		echo '<span class="tour-meta">'.__('%1s curated by: %2s', mh_tour_label('singular'),tour( 'Credits' )).'</span>';
 	}elseif(get_theme_option('show_author') == true){
-		echo '<span class="tour-meta">'.__('%1s curated by: The %2s Team',mh_tour_label_option('singular'),option('site_title')).'</span>';
+		echo '<span class="tour-meta">'.__('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).'</span>';
 	}else{}?>
 	</header>
 			
