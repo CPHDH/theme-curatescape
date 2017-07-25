@@ -27,8 +27,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 
 
 		<?php echo $this->partial('items/search-form.php',
-		    array('formAttributes' =>
-		        array('id'=>'advanced-search-form'))); ?>
+			array('formAttributes' =>array('id'=>'advanced-search-form'))); ?>
         
 				
 	</section>	

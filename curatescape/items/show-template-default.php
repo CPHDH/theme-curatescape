@@ -1,140 +1,78 @@
 <?php 
-$dc = get_theme_option('dropcap')==1 ? 'dropcap' : null;
-echo head(array('item'=>$item, 'maptype'=>'story', 'bodyid'=>'items', 'bodyclass'=>'show item-story '.$dc,'title' => metadata($item,array('Dublin Core', 'Title')))); ?>
+$maptype='story';
+if ($hasimg=metadata($item, 'has thumbnail') ) {
+	$img_markup=item_image('fullsize',array(),0, $item);
+	preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
+	$hero_img = array_pop($result);
+}
+	
+echo head(array(
+	'item'=>$item, 
+	'maptype'=>$maptype, 
+	'bodyid'=>'items', 
+	'bodyclass'=>'show item-story',
+	'title' => metadata($item,array('Dublin Core', 'Title')),
+	)); ?>
 
-<?php mh_map_actions($item,null);?>
-
-<div id="content">
-
-<article class="story item show instapaper_body hentry" role="main">
+<article class="story item show" role="main">
 			
 	<header id="story-header">
-	
-	<div class="instapaper_title entry-title">	
-	
-		<h2 class="item-title"><?php echo metadata($item, array('Dublin Core', 'Title'), array('index'=>0)); ?></h2>
-		
-		<h3 class="item-subtitle">
-			<?php echo mh_the_subtitle($item); ?>
-		</h3>
-		
-	</div>	
-	
-	<?php echo mh_the_byline($item,true); echo item_is_private($item);?>
-	
+		<?php if($hasimg){
+			echo '<div class="item-hero hero" style="background-image: url('.$hero_img.')">';
+			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
+			echo '</div>';	
+			echo mh_the_lede();
+		}else{
+			echo mh_the_title();
+			echo mh_the_subtitle();
+			echo mh_the_lede();
+			echo mh_the_byline($item,true);
+		}?>
+		<?php //echo item_is_private($item);?>
 	</header>
-
-		
-	<div id="item-primary" class="show">
-		
-		<?php echo mh_the_lede($item);?>
-		
-		<section id="text">
-
-			<div class="item-description">
-				
-				<?php echo mh_the_text($item); ?>
-				
-			</div>
 	
-		</section>
+	<section class="text">
+		<h2 hidden class="hidden">Text</h2>
+		<?php echo mh_the_text(); ?>
+	</section>
 	
-	</div><!-- end primary -->
+	<section class="media">
+		<h2 hidden class="hidden">Media</h2>
+		<?php mh_video_files($item);?>
+		<?php mh_item_images($item);?>	
+		<?php mh_audio_files($item);?>		
+	</section>
 
-		
-
-		<div id="item-media">
-			<section class="media">
-				
-				<?php mh_item_images($item);?>	
-				
-				<?php mh_audio_files($item);?>		
-						
-				<?php mh_video_files($item);?>
-						
-			</section>
-		</div>
-
+	<section class="map">
+		<h2>Map</h2>
+		<figure>
+			<?php echo mh_map_type($maptype,$item); ?>
+		</figure>
+		<figcaption><?php echo mh_map_caption();?></figcaption>
+	</section>
 	
-		<div id="item-metadata" class="item instapaper_ignore">
-			<section class="meta">
-				
-				<aside id="factoid">  	
-				<?php echo mh_factoid(); ?>
-				</aside>	
+	<aside id="factoid">  
+		<h2 hidden class="hidden">Factoids</h2>	
+		<?php echo mh_factoid(); ?>
+	</aside>	
+	
+	<section class="metadata">
+		<h2 hidden class="hidden">Metadata</h2>
+		<?php echo mh_official_website();?>	
+		<?php echo mh_item_citation(); ?>
+		<?php echo function_exists('tours_for_item') ? tours_for_item($item->id, __('Related %s', mh_tour_label('plural'))) : null?>
+		<?php echo mh_subjects(); ?>
+		<?php echo mh_tags();?>			
+		<?php echo mh_related_links();?>
+		<?php echo mh_post_date(); ?>				
+		<?php echo mh_display_comments();?>
+	</section>	
 
-				<div id="access-info">  	
-				<?php echo mh_the_access_information(); ?>
-				</div>	
-
-				<div id="street-address">
-				<?php echo mh_street_address();?>	
-				</div>
-				
-				<div id="official-website">
-				<?php echo mh_official_website();?>	
-				</div>
-
-				<div id="cite-this">
-				<?php echo mh_item_citation(); ?>
-				</div>	
-				
-				<?php if(function_exists('tours_for_item')){
-					 $label=mh_tour_label('plural');
-					 echo tours_for_item($item->id, __('Related %s', $label)); 
-				}?>
-					
-				<div id="subjects">  	
-				<?php mh_subjects(); ?>
-				</div>	
-				
-				<div id="tags">
-				<?php mh_tags();?>	
-				</div>
-				
-				<?php echo function_exists('tour_nav') ? tour_nav(null,mh_tour_label()) : null; ?>		
-
-				<div class="item-related-links">
-				<?php mh_related_links();?>
-				</div>
-				
-				<div class="date-stamp">
-				<?php echo mh_post_date(); ?>				
-				</div>
-				
-				<div class="comments">
-				<?php mh_display_comments();?>
-				</div>
-					
-									
-			</section>	
-				
-			
-		</div>	
-		
-
-<div class="clearfix"></div>
-
-<div id="share-this" class="instapaper_ignore">
-	<?php echo mh_share_this(mh_item_label());?>
-</div>	
+	<aside id="share-this">
+		<?php echo mh_share_this(mh_item_label());?>
+	</aside>	
+	
+	<?php echo function_exists('tour_nav') ? tour_nav(null,mh_tour_label()) : null; ?>
 
 </article>
-
-</div> <!-- end content -->
-
-<script>
-	
-	if(jQuery('.tour-nav').length > 0){
-		jQuery(window).scroll(function() {
-			if( (jQuery('.meta').isOnScreen() || jQuery('footer.main').isOnScreen()) !== false) {
-				jQuery('.tour-nav').addClass('look-at-me');
-			}else{
-				jQuery('.tour-nav').removeClass('look-at-me');		
-			}
-		}).scroll();
-	}
-	
-</script>
-
 <?php echo foot(); ?>

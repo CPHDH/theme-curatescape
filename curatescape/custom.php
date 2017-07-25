@@ -177,6 +177,12 @@ function mh_collection_browse_subnav(){
 		));
 }
 
+function mh_tour_browse_subnav($label,$id){
+	echo nav(array(
+			array('label'=>__('Locations for %s', $label) ,'uri'=> url('tours/show/'.$id)),
+		));	
+}
+
 /*
 ** Logo URL
 */
@@ -191,7 +197,7 @@ function mh_the_logo_url()
 ** Logo IMG Tag
 */
 function mh_the_logo(){
-	return '<img src="'.mh_the_logo_url().'" class="home" id="logo-img" alt="'.option('site_title').'"/>';
+	return '<img src="'.mh_the_logo_url().'" alt="'.option('site_title').'"/>';
 }
 
 /*
@@ -218,12 +224,27 @@ function random_item_link($text=null,$class='show',$hasImage=true){
 ** Global header
 */
 function mh_global_header($html=null){
-	$html.= '<div id="mobile-menu-button"><a class="icon-reorder"><span class="visuallyhidden"> '.__('Menu').'</span></a></div>';
-	$html.= link_to_home_page(mh_the_logo(),array('class'=>'home-link'));
-	$html.= '<div class="menu" role="menu">'.mh_simple_search($formProperties=array('id'=>'header-search')).'<nav role="navigation">'.mh_global_nav().random_item_link().'</nav></div>';
-
-	return $html;
-
+?>  
+<div id="navigation">
+	<nav>
+		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
+		<span class="spacer"></span>
+		<span class="flex flex-end flex-grow flex-nav-container">
+			<span class="flex priority">
+	  			<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo mh_item_label('plural');?></a>
+	  			<?php if(plugin_is_active('TourBuilder')): ?>
+	  				<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo mh_tour_label('plural');?></a>
+	  			<?php endif;?>
+			</span>
+			<span class="flex search-plus flex-grow">
+  			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
+  			<?php echo mh_simple_search();?>
+  			<a id="menu-button" href="#secondary-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
+			</span>
+		</span>
+	</nav>
+</div>
+<?php
 }
 
 
@@ -383,13 +404,13 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var mapBounds; // keep track of changing bounds
 		var root_url = '<?php echo WEB_ROOT;?>';
 		var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
-			attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
-			retina: (L.Browser.retina) ? '@2x' : '',
-		});		
+				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
+				retina: (L.Browser.retina) ? '@2x' : '',
+			});		
 		var carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
-		    attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
-		    retina: (L.Browser.retina) ? '@2x' : '',
-		});
+		    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
+				retina: (L.Browser.retina) ? '@2x' : '',
+			});
 		var defaultMapLayer=<?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : 'carto';?>;		
 		// End PHP Variables
 		
@@ -420,7 +441,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			}	
 
 			// Build the base map
-			var map = L.map('map_canvas',{
+			var map = L.map('curatescape-map-canvas',{
 				layers: defaultMapLayer,
 				minZoom: 3,
 				scrollWheelZoom: false,
@@ -519,7 +540,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					var marker = L.marker([data.latitude,data.longitude],{icon: icon(color,"circle")}).bindPopup(html);					
 					
 					marker.addTo(map).bindPopup(html);
-					if(jQuery('body').hasClass('big')) marker.openPopup();
+					marker.openPopup();
 					mapBounds = map.getBounds();
 					
 				}
@@ -563,7 +584,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			jQuery('.map-actions .fullscreen').click(function(){
 				jQuery('#slider').slideToggle('fast', 'linear');
 				jQuery('#swipenav').slideToggle('fast', 'linear');	
-				jQuery('.small #map_canvas').toggle(); // in case it's hidden by checkwidth.js
+				jQuery('.small #curatescape-map-canvas').toggle(); // in case it's hidden by checkwidth.js
 				jQuery("body").toggleClass("fullscreen-map");
 				jQuery(".map-actions a.fullscreen i").toggleClass('icon-expand').toggleClass('icon-compress');
 				map.invalidateSize();
@@ -619,8 +640,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
     </script>
         
 	<!-- Map Container -->
-	<div id="hm-map">
-		<div id="map_canvas"></div>
+	<div class="curatescape-map">
+		<div id="curatescape-map-canvas" class="hero"></div>
 	</div>
 		
 <?php }
@@ -698,29 +719,26 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 ** Includes settings for simple and advanced search via theme options
 */
 
-function mh_simple_search($formProperties=array(), $uri = null){
+function mh_simple_search($formProperties=array()){
 	
 	$sitewide = (get_theme_option('use_sitewide_search') == 1) ? 1 : 0;	
 	$qname = ($sitewide==1) ? 'query' : 'search';
 	$searchUri = ($sitewide==1) ? url('search') : url('items/browse?sort_field=relevance');
-	$placeholder = ($sitewide==1) ? __('Search Site') : __('Search %s',mh_item_label('plural'));	
+	$placeholder =  __('Search');	
 	$default_record_types = mh_search_form_default_record_types();
 
-	if (!$uri) {
-		$uri = $searchUri;
-	}
 
 	$searchQuery = array_key_exists($qname, $_GET) ? $_GET[$qname] : '';
-	$formProperties['action'] = $uri;
+	$formProperties['action'] = $searchUri;
 	$formProperties['method'] = 'get';
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
-	$html .= '<label for "search" class="visuallyhidden">Search</label>';
+	$html .= '<label for "search" hidden class="hidden">Search</label>';
 	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
-	$parsedUri = parse_url($uri);
+	$parsedUri = parse_url($searchUri);
 	if (array_key_exists('query', $parsedUri)) {
 		parse_str($parsedUri['query'], $getParams);
 		foreach($getParams as $getParamName => $getParamValue) {
@@ -774,6 +792,7 @@ function mh_appstore_downloads(){
 */
 function mh_appstore_footer(){
 	if (get_theme_option('enable_app_links')){
+		echo '<div id="app-store-links">';
 
 		$ios_app_id = get_theme_option('ios_app_id');
 		$android_app_id = get_theme_option('android_app_id');
@@ -792,6 +811,7 @@ function mh_appstore_footer(){
 		else{
 			echo __('iPhone + Android Apps Coming Soon!');
 		}
+		echo '</div>';
 	}
 }
 
@@ -816,17 +836,24 @@ function mh_the_text($item='item',$options=array()){
 	return $primary_text ? replace_br($primary_text) : ($dc_desc ? replace_br($dc_desc) : null);
 }
 
+/*
+** Title
+*/
+function mh_the_title($item='item'){
+	return '<h1 class="title">'.metadata($item, array('Dublin Core', 'Title'), array('index'=>0)).'</h1>';
+}
+
 
 /*
 ** Subtitle 
 */
 
-function mh_the_subtitle($item=null){
+function mh_the_subtitle($item='item'){
 
 	$dc_title2 = metadata($item, array('Dublin Core', 'Title'), array('index'=>1));
 	$subtitle=element_exists('Item Type Metadata','Subtitle') ? metadata($item,array('Item Type Metadata', 'Subtitle')) : null;
 	
-	return  $subtitle ? $subtitle : ($dc_title2!=='[Untitled]' ? $dc_title2 : null);
+	return  $subtitle ? '<h2 class="subtitle">'.$subtitle.'</h2>' : ($dc_title2!=='[Untitled]' ? '<h2 class="subtitle">'.$dc_title2.'</h2>' : null);
 }
 
 
@@ -836,7 +863,7 @@ function mh_the_subtitle($item=null){
 function mh_the_lede($item='item'){
 	if (element_exists('Item Type Metadata','Lede')){
 		$lede=metadata($item,array('Item Type Metadata', 'Lede'));
-		return  $lede ? '<div id="item-lede">'.$lede.'</div>' : null;
+		return  $lede ? '<div class="lede">'.$lede.'</div>' : null;
 	}
 		
 }
@@ -854,16 +881,6 @@ function mh_the_sponsor($item='item'){
 	
 }
 
-/*
-** access info  
-*/
-function mh_the_access_information($item='item'){
-	if (element_exists('Item Type Metadata','Access Information')){
-		$access_info=metadata($item,array('Item Type Metadata', 'Access Information'));
-		return  $access_info ? '<h3>'.__('Access Information').':</h3> '.$access_info : null;
-	}
-		
-}
 
 /*
 ** Display subjects as tags
@@ -871,18 +888,20 @@ function mh_the_access_information($item='item'){
 function mh_subjects(){
 	$subjects = metadata('item',array('Dublin Core', 'Subject'), 'all');
 	if (count($subjects) > 0){
-
-		echo '<h3>'.__('Subjects').'</h3>';
-		echo '<ul>';
-		foreach ($subjects as $subject){
-			$link = WEB_ROOT;
-			$link .= htmlentities('/items/browse?term=');
-			$link .= rawurlencode($subject);
-			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
-			$link .= urlencode(str_replace('&amp;','&',$subject));
-			echo '<li><a href="'.$link.'">'.$subject.'</a></li> ';
-		}
-		echo '</ul>';
+		$html = '<div class="subjects">';
+			$html.= '<h3>'.__('Subjects').'</h3>';
+			$html.= '<ul>';
+			foreach ($subjects as $subject){
+				$link = WEB_ROOT;
+				$link .= htmlentities('/items/browse?term=');
+				$link .= rawurlencode($subject);
+				$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
+				$link .= urlencode(str_replace('&amp;','&',$subject));
+				$html.= '<li><a href="'.$link.'">'.$subject.'</a></li> ';
+			}
+			$html.= '</ul>';
+		$html .= '</div>';
+		return $html;
 
 	}
 }
@@ -903,7 +922,7 @@ function mh_subjects_string(){
 			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
 		}
 
-		echo '<div class="item-subjects"><p><span>'.__('Subjects: ').'</span>'.implode(", ", $html).'</p></div>';
+		return '<div class="subjects"><span>'.__('Subjects: ').'</span>'.implode(", ", $html).'</div>';
 	}
 }
 
@@ -912,12 +931,13 @@ function mh_subjects_string(){
 ** Display the item tags
 */
 function mh_tags(){
-	if (metadata('item','has tags')):
-
-		echo '<h3>'.__('Tags').'</h3>';
-		echo tag_cloud('item','items/browse');
-		
-	endif;
+	if (metadata('item','has tags')){
+		$html  = '<div class="tags">';
+		$html .= '<h3>'.__('Tags').'</h3>';
+		$html .= tag_cloud('item','items/browse');
+		$html .= '</div>';
+		return $html;
+	}
 }
 
 /*
@@ -927,7 +947,7 @@ function mh_official_website($item='item'){
 
 	if (element_exists('Item Type Metadata','Official Website')){
 		$website=metadata($item,array('Item Type Metadata','Official Website'));
-		return $website ? '<h3>'.__('Official Website: ').'</h3>'.$website : null;	
+		return $website ? '<h3>'.__('Official Website').'</h3><div>'.$website.'</div>' : null;	
 	} 
 
 }
@@ -940,28 +960,55 @@ function mh_street_address($item='item',$formatted=true){
 	if (element_exists('Item Type Metadata','Street Address')){
 		$address=metadata($item,array('Item Type Metadata','Street Address'));
 		$map_link='<a target="_blank" href="https://maps.google.com/maps?saddr=current+location&daddr='.urlencode($address).'">map</a>';
-		return $address ? ( $formatted ? '<h3>'.__('Street Address: ').'</h3>'.$address.' ['.$map_link.']' : $address ) : null;	
+		return $address ? ( $formatted ? '<h3>'.__('Street Address').'</h3><div>'.$address.' ['.$map_link.']</div>' : $address ) : null;	
+	}else{
+		return null;
 	} 
 
 }
 
 /*
+** Display the access info  
+*/
+function mh_access_information($item='item',$formatted=true){
+	if (element_exists('Item Type Metadata','Access Information')){
+		$access_info=metadata($item,array('Item Type Metadata', 'Access Information'));
+		return  $access_info ? ($formatted ? '<div class="access-information"><h3>'.__('Access Information').'</h3><div>'.$access_info.'</div></div>' : $access_info) : null;
+	}else{
+		return null;
+	}
+		
+}
+
+/*
+** Display the map caption
+*/
+
+function mh_map_caption($item='item'){
+	$caption=array();
+	if($addr=mh_street_address($item,false)) $caption[]=$addr;
+	if($accs=mh_access_information($item,false)) $caption[]=$accs;
+	return implode( ' ~ ', $caption );
+}
+
+/*
 ** Display the factoid
 */
-function mh_factoid($item='item',$html=null){
+function mh_factoid($item='item'){
 
 	if (element_exists('Item Type Metadata','Factoid')){
 		$factoids=metadata($item,array('Item Type Metadata','Factoid'),array('all'=>true));
 		if($factoids){
-			$html.='<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>';
+			$html=null;
+			//$html.='<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>';
 			$tweetable=get_theme_option('tweetable_factoids');
 			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
 			foreach($factoids as $factoid){
-				$html.='<style type="text/css">div.factoid{position:relative}.twitter-share-button{position:absolute !important;bottom:5px;right:5px;box-shadow:5px 5px 0 #333;font-size:.5em;}</style>';
-				$html.='<div class="factoid"><span class="icon-lightbulb" aria-hidden="true"></span> <span class="fi">'.$factoid.'</span>'.($tweetable ? '<a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="'.strip_tags($factoid).'"'.$via.'">Tweet this factoid</a>' : '').'</div>';
+				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.($tweetable ? '<span><a class="button tweet-this"><i class="fa fa-lg fa-twitter" aria-hidden="true"></i></a></span>' : null).'</div>';
 			}
 			
-			return $html."<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
+			return $html;
+			//"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 		}
 	} 
 
@@ -978,11 +1025,12 @@ function mh_related_links(){
 	$relations = $related_resources ? $related_resources : $dc_relations_field;
 	
 	if ($relations){
-		echo '<h3>'.__('Related Sources').'</h3><ul>';
+		$html= '<h3>'.__('Related Sources').'</h3><div><ul>';
 		foreach ($relations as $relation) {
-			echo "<li>$relation</li>";
+			$html.= '<li>'.strip_tags($relation,'<a><i><em><b><strong>').'</li>';
 		}
-		echo '</ul>';
+		$html.= '</ul></div>';
+		return $html;
 	}
 }
 
@@ -992,7 +1040,7 @@ function mh_related_links(){
 */
 function mh_the_byline($itemObj='item',$include_sponsor=false){
 	if ((get_theme_option('show_author') == true)){
-		$html='<span class="story-meta byline">'.__('By').' ';
+		$html='<div class="byline">'.__('By').' ';
 
 		if(metadata($itemObj,array('Dublin Core', 'Creator'))){
 			$authors=metadata($itemObj,array('Dublin Core', 'Creator'), array('all'=>true));
@@ -1030,7 +1078,7 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 		
 		$html .= (($include_sponsor) && (mh_the_sponsor($itemObj)!==null ))? ''.mh_the_sponsor($itemObj) : null;
 		
-		$html .='</span>';
+		$html .='</div>';
 
 		return $html;
 	}
@@ -1041,8 +1089,7 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 ** Custom item citation
 */
 function mh_item_citation(){
-	$header='<h3>'.__('Cite this Page: ').'</h3>';
-	return $header.html_entity_decode(metadata('item', 'citation'));
+	return '<div class="item-citation"><h3>'.__('Cite this Page').'</h3><div>'.html_entity_decode(metadata('item', 'citation')).'</div></div>';
 }
 
 /*
@@ -1054,7 +1101,7 @@ function mh_post_date(){
 		$a=format_date(metadata('item', 'added'));
 		$m=format_date(metadata('item', 'modified'));	
 	
-		return '<span class="post-date">'.__('Published on %s.', $a ).( ($a!==$m) ? ' '.__('Last updated on %s.', $m ) : null ).'</span>';	
+		return '<div class="item-post-date">'.__('Published on %s.', $a ).( ($a!==$m) ? '<div>'.__('Last updated on %s.', $m ).'</div>' : null ).'</div>';	
 	}
 }
 
@@ -1094,184 +1141,143 @@ function mh_file_caption($file,$inlineTitle=true){
 
 
 function mh_footer_scripts_init(){
-			
-			//===========================// ?>
-			<script>
-				
-			// the fancybox caption minimize/expand button
-			function toggleText(){
-				var link = jQuery('a.fancybox-hide-text');
-				jQuery(".fancybox-title span.main").slideToggle(function(){
-		            		            		            
-		            if (jQuery(this).is(":visible")) {
-		                 link.html('<span class="icon-close" aria-hidden="true"></span> Hide Caption').addClass('active');
-		            } else {
-		                 link.html('<span class="icon-chevron-up" aria-hidden="true"></span> Show Caption').addClass('active');
-		            }
-		            
-				});
-			}
-			
-			
-			loadCSS('<?php echo WEB_ROOT.'/themes/'.basename(__DIR__) ;?>/javascripts/fancybox/source/jquery.fancybox.css');
-			loadJS('<?php echo WEB_ROOT.'/themes/'.basename(__DIR__) ;?>/javascripts/fancybox/source/jquery.fancybox.pack.js', function(){
-				// checkWidth.js sets 'big' and 'small' body classes
-				// FancyBox is used only when the body class is 'big'
-				jQuery("body.big .fancybox").fancybox({
-			        beforeLoad: function() {
-			            this.title = jQuery(this.element).attr('data-caption');
-			        },
-			        beforeShow: function () {
-			            if (this.title) {
-			                // Add caption close button
-			                this.title += '<a class="fancybox-hide-text " onclick="toggleText()"><span class="icon-chevron-up" aria-hidden="true"></span> Show Caption</a> ';
-			            }
-			        },
-			        padding:3,
-				    helpers : {
-				         title: {
-				            type: 'over'
-				        },
-				         overlay : {
-				         	locked : true
-				        },
-				    }
-				});				
-			});
-			
+	//===========================// ?>
+	<script>
+	jQuery(document).ready(function($) {
 
-
-			// Animated scrolling
-			jQuery( document ).ready(function() {
-				jQuery(function() {				   
-				  jQuery(document.body).on('click','a[href*=#]:not([href=#]):not(.fancybox)',function() {
-				    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-				      var target = jQuery(this.hash);
-				      target = target.length ? target : jQuery('[name=' + this.hash.slice(1) +']');
-				      if (target.length) {
-				      	jQuery(target).addClass("target");
-
-				        jQuery('html,body').animate({
-				          scrollTop: target.offset().top
-				        }, 1000,'swing',function(){jQuery(target).removeClass("target");});
-				        
-				      	jQuery('body.fullscreen-map #map_canvas').hide();
-				      	jQuery('body').removeClass("fullscreen-map");
-				      					        
-				        return false;
-				      }
-				    }
-				  });
-				});	
-				jQuery('.sitewide-search-edit').on('click',function(e){
-					jQuery('form#sitewide-search-filters').toggleClass('hidden');
-					e.preventDefault();
-				});
-			});
-			</script>
-			<?php //========================//
-			
+	});
+	</script>
+	<?php //========================//
 }
 
 
 /*
 ** Loop through and display image files
 */
-function mh_item_images($item,$index=0,$html=null){
-
+function mh_item_images($item,$index=0){
+	$html=null;
 	foreach (loop('files', $item->Files) as $file){
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
 		$mime = metadata($file,'MIME Type');
-		
-
 		if(in_array($mime,$img)) {
-			if($index==0) {
-				$html .= '<h3><span class="icon-camera-retro" aria-hidden="true"></span>Images </span></h3>';
-
-
-				
-			}	
-			$filelink=link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow'));
-			$photoDesc = strip_tags( mh_file_caption($file,false ),'<a><strong><em><i><b><span>');
-			$photoTitle = metadata($file,array('Dublin Core', 'Title'));
-
-			if($photoTitle){
-				$fancyboxCaption= mh_file_caption($file,true);
-				$fancyboxCaption = '<span class="main"><div class="caption-inner">'.strip_tags($fancyboxCaption,'<a><strong><em><i><b><span>').'</div></span>'.$filelink;
-			}else{
-				$fancyboxCaption = '<span class="main"><div class="caption-inner">Image '.($index+1).'</div></span>'.$filelink;
-			}
-						
-			$html .= '<div class="item-file-container">';
-
-			$html .= file_markup($file, array('imageSize' => 'fullsize','linkAttributes'=>array('data-caption'=>$fancyboxCaption,'title'=>$photoTitle, 'class'=>'fancybox', 'rel'=>'group'),'imgAttributes'=>array('alt'=>$photoTitle) ) );
-
-			$html .= ($photoTitle) ? '<h4 class="title image-title">'.$photoTitle.'</h4>' : '';
-			$html .= '<p class="description image-description">'.( ($photoDesc) ? $photoDesc : '');
-			$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
-
-			//echo $html;
-			$index++;
-
-		}
-		
-		
+			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
+			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+				$html.= '<a class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';
+				$html.= '<figcaption hidden class="hidden;">'.metadata($file, array('Dublin Core', 'Title')).'</figcaption>';
+			$html.= '</figure>';
+		}		
 	}
-	echo ($html !== null) ? '<figure id="item-photos">'.$html.'</figure>' : null;
+	if($html): ?>
+		<h3><?php echo __('Images');?></h3>
+		<figure id="item-photos" class="flex flex-wrap" itemscope itemtype="http://schema.org/ImageGallery">
+			<?php echo $html;?>
+		</figure>		
+		<!-- PhotoSwipe -->
+		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="pswp__bg"></div>
+		  <div class="pswp__scroll-wrap">
+		      <div class="pswp__container">
+		          <div class="pswp__item"></div>
+		          <div class="pswp__item"></div>
+		          <div class="pswp__item"></div>
+		      </div>
+		      <div class="pswp__ui pswp__ui--hidden">
+		          <div class="pswp__top-bar">
+		              <div class="pswp__counter"></div>
+		              <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+		              <button class="pswp__button pswp__button--share" title="Share"></button>
+		              <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+		              <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+		              <div class="pswp__preloader">
+		                  <div class="pswp__preloader__icn">
+		                    <div class="pswp__preloader__cut">
+		                      <div class="pswp__preloader__donut"></div>
+		                    </div>
+		                  </div>
+		              </div>
+		          </div>
+		          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+		              <div class="pswp__share-tooltip"></div> 
+		          </div>
+		          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+		          </button>
+		          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+		          </button>
+		          <div class="pswp__caption">
+		              <div class="pswp__caption__center"></div>
+		          </div>
+		      </div>
+		  </div>
+		</div>		
+	<?php endif;
 }
 
 
 /*
 ** Loop through and display audio files
 */
-function mh_audio_files($item,$index=0,$html=null){
+function mh_audio_files($item,$index=0){
 	if (!$item){
 		$item=set_loop_records('files',$item);
 	}
+	$html=null;
 	$audioTypes = array('audio/mpeg');
-	foreach (loop('files', $item->Files) as $file):
-		$audioDesc = strip_tags(mh_file_caption($file,false),'<span>');
-		$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
+	foreach (loop('files', $item->Files) as $file){
 		$mime = metadata($file,'MIME Type');
-
-	if ( array_search($mime, $audioTypes) !== false ) {
-
-		if ($index==0){ ?>
-		<h3><span class="icon-volume-up" aria-hidden="true"></span>Audio </span></h3>
-		
-		<script>
-		jQuery.ajaxSetup({
-			cache: true
-		});
-		var audioTagSupport = !!(document.createElement('audio').canPlayType);
-		if (Modernizr.audio) {
-		   var myAudio = document.createElement('audio');
-		   // Currently canPlayType(type) returns: "", "maybe" or "probably" 
-		   var canPlayMp3 = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/mpeg');
+		if ( array_search($mime, $audioTypes) !== false ){
+			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
+			$audioDesc = strip_tags(mh_file_caption($file,false),'<span>');
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
+				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
+				$html.='<div class="media-caption">';
+					$html.='<div class="media-title">'.$audioTitle.'</div>';
+					$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
+					$html.='<strong>Details</strong>: '.link_to($file,'show',__('View File Record'));
+				$html.='</div>';
+			$html.='</div>';
 		}
-		if(!canPlayMp3){
-			loadJS("<?php echo WEB_ROOT.'/themes/'.basename(__DIR__) ;?>/javascripts/audiojs/audiojs/audio.min.js", function(){
-				audiojs.events.ready(function() {
-				var as = audiojs.createAll();				
-				});
-			});  
-		}   
+	};
+	if($html): ?>
+		<h3><?php echo __('Audio');?></h3>
+		<figure id="item-audio">	
+			<div class="media-container audio">
+				<audio id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 audio</a></p>
+				</audio>
+				<div class="flex media-list audio" style="">
+					<?php echo $html;?>		
+				</div>
+			</div>
+		</figure>	
+		<script>
+			jQuery(document).ready(function($) {
+				
+				var audioplayer = videojs('curatescape-player-audio',{
+					height:'30',
+					controlBar: {
+						fullscreenToggle: false
+					}
+				}).src(
+					$('.media-list.audio .media-select:first-child').attr('data-source')
+				);
+				if(typeof audioplayer == 'object'){
+					$('.media-list.audio .media-select:first-child').addClass('now-playing');
+					
+					$('.media-list.audio .media-select').on('click',function(e){
+						$('.media-list.audio .now-playing').removeClass('now-playing');
+						$(this).addClass('now-playing');
+						audioplayer.src($(this).attr('data-source')).play();
+					});
+					
+					audioplayer.ready(function(){
+						// load controls
+						audioplayer.play().pause()
+					});
+				}				
+				
+			});
 		</script>
-		
-		<?php }
-		$index++;
-
-		$html .= '<div class="item-file-container">';
-		$html .= '<audio controls><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
-		$html .= ($audioTitle) ? '<h4 class="title audio-title sib">'.$audioTitle.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-		$html .= '<p class="description audio-description sib">'.( ($audioDesc) ? $audioDesc : '');
-		$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
-
-	}
-
-	endforeach;
-	
-	echo ($html !== null ) ? '<figure id="item-audio">'.$html.'</figure>' : null;
+	<?php endif;
 }
 
 
@@ -1282,62 +1288,56 @@ function mh_audio_files($item,$index=0,$html=null){
 ** We accept multiple H.264-related MIME-types because Omeka MIME detection is sometimes spotty
 ** But in the end, we always tell the browser they're looking at "video/mp4"
 */
-function mh_video_files($item,$html=null) {
-	if (!$item){
-		$item=set_loop_records('files',$item);
-	}
-	$videoIndex = 0;
-	$localVid=0;
+function mh_video_files($item='item',$html=null) {
+
 	$videoTypes = array('video/mp4','video/mpeg','video/quicktime');
-
-
-	foreach (loop('files', $item->Files) as $file):
+	foreach (loop('files', $item->Files) as $file){
 		$videoMime = metadata($file,'MIME Type');
-	if ( in_array($videoMime,$videoTypes) ){
+		if ( in_array($videoMime,$videoTypes) ){
+			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
+				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
+				$html.='<div class="media-caption">';
+					$html.='<div class="media-title">'.$videoTitle.'</div>';
+					$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
+					$html.='<strong>Details</strong>: '.link_to($file,'show',__('View File Record'));
+				$html.='</div>';
+			$html.='</div>';
 
-		$videoFile = file_display_url($file,'original');
-		$videoTitle = metadata($file,array('Dublin Core', 'Title'));
-		$videoClass = (($videoIndex==0) ? 'first' : 'not-first');
-		$videoDesc = mh_file_caption($file,false);
-		$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
-		$embeddable=embeddableVersion($file,$videoTitle,$videoDesc);
-		if($embeddable){
-			// If a video has an embeddable streaming version, use it.
-			$html.= $embeddable;
-			$videoIndex++;
-			//break;
-		}else{
-
-			$html .= '<div class="item-file-container">';
-			$html .= '<video width="725" height="410" id="video-'.$localVid.'" class="'.$videoClass.' video-js vjs-default-skin" controls preload="auto" data-setup="{}">';
-			$html .= '<source src="'.$videoFile.'" type="video/mp4">';
-			$html .= '</video>';
-			$html .= ($videoTitle) ? '<h4 class="title video-title sib">'.$videoTitle.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
-			$html .= '<p class="description video-description sib">'.( ($videoDesc) ? $videoDesc : '');
-			$html .= link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p></div>';
-			$localVid++;
-			$videoIndex++;
 		}
 	}
-	endforeach;
-	if ($videoIndex > 0) {
-		
-		?>
+	if($html): ?>
+		<h3><?php echo __('Video');?></h3>
+		<figure id="item-video">
+			<div class="media-container video">
+			
+			<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
+				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-media-support/" target="_blank">supports HTML5 video</a></p>
+			</video>
+			<div class="flex media-list video" style="">
+				<?php echo $html;?>
+			</div>
+		</figure>
 		<script>
-			loadCSS('//vjs.zencdn.net/4.3/video-js.css');
-			loadJS('//vjs.zencdn.net/4.3/video.js');
-		</script>	
-		<?php 
-		
-		echo '<figure id="item-video">';
-		echo '<h3><span class="icon-film" aria-hidden="true"></span>'.(($videoIndex > 1) ? __('Video ') : __('Video ')).'</span></h3>';
-		echo $html;
-		echo '</figure>';
-	}
+			jQuery(document).ready(function($) {
+				
+				var videoplayer = videojs('curatescape-player').src(
+					$('.media-list.video .media-select:first-child').attr('data-source')
+				);
+				if(typeof videoplayer == 'object'){
+					$('.media-list.video .media-select:first-child').addClass('now-playing');
+					
+					$('.media-list.video .media-select').on('click',function(e){
+						$('.media-list.video .now-playing').removeClass('now-playing');
+						$(this).addClass('now-playing');
+						videoplayer.src($(this).attr('data-source')).play();
+					});
+				}				
+				
+			});
+		</script>			
+	<?php endif;
 }
-
-
-
 /*
 ** display single file in FILE TEMPLATE
 */
@@ -1558,7 +1558,7 @@ function mh_display_comments(){
 	}else if(get_theme_option('intensedebate_site_account')){
 		return mh_intensedebate_comments(get_theme_option('intensedebate_site_account'));
 	}else{
-		return '';
+		return null;
 	}
 }
 
@@ -1775,18 +1775,23 @@ function mh_home_item_list($html=null){
 /*
 ** Build an array of social media links (including icons) from theme settings
 */
-function mh_social_array(){
+function mh_social_array($max=5){
 	$services=array();
-	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a class="ext-social-link twitter" href="https://twitter.com/'.$twitter.'"><span class="icon-twitter" aria-hidden="true"></span><span class="social_label"> Twitter</span></a>') : null;
-	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a class="ext-social-link pinterest" href="http://www.pinterest.com/'.$pinterest.'"><span class="icon-pinterest" aria-hidden="true"></span><span class="social_label"> Pinterest</span></a>') : null;	
-	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a class="ext-social-link facebook" href="'.$facebook.'"><span class="icon-facebook" aria-hidden="true"></span><span class="social_label"> Facebook</span></a>') : null;
-	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a class="ext-social-link youtube" href="'.$youtube.'"><span class="icon-youtube-play" aria-hidden="true"></span><span class="social_label"> Youtube</span></a>') : null;
-	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a class="ext-social-link instagram" href="https://www.instagram.com/'.$instagram.'"><span class="icon-instagram" aria-hidden="true"></span><span class="social_label"> Instagram</span></a>') : null;		
-	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a class="ext-social-link email" href="mailto:'.$email.'"><span class="icon-envelope" aria-hidden="true"></span><span class="social_label"> Email Us</span></a>') : null;		
+	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a href="mailto:'.$email.'" class="button social icon email"><i class="fa fa-lg fa-envelope" aria-hidden="true"><span> Email</span></i></a>') : null;		
+	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a href="'.$facebook.'" class="button social icon facebook"><i class="fa fa-lg fa-facebook" aria-hidden="true"><span> Facebook</span></i></a>') : null;	
+	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a href="'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
+	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a href="'.$youtube.'" class="button social icon youtube"><i class="fa fa-lg fa-youtube-play" aria-hidden="true"><span> Youtube</span></i></a>') : null;
+	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a href="'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
+	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a href="'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
+	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
+	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
+	($wordpress=get_theme_option('wordpress_link')) ? array_push($services,'<a href="'.$wordpress.'" class="button social icon wordpress"><i class="fa fa-lg fa-wordpress" aria-hidden="true"><span> WordPress</span></i></a>') : null;				
 
-	if(count($services)>0){
-		if(count($services)>5){
-			 unset($services[5]);
+	if( ($total=count($services)) > 0 ){
+		if($total>$max){
+			for($i=$total; $i>($max-1); $i-- ){
+				unset($services[$i]);
+			}			
 		}
 		return $services;
 	}else{
@@ -1796,19 +1801,23 @@ function mh_social_array(){
 
 /*
 ** Build a series of social media link for the footer
+** $class 'colored' uses a service-specific color as background
+** $class 'no-label' visually hides the label and just uses the icon
 */
-function mh_footer_find_us($separator=' '){
-	if( $services=mh_social_array() ){
-		return '<span id="find-us-footer">'.join($separator,$services).'</span>';
+function mh_footer_find_us($class="colored no-label", $max=9){
+	if( $services=mh_social_array($max) ){
+		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
 	}
 }
 
 /*
-** Build a series of social media link for the footer
+** Build a series of social media link for the homepage
+** $class 'colored' uses a service-specific color as background
+** $class 'no-label' visually hides the label and just uses the icon
 */
-function mh_homepage_find_us($separator=' '){
-	if( $services=mh_social_array() ){
-		return '<span class="find-us-homepage">'.join($separator,$services).'</span>';
+function mh_homepage_find_us($class="", $max=3){
+	if( $services=mh_social_array($max) ){
+		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
 	}
 }
 
@@ -2015,70 +2024,15 @@ function mh_secondary_link_color()
 /*
 ** Custom CSS
 */
-function mh_custom_css(){
+function mh_configured_css(){
 	$bg_url=mh_bg_url();
 	$bg = $bg_url ? 'background-image: url('.$bg_url.');background-attachment: fixed; ' : '';
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
 	$user_css= get_theme_option('custom_css') ? '/* Theme Option CSS */ '.get_theme_option('custom_css') : null;
 	return '<style type="text/css">
-	body{
-		'.$bg.'
-		background-position: left bottom;
-		background-repeat: no-repeat;
-		background-size:cover;
-		}
-	.look-at-me{
-		border-color:'.$color_secondary.';
-	}
-	.vjs-default-skin .vjs-play-progress,.vjs-default-skin .vjs-volume-level,
-	#swipenav #position li.current, .random-story-link.big-button,#home-tours h2,.tint .featured-decora-outer,a.edit,a.access-anchor:hover,header.main .random-story-link.show,ul.pagination a:hover,.show #tags li a,.show #tour-for-item li a:hover,.sitewide-search-edit,#submit_search:hover,#submit_search_advanced[type="submit"]:hover{
-		background-color:'.$color_primary.' !important;
-		}
-	.show #tags li a:hover{
-		background-color:'.$color_secondary.' !important;
-		}	
-	#home-tours h2:after,#home-tours h2{
-		border-color: '.$color_primary.' transparent;
-		}
-	a,.fancybox-opened a.fancybox-hide-text:hover{
-		color:'.$color_primary.'
-		}
-	#home-tours article:hover:after{
-		background: #333333;
-		background: -moz-linear-gradient(left, #333333 15%, '.$color_secondary.' 45%, #fff 55%, #333333 85%);
-		background: -webkit-gradient(linear, left top, right top, color-stop(15%,#333333), color-stop(45%,'.$color_secondary.'), color-stop(55%,'.$color_secondary.'), color-stop(85%,#333333));
-		background: -webkit-linear-gradient(left, #333333 15%,'.$color_secondary.' 45%,'.$color_secondary.' 55%,#333333 85%);
-		background: -o-linear-gradient(left, #333333 15%,'.$color_secondary.' 45%,'.$color_secondary.' 55%,#333333 85%);
-		background: -ms-linear-gradient(left, #333333 15%,'.$color_secondary.' 45%,'.$color_secondary.' 55%,#333333 85%);
-		background: linear-gradient(to right, #333333 15%,'.$color_secondary.' 45%,'.$color_secondary.' 55%,#333333 85%);
-	}		
-	@media only screen and (max-width:50em){
-		body footer.main .navigation a,body footer.main p a{
-			color:'.$color_secondary.';
-		}
-	}
-	a:hover,#items #tour-nav-links a,#home-tours .view-more-link a,.fancybox-opened a.view-file-record:hover{
-		color:'.$color_secondary.'
-		}
-	@media only screen and (min-width: 60em){
-			#featured-story .view-more-link a{
-			color:'.$color_secondary.'
-			}
-		}
-	nav.secondary-nav ul li.current{
-		border-bottom-color:'.$color_primary.'
-		}
-	.tint .featured-decora-img{
-		box-shadow:0em -1em .5em 0em '.$color_primary.'
-		}	
-	.tint .featured-story-result:nth-child(odd) .featured-decora-outer .featured-decora-img{
-		box-shadow:0em -1em .5em 0em '.$color_secondary. '!important;
-		}	
-	.tint .featured-story-result:nth-child(odd) .featured-decora-outer{
-		background-color:'.$color_secondary.' !important;
-	}'.$user_css.'	
-		</style>';
+	</style>
+	';
 }
 
 
@@ -2094,7 +2048,7 @@ function mh_font_config(){
 	}elseif($fdc=get_theme_option('fonts_dot_com')){
 		$config="monotype: { projectId: '".$fdc."' }";
 	}else{
-		$config="google: { families: [ 'Droid+Serif:400,700:latin', 'PT+Serif:400:latin' ] }";
+		$config="google: { families: [ 'Raleway:latin', 'Playfair+Display:400,300,600:latin' ] }";
 	}
 	return $config;
 }
@@ -2106,20 +2060,20 @@ function mh_font_config(){
 ** see also screen.css
 */
 function mh_web_font_loader(){ ?>
-	<script type="text/javascript">
-		WebFontConfig = {
-			<?php echo mh_font_config(); ?>
-		};
-		(function() {
-			var wf = document.createElement('script');
-			wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-			'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-			wf.type = 'text/javascript';
-			wf.async = 'true';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(wf, s);
-		})(); 
-	</script>	
+<script type="text/javascript">
+	WebFontConfig = {
+		<?php echo mh_font_config(); ?>
+	};
+	(function() {
+		var wf = document.createElement('script');
+		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		wf.type = 'text/javascript';
+		wf.async = 'true';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(wf, s);
+	})(); 
+</script>	
 <?php }
 
 /*
@@ -2128,19 +2082,19 @@ function mh_web_font_loader(){ ?>
 function mh_google_analytics($webPropertyID=null){
 	$webPropertyID= get_theme_option('google_analytics');
 	if ($webPropertyID!=null){
-		echo "<script type=\"text/javascript\">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', '".$webPropertyID."']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-
-	</script>";
+		echo "
+		<!-- Google Analytics -->
+		<script type=\"text/javascript\">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', '".$webPropertyID."']);
+			_gaq.push(['_trackPageview']);
+			
+			(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+	  	</script>";
 	}
 }
 

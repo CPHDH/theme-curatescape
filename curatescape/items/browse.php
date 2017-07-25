@@ -41,8 +41,6 @@ else{
 echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
 ?>
 
-<?php mh_map_actions();?>
-
 <div id="content">
 
 <section class="browse stories items">	
@@ -61,54 +59,51 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 		</nav>
 		
 		<div class="pagination top"><?php echo pagination_links(); ?></div>
-		
-		<?php 
-		$index=1; // set index to one so we can use zero as an argument below
-		$showImgNum= 3; // show this many images on the browse results page; used for slider on mobile devices
-		foreach(loop('Items') as $item): 
-			$description = mh_the_text($item,array('snippet'=>250));
-			$tags=tag_string(get_current_record('item') , url('items/browse'));
-			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
-			$hasImage=metadata($item, 'has thumbnail');
-			if ($hasImage){
-					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
-					$item_image = array_pop($result);				
-			}
-			
-			?>
-			<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
-			
-				<h3><?php echo $titlelink; ?></h3>
-				<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
-				<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
+		<div class="browse-items flex" role="main">
+			<?php 
+			$index=1; // set index to one so we can use zero as an argument below
+			$showImgNum= 3; // show this many images on the browse results page; used for slider on mobile devices
+			foreach(loop('Items') as $item): 
+				$description = mh_the_text($item,array('snippet'=>250));
+				$tags=tag_string(get_current_record('item') , url('items/browse'));
+				$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
+				$hasImage=metadata($item, 'has thumbnail');
+				if ($hasImage){
+						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+						$item_image = array_pop($result);				
+				}
 				
-				<?php if ($description): ?>
-    				<div class="item-description">
-    					<?php echo strip_tags($description); ?>
-    				</div>
-				<?php endif; ?>
-
-				<div class="item-meta-browse">
-					<?php if (metadata($item, 'has tags') ): ?>
-	    				<div class="item-tags">
-	    				<p><span><?php echo __('Tags');?>:</span> <?php echo $tags; ?></p>
+				?>
+				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
+					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
+					<h3><?php echo $titlelink; ?></h3>
+					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
+					
+					
+					<?php if ($description): ?>
+	    				<div class="item-description">
+	    					<?php echo strip_tags($description); ?>
 	    				</div>
 					<?php endif; ?>
 					
-					<?php 
-					if(get_theme_option('subjects_on_browse')==1){
-						mh_subjects_string();
-						}
-					?>
-				</div>
-				
-			</article> 
-		<?php 
-		$index++;
-		$item_image=null;
-		endforeach; 
-		?>
-		
+					<?php if(false): /* TODO: make a theme option */ ?>
+						<div class="item-meta-browse">
+							<?php 
+							if(get_theme_option('subjects_on_browse')==1){
+								echo mh_subjects(); 
+								}
+							?>					
+							<?php echo mh_tags();?>
+						</div>
+					<?php endif;?>
+					
+				</article> 
+			<?php 
+			$index++;
+			$item_image=null;
+			endforeach; 
+			?>
+		</div>
 		<div class="pagination bottom"><?php echo pagination_links(); ?></div>
 				
 	</section>	

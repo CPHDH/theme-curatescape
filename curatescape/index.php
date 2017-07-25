@@ -15,10 +15,13 @@ if(get_theme_option('expand_map')==1){
 }
 echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>$classname)); 
 ?>
-
-<?php mh_map_actions();?>
 	
 <div id="content" role="main">
+<section class="map">
+	<figure>
+		<?php echo mh_map_type('focusarea',null,null); ?>
+	</figure>
+</section>	
 <article id="homepage">
 										
 	<section id="about"><?php echo mh_home_about();?></section>

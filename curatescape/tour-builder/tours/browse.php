@@ -30,15 +30,15 @@ echo head( array('maptype'=>'none', 'title' => $label, 'bodyid'=>'tours',
 			echo '<article id="item-result-'.$i.'" class="item-result has-image">';
 			echo '<h3>'.link_to_tour(null,array('class'=>'permalink')).'</h3>';
 			
-			echo '<span class="tour-meta-browse">';
+			echo '<div class="browse-meta-top byline">';
 			if(tour( 'Credits' )){
 				echo __('%1s curated by: %2s', mh_tour_label('singular'),tour( 'Credits' )).' | ';
 			}elseif(get_theme_option('show_author') == true){
 				echo __('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).' | ';
 			}		
-			echo count($tour->Items).' '.__('Locations').'</span>';
+			echo count($tour->Items).' '.__('Locations').'</div>';
 
-			echo '<div class="item-description"><p>'.snippet($tourdesc,0,250).'</p></div>'; 
+			echo '<div class="item-description">'.snippet($tourdesc,0,250).'</div>'; 
 			if(get_theme_option('show_tour_item_thumbs') == true){
 				$html=  '<span class="tour-thumbs-container">';
 				foreach($tour->Items as $mini_thumb){

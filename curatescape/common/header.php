@@ -10,7 +10,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
-<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <?php echo auto_discovery_link_tags(); ?>
 
 <?php
@@ -44,48 +43,59 @@ $file = (isset($file)) ? $file : null;
 <meta name="msapplication-TileColor" content="#ffffff"/>
 <meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
 
-<!-- Installable //// TODO: update icon sizes="192px x 192px" and "128px x 128px" -->
-<!--meta name="mobile-web-app-capable" content="yes"-->
-<!--link rel="manifest" href="<?php echo WEB_ROOT; ?>/themes/curatescape/manifest.json.php"-->
+<!-- Icon -->
+<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
-
-<!-- Stylesheet -->
-<?php echo mh_theme_css();?>	
 
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>
+<link rel="stylesheet" href="<?php echo css_src('font-awesome.min','fonts/font-awesome/css');?>">
+
+<!-- Stylesheet -->
+<link type="text/css" href="<?php echo css_src('jquery.mmenu/jquery.mmenu.all','javascripts');?>" rel="stylesheet" />
+<link type="text/css" href="<?php echo css_src('leaflet/leaflet','javascripts');?>" rel="stylesheet" /> 
+<link type="text/css" href="<?php echo css_src('photoswipe/dist/photoswipe','javascripts');?>" rel="stylesheet" /> 
+<link type="text/css" href="<?php echo css_src('photoswipe/dist/default-skin/default-skin','javascripts');?>" rel="stylesheet" />  
+<link href="//vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
+<?php echo mh_theme_css();?>	
 
 <!-- Custom CSS via theme config -->
 <?php 
-echo mh_custom_css();
+echo mh_configured_css();
 if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
 	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
-}
-?>
+}?>
 
 <!-- jQuery -->
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+
 <!-- Leaflet -->
 <?php echo js_tag('leaflet','javascripts/leaflet');?>
 <link rel="stylesheet" href="<?php echo css_src('leaflet','javascripts/leaflet');?>" />
+
 <?php if(get_theme_option('clustering')):?>
-	<!-- Clustering -->
-	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
-<?php endif;
-queue_js_file('libraries.min'); // <-- Modernizr, MakiMarker, Swipe.js, iSOnScreen, LoadJS, LoadCSS
-queue_js_file('check-width');
+<!-- Clustering -->
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+<?php endif; ?>
+
+<?php 
+queue_js_file('jquery.mmenu/jquery.mmenu.all');
+queue_js_file('maki.min');
+queue_js_file('photoswipe/dist/photoswipe.min');
+queue_js_file('photoswipe/dist/photoswipe-ui-default.min');
+queue_js_file('actions');
 echo head_js(false); // <-- No to Omeka default scripts
-// Fancybox, VideoJS (CDN) and AudioJS are loaded asyncronously as needed
+// Additional scripts are loaded asyncronously as needed
 ?>
+
 <!--[if lte IE 9]>
 <?php echo js_tag('ie-polyfills.min');?>
 <![endif]-->
-
-
-<!-- Google Analytics -->
-<?php echo mh_google_analytics();?>
 
 <!-- Plugin Stuff -->
 <?php echo fire_plugin_hook('public_head', array('view'=>$this)); ?>
@@ -93,24 +103,17 @@ echo head_js(false); // <-- No to Omeka default scripts
 </head>
 <body<?php echo isset($bodyid) ? ' id="'.$bodyid.'"' : ''; ?><?php echo isset($bodyclass) ? ' class="'.$bodyclass.'"' : ''; ?>> 
 
-<div id="no-js-message">
-	<span><?php echo __('Please enable JavaScript in your browser settings.');?></span>
-</div>
+<noscript>
+	<div id="no-js-message">
+		<span><?php echo __('This web page requires JavaScript to be enabled in your browser settings.');?> <a target="_blank" href="https://goo.gl/koeeaJ"><?php echo __('Need Help?');?></a></span>
+	</div>
+</noscript>
 
-
-<header class="main active" role="banner">
-	<?php echo mh_global_header();?>
-	<script>
-	    jQuery(".main .menu").removeClass("active");
-	    jQuery("#mobile-menu-button a").click(function () {
-	    	jQuery(".main .menu").toggleClass("active");
-	    });
-	</script>
-</header>
-
-
-<div id="wrap">
-
-	<figure id="hero">
-		<?php echo mh_map_type($maptype,$item,$tour); ?>	
-	</figure>
+<div id="page-content">
+	
+	<header class="container header-nav">
+		<?php echo mh_global_header();?>
+	</header>
+	
+	
+	<div id="wrap" class="container">

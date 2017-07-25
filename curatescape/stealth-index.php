@@ -23,7 +23,7 @@ echo head_css();
 ?>
 
 <!-- Custom CSS via theme config -->
-<?php echo mh_custom_css(); ?>
+<?php echo mh_configured_css(); ?>
 
 </head>
 
@@ -32,7 +32,7 @@ echo head_css();
 <div id="wrap">
 
 	<header class="main">	
-		<h1 id="site-title" class="visuallyhidden">
+		<h1 id="site-title" hidden class="hidden">
 		<a href="<?php echo url('');?>" ><?php echo option('site_title');?></a>
 		</h1>
 		
@@ -45,25 +45,26 @@ echo head_css();
 		</div>
 	</header>		
 
-<!--STEALTH MODE-->
-<div class="soon"><?php echo __('Coming Soon!');?></div> 
-
-<div id="content">
-			<section id="about">
-
-				<?php echo mh_about();?>		
-							
-			</section>
-								
-</div> <!-- end content -->
-
-<footer>
-<?php echo mh_homepage_find_us();?>	
-<div class="clearfix"></div>
-<?php 
-$contact_address = get_theme_option('contact_address');
-	echo ($contact_address ? '<div id="homecol-address">'.$contact_address.'</div>' : '');	
-?>	
-<div class="clearfix"></div>
-<a id="curatescape-logo" href="http://curatescape.org/"><img title="<?php echo __('Powered by Curatescape');?>" alt="<?php echo __('Powered by Curatescape');?>" src="<?php echo img('curatescape-logo.png');?>"></a>
-</footer>
+	<!--STEALTH MODE-->
+	<div class="soon"><?php echo __('Coming Soon!');?></div> 
+	
+	<div id="content">
+		<section id="about">
+			<?php echo mh_about();?>		
+		</section>
+	</div> <!-- end content -->
+	
+	<footer>
+		<div class="link-icons">
+			<?php echo mh_homepage_find_us();?>	
+		</div>
+		
+		<?php 
+		$contact_address = get_theme_option('contact_address');
+		echo ($contact_address ? '<div id="homecol-address">'.$contact_address.'</div>' : '');	
+		?>	
+	
+		<a id="curatescape-logo" href="http://curatescape.org/"><img title="<?php echo __('Powered by Curatescape');?>" alt="<?php echo __('Powered by Curatescape');?>" src="<?php echo img('curatescape-logo.png');?>"></a>
+		
+	</footer>
+</div>
