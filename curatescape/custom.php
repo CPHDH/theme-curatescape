@@ -533,14 +533,14 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			        var address = data.address ? data.address : data.latitude+','+data.longitude;
 			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
 
-			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-media" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Skip to media files"></a>' : '';
+			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-photos" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Go to media files"></a>' : '';
 
 			        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+accessInfo+'</div>';
 					
 					var marker = L.marker([data.latitude,data.longitude],{icon: icon(color,"circle")}).bindPopup(html);					
 					
 					marker.addTo(map).bindPopup(html);
-					marker.openPopup();
+					if(jQuery( window ).width() > '550') marker.openPopup();
 					mapBounds = map.getBounds();
 					
 				}
@@ -1004,10 +1004,12 @@ function mh_factoid($item='item'){
 			$tweetable=get_theme_option('tweetable_factoids');
 			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
 			foreach($factoids as $factoid){
-				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.($tweetable ? '<span><a class="button tweet-this"><i class="fa fa-lg fa-twitter" aria-hidden="true"></i></a></span>' : null).'</div>';
+				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.(!$tweetable ? '<span><a class="button tweet-this"><i class="fa fa-lg fa-twitter" aria-hidden="true"></i></a></span>' : null).'</div>';
 			}
 			
-			return $html;
+			if($html){
+				return '<aside id="factoid">'.'<h2 hidden class="hidden">Factoids</h2>'.$html.'</aside>';				
+			}
 			//"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 		}
 	} 
@@ -1025,7 +1027,7 @@ function mh_related_links(){
 	$relations = $related_resources ? $related_resources : $dc_relations_field;
 	
 	if ($relations){
-		$html= '<h3>'.__('Related Sources').'</h3><div><ul>';
+		$html= '<h3>'.__('Related Sources').'</h3><div class="related-resources"><ul>';
 		foreach ($relations as $relation) {
 			$html.= '<li>'.strip_tags($relation,'<a><i><em><b><strong>').'</li>';
 		}
@@ -2195,4 +2197,33 @@ function mh_ios_smart_banner(){
 		}
 	}
 }
+
+/*
+** Adjust color brightness
+** via: https://stackoverflow.com/questions/3512311/how-to-generate-lighter-darker-color-with-php#11951022
+*/
+function adjustBrightness($hex, $steps) {
+    // Steps should be between -255 and 255. Negative = darker, positive = lighter
+    $steps = max(-255, min(255, $steps));
+
+    // Normalize into a six character long hex string
+    $hex = str_replace('#', '', $hex);
+    if (strlen($hex) == 3) {
+        $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+    }
+
+    // Split into three parts: R, G and B
+    $color_parts = str_split($hex, 2);
+    $return = '#';
+
+    foreach ($color_parts as $color) {
+        $color   = hexdec($color); // Convert to decimal
+        $color   = max(0,min(255,$color + $steps)); // Adjust color
+        $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+    }
+
+    return $return;
+}
+
+
 ?>

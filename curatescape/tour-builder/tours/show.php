@@ -80,15 +80,18 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 						endif;
 					endforeach; ?>
 			</section>
+			
 			<div class="comments">
 			<?php echo (get_theme_option('tour_comments') ==1) ? mh_display_comments() : null;?>
-			</div>			   
+			</div>	
+			
+			<aside id="share-this">
+				<?php echo mh_share_this(mh_tour_label());?>
+			</aside>						   
+		
 		</div>
+		
 	</article>
 </div> <!-- end content -->
-
-<div id="share-this" class="browse">
-<?php echo mh_share_this(mh_tour_label()); ?>
-</div>
 
 <?php echo foot(); ?>

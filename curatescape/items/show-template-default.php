@@ -51,10 +51,7 @@ echo head(array(
 		<figcaption><?php echo mh_map_caption();?></figcaption>
 	</section>
 	
-	<aside id="factoid">  
-		<h2 hidden class="hidden">Factoids</h2>	
-		<?php echo mh_factoid(); ?>
-	</aside>	
+	<?php echo mh_factoid(); ?>
 	
 	<section class="metadata">
 		<h2 hidden class="hidden">Metadata</h2>

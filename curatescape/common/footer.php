@@ -1,11 +1,7 @@
-		<nav id="action-buttons">
-			
-			<?php mh_appstore_downloads(); ?>
-		</nav> 
 	
 	</div><!--end wrap-->
 	
-	<footer class="main container">
+	<footer class="main <?php if(get_theme_option('bg_img')) echo 'container';?>">
 		<nav id="footer-nav">
 		    <?php echo mh_global_nav(); ?> 
 		    <?php echo mh_simple_search();?>

@@ -100,8 +100,16 @@ echo head_js(false); // <-- No to Omeka default scripts
 <!-- Plugin Stuff -->
 <?php echo fire_plugin_hook('public_head', array('view'=>$this)); ?>
 
+<!-- Theme Display Settings -->
+<?php
+$bgImg=get_theme_option('bg_img');
+$themeClass= ($bgImg) ? ' fancy' : ' minimalist';
+$bodyid = isset($bodyid) ? $bodyid : 'default';
+$bodyclass = isset($bodyclass) ? $bodyclass.$themeClass : 'default'.$themeClass;
+$bodyStyle= ($bgImg) ? 'background-image: url('.mh_bg_url().')' : null;
+?>	
 </head>
-<body<?php echo isset($bodyid) ? ' id="'.$bodyid.'"' : ''; ?><?php echo isset($bodyclass) ? ' class="'.$bodyclass.'"' : ''; ?>> 
+<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>" style="<?php echo $bodyStyle;?>"> 
 
 <noscript>
 	<div id="no-js-message">
@@ -111,7 +119,7 @@ echo head_js(false); // <-- No to Omeka default scripts
 
 <div id="page-content">
 	
-	<header class="container header-nav">
+	<header class="<?php if($bgImg) echo 'container';?> header-nav">
 		<?php echo mh_global_header();?>
 	</header>
 	
