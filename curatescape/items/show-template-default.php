@@ -47,6 +47,7 @@ echo head(array(
 		<h2>Map</h2>
 		<figure>
 			<?php echo mh_map_type($maptype,$item); ?>
+			<?php echo mh_map_actions($item);?>
 		</figure>
 		<figcaption><?php echo mh_map_caption();?></figcaption>
 	</section>

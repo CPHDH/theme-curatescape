@@ -43,27 +43,24 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 
 <div id="content">
 
-<section class="browse stories items">	
+<article class="browse stories items">	
 	<h2><?php 
 	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>
 
-
-
 	<div id="primary" class="browse">
-	<section id="results">
+		<section id="results">
+				
+			<nav class="secondary-nav" id="item-browse"> 
+				<?php echo mh_item_browse_subnav();?>
+			</nav>
 			
-		<nav class="secondary-nav" id="item-browse"> 
-			<?php echo mh_item_browse_subnav();?>
-		</nav>
-		
-		<div class="pagination top"><?php echo pagination_links(); ?></div>
-		<div class="browse-items flex" role="main">
+			<div class="pagination top"><?php echo pagination_links(); ?></div>
+			<div class="browse-items flex" role="main">
 			<?php 
-			$index=1; // set index to one so we can use zero as an argument below
-			$showImgNum= 3; // show this many images on the browse results page; used for slider on mobile devices
 			foreach(loop('Items') as $item): 
+				$item_image=null;
 				$description = mh_the_text($item,array('snippet'=>250));
 				$tags=tag_string(get_current_record('item') , url('items/browse'));
 				$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
@@ -74,7 +71,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 				}
 				
 				?>
-				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result-<?php echo $index;?>">
+				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result">
 					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
 					<h3><?php echo $titlelink; ?></h3>
 					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
@@ -98,24 +95,16 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 					<?php endif;?>
 					
 				</article> 
-			<?php 
-			$index++;
-			$item_image=null;
-			endforeach; 
-			?>
-		</div>
-		<div class="pagination bottom"><?php echo pagination_links(); ?></div>
-				
-	</section>	
+			<?php endforeach; ?>
+			</div>
+			<div class="pagination bottom"><?php echo pagination_links(); ?></div>
+		</section>	
 	</div><!-- end primary -->
-
-
-
-</section>
+	<aside id="share-this" class="browse">
+		<?php echo mh_share_this();?>
+	</aside>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
 
 <?php echo foot(); ?>

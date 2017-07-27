@@ -12,6 +12,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 <section class="map">
 	<figure>
 		<?php echo mh_map_type($maptype,null,$tour); ?>
+		<?php echo mh_map_actions(null,$tour);?>
 	</figure>
 </section>
 <div id="content">
@@ -82,7 +83,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 			</section>
 			
 			<div class="comments">
-			<?php echo (get_theme_option('tour_comments') ==1) ? mh_display_comments() : null;?>
+				<?php echo (get_theme_option('tour_comments') ==1) ? mh_display_comments() : null;?>
 			</div>	
 			
 			<aside id="share-this">

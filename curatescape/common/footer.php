@@ -9,7 +9,6 @@
 	    </nav>	
 	 
 		<div class="default">
-			<?php mh_appstore_footer(); ?>
 			<?php echo mh_footer_find_us();?>
 			<div id="copyright"><?php echo mh_license();?></div> 
 			<div id="powered-by"><?php echo __('Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>');?></div>

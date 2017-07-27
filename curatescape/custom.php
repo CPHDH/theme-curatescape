@@ -352,7 +352,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 	$pluginlng=(get_option( 'geolocation_default_longitude' )) ? get_option( 'geolocation_default_longitude' ) : null;
 	$pluginlat=(get_option( 'geolocation_default_latitude' )) ? get_option( 'geolocation_default_latitude' ) : null;
 	$zoom=(get_option('geolocation_default_zoom_level')) ? get_option('geolocation_default_zoom_level') : 12;
-	$color=get_theme_option('marker_color') ? get_theme_option('marker_color') : '#333333';
+	$color=get_theme_option('marker_color') ? get_theme_option('marker_color') : '#222222';
 	$featured_color=get_theme_option('featured_marker_color') ? get_theme_option('featured_marker_color') : $color;
 	switch($type){
 		case 'focusarea':
@@ -403,6 +403,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var markerSize = '<?php echo get_theme_option('marker_size') ? get_theme_option('marker_size') : "m";?>'; 
 		var mapBounds; // keep track of changing bounds
 		var root_url = '<?php echo WEB_ROOT;?>';
+		var geolocation_icon = '<?php echo img('geolocation.png');?>';
 		var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
 				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
 				retina: (L.Browser.retina) ? '@2x' : '',
@@ -447,11 +448,34 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				scrollWheelZoom: false,
 			}).setView(center, zoom);
 			
+
+			// Geolocation controls
+			var geolocationControl = L.control({position: 'topleft'});
+			geolocationControl.onAdd = function (map) {
+			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
+			    div.innerHTML = '<a style="background-color:#fff;width:26px;height:26px;box-shadow:0 1px 5px rgba(0,0,0,0.65);background: #fff;border-radius:4px;display:block;" class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true" style="width: 26px;text-align: center;height: 26px;font-size: 16px;line-height: 26px;color:#444;"></i></a>'; 
+			    return div;
+			};
+			geolocationControl.addTo(map);
+
+
+			// Fullscreen controls
+			var geolocationControl = L.control({position: 'topleft'});
+			geolocationControl.onAdd = function (map) {
+			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
+			    div.innerHTML = '<a style="background-color:#fff;width:26px;height:26px;box-shadow:0 1px 5px rgba(0,0,0,0.65);background: #fff;border-radius:4px;display:block;" class="leaflet-control-geolocation-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true" style="width: 26px;text-align: center;height: 26px;font-size: 16px;line-height: 26px;color:#444;"></i></a>'; 
+			    return div;
+			};
+			geolocationControl.addTo(map);
+			
 			// Layer controls
 			L.control.layers({
 				"Terrain":terrain,
 				"Street":carto,
-			}).addTo(map);			
+			}).addTo(map);		
+
+			
+								
 			
 			// Center marker and popup on open
 			map.on('popupopen', function(e) {
@@ -651,7 +675,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 */
 function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',$coords=null){
 	
-		$show_directions=null;
 		$street_address=null;
 		
 		if($item!==null){
@@ -660,50 +683,34 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 			$location = get_db()->getTable('Location')->findLocationByItem($item, true);
 			$coords=$location[ 'latitude' ].','.$location[ 'longitude' ];
 			$street_address=mh_street_address($item,false);
-			
-			$show_directions = true;
 		
 		}elseif($tour!==null){
 			
 			// get the waypoint coordinates for the tour
 			$coords = array();
 			foreach( $tour->Items as $item ){
-				
 				set_current_record( 'item', $item );
-				$location = get_db()->getTable('Location')->findLocationByItem($item, true);							$street_address=mh_street_address($item,false);
-				$coords[] = $street_address ? urlencode($street_address) : $location['latitude'].','.$location['longitude'];
+				$location = get_db()->getTable('Location')->findLocationByItem($item, true);
+				$coords[] = mh_street_address($item,false) ? urlencode(mh_street_address($item,false)) : $location['latitude'].','.$location['longitude'];
 			}
 			
 			$daddr=end($coords);
 			reset($coords);
 			$waypoints=array_pop($coords);		
 			$waypoints=implode('+to:', $coords);
-			$coords=$daddr.'+to:'.$waypoints;	
-			
-			$show_directions=get_theme_option('show_tour_dir') ? get_theme_option('show_tour_dir') : 0;
-			
-		}else{
-			$show_directions= 0;
+			$coords=$daddr.'+to:'.$waypoints;				
 		}
 	
 	?>
 	
-	<div class="map-actions clearfix">
-		
-
-		<!-- Fullscreen -->
-		<a class="fullscreen"><span class="icon-expand" aria-hidden="true"></span> <span class="label"><?php echo __('Fullscreen Map');?></span><span class="alt"><?php echo __('Map');?></span></a>
-		
-				
-		<!-- Geolocation -->
-		<a class="location"><span class="icon-location-arrow" aria-hidden="true"></span> <span class="label"><?php echo __('Show Current Location');?></span><span class="alt"><?php echo __('My Location');?></span></a> 
+	<div class="map-actions flex">
 		
 		<!-- Directions link -->
-		<?php
-		$directions_link= ($show_directions==1) ? '<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="'.__('Get Directions on Google Maps').'" target="_blank" href="https://maps.google.com/maps?saddr='.$saddr.'+location&daddr='.($street_address ? urlencode($street_address) : $coords).'"><span class="icon-external-link-square" aria-hidden="true"></span> <span class="label">'.__('Get Directions').'</span><span class="alt">'.__('Directions').'</span></a> ' : null;	
-		echo ( $coords && ($item || $tour) ) ? $directions_link : null;	
-		?>
-		
+		<?php if( $coords && ($item || $tour) ):?>
+				<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="<?php echo __('Get Directions on Google Maps');?>" target="_blank" href="https://maps.google.com/maps?saddr=<?php echo $saddr;?>+location&daddr=<?php echo $street_address ? urlencode($street_address) : $coords;?>">
+				<i class="fa fa-lg fa-external-link-square" aria-hidden="true"></i> <span class="label"><?php echo __('Get Directions');?></span>
+		</a>
+		<?php endif;?>		
 	
 	</div>
 
@@ -1458,7 +1465,7 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 		// assumes the Vimeo links look like http://vimeo.com/78254514 where the path string contains the video identifier
 		$url=parse_url($vimeo);
 		$id=$url['path'];
-		$html= '<div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=333" width="725" height="410" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+		$html= '<div class="embed-container vimeo" id="v-streaming" style="padding-top:0; height: 0; padding-top: 25px; padding-bottom: 67.5%; margin-bottom: 10px; position: relative; overflow: hidden;"><iframe style=" top: 0; left: 0; width: 100%; height: 100%; position: absolute;" src="//player.vimeo.com/video'.$id.'?color=222" width="725" height="410" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
 		if($caption==true){
 			$html .= ($title) ? '<h4 class="title video-title sib">'.$title.' <span class="icon-info-sign" aria-hidden="true"></span></h4>' : '';
 			$html .= ($desc) ? '<p class="description video-description sib">'.$desc.link_to($file,'show', '<span class="view-file-link"><span class="icon-file" aria-hidden="true"></span> '.__('View File Details Page').'</span>',array('class'=>'view-file-record','rel'=>'nofollow')).'</p>' : '';
@@ -1806,7 +1813,7 @@ function mh_social_array($max=5){
 ** $class 'colored' uses a service-specific color as background
 ** $class 'no-label' visually hides the label and just uses the icon
 */
-function mh_footer_find_us($class="colored no-label", $max=9){
+function mh_footer_find_us($class="no-label", $max=9){
 	if( $services=mh_social_array($max) ){
 		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
 	}
