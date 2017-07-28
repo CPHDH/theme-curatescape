@@ -1,46 +1,80 @@
 jQuery(document).ready(function($) {
-
-	// ============================ 
-	// MMENU
-	$("#secondary-menu").mmenu(
-	{ 	// options
-		slidingSubmenus: false,
-		extensions: [
+	
+	var navbars = [
+		{
+			// search bar
+			position: "top",
+			content: ["<span class='offscreen-search'>"+$('.search-plus form')[0].outerHTML+"</span>"],
+			height:2,
+		},{
+			// random button
+	        position: "bottom",
+	        content: ["<span class='offscreen-random'><a href='"+$('.random-story-link').attr('href')+"'><i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random Story<a></span>"],
+	        height:1,
+		}
+    ];		
+	
+	var extensions = [
 			"pagedim-black",
 			"fx-menu-fade",
-		    "listview-huge",
 		    "shadow-page",
-		    "border-full",
-		    ],
+		    "border-full"
+		];
+	
+	var social= new Array();
+		if(typeof $('a.social.email').attr('href') !== 'undefined'){
+			social.push('<a class="fa fa-envelope" href="'+$('a.social.email').attr('href')+'"></a>');
+		}
+		if(typeof $('a.social.facebook').attr('href') !== 'undefined'){
+			social.push('<a class="fa fa-facebook" href="'+$('a.social.facebook').attr('href')+'"></a>');
+		}
+		if(typeof $('a.social.twitter').attr('href') !== 'undefined'){
+			social.push('<a class="fa fa-twitter" href="'+$('a.social.twitter').attr('href')+'"></a>');
+		}
+	
+	if($( window ).width() > '374'){
+	    
+	    // app stores
+		navbars.unshift({ 
+	        position: "top",
+	        content: [
+				"<a class='fa fa-apple sidebar-app-link' href=''> <span class='sidebar-app-title'>App Store</span></a>",
+				"<a class='fa fa-android sidebar-app-link' href=''> <span class='sidebar-app-title'>Google Play</span></a>",
+				]
+			});	    		
+		// social media
+	    if(social.length){
+			navbars.push({ 
+				position: "bottom",
+				content: social		    
+		    });
+	    }	
+	}	
+	
+	if($( window ).width() > '400'){
+		// more spacious list for larger screens
+		extensions.push("listview-huge"); 
+		
+				
+	}
+		
+	// ============================ 
+	// MMENU
+	$("#offscreen-menu").mmenu(
+	{ 	// options
+		slidingSubmenus: false,
+		extensions:extensions, // viewport-dependent
 		offCanvas: {
 			position: "right"
 		},		
-			keyboardNavigation: {
-		    	enable:true,
-		    	enhance:true,
+		keyboardNavigation: {
+		    enable:true,
+		    enhance:true,
 		},
-		navbar		: {
-			title 		: null
+		navbar: {
+			title: null
 		},        
-		navbars: [
-			{
-		        position: "top",
-		        content: [
-					"<a class='fa fa-apple sidebar-app-link' href=''> <span class='sidebar-app-title'>App Store</span></a>",
-					"<a class='fa fa-android sidebar-app-link' href=''> <span class='sidebar-app-title'>Google Play</span></a>",
-		        ]
-		    },
-			{
-				position: "bottom",
-				content: [
-					"<a class='fa fa-envelope' href=''></a>",
-					"<a class='fa fa-twitter' href=''></a>",
-					"<a class='fa fa-facebook' href=''></a>",
-					"<a class='fa fa-youtube-play' href=''></a>",
-					"<a class='fa fa-instagram' href=''></a>",
-				]
-			},
-		]
+		navbars: navbars // viewport-dependent
 	}, 
 	{ 	// config
 		offCanvas: {

@@ -46,6 +46,7 @@ $file = (isset($file)) ? $file : null;
 <!-- Icon -->
 <link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
+<link rel='mask-icon' href='<?php echo img('favicon.svg')?>' color='#1EAEDB'> <!-- Safari -->
 
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>

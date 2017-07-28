@@ -140,7 +140,7 @@ function mh_tour_header(){
 /*
 ** Global navigation
 */
-function mh_global_nav(){
+function mh_global_nav($nested=false){
 	$curatenav=get_theme_option('default_nav');
 	if( $curatenav==1 || !isset($curatenav) ){
 		return nav(array(
@@ -149,8 +149,10 @@ function mh_global_nav(){
 				array('label'=>mh_tour_label('plural'),'uri' => url('tours/browse/')),
 				array('label'=>__('About'),'uri' => url('about/')),
 			));
+	}elseif($nested){
+		return public_nav_main()->setMaxDepth(1);
 	}else{
-		return public_nav_main();
+		return public_nav_main()->setMaxDepth(0);
 	}
 }
 
@@ -239,7 +241,7 @@ function mh_global_header($html=null){
 			<span class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
   			<?php echo mh_simple_search();?>
-  			<a id="menu-button" href="#secondary-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
+  			<a id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
 			</span>
 		</span>
 	</nav>
@@ -453,20 +455,20 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			var geolocationControl = L.control({position: 'topleft'});
 			geolocationControl.onAdd = function (map) {
 			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-			    div.innerHTML = '<a style="background-color:#fff;width:26px;height:26px;box-shadow:0 1px 5px rgba(0,0,0,0.65);background: #fff;border-radius:4px;display:block;" class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true" style="width: 26px;text-align: center;height: 26px;font-size: 16px;line-height: 26px;color:#444;"></i></a>'; 
+			    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
 			    return div;
 			};
 			geolocationControl.addTo(map);
 
 
 			// Fullscreen controls
-			var geolocationControl = L.control({position: 'topleft'});
-			geolocationControl.onAdd = function (map) {
-			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-			    div.innerHTML = '<a style="background-color:#fff;width:26px;height:26px;box-shadow:0 1px 5px rgba(0,0,0,0.65);background: #fff;border-radius:4px;display:block;" class="leaflet-control-geolocation-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true" style="width: 26px;text-align: center;height: 26px;font-size: 16px;line-height: 26px;color:#444;"></i></a>'; 
+			var fullscreenControl = L.control({position: 'topleft'});
+			fullscreenControl.onAdd = function (map) {
+			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-fullscreen');
+			    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
 			    return div;
 			};
-			geolocationControl.addTo(map);
+			fullscreenControl.addTo(map);
 			
 			// Layer controls
 			L.control.layers({

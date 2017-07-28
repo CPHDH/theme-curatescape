@@ -26,8 +26,8 @@
 
 <div hidden class="hidden">
 	<!-- Mmenu Markup -->
-	<nav id="secondary-menu">
-		<?php echo mh_global_nav();?>
+	<nav id="offscreen-menu">
+		<?php echo mh_global_nav(true);?>
 	</nav>
 </div>
 	

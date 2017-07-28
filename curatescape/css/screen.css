@@ -300,6 +300,24 @@ figure#item-photos .flex-image .file{
 	}
 }
 
+.offscreen-search{
+	background: #222;
+	padding-top: 20px;
+}
+.offscreen-search input{
+	width: 93%;
+	color: #222;
+}
+.offscreen-search form, .offscreen-search form fieldset{
+	margin-bottom: 0;
+}
+.offscreen-random{
+	background: rgba(0,0,0,.3);
+}
+.mm-navbar .offscreen-random a{
+	color: #fff;
+}
+
 /* SECONDARY NAVIGATION */
 .secondary-nav ul{
 	border-bottom: 4px solid #ccc;
@@ -307,13 +325,19 @@ figure#item-photos .flex-image .file{
 .secondary-nav ul li{
 	display: inline;
 }
+@media all and (max-width:420px){
+	.secondary-nav ul li:last-child:not(:first-child){
+		display: none;
+	}
+}
 .secondary-nav ul li a{
 	color:#777;
 	text-decoration: none;
 	margin-right: .5em;
 	padding: 0 .5em 3px;
 } 
-.secondary-nav ul li.active a{
+.secondary-nav ul li.active a,
+body#tours .secondary-nav ul li a:first-child{
 	color:#1EAEDB;
 	border-bottom: 4px solid #1EAEDB;
 }
@@ -604,6 +628,8 @@ section.map figcaption{
 	font:inherit!important;
 }
 
+
+/* MAP CONTROLS */
 .leaflet-control-layers-list {
 	font-size:.8em;
 	line-height:2em;
@@ -623,6 +649,41 @@ section.map figcaption{
 
 .leaflet-control-layers-list,.leaflet-control-layers-list input[type="radio"] {
 	margin-bottom:0!important;
+}
+
+.leaflet-control-geolocation-toggle,
+.leaflet-control-fullscreen-toggle{
+	background-color:#fff;
+	width:26px;
+	height:26px;
+	box-shadow:0 1px 5px rgba(0,0,0,0.65);
+	background: #fff;
+	border-radius:4px;
+	display:block;
+}
+.leaflet-control-geolocation-toggle i,
+.leaflet-control-fullscreen-toggle i{
+	width: 26px;
+	text-align: center;
+	height: 26px;
+	font-size: 16px;
+	line-height: 26px;
+	color:#444;	
+}
+.leaflet-touch .leaflet-control-geolocation-toggle,
+.leaflet-touch .leaflet-control-fullscreen-toggle{
+    border: 2px solid rgba(0,0,0,0.2);
+    background-clip: padding-box;
+    box-shadow: none;
+}
+
+.leaflet-touch .leaflet-control-geolocation-toggle,
+.leaflet-touch .leaflet-control-fullscreen-toggle,
+.leaflet-touch .leaflet-control-geolocation-toggle i,
+.leaflet-touch .leaflet-control-fullscreen-toggle i{
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
 }
 
 /*! MAP MARKERS */
@@ -1063,19 +1124,28 @@ body#search form#advanced-search-form div.field:last-child {
 #tour-description{
 	padding: 1em 2em 1em;
 }
+@media all and (max-width:550px){
+	#tour-description{
+		padding: 1em 0 1em;
+	}
+}
 
 #tour-items article{
 	padding-bottom: 5.5rem;
-	padding-top: 0.75rem;
+	padding-top: 0.2rem;
 }
 #tour-items article .item-description{
 	max-width: 40em;
+}
+#tour-items h3{
+	font-size: 2.6rem;
+	word-wrap: break-word;
 }
 #tour-items h3 a{
 	text-decoration: none;
 }
 .tour-route{
-	margin-right: 2em;
+	margin-right: 1em;
 }
 .tour-route-number{
 	font-size: 2rem;
@@ -1098,6 +1168,9 @@ body#search form#advanced-search-form div.field:last-child {
 }
 
 @media all and (min-width:550px){
+	.tour-route{
+		margin-right: 2em;
+	}
 	.tour-route-number {
 	    font-size: 3rem;
 	    border: .65rem solid #eaeaea;
@@ -1108,7 +1181,13 @@ body#search form#advanced-search-form div.field:last-child {
 	.tour-route-path {
 	    border-right: .65rem solid #eaeaea;
 	    margin: -0.25em auto;
+	}
+	#tour-items h3{
+		font-size: 3.6rem;
 	}	
+	#tour-items article{
+		padding-top: .5em;
+	}
 }
 
 #tour-items .secondary-nav{
@@ -1189,6 +1268,7 @@ body.fancy .header-nav.container #navigation nav{
 	body.fancy .header-nav.container{
 		z-index: 9;
 		background: #fff;
+		box-shadow: 0 0 7px #333;
 	}
 }
 body.fancy #wrap.container,
@@ -1204,7 +1284,7 @@ body#tours.show.fancy #wrap{
 	padding: 0;
 }
 body#tours.show.fancy article.tour{
-	padding: 2em 3em;
+	padding: 2em 2em;
 }
 
 body#items.show.fancy #wrap section, 
