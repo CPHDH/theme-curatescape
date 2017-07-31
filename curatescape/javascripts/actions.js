@@ -271,7 +271,6 @@ jQuery(document).ready(function($) {
 	        if(disableAnimation) {
 	            options.showAnimationDuration = 0;
 	        }
-			console.log(items);
 	        // Pass data to PhotoSwipe and initialize it
 	        gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 	        gallery.init();

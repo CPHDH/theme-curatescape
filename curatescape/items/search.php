@@ -12,8 +12,8 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 
 <div id="content">
 
-<section class="search">	
-	<h2><?php echo $title; ?></h2>
+<article class="search browse">	
+	<h2 class="query-header"><?php echo $title; ?></h2>
 		
 
 
@@ -33,12 +33,12 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 	</section>	
 	</div><!-- end primary -->
 
-
-</section>
+	<aside id="share-this" class="browse">
+	<?php echo mh_share_this();?>
+	</aside>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
+
 
 <?php echo foot(); ?>

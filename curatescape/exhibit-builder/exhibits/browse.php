@@ -32,13 +32,12 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
 
 <div id="content">
 
-<section class="browse stories items">	
-	<h2><?php 
+<article class="browse stories items">	
+	<h2 class="query-header"><?php 
 	$title .= ( ($total_results) ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>
 
-	<div id="primary" class="browse">
 	<section id="results">
 			
 
@@ -65,12 +64,9 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
 		<?php foreach (loop('exhibit') as $exhibit): ?>
 		    <?php $exhibitCount++; ?>
 		    <div class="exhibit <?php if ($exhibitCount%2==1) echo ' even'; else echo ' odd'; ?>">
-		        <h2><?php echo link_to_exhibit(); ?></h2>
+		        <h3><?php echo link_to_exhibit(); ?></h3>
 		        <?php if ($exhibitDescription = metadata('exhibit', 'description', array('no_escape' => true))): ?>
-		        <div class="description"><?php echo $exhibitDescription; ?></div>
-		        <?php endif; ?>
-		        <?php if ($exhibitTags = tag_string('exhibit', 'exhibits')): ?>
-		        <p class="tags"><?php echo $exhibitTags; ?></p>
+		        <div class="description"><?php echo strip_tags($exhibitDescription); ?></div><br><br>
 		        <?php endif; ?>
 		    </div>
 		<?php endforeach; ?>
@@ -81,20 +77,16 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
     <?php else: ?>
 	<p><?php echo __('There are no exhibits available yet.'); ?></p>
 	<?php endif; ?>
-
-
-
-
 				
 	</section>	
-	</div><!-- end primary -->
+	
+	<aside id="share-this" class="browse">
+		<?php echo mh_share_this();?>
+	</aside>
 
-
-</section>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
+
 
 <?php echo foot(); ?>

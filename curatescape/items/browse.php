@@ -42,9 +42,15 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 ?>
 
 <div id="content">
+	
+<section class="map">
+	<figure>
+		<?php echo mh_map_type($maptype,null,null); ?>
+	</figure>
+</section>	
 
 <article class="browse stories items">	
-	<h2><?php 
+	<h2 class="query-header"><?php 
 	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
 	?></h2>

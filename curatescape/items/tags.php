@@ -5,14 +5,12 @@
 
 
 <div id="content">
-<section class="browse tags">		
-<h2><?php echo __('Tags: %s', total_records('Tags'));?></h2>
-
+<article class="browse tags">		
+	<h2 class="query-header"><?php echo __('Tags: %s', total_records('Tags'));?></h2>
 
 	<div id="primary" class="browse">
 	<section id="tags">
-    
-	    
+
 	    <nav class="secondary-nav" id="tag-browse"> 
 			<?php mh_item_browse_subnav(); ?>
 	    </nav>
@@ -22,11 +20,11 @@
 	</section> 
 	</div><!-- end primary -->
 
-
-</section>	
+	<aside id="share-this" class="browse">
+		<?php echo mh_share_this();?>
+	</aside>
+</article>	
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
+
 <?php echo foot(); ?>

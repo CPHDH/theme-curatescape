@@ -10,40 +10,37 @@ echo head(array('maptype'=>'none','title' => __('Collection').' | '.$title, 'bod
 ?>
 
 <div id="content">
-<section class="browse collection">			
-<h2><?php echo $title;?></h2>
-<span class="collection-meta-browse"><?php echo metadata($collection, 'total_items').' '.mh_item_label('plural');?></span>
+<article class="browse collection">			
+	<h2><?php echo $title;?></h2>
+<!-- 	<span class="collection-meta-browse"><?php echo metadata($collection, 'total_items').' Items';?></span> -->
 
 	<div id="primary" class="browse">
 	
 	    <section id="text">
-		   <div id="tour-description">
+		   <div id="collection-description">
 		    <?php echo metadata($collection,array('Dublin Core','Description')); ?>
-		   </div>
-		</section>
-		   
-		<section id="tour-items">
 
 		    <?php if (metadata('collection', 'total_items') > 0): ?>
 
-				<p><?php echo link_to('items','browse',__("View all %1s %2s in %3s.",metadata('collection', 'total_items'),mh_item_label('plural'),$title),array('class'=>'collection-items-browse'),array('collection'=>$collection->id) ); ?></p>
+				<br><br><p><?php echo link_to('items','browse',__("Browse %1s Items in this collection.",metadata('collection', 'total_items')),array('class'=>'button collection-items-browse'),array('collection'=>$collection->id) ); ?></p>
 
 		    <?php else: ?>
 		    
-		        <p><?php echo __("This collection currently has no %s.",mh_item_label('plural')); ?></p>
+		        <br><br><p><?php echo __("This collection currently has no %s.",mh_item_label('plural')); ?></p>
 		        
 		    <?php endif; ?>
+		    
+		   </div>
+		    		   
 		</section>
     </div>
-
-	
-
-</section>
+	<aside id="share-this" class="browse">
+		<?php echo mh_share_this('Collection'); ?>
+	</aside>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this('Collection'); ?>
-</div>
+
 
 <?php echo foot();?>
 

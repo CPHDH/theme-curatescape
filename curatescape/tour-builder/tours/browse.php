@@ -9,7 +9,7 @@ echo head( array(
 ?>
 <div id="content">
 	<article class="browse tour">			
-	<h2><?php echo __('All %1$s: %2$s', $label, total_tours());?></h2>
+	<h2 class="query-header"><?php echo __('All %1$s: %2$s', $label, total_tours());?></h2>
 		<div id="primary" class="browse">
 			<section id="results">
 			<nav class="tours-nav navigation secondary-nav">

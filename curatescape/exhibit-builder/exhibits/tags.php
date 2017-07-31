@@ -6,7 +6,7 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyid' => 'exhibit', 'bod
 
 <div id="content">
 
-<section class="browse tags">	
+<article class="browse tags">	
 	<h2><?php 
 	$title .= ( (isset($total_results)) ? ': <span class="item-number">'.$total_results.'</span>' : '');
 	echo $title; 
@@ -32,13 +32,13 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyid' => 'exhibit', 'bod
 		<?php echo tag_cloud($tags, 'exhibits/browse'); ?>
 	</div><!-- end primary -->
 
+	<aside id="share-this" class="browse">
+		<?php echo mh_share_this();?>
+	</aside>
 
-
-</section>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
+
 
 <?php echo foot(); ?>
