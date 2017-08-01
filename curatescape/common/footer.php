@@ -5,7 +5,7 @@
 		<nav id="footer-nav">
 		    <?php echo mh_global_nav(); ?> 
 		    <?php echo mh_simple_search();?>
-		    <?php echo random_item_link("<i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random ".mh_item_label('singular'),'random-button button');?>     	
+		    <?php echo random_item_link("<i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random ".mh_item_label('singular'),'random-button button');?>     			<?php echo mh_appstore_downloads();?>
 	    </nav>	
 	 
 		<div class="default">

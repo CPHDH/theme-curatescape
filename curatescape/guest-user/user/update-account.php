@@ -13,11 +13,12 @@ queue_css_string($css);
 $pageTitle = __('Update Account');
 echo head(array('bodyclass' => 'update-account', 'title' => $pageTitle));
 ?>
-<h1><?php echo $pageTitle; ?></h1>
+
 <article class="page show">
-<div id='primary'>
-<?php echo flash(); ?>
-<?php echo $this->form; ?>
-</div>
+	<h1><?php echo $pageTitle; ?></h1>
+	<div id='primary'>
+	<?php echo flash(); ?>
+	<?php echo $this->form; ?>
+	</div>
 </article>
 <?php echo foot(); ?>

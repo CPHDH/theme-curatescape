@@ -26,22 +26,30 @@ jQuery(document).ready(function($) {
 			social.push('<a class="fa fa-envelope" href="'+$('a.social.email').attr('href')+'"></a>');
 		}
 		if(typeof $('a.social.facebook').attr('href') !== 'undefined'){
-			social.push('<a class="fa fa-facebook" href="'+$('a.social.facebook').attr('href')+'"></a>');
+			social.push('<a class="fa fa-facebook" target="_blank" href="'+$('a.social.facebook').attr('href')+'"></a>');
 		}
 		if(typeof $('a.social.twitter').attr('href') !== 'undefined'){
-			social.push('<a class="fa fa-twitter" href="'+$('a.social.twitter').attr('href')+'"></a>');
+			social.push('<a class="fa fa-twitter" target="_blank" href="'+$('a.social.twitter').attr('href')+'"></a>');
 		}
+
+	var appstores= new Array();
+		if(typeof $('a.appstore.ios').attr('href') !== 'undefined'){
+			appstores.push('<a class="fa fa-apple sidebar-app-link" href="'+$('a.appstore.ios').attr('href')+'"> <span class="sidebar-app-title">App Store</span></a>');
+		}
+		if(typeof $('a.appstore.android').attr('href') !== 'undefined'){
+			appstores.push('<a class="fa fa-android sidebar-app-link" href="'+$('a.appstore.android').attr('href')+'"> <span class="sidebar-app-title">Google Play</span></a>');
+		}
+
 	
 	if($( window ).width() > '374'){
 	    
 	    // app stores
+		if(appstores.length > 1){
 		navbars.unshift({ 
 	        position: "top",
-	        content: [
-				"<a class='fa fa-apple sidebar-app-link' href=''> <span class='sidebar-app-title'>App Store</span></a>",
-				"<a class='fa fa-android sidebar-app-link' href=''> <span class='sidebar-app-title'>Google Play</span></a>",
-				]
-			});	    		
+	        content: appstores
+			});	
+		}    		
 		// social media
 	    if(social.length){
 			navbars.push({ 

@@ -6,17 +6,18 @@ queue_css_string($css);
 $pageTitle = get_option('guest_user_register_text') ? get_option('guest_user_register_text') : __('Register');
 echo head(array('bodyclass' => 'register', 'title' => $pageTitle));
 ?>
-<h1><?php echo $pageTitle; ?></h1>
+
 <article class="page show">
-<div id='primary'>
-<div id='capabilities'>
-<p>
-<?php echo get_option('guest_user_capabilities'); ?>
-</p>
-</div>
-<?php echo flash(); ?>
-<?php echo $this->form; ?>
-<p id='confirm'></p>
-</div>
+	<h1><?php echo $pageTitle; ?></h1>
+	<div id='primary'>
+	<div id='capabilities'>
+	<p>
+	<?php echo get_option('guest_user_capabilities'); ?>
+	</p>
+	</div>
+	<?php echo flash(); ?>
+	<?php echo $this->form; ?>
+	<p id='confirm'></p>
+	</div>
 </article>
 <?php echo foot(); ?>

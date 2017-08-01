@@ -431,17 +431,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 
 		jQuery(document).ready(function() {
 
-			if (
-				(getChromeVersion()>=50 && !isSecure) || 
-				(getSafariVersion()>=601.6 && !isSecure) || 
-				!navigator.geolocation
-				){
-				/* Hide the geolocation button on insecure sites for... 
-				** Safari 9.3+ users, Chrome 50+ users, and for browsers with no support
-				** TODO: eventually, this will need to be applied to all insecure origins
-				*/
-				jQuery('.map-actions a.location').addClass('hidden');
-			}	
 
 			// Build the base map
 			var map = L.map('curatescape-map-canvas',{
@@ -452,14 +441,17 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			
 
 			// Geolocation controls
-			var geolocationControl = L.control({position: 'topleft'});
-			geolocationControl.onAdd = function (map) {
-			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-			    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
-			    return div;
-			};
-			geolocationControl.addTo(map);
-
+			if( (getChromeVersion()>=50 && !isSecure) || (getSafariVersion()>=601.6 && !isSecure) || !navigator.geolocation){			
+				// console.warn('Geolocation is not available over insecure origins on this browser.');
+			}else{
+				var geolocationControl = L.control({position: 'topleft'});
+				geolocationControl.onAdd = function (map) {
+				    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
+				    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
+				    return div;
+				};
+				geolocationControl.addTo(map);				
+			}
 
 			// Fullscreen controls
 			var fullscreenControl = L.control({position: 'topleft'});
@@ -607,28 +599,28 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			/* Map Action Buttons */
 			
 			// Fullscreen
-			jQuery('.map-actions .fullscreen').click(function(){
-				jQuery('#slider').slideToggle('fast', 'linear');
-				jQuery('#swipenav').slideToggle('fast', 'linear');	
-				jQuery('.small #curatescape-map-canvas').toggle(); // in case it's hidden by checkwidth.js
+			jQuery('.leaflet-control-fullscreen-toggle').click(function(e){
+				e.preventDefault();
 				jQuery("body").toggleClass("fullscreen-map");
-				jQuery(".map-actions a.fullscreen i").toggleClass('icon-expand').toggleClass('icon-compress');
+				jQuery(".leaflet-control-fullscreen-toggle i").toggleClass('fa-expand').toggleClass('fa-compress');
 				map.invalidateSize();
 			});
 			jQuery(document).keyup(function(e) {
 				if ( e.keyCode == 27 ){ // exit fullscreen
-					if(jQuery('body').hasClass('fullscreen-map')) jQuery('.map-actions .fullscreen').click();
+					if(jQuery('body').hasClass('fullscreen-map')) jQuery('.leaflet-control-fullscreen-toggle').click();
 				}
 			});
 			
 			// Geolocation
-			jQuery('.map-actions .location').click(
-				function(){
+			jQuery('.leaflet-control-geolocation-toggle').click(
+				function(e){
+				e.preventDefault();	
 				var options = {
 					enableHighAccuracy: true,
 					maximumAge: 30000,
 					timeout: 15000
 				};
+				jQuery(".leaflet-control-geolocation-toggle").addClass("working");
 				navigator.geolocation.getCurrentPosition(
 					function(pos) {
 						var userLocation = [pos.coords.latitude, pos.coords.longitude];					
@@ -650,13 +642,16 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							  opacity: 1,
 							  fillOpacity: 0.8,
 							}).addTo(map);
+							jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
 						}else{
 							userMarker.setLatLng(userLocation);
+							jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
 						}
 					}, 
 					function(error) {
 						console.log(error);
 						var errorMessage = error.message ? ' Error message: "' + error.message + '"' : 'Oops! We were unable to determine your current location.';
+						jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
 						alert(errorMessage);
 					}, 
 					options);
@@ -769,29 +764,28 @@ function mh_simple_search($formProperties=array()){
 /*
 ** App Store links on homepage
 */
+// <a class='fa fa-android sidebar-app-link' href=''> <span class='sidebar-app-title'>Google Play</span></a>
 function mh_appstore_downloads(){
 	if (get_theme_option('enable_app_links')){
-
-		echo '<div>';
-		echo '<h2 class="hidden">Downloads</h2>';
-
+		$apps=array();
 		$ios_app_id = get_theme_option('ios_app_id');
-		echo ($ios_app_id ?
-			'<a id="apple" class="app-store" href="https://itunes.apple.com/us/app/'.$ios_app_id.'"><span class="icon-apple" aria-hidden="true"></span>
-		'.__('App Store').'
-		</a> ':'<a id="apple" class="app-store" href="#"><span class="icon-apple" aria-hidden="true"></span>
-		'.__('iPhone App Coming Soon').'
-		</a> ');
+		if($ios_app_id){
+			$href='https://itunes.apple.com/us/app/'.$ios_app_id;
+			$apps[]='<a class="appstore ios" href="'.$href.'" target="_blank">'.
+			'<i class="fa fa-lg fa-apple" aria-hidden="true"></i> '.__('App Store').'</a>';
+		}
 
 		$android_app_id = get_theme_option('android_app_id');
-		echo ($android_app_id ?
-			'<a id="android" class="app-store" href="http://play.google.com/store/apps/details?id='.$android_app_id.'"><span class="icon-android" aria-hidden="true"></span>
-		'.__('Google Play').'
-		</a> ':'<a id="android" class="app-store" href="#"><span class="icon-android" aria-hidden="true"></span>
-		'.__('Android App Coming Soon').'
-		</a> ');
-		echo '</div>';
-
+		if($android_app_id){
+			$href='http://play.google.com/store/apps/details?id='.$android_app_id;
+			$apps[]='<a class="appstore android" href="'.$href.'" target="_blank">'.
+			'<i class="fa fa-lg fa-android" aria-hidden="true"></i> '.__('Google Play').'</a>';
+			}		
+		
+		
+		if(count($apps) > 1){
+			return '<div class="downloads flex">'.implode(' ', $apps).'</div>';	
+		}
 	}
 }
 

@@ -752,6 +752,38 @@ section.map figcaption{
 	line-height: 30px;
 }
 
+body.fullscreen-map div#curatescape-map-canvas {
+    height: 100vh;
+    width: 100vw;
+    position: fixed !important;
+    z-index: 9999999;
+    top: 0;
+    left: 0;
+}
+
+.leaflet-control-geolocation-toggle.working{
+	background: #4a87ee;
+	animation: pulse 1s ease-in-out infinite;
+	color:#fafafa;
+	box-shadow:0 1px 5px rgba(0,0,0,0.65),0 0 3px #fff inset
+}
+.leaflet-control-geolocation-toggle.working i{
+	color: #fafafa;;
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: #4a87ee;
+  }
+  50% {
+    background-color: #64a1ff;
+  } 
+  100% {
+    background-color: #4a87ee;
+  }  
+}
+
 /*! MAP MARKERS */
 .leaflet-container a {
 	color:inherit!important;
@@ -1080,6 +1112,10 @@ footer.main nav#footer-nav input{
 	width: 100%;
 	margin-bottom: 0;
 	background: #fafafa;
+	border-color: #222;
+}
+footer.main nav#footer-nav input:focus{
+	border-color: #33C3F0;
 }
 #footer-nav a{
     display: inline-block;
@@ -1104,6 +1140,23 @@ footer.main nav#footer-nav input{
 #footer-nav a:hover,#footer-nav a:focus{
 	border-color:#222;
 	color:#222;
+}
+
+/* FOOTER APP STORES */
+#footer-nav .downloads{
+	justify-content: space-between;
+}
+#footer-nav .downloads a{
+	width: 49%;
+}
+
+#footer-nav .downloads a.android{
+	background: #77c159;
+	color: #fff;
+	border-color: #fff;
+}
+#footer-nav .downloads a.ios{
+	border-color: #777;
 }
 
 /* ADVANCED SEARCH */
@@ -1191,7 +1244,7 @@ body#search form#advanced-search-form div.field:last-child {
 	color:#fff;	
 }
 #footer-nav .random-button:hover, .random-button:focus{
-	background: #555;
+	background: #000;
 	color:#fff;
 }
 
@@ -1421,12 +1474,37 @@ body.contribution #flash ul{
     margin-bottom: 0;
 }
 #admin-bar ul.navigation li{
-	padding: 0 10px 0 0;
+	padding: 0 0 0 10px;
 	font-size: .9em;
+	position: relative;
+}
+
+#admin-bar ul.navigation li a{
+	color: #fff;
 }
 
 #admin-bar ul.navigation ul{
-	display: none;
+    display: none;
+    z-index: 999999;
+    position: absolute;
+    top: 12px;
+    background: #444;
+    text-align: left;
+    min-width: 11em;
+    padding: 10px;
+    left: -22px;
+    box-shadow: 0 0 10px #222;
+}
+
+#admin-bar ul.navigation li:hover > ul,
+#admin-bar ul.navigation:hover li ul,
+#admin-bar ul.navigation li:hover ul,
+#admin-bar:hover ul.navigation li > ul,
+#admin-bar ul.navigation li:focus > ul,
+#admin-bar ul.navigation:focus li ul,
+#admin-bar ul.navigation li:focus ul,
+#admin-bar:focus ul.navigation li > ul{
+	display: block;
 }
 
 /* GUEST USER */

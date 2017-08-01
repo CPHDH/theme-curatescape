@@ -1,4 +1,5 @@
 <?php echo head(); ?>
+<article class="page show">
 <div id="primary">
 <?php echo flash(); ?>
 <form method='post'>
@@ -30,4 +31,5 @@
     <input id="save-changes" class="submit big button" type="submit" value="Save Changes" name="submit">
 </form>
 </div>
+</article>
 <?php echo foot(); ?>
