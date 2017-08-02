@@ -241,7 +241,7 @@ function mh_global_header($html=null){
 			<span class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
   			<?php echo mh_simple_search();?>
-  			<a id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
+  			<a title="Menu" id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
 			</span>
 		</span>
 	</nav>
@@ -704,7 +704,7 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 		
 		<!-- Directions link -->
 		<?php if( $coords && ($item || $tour) ):?>
-				<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="<?php echo __('Get Directions on Google Maps');?>" target="_blank" href="https://maps.google.com/maps?saddr=<?php echo $saddr;?>+location&daddr=<?php echo $street_address ? urlencode($street_address) : $coords;?>">
+				<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="<?php echo __('Get Directions on Google Maps');?>" target="_blank" rel="noopener" href="https://maps.google.com/maps?saddr=<?php echo $saddr;?>+location&daddr=<?php echo $street_address ? urlencode($street_address) : $coords;?>">
 				<i class="fa fa-lg fa-external-link-square" aria-hidden="true"></i> <span class="label"><?php echo __('Get Directions');?></span>
 		</a>
 		<?php endif;?>		
@@ -723,7 +723,7 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 ** Includes settings for simple and advanced search via theme options
 */
 
-function mh_simple_search($formProperties=array()){
+function mh_simple_search($inputID='search',$formProperties=array()){
 	
 	$sitewide = (get_theme_option('use_sitewide_search') == 1) ? 1 : 0;	
 	$qname = ($sitewide==1) ? 'query' : 'search';
@@ -738,7 +738,7 @@ function mh_simple_search($formProperties=array()){
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
 	$html .= '<label for "search" hidden class="hidden">Search</label>';
-	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'class'=>'textinput search','placeholder'=>$placeholder));
+	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -771,14 +771,14 @@ function mh_appstore_downloads(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		if($ios_app_id){
 			$href='https://itunes.apple.com/us/app/'.$ios_app_id;
-			$apps[]='<a class="appstore ios" href="'.$href.'" target="_blank">'.
+			$apps[]='<a class="appstore ios" href="'.$href.'" target="_blank" rel="noopener">'.
 			'<i class="fa fa-lg fa-apple" aria-hidden="true"></i> '.__('App Store').'</a>';
 		}
 
 		$android_app_id = get_theme_option('android_app_id');
 		if($android_app_id){
 			$href='http://play.google.com/store/apps/details?id='.$android_app_id;
-			$apps[]='<a class="appstore android" href="'.$href.'" target="_blank">'.
+			$apps[]='<a class="appstore android" href="'.$href.'" target="_blank" rel="noopener">'.
 			'<i class="fa fa-lg fa-android" aria-hidden="true"></i> '.__('Google Play').'</a>';
 			}		
 		
@@ -962,7 +962,7 @@ function mh_street_address($item='item',$formatted=true){
 
 	if (element_exists('Item Type Metadata','Street Address')){
 		$address=metadata($item,array('Item Type Metadata','Street Address'));
-		$map_link='<a target="_blank" href="https://maps.google.com/maps?saddr=current+location&daddr='.urlencode($address).'">map</a>';
+		$map_link='<a target="_blank" rel="noopener" href="https://maps.google.com/maps?saddr=current+location&daddr='.urlencode($address).'">map</a>';
 		return $address ? ( $formatted ? '<h3>'.__('Street Address').'</h3><div>'.$address.' ['.$map_link.']</div>' : $address ) : null;	
 	}else{
 		return null;
@@ -1145,11 +1145,29 @@ function mh_file_caption($file,$inlineTitle=true){
 }
 
 
-function mh_footer_scripts_init(){
+function mh_js_loaders(){
 	//===========================// ?>
 	<script>
 	jQuery(document).ready(function($) {
-
+		/*! 
+		loadJS: load a JS file asynchronously. 
+		[c]2014 @scottjehl, Filament Group, Inc. (Based on http://goo.gl/REQGQ by Paul Irish). 
+		Licensed MIT 
+		*/
+		
+		function loadJS(src,cb){"use strict";var ref=window.document.getElementsByTagName("script")[0];var script=window.document.createElement("script");script.src=src;script.async=true;ref.parentNode.insertBefore(script,ref);if(cb&&typeof(cb)==="function"){script.onload=cb;}
+		return script;}
+		
+		/*!
+		loadCSS: load a CSS file asynchronously.
+		[c]2014 @scottjehl, Filament Group, Inc.
+		Licensed MIT
+		*/
+		
+		function loadCSS(href,before,media){"use strict";var ss=window.document.createElement("link");var ref=before||window.document.getElementsByTagName("script")[0];var sheets=window.document.styleSheets;ss.rel="stylesheet";ss.href=href;ss.media="only x";ref.parentNode.insertBefore(ss,ref);function toggleMedia(){var defined;for(var i=0;i<sheets.length;i++){if(sheets[i].href&&sheets[i].href.indexOf(href)>-1){defined=true;}}
+		if(defined){ss.media=media||"all";}
+		else{setTimeout(toggleMedia);}}
+		toggleMedia();return ss;}
 	});
 	</script>
 	<?php //========================//
@@ -1165,10 +1183,18 @@ function mh_item_images($item,$index=0){
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
 		$mime = metadata($file,'MIME Type');
 		if(in_array($mime,$img)) {
+			$title=metadata($file, array('Dublin Core', 'Title'));
+			$title_formatted='<strong><u>'.$title.'</u></strong>';
+			$desc=metadata($file, array('Dublin Core', 'Description'));
+			$caption=($desc ? $title_formatted.': '.$desc : $title_formatted);
+			if($source=metadata($file, array('Dublin Core', 'Source'))){
+				$caption.=' ~ '.__('Source').': '.$source;
+			}
+			$caption.=' ~ '.link_to($file, 'show','<i class="fa fa-external-link"></i>'.__('View File Record'), array('class'=>'pswp-file-permalink'));
 			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
 			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-				$html.= '<a class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';
-				$html.= '<figcaption hidden class="hidden;">'.metadata($file, array('Dublin Core', 'Title')).'</figcaption>';
+				$html.= '<a title="'.$title.'" class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';
+				$html.= '<figcaption hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i>').'</figcaption>';
 			$html.= '</figure>';
 		}		
 	}
@@ -1247,13 +1273,15 @@ function mh_audio_files($item,$index=0){
 		<figure id="item-audio">	
 			<div class="media-container audio">
 				<audio id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
-					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 audio</a></p>
+					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
 				</audio>
 				<div class="flex media-list audio" style="">
 					<?php echo $html;?>		
 				</div>
 			</div>
 		</figure>	
+		<link href="//vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
+		<script src="//vjs.zencdn.net/5.19.2/video.js"></script>
 		<script>
 			jQuery(document).ready(function($) {
 				
@@ -1317,7 +1345,7 @@ function mh_video_files($item='item',$html=null) {
 			<div class="media-container video">
 			
 			<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
-				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-media-support/" target="_blank">supports HTML5 video</a></p>
+				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-media-support/" target="_blank" rel="noopener">supports HTML5 video</a></p>
 			</video>
 			<div class="flex media-list video" style="">
 				<?php echo $html;?>
@@ -1348,7 +1376,7 @@ function mh_video_files($item='item',$html=null) {
 */
 
 function mh_single_file_show($file=null){
-		
+		$html=null;
 		$mime = metadata($file,'MIME Type');
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
 		$audioTypes = array('audio/mpeg');
@@ -1359,58 +1387,62 @@ function mh_single_file_show($file=null){
 		if ( array_search($mime, $audioTypes) !== false ){
 			
 			?>
-			
-			<script>
-			jQuery.ajaxSetup({
-				cache: true
-			});
-			var audioTagSupport = !!(document.createElement('audio').canPlayType);
-			if (Modernizr.audio) {
-			   var myAudio = document.createElement('audio');
-			   // Currently canPlayType(type) returns: "", "maybe" or "probably" 
-			   var canPlayMp3 = !!myAudio.canPlayType && "" != myAudio.canPlayType('audio/mpeg');
-			}
-			if(!canPlayMp3){
-				loadJS("<?php echo WEB_ROOT.'/themes/'.basename(__DIR__) ;?>/javascripts/audiojs/audiojs/audio.min.js", function(){
-					audiojs.events.ready(function() {
-					var as = audiojs.createAll();				
+			<figure id="item-audio">	
+				<div class="media-container audio">
+					<audio src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
+					</audio>
+				</div>
+			</figure>				
+			<script async defer>
+			jQuery(document).ready(function($) {
+				
+				loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
+				loadJS('//vjs.zencdn.net/5.19.2/video.js', function() {
+					var audioplayer = videojs('curatescape-player-audio',{
+						height:'30',
+						controlBar: {
+							fullscreenToggle: false
+						}
 					});
-				});  
-			}  
+					if(typeof audioplayer == 'object'){
+						audioplayer.ready(function(){
+							// load controls
+							audioplayer.play().pause()
+						});
+					}				
+				});
+			});
 			</script>
 			
 			<?php
 			
-			$html = '<audio controls ><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
+/*
+			$html = '<audio controls><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
 			
 			return $html;
+*/
 		
 		// SINGLE VIDEO FILE	
 		}elseif(array_search($mime, $videoTypes) !== false){
-			$html=null;
-			$videoIndex = 0;
-			$localVid=0;
 			$videoTypes = array('video/mp4','video/mpeg','video/quicktime');
 			$videoFile = file_display_url($file,'original');
 			$videoTitle = metadata($file,array('Dublin Core', 'Title'));
-			$videoClass = (($videoIndex==0) ? 'first' : 'not-first');
 			$videoDesc = mh_file_caption($file,false);
 			$videoTitle = metadata($file,array('Dublin Core','Title'));
 			$embeddable=embeddableVersion($file,$videoTitle,$videoDesc,array('Dublin Core','Relation'),false);
 			if($embeddable){
 				// If a video has an embeddable streaming version, use it.
 				$html.= $embeddable;
-				$videoIndex++;
-				//break;
 			}else{
 				?>
 				<script>
-					loadCSS('//vjs.zencdn.net/4.3/video-js.css');
-					loadJS('//vjs.zencdn.net/4.3/video.js');
+					loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
+					loadJS('//vjs.zencdn.net/5.19.2/video.js');
 				</script>	
 				<?php 	
 				$html .= '<div class="item-file-container">';
-				$html .= '<video width="725" height="410" id="video-'.$localVid.'" class="'.$videoClass.' video-js vjs-default-skin" controls preload="auto" data-setup="{}">';
+				$html .= '<video width="725" height="410" class="video-js vjs-default-skin" controls preload="auto" data-setup="{}">';
 				$html .= '<source src="'.$videoFile.'" type="video/mp4">';
 				$html .= '</video>';
 
@@ -1475,37 +1507,12 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 
 
 /*
-** Display the AddThis social sharing widgets
-** www.addthis.com
+** Display the social sharing widgets
+** @TODO
 */
 function mh_share_this($type='Page'){
-	$addthis = get_theme_option('Add This') ? '#pubid='.get_theme_option('Add This') : null;
-	$tracking= ($addthis && get_theme_option('track_address_bar')) ? '"data_track_addressbar":true' : null;
 
-	$html = '<h3>'.__('Share this %s',$type).'</h3>';
-	$html .= '<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-<a class="addthis_button_twitter"></a>
-<a class="addthis_button_facebook"></a>
-<a class="addthis_button_pinterest_share"></a>
-<a class="addthis_button_email"></a>
-<a class="addthis_button_compact"></a>
-</div>
-<script type="text/javascript">var addthis_config = {'.$tracking.'};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js'.$addthis.'"></script>
-<script type="text/javascript">
-// Alert a message when the AddThis API is ready
-function addthisReady(evt) {
-    jQuery(\'#share-this\').addClass(\'api-loaded\');
-}
-
-// Listen for the ready event
-addthis.addEventListener(\'addthis.ready\', addthisReady);
-</script>
-<!-- AddThis Button END -->';
-
-
-	return $html;
+	return null;
 }
 
 /*
@@ -1782,15 +1789,15 @@ function mh_home_item_list($html=null){
 */
 function mh_social_array($max=5){
 	$services=array();
-	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a href="mailto:'.$email.'" class="button social icon email"><i class="fa fa-lg fa-envelope" aria-hidden="true"><span> Email</span></i></a>') : null;		
-	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a href="'.$facebook.'" class="button social icon facebook"><i class="fa fa-lg fa-facebook" aria-hidden="true"><span> Facebook</span></i></a>') : null;	
-	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a href="'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
-	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a href="'.$youtube.'" class="button social icon youtube"><i class="fa fa-lg fa-youtube-play" aria-hidden="true"><span> Youtube</span></i></a>') : null;
-	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a href="'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
-	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a href="'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
-	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
-	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
-	($wordpress=get_theme_option('wordpress_link')) ? array_push($services,'<a href="'.$wordpress.'" class="button social icon wordpress"><i class="fa fa-lg fa-wordpress" aria-hidden="true"><span> WordPress</span></i></a>') : null;				
+	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a target="_blank" rel="noopener" title="Email" href="mailto:'.$email.'" class="button social icon email"><i class="fa fa-lg fa-envelope" aria-hidden="true"><span> Email</span></i></a>') : null;		
+	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Facebook" href="'.$facebook.'" class="button social icon facebook"><i class="fa fa-lg fa-facebook" aria-hidden="true"><span> Facebook</span></i></a>') : null;	
+	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Twitter" href="'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
+	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Youtube" href="'.$youtube.'" class="button social icon youtube"><i class="fa fa-lg fa-youtube-play" aria-hidden="true"><span> Youtube</span></i></a>') : null;
+	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
+	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
+	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
+	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
+	($wordpress=get_theme_option('wordpress_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="WordPress" href="'.$wordpress.'" class="button social icon wordpress"><i class="fa fa-lg fa-wordpress" aria-hidden="true"><span> WordPress</span></i></a>') : null;				
 
 	if( ($total=count($services)) > 0 ){
 		if($total>$max){

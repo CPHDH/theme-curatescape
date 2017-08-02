@@ -4,7 +4,7 @@
 	<footer class="main <?php if(get_theme_option('bg_img')) echo 'container';?>">
 		<nav id="footer-nav">
 		    <?php echo mh_global_nav(); ?> 
-		    <?php echo mh_simple_search();?>
+		    <?php echo mh_simple_search('footer-search',array('id'=>'footer-search-form'));?>
 		    <?php echo random_item_link("<i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random ".mh_item_label('singular'),'random-button button');?>     			<?php echo mh_appstore_downloads();?>
 	    </nav>	
 	 
@@ -18,8 +18,6 @@
 	
 		<?php echo fire_plugin_hook('public_footer', array('view'=>$this)); ?>	
 		<?php echo mh_google_analytics();?>	
-		<script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
-		<?php echo mh_footer_scripts_init();?>
 			
 	</footer>
 </div> <!-- end page-content -->

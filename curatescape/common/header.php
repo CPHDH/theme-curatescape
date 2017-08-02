@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=5">
 
 <?php echo auto_discovery_link_tags(); ?>
 
@@ -51,30 +51,36 @@ $file = (isset($file)) ? $file : null;
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>
 
-<!-- VideoJS -->
-<link href="//vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
-
 <!-- Assets -->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script src="https://ft-polyfill-service.herokuapp.com/v2/polyfill.min.js"></script>
 <?php 
-queue_css_file('font-awesome.min','all', false, 'fonts/font-awesome/css');
-queue_css_file('jquery.mmenu/jquery.mmenu.all','all', false, 'javascripts');
 queue_css_file('leaflet/leaflet','all', false, 'javascripts');
-queue_css_file('photoswipe/dist/photoswipe','all', false, 'javascripts');
-queue_css_file('photoswipe/dist/default-skin/default-skin','all', false, 'javascripts');
 queue_js_file('leaflet','javascripts/leaflet');	
+queue_js_file('maki.min');
 if(get_theme_option('clustering')){
 	queue_js_file('leaflet.markercluster','javascripts/leaflet.markercluster');
 	queue_css_file('leaflet.markercluster.min', 'all', false, 'javascripts/leaflet.markercluster');
 }
-queue_js_file('jquery.mmenu/jquery.mmenu.all');
-queue_js_file('maki.min');
-queue_js_file('photoswipe/dist/photoswipe.min');
-queue_js_file('photoswipe/dist/photoswipe-ui-default.min');
-queue_js_file('actions');
-echo head_js(); 
+queue_js_file('async_loaders');
 echo head_css(); 
-// Additional scripts are loaded asyncronously as needed
+echo head_js(false); 
 ?>
+
+<script>
+	// Async CSS 	
+	loadCSS('<?php echo src('font-awesome/css/font-awesome.min.css','fonts');?>'); // font awesome css
+	loadCSS('<?php echo src('jquery.mmenu/jquery.mmenu.all.css','javascripts');?>'); // mmenu css
+	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.css','javascripts');?>'); // photoswipe css
+	// Async JS 
+	loadJS('<?php echo src('global.js','javascripts');?>'); // global.js
+	<?php if( 0 === strpos(current_url(), '/items/show') ):?>
+		loadJS('<?php echo src('items-show.js','javascripts');?>'); // items-show.js
+	<?php endif;?>	
+</script>
 
 <!-- Custom CSS via theme config -->
 <?php 
@@ -84,10 +90,6 @@ if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
 }?>
 <?php echo mh_theme_css();?>
 
-
-<!--[if lte IE 9]>
-<?php echo js_tag('ie-polyfills.min');?>
-<![endif]-->
 
 <!-- Plugin Stuff -->
  <?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
@@ -99,38 +101,14 @@ $themeClass= ($bgImg) ? ' fancy' : ' minimalist';
 $bodyid = isset($bodyid) ? $bodyid : 'default';
 $bodyclass = isset($bodyclass) ? $bodyclass.$themeClass : 'default'.$themeClass;
 $bodyStyle= ($bgImg) ? 'background-image: url('.mh_bg_url().')' : null;
-if($bgImg):?>	
-	<style>
-		/* fix for background sizing on "mobile" */
-		/* imperfect and limited compatibility but not mission-critical */
-		@media (pointer:coarse){
-			body:after{
-			      content:"";
-			      position:fixed; 
-			      top:0;
-			      height:100vh;
-			      width: 100%;
-			      padding: 0;
-			      margin: 0;
-			      left:0;
-			      right:0;
-			      z-index:-9;
-			      background: url(<?php echo mh_bg_url();?>) center top;
-			      -webkit-background-size: cover;
-			      -moz-background-size: cover;
-			      -o-background-size: cover;
-			      background-size: cover;
-			}
-		}
-	</style>
-<?php endif;?>
+?>
 
 </head>
 <body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>" style="<?php echo $bodyStyle;?>"> 
 
 <noscript>
 	<div id="no-js-message">
-		<span><?php echo __('This web page requires JavaScript to be enabled in your browser settings.');?> <a target="_blank" href="https://goo.gl/koeeaJ"><?php echo __('Need Help?');?></a></span>
+		<span><?php echo __('For full functionality please enable JavaScript in your browser settings.');?> <a target="_blank" href="https://goo.gl/koeeaJ"><?php echo __('Need Help?');?></a></span>
 	</div>
 </noscript>
 
