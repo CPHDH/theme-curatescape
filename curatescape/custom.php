@@ -240,7 +240,7 @@ function mh_global_header($html=null){
 			</span>
 			<span class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
-  			<?php echo mh_simple_search();?>
+  			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'));?>
   			<a title="Menu" id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
 			</span>
 		</span>
@@ -317,7 +317,7 @@ function mh_get_item_json($item=null){
 
 /*
 ** Map Type
-** Uses variable set in each page template via head() function
+** Uses variable set in each page template 
 */
 function mh_map_type($maptype='none',$item=null,$tour=null){
 	
@@ -387,7 +387,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 	}
 	?>
-	<script type="text/javascript">
+	<script type="text/javascript" async defer>
 		// PHP Variables
 		var type =  '<?php echo $type ;?>';
 		var color = '<?php echo $color ;?>';
@@ -406,15 +406,15 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var mapBounds; // keep track of changing bounds
 		var root_url = '<?php echo WEB_ROOT;?>';
 		var geolocation_icon = '<?php echo img('geolocation.png');?>';
-		var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
-				attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
-				retina: (L.Browser.retina) ? '@2x' : '',
-			});		
-		var carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
-		    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
-				retina: (L.Browser.retina) ? '@2x' : '',
-			});
-		var defaultMapLayer=<?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : 'carto';?>;		
+		var carto=null; // reset below
+		var terrain=null; // reset below
+		var mapLayerThemeSetting = <?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : null;?>;
+		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>';
+		var leafletcss='<?php echo src('leaflet/leaflet.css','javascripts');?>';	
+		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>';
+		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>';
+
+
 		// End PHP Variables
 		
 		var isSecure = window.location.protocol == 'https:' ? true : false;
@@ -429,233 +429,272 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		    return raw ? parseFloat(raw[1]) : 0; // return 0 for not-Safari
 		}		
 
+
 		jQuery(document).ready(function() {
-
-
-			// Build the base map
-			var map = L.map('curatescape-map-canvas',{
-				layers: defaultMapLayer,
-				minZoom: 3,
-				scrollWheelZoom: false,
-			}).setView(center, zoom);
+			loadCSS( leafletcss );
+			if(useClusters==true) loadCSS( leafletClustercss );
 			
+			loadJS( leafletjs, function(){
+				console.log('Leaflet ready...');
+				
+				terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
+						attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
+						retina: (L.Browser.retina) ? '@2x' : '',
+					});		
+				carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
+				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
+						retina: (L.Browser.retina) ? '@2x' : '',
+					});
+				var defaultMapLayer= mapLayerThemeSetting ? mapLayerThemeSetting : carto;	
 
-			// Geolocation controls
-			if( (getChromeVersion()>=50 && !isSecure) || (getSafariVersion()>=601.6 && !isSecure) || !navigator.geolocation){			
-				// console.warn('Geolocation is not available over insecure origins on this browser.');
-			}else{
-				var geolocationControl = L.control({position: 'topleft'});
-				geolocationControl.onAdd = function (map) {
-				    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-				    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
-				    return div;
-				};
-				geolocationControl.addTo(map);				
-			}
 
-			// Fullscreen controls
-			var fullscreenControl = L.control({position: 'topleft'});
-			fullscreenControl.onAdd = function (map) {
-			    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-fullscreen');
-			    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
-			    return div;
-			};
-			fullscreenControl.addTo(map);
-			
-			// Layer controls
-			L.control.layers({
-				"Terrain":terrain,
-				"Street":carto,
-			}).addTo(map);		
-
-			
-								
-			
-			// Center marker and popup on open
-			map.on('popupopen', function(e) {
-				// find the pixel location on the map where the popup anchor is
-			    var px = map.project(e.popup._latlng); 
-			    // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
-			    px.y -= e.popup._container.clientHeight/2;
-			    // pan to new center
-			    map.panTo(map.unproject(px),{animate: true}); 
-			});				
-			// Add Markers
-			var addMarkers = function(data){				
-		        function icon(color,markerInner){ 
-			        return L.MakiMarkers.icon({
-			        	icon: markerInner, 
-						color: color, 
-						size: markerSize,
-						accessToken: "pk.eyJ1IjoiZWJlbGxlbXBpcmUiLCJhIjoiY2ludWdtOHprMTF3N3VnbHlzODYyNzh5cSJ9.w3AyewoHl8HpjEaOel52Eg"
-			    		});	
-			    }				
-				if(typeof(data.items)!="undefined"){ // tours and other multi-item maps
+				var mapDisplay =function(){
+					// Build the base map
+					var map = L.map('curatescape-map-canvas',{
+						layers: defaultMapLayer,
+						minZoom: 3,
+						scrollWheelZoom: false,
+					}).setView(center, zoom);
 					
-					var group=[];
-					if(useClusters==true){
-						var markers = L.markerClusterGroup({
-							zoomToBoundsOnClick:true,
-							disableClusteringAtZoom: clusterIntensity,
-							polygonOptions: {
-								'stroke': false,
-								'color': '#000',
-								'fillOpacity': .1
+					
+					// Geolocation controls
+					if( (getChromeVersion()>=50 && !isSecure) || (getSafariVersion()>=601.6 && !isSecure) || !navigator.geolocation){			
+						// console.warn('Geolocation is not available over insecure origins on this browser.');
+					}else{
+						var geolocationControl = L.control({position: 'topleft'});
+						geolocationControl.onAdd = function (map) {
+						    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
+						    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
+						    return div;
+						};
+						geolocationControl.addTo(map);				
+					}
+					
+					// Fullscreen controls
+					var fullscreenControl = L.control({position: 'topleft'});
+					fullscreenControl.onAdd = function (map) {
+					    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-fullscreen');
+					    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
+					    return div;
+					};
+					fullscreenControl.addTo(map);
+					
+					// Layer controls
+					L.control.layers({
+						"Terrain":terrain,
+						"Street":carto,
+					}).addTo(map);		
+					
+					
+										
+					
+					// Center marker and popup on open
+					map.on('popupopen', function(e) {
+						// find the pixel location on the map where the popup anchor is
+					    var px = map.project(e.popup._latlng); 
+					    // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+					    px.y -= e.popup._container.clientHeight/2;
+					    // pan to new center
+					    map.panTo(map.unproject(px),{animate: true}); 
+					});				
+					// Add Markers
+					var addMarkers = function(data){				
+					    function icon(color,markerInner){ 
+					        return L.MakiMarkers.icon({
+					        	icon: markerInner, 
+								color: color, 
+								size: markerSize,
+								accessToken: "pk.eyJ1IjoiZWJlbGxlbXBpcmUiLCJhIjoiY2ludWdtOHprMTF3N3VnbHlzODYyNzh5cSJ9.w3AyewoHl8HpjEaOel52Eg"
+					    		});	
+					    }				
+						if(typeof(data.items)!="undefined"){ // tours and other multi-item maps
+							
+							var group=[];
+							if(useClusters==true){
+								var markers = L.markerClusterGroup({
+									spiderfyOnMaxZoom: false, // should be an option?
+									zoomToBoundsOnClick:true,
+									disableClusteringAtZoom: clusterIntensity,
+									polygonOptions: {
+										'stroke': false,
+										'color': '#000',
+										'fillOpacity': .1
+									}
+								});
 							}
+							
+					        jQuery.each(data.items,function(i,item){
+									
+						        var address = item.address ? item.address : '';
+								var c = (item.featured==1 && featured_color) ? featured_color : color;
+								var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
+						        if(typeof(item.thumbnail)!="undefined"){
+							        var image = '<a href="'+root_url+'/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
+							    }else{
+								    var image = '';
+							    }
+							    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
+						        var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
+								
+								
+								var marker = L.marker([item.latitude,item.longitude],{
+									icon: icon(c,inner),
+									title: item.title,
+									}).bindPopup(html);
+								
+								group.push(marker);  
+								
+								if(useClusters==true) markers.addLayer(marker);
+					
+					        });
+					        
+					        if(useClusters==true && type!=='tour' || type=='tour' && clusterTours==true){
+						        map.addLayer(markers);
+						        mapBounds = markers.getBounds();
+						    }else{
+					        	group=new L.featureGroup(group); 
+								group.addTo(map);	
+								mapBounds = group.getBounds();				    
+						    }
+					        
+							// Fit map to markers as needed			        
+					        if((type == 'queryresults'|| type == 'tour') || alwaysFit==true){
+						        if(useClusters==true){
+							        map.fitBounds(markers.getBounds());
+							    }else{
+								    map.fitBounds(group.getBounds());
+							    }
+					        }
+					        
+					        
+						}else{ // single items
+							map.setView([data.latitude,data.longitude],defaultItemZoom);	
+					        var address = data.address ? data.address : data.latitude+','+data.longitude;
+					
+					        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Go to media files"></a>' : '';
+					
+					        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
+							
+							var marker = L.marker([data.latitude,data.longitude],{
+								icon: icon(color,"circle"),
+								title: data.title,
+								}).bindPopup(html);					
+							
+							marker.addTo(map);
+
+							mapBounds = map.getBounds();
+						
+						}
+						
+					}		
+					
+					if(type=='story'){
+						var data = jQuery.parseJSON(source);
+						if(data){
+							addMarkers(data);
+						}
+						
+					}else if(type=='tour'){
+						var data = jQuery.parseJSON(source);
+						addMarkers(data);
+						
+					}else if(type=='focusarea'){
+						jQuery.getJSON( source, function(data) {
+							var data = data;
+							addMarkers(data);
+						});
+						
+					}else if(type=='queryresults'){
+						jQuery.getJSON( source, function(data) {
+							var data = data;
+							addMarkers(data);
+						});
+						
+					}else{
+						jQuery.getJSON( source, function(data) {
+							var data = data;
+							addMarkers(data);
 						});
 					}
 					
-			        jQuery.each(data.items,function(i,item){
-							
-				        var address = item.address ? item.address : '';
-						var c = (item.featured==1 && featured_color) ? featured_color : color;
-						var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
-				        if(typeof(item.thumbnail)!="undefined"){
-					        var image = '<a href="'+root_url+'/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
-					    }else{
-						    var image = '';
-					    }
-					    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
-				        var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
-						
-						
-						var marker = L.marker([item.latitude,item.longitude],{icon: icon(c,inner)}).bindPopup(html);
-						
-						group.push(marker);  
-						
-						if(useClusters==true) markers.addLayer(marker);
-
-			        });
-			        
-			        if(useClusters==true && type!=='tour' || type=='tour' && clusterTours==true){
-				        map.addLayer(markers);
-				        mapBounds = markers.getBounds();
-				    }else{
-			        	group=new L.featureGroup(group); 
-						group.addTo(map);	
-						mapBounds = group.getBounds();				    
-				    }
-			        
-					// Fit map to markers as needed			        
-			        if((type == 'queryresults'|| type == 'tour') || alwaysFit==true){
-				        if(useClusters==true){
-					        map.fitBounds(markers.getBounds());
-					    }else{
-						    map.fitBounds(group.getBounds());
-					    }
-			        }
-			        
-			        
-				}else{ // single items
-					map.setView([data.latitude,data.longitude],defaultItemZoom);	
-			        var address = data.address ? data.address : data.latitude+','+data.longitude;
-			        var accessInfo=(data.accessinfo === true) ? '<a class="access-anchor" href="#access-info"><span class="icon-exclamation-circle" aria-hidden="true"></span> Access Information</a>' : '';
-
-			        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="#item-photos" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Go to media files"></a>' : '';
-
-			        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+accessInfo+'</div>';
+					/* Map Action Buttons */
 					
-					var marker = L.marker([data.latitude,data.longitude],{icon: icon(color,"circle")}).bindPopup(html);					
+					// Fullscreen
+					jQuery('.leaflet-control-fullscreen-toggle').click(function(e){
+						e.preventDefault();
+						jQuery("body").toggleClass("fullscreen-map");
+						jQuery(".leaflet-control-fullscreen-toggle i").toggleClass('fa-expand').toggleClass('fa-compress');
+						map.invalidateSize();
+					});
+					jQuery(document).keyup(function(e) {
+						if ( e.keyCode == 27 ){ // exit fullscreen
+							if(jQuery('body').hasClass('fullscreen-map')) jQuery('.leaflet-control-fullscreen-toggle').click();
+						}
+					});
 					
-					marker.addTo(map).bindPopup(html);
-					if(jQuery( window ).width() > '550') marker.openPopup();
-					mapBounds = map.getBounds();
-					
+					// Geolocation
+					jQuery('.leaflet-control-geolocation-toggle').click(
+						function(e){
+						e.preventDefault();	
+						var options = {
+							enableHighAccuracy: true,
+							maximumAge: 30000,
+							timeout: 15000
+						};
+						jQuery(".leaflet-control-geolocation-toggle").addClass("working");
+						navigator.geolocation.getCurrentPosition(
+							function(pos) {
+								var userLocation = [pos.coords.latitude, pos.coords.longitude];					
+								// adjust map view
+								if(type=='story'|| type=='tour' || type == 'queryresults'){
+									if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
+									var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
+									map.fitBounds(newBounds);
+								}else{
+									map.panTo(userLocation);
+								}
+								// add/update user location indicator
+								if(typeof(userMarker)==='undefined') {
+									userMarker = new L.circleMarker(userLocation,{
+									  radius: 8,
+									  fillColor: "#4a87ee",
+									  color: "#ffffff",
+									  weight: 3,
+									  opacity: 1,
+									  fillOpacity: 0.8,
+									}).addTo(map);
+									jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
+								}else{
+									userMarker.setLatLng(userLocation);
+									jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
+								}
+							}, 
+							function(error) {
+								console.log(error);
+								var errorMessage = error.message ? ' Error message: "' + error.message + '"' : 'Oops! We were unable to determine your current location.';
+								jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
+								alert(errorMessage);
+							}, 
+							options);
+					});			
 				}
-				
-			}		
-			
-			if(type=='story'){
-				var data = jQuery.parseJSON(source);
-				if(data){
-					addMarkers(data);	
+
+
+
+
+				if(useClusters==true){
+					loadJS( leafletClusterjs, function(){
+						console.log('Clustering ready...')
+						mapDisplay();
+					});
 				}else{
-					jQuery('#hero, .map-actions').hide();
+					mapDisplay();
 				}
-				
-			}else if(type=='tour'){
-				var data = jQuery.parseJSON(source);
-				addMarkers(data);
-				
-			}else if(type=='focusarea'){
-				jQuery.getJSON( source, function(data) {
-					var data = data;
-					addMarkers(data);
-				});
-				
-			}else if(type=='queryresults'){
-				jQuery.getJSON( source, function(data) {
-					var data = data;
-					addMarkers(data);
-				});
-				
-			}else{
-				jQuery.getJSON( source, function(data) {
-					var data = data;
-					addMarkers(data);
-				});
-			}
 
-			/* Map Action Buttons */
-			
-			// Fullscreen
-			jQuery('.leaflet-control-fullscreen-toggle').click(function(e){
-				e.preventDefault();
-				jQuery("body").toggleClass("fullscreen-map");
-				jQuery(".leaflet-control-fullscreen-toggle i").toggleClass('fa-expand').toggleClass('fa-compress');
-				map.invalidateSize();
+				
 			});
-			jQuery(document).keyup(function(e) {
-				if ( e.keyCode == 27 ){ // exit fullscreen
-					if(jQuery('body').hasClass('fullscreen-map')) jQuery('.leaflet-control-fullscreen-toggle').click();
-				}
-			});
-			
-			// Geolocation
-			jQuery('.leaflet-control-geolocation-toggle').click(
-				function(e){
-				e.preventDefault();	
-				var options = {
-					enableHighAccuracy: true,
-					maximumAge: 30000,
-					timeout: 15000
-				};
-				jQuery(".leaflet-control-geolocation-toggle").addClass("working");
-				navigator.geolocation.getCurrentPosition(
-					function(pos) {
-						var userLocation = [pos.coords.latitude, pos.coords.longitude];					
-						// adjust map view
-						if(type=='story'|| type=='tour' || type == 'queryresults'){
-							if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
-							var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
-							map.fitBounds(newBounds);
-						}else{
-							map.panTo(userLocation);
-						}
-						// add/update user location indicator
-						if(typeof(userMarker)==='undefined') {
-							userMarker = new L.circleMarker(userLocation,{
-							  radius: 8,
-							  fillColor: "#4a87ee",
-							  color: "#ffffff",
-							  weight: 3,
-							  opacity: 1,
-							  fillOpacity: 0.8,
-							}).addTo(map);
-							jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-						}else{
-							userMarker.setLatLng(userLocation);
-							jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-						}
-					}, 
-					function(error) {
-						console.log(error);
-						var errorMessage = error.message ? ' Error message: "' + error.message + '"' : 'Oops! We were unable to determine your current location.';
-						jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-						alert(errorMessage);
-					}, 
-					options);
-			});
+		
+
 
 		});
     </script>
@@ -737,8 +776,7 @@ function mh_simple_search($inputID='search',$formProperties=array()){
 	$formProperties['method'] = 'get';
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
-	$html .= '<label for "search" hidden class="hidden">Search</label>';
-	$html .= get_view()->formText('search', $searchQuery, array('name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
+	$html .= get_view()->formText('search', $searchQuery, array('aria-label'=>'Search','name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -746,12 +784,12 @@ function mh_simple_search($inputID='search',$formProperties=array()){
 	if (array_key_exists('query', $parsedUri)) {
 		parse_str($parsedUri['query'], $getParams);
 		foreach($getParams as $getParamName => $getParamValue) {
-			$html .= get_view()->formHidden($getParamName, $getParamValue);
+			$html .= get_view()->formHidden($getParamName, $getParamValue,array('id'=>$inputID.'-'.$getParamValue));
 		}
 	}
 	if($sitewide==1 && count($default_record_types)){
 		foreach($default_record_types as $drt){
-			$html .= get_view()->formHidden('record_types[]', $drt);
+			$html .= get_view()->formHidden('record_types[]', $drt,array('id'=>$inputID.'-'.$drt));
 		}
 	}
 	
@@ -1183,14 +1221,16 @@ function mh_item_images($item,$index=0){
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
 		$mime = metadata($file,'MIME Type');
 		if(in_array($mime,$img)) {
-			$title=metadata($file, array('Dublin Core', 'Title'));
-			$title_formatted='<strong><u>'.$title.'</u></strong>';
+			$title=metadata($file, array('Dublin Core', 'Title')) ? metadata($file, array('Dublin Core', 'Title')) : 'Untitled';
+			$title_formatted=link_to($file,'show','<strong>'.$title.'</strong>',array('title'=>'View File Record'));
 			$desc=metadata($file, array('Dublin Core', 'Description'));
 			$caption=($desc ? $title_formatted.': '.$desc : $title_formatted);
 			if($source=metadata($file, array('Dublin Core', 'Source'))){
 				$caption.=' ~ '.__('Source').': '.$source;
 			}
-			$caption.=' ~ '.link_to($file, 'show','<i class="fa fa-external-link"></i>'.__('View File Record'), array('class'=>'pswp-file-permalink'));
+			if($creators=metadata($file, array('Dublin Core', 'Creator'),true)){
+				$caption.=' ~ '.__('Creator').': '.implode(', ',$creators);
+			}			
 			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
 			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 				$html.= '<a title="'.$title.'" class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';
@@ -1280,34 +1320,35 @@ function mh_audio_files($item,$index=0){
 				</div>
 			</div>
 		</figure>	
-		<link href="//vjs.zencdn.net/5.19.2/video-js.css" rel="stylesheet">
-		<script src="//vjs.zencdn.net/5.19.2/video.js"></script>
-		<script>
+		<script async defer>
 			jQuery(document).ready(function($) {
-				
-				var audioplayer = videojs('curatescape-player-audio',{
-					height:'30',
-					controlBar: {
-						fullscreenToggle: false
-					}
-				}).src(
-					$('.media-list.audio .media-select:first-child').attr('data-source')
-				);
-				if(typeof audioplayer == 'object'){
-					$('.media-list.audio .media-select:first-child').addClass('now-playing');
+				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
+				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
+
+					var audioplayer = videojs('curatescape-player-audio',{
+						height:'30',
+						controlBar: {
+							fullscreenToggle: false
+						}
+					}).src(
+						$('.media-list.audio .media-select:first-child').attr('data-source')
+					);
+					if(typeof audioplayer == 'object'){
+						$('.media-list.audio .media-select:first-child').addClass('now-playing');
+						
+						$('.media-list.audio .media-select').on('click',function(e){
+							$('.media-list.audio .now-playing').removeClass('now-playing');
+							$(this).addClass('now-playing');
+							audioplayer.src($(this).attr('data-source')).play();
+						});
+						
+						audioplayer.ready(function(){
+							// load controls
+							audioplayer.play().pause()
+						});
+					}	
 					
-					$('.media-list.audio .media-select').on('click',function(e){
-						$('.media-list.audio .now-playing').removeClass('now-playing');
-						$(this).addClass('now-playing');
-						audioplayer.src($(this).attr('data-source')).play();
-					});
-					
-					audioplayer.ready(function(){
-						// load controls
-						audioplayer.play().pause()
-					});
-				}				
-				
+				});
 			});
 		</script>
 	<?php endif;
@@ -1351,22 +1392,24 @@ function mh_video_files($item='item',$html=null) {
 				<?php echo $html;?>
 			</div>
 		</figure>
-		<script>
+		<script async defer>
 			jQuery(document).ready(function($) {
-				
-				var videoplayer = videojs('curatescape-player').src(
-					$('.media-list.video .media-select:first-child').attr('data-source')
-				);
-				if(typeof videoplayer == 'object'){
-					$('.media-list.video .media-select:first-child').addClass('now-playing');
+				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
+				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
 					
-					$('.media-list.video .media-select').on('click',function(e){
-						$('.media-list.video .now-playing').removeClass('now-playing');
-						$(this).addClass('now-playing');
-						videoplayer.src($(this).attr('data-source')).play();
-					});
-				}				
-				
+					var videoplayer = videojs('curatescape-player').src(
+						$('.media-list.video .media-select:first-child').attr('data-source')
+					);
+					if(typeof videoplayer == 'object'){
+						$('.media-list.video .media-select:first-child').addClass('now-playing');
+						
+						$('.media-list.video .media-select').on('click',function(e){
+							$('.media-list.video .now-playing').removeClass('now-playing');
+							$(this).addClass('now-playing');
+							videoplayer.src($(this).attr('data-source')).play();
+						});
+					}				
+				});
 			});
 		</script>			
 	<?php endif;
@@ -1436,7 +1479,7 @@ function mh_single_file_show($file=null){
 				$html.= $embeddable;
 			}else{
 				?>
-				<script>
+				<script async defer>
 					loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
 					loadJS('//vjs.zencdn.net/5.19.2/video.js');
 				</script>	
@@ -1525,7 +1568,7 @@ function mh_disquss_comments($shortname){
 	?>
     <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
     <div id="disqus_thread"></div>
-    <script type="text/javascript">
+    <script type="text/javascript" async defer>
         var disqus_shortname = '<?php echo $shortname;?>'; 
         (function() {
             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -1556,7 +1599,7 @@ function mh_intensedebate_comments($intensedebate_id){
 		var idcomments_post_url;
 		</script>
 		<span id="IDCommentsPostTitle" style="display:none"></span>
-		<script type='text/javascript' src='https://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+		<script async defer type='text/javascript' src='https://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
 		<?php
 	}
 }
@@ -1959,7 +2002,7 @@ function mh_random_or_recent($mode='recent',$num=4){
 				$item_image = array_pop($result);
 			}
 
-			$html.= isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null;
+			$html.= isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null;
 
 
 			if($desc = mh_the_text($item,array('snippet'=>200))){
@@ -2060,7 +2103,7 @@ function mh_font_config(){
 	}elseif($fdc=get_theme_option('fonts_dot_com')){
 		$config="monotype: { projectId: '".$fdc."' }";
 	}else{
-		$config="google: { families: [ 'Raleway:latin', 'Playfair+Display:400,300,600:latin' ] }";
+		$config="google: { families: [ 'Raleway:latin', 'Playfair+Display:latin' ] }";
 	}
 	return $config;
 }

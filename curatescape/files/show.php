@@ -15,7 +15,7 @@
 		($fileid=metadata('file', 'id')) ? $info[]='<span class="file-id">ID: '.$fileid.'</span>' : null;
 		
 		($source=metadata('file', array('Dublin Core','Source'))) ? $info[] = '<span class="file-source">'.__('Source').': '.$source.'</span>' : null;
-		($creators=metadata('file', array('Dublin Core','Creator'),true)) ? $info[] = '<span class="file-creator">'.__('Creator').': '.mh_format_creators_string($creators).'</span>' : null;
+		($creators=metadata('file', array('Dublin Core','Creator'),true)) ? $info[] = '<span class="file-creator">'.__('Creator').': '.implode(', ',$creators).'</span>' : null;
 
 		echo count($info) ? '<span id="file-header-info" class="story-meta byline">'.implode(" ~ ", $info).'</span>' : null;
 				

@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 			{
 				// search bar
 				position: "top",
-				content: ["<span class='offscreen-search'>"+$('.search-plus form')[0].outerHTML+"</span>"],
+				content: ["<span class='offscreen-search'>"+$('form#sidebar-search-form')[0].outerHTML+"</span>"],
 				height:2,
 			},{
 				// random button
@@ -17,6 +17,7 @@ jQuery(document).ready(function($) {
 		        height:1,
 			}
 	    ];		
+		$('form#sidebar-search-form').remove();
 		
 		var extensions = [
 				"pagedim-black",

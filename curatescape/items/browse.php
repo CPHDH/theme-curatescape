@@ -77,8 +77,8 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 				}
 				
 				?>
-				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>" id="item-result">
-					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>') : null; ?>
+				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>">
+					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null; ?>
 					<h3><?php echo $titlelink; ?></h3>
 					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
 					

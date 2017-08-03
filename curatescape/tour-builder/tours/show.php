@@ -63,14 +63,6 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 									<h3><a href="<?php echo url('/') ?>items/show/<?php echo $itemID.'?tour='.tour( 'id' ).'&index='.($i-1).''; ?>">
 										<?php echo metadata( $tourItem, array('Dublin Core', 'Title') ); ?>
 									</a></h3>
-				
-									<?php
-									if ($hasImage){
-										preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
-										$item_image = array_pop($result);				
-									}
-									echo isset($item_image) ? '<a href="'. url('/') .'items/show/'.$itemID.'?tour='.tour( 'id' ).'&index='.($i-1).'"><span class="item-image" style="background-image:url('.$item_image.');"></span></a>' : null; 
-									?>
 										         
 							        <div class="item-description"><?php echo snippet(mh_the_text($tourItem),0,250); ?></div>
 						        </article>

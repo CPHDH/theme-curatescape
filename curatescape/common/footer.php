@@ -24,6 +24,7 @@
 
 <div hidden class="hidden">
 	<!-- Mmenu Markup -->
+	<?php echo mh_simple_search('sidebar-search',array('id'=>'sidebar-search-form'));?>
 	<nav id="offscreen-menu">
 		<?php echo mh_global_nav(true);?>
 	</nav>
