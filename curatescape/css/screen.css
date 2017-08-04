@@ -193,10 +193,11 @@ h2.query-header {
 /* ITEM PHOTOS */
 figure#item-photos{
 	justify-content: space-between;
+	margin: 0 -0.5% 1em;
 }
 figure#item-photos .flex-image{
 	width: 100%;
-	margin: 1% 1% 0 0;
+	margin: 0.5%;
 	flex-grow: 1;
 	flex-shrink: 1;
 	height: 14em;
@@ -354,10 +355,11 @@ figure#item-photos .flex-image .file{
 	margin-bottom: 0;
 }
 .offscreen-random{
-	background: rgba(0,0,0,.3);
+	background: rgba(0,0,0,.6);
 }
 .mm-navbar .offscreen-random a{
 	color: #fff;
+	display: block;
 }
 
 /* SECONDARY NAVIGATION */
@@ -620,7 +622,7 @@ video,audio{
 */
 
 /* MEDIA TYPE AND SEARCH HEADINGS */
-section.media h3,section.map h2, #search.browse h3.result-type-header{
+section.media h3,section.map h2, #search.browse h3.result-type-header, body#home h3.result-type-header{
     font-size: 160%;
     text-transform: uppercase;
     border-bottom: 1px solid #ccc;
@@ -713,12 +715,15 @@ section.map figcaption{
 	background-image:linear-gradient(to bottom,rgba(204,204,204,1) 1%,rgba(221,221,221,1) 44%,rgba(255,255,255,1) 90%);
 }
 @media all and (max-width:880px){
-	body#items.browse .curatescape-map:after {
+	.curatescape-map:after {
 	    display: block;
 	    height: 1em;
 	    background: #222;
 	    content: '';
 	}	
+	.map-actions{
+		margin-top: -1em;
+	}
 }
 
 #curatescape-map-canvas {
@@ -1105,11 +1110,31 @@ span.number{
 	margin-bottom: 0;
 }
 
-/* Related resources */
+/* RELATED RESOURCES */
 
 .related-resources ul li a{
 	word-wrap: break-word;
 }
+
+/* COMMENTS */
+#disqus_thread{
+	margin-top: 1em;
+}
+a.load-comments{
+    display: block;
+    text-align: center;
+    padding: .5em 1em;
+    margin-top: 1em;
+    color: #222;
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid #777;
+}
+a.load-comments:hover,a.load-comments:focus{
+	background-color: #fafafa;
+	color:#222;
+}
+
 
 /* FOOTER */
 footer.main{
@@ -1119,7 +1144,8 @@ footer.main{
 }
 
 footer.main .default{
-	max-width: 95%;
+	width: 95%;
+	max-width: 40em;
 	margin: 2em auto 0;
 }
 
@@ -1198,13 +1224,20 @@ footer.main nav#footer-nav input:focus{
 #footer-nav .downloads a{
 	width: 49%;
 }
-
+#footer-nav .downloads a:hover{
+	border-color: #222;
+}
 #footer-nav .downloads a.android{
 	background: #77c159;
 	color: #fff;
 	border-color: #fff;
 }
-#footer-nav .downloads a.ios{
+#footer-nav .downloads a:hover{
+	border-color: #222;
+}
+footer.main .custom{
+	display: block;
+	margin-top: 1em;
 }
 
 /* ADVANCED SEARCH */
@@ -1291,9 +1324,26 @@ body#search form#advanced-search-form div.field:last-child {
 	background: #222;
 	color:#fff;	
 }
-#footer-nav .random-button:hover, .random-button:focus{
+#footer-nav .random-button:hover, #footer-nav .random-button:focus{
 	background: #000;
 	color:#fff;
+}
+
+/* ABOUT TEXT */
+section#about{
+    background: #fafafa;
+    border: 1px solid #ccc;
+    padding: 1em 1em 0;
+    border-radius: 3px;	
+}
+.about-text header{
+	text-align: center;
+}
+.about-main{
+	margin-top: 2em;
+}
+.about-text span.sponsor-name{
+	display: inline-block;
 }
 
 /* TOURS */
@@ -1580,6 +1630,19 @@ body.contribution #flash ul{
 #admin-bar:focus ul.navigation li > ul{
 	display: block;
 }
+#admin-bar a.highlight {
+    text-decoration: none;
+    background: #444;
+    padding: 5px;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px #000;
+    box-shadow: 0 0 3px #000;
+}
+#admin-bar a.highlight:hover,#admin-bar a.highlight:focus{
+	background: #eaeaea;
+	color:#222;
+	text-shadow: 1px 1px 1px #fff;
+}
 
 /* GUEST USER */
 body.login form .two.columns,
@@ -1611,6 +1674,39 @@ body.fancy.register #wrap.container,
 body.fancy.login #wrap.container
 {
 	padding: 1em;
+}
+
+/* FEATURED ITEM CARDS */
+section#featured-stories{
+	margin-bottom: 2em;
+}
+section#featured-stories article,
+.search-stories article{
+	margin-bottom: 1em;
+}
+.featured-decora-bg{
+	background-size: cover;
+}
+.featured-decora-text{
+	padding: 5% 10%;
+}
+@media all and (max-width:550px){
+	.featured-decora-text{
+		padding: 5%;
+	}	
+}
+.featured-decora-text-inner{
+    background: #fff;
+    margin: 0 auto;
+    opacity: .97;
+    padding: 1em;
+    border-radius: 3px;
+    box-shadow: 0 0 10px #000;
+    text-align: center;
+    text-shadow: 1px 1px 1px #fff;	
+}
+.featured-decora-text-inner h3{
+	margin-bottom: 0.25em;
 }
 
 /* ERROR */
@@ -1746,6 +1842,10 @@ body.fancy .map-actions{
 body.fancy .map-actions a{
 	color: #fff;
 }
+body.fancy .featured-decora-bg{
+    box-shadow: 0 0 3em rgba(0,0,0,.7) inset;
+}
+
 
 @media all and (max-width:880px){
 	.container,

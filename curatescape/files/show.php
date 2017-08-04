@@ -45,7 +45,7 @@
 	<hr>	
 	<?php echo __('This file appears in').': '.link_to_item( $title, array('class'=>'file-appears-in-item'), 'show', $record);?> 
 	<hr>
-	<?php echo mh_homepage_hero_item($record);?>
+	<?php echo mh_hero_item($record);?>
 	
 	</div><!-- end primary -->
 	

@@ -79,6 +79,7 @@ $file = (isset($file)) ? $file : null;
 <?php 
 //queue_css_file('font-awesome/css/font-awesome.min','all',false,'fonts');
 echo head_css(); 
+echo mh_theme_css();
 echo head_js(false); 
 ?>
 
@@ -95,16 +96,10 @@ echo head_js(false);
 </script>
 
 <!-- Custom CSS via theme config -->
-<?php 
-echo mh_configured_css();
-if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
-	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
-}?>
-<?php echo mh_theme_css();?>
-
+<?php echo mh_configured_css();?>
 
 <!-- Plugin Stuff -->
- <?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
+<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
 
 <!-- Theme Display Settings -->
 <?php

@@ -1,4 +1,4 @@
-var theme_name='curatescape_next';
+var theme_name='curatescape';
 jQuery(document).ready(function($) {
 	loadJS('//'+location.host+'/themes/'+theme_name+'/javascripts/photoswipe/dist/photoswipe.all.min.js',function(){
 		console.log('Photoswipe ready...');

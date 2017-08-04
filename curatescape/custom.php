@@ -126,16 +126,6 @@ function mh_tour_label($which=null){
 	}
 }
 
-/* 
-** Tour Header on Homepage
-*/
-function mh_tour_header(){
-	if($text=get_theme_option('tour_header')){
-		return $text;
-	}else{
-		return __('Take a %s', mh_tour_label('singular'));
-	}
-}
 
 /*
 ** Global navigation
@@ -571,7 +561,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							map.setView([data.latitude,data.longitude],defaultItemZoom);	
 					        var address = data.address ? data.address : data.latitude+','+data.longitude;
 					
-					        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="Go to media files"></a>' : '';
+					        var image = (typeof(data.thumbnail)!="undefined") ? '<a href="" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="'+data.title+'"></a>' : '';
 					
 					        var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
 							
@@ -713,12 +703,15 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 	
 		$street_address=null;
 		
+		
 		if($item!==null){
 			
 			// get the destination coordinates for the item
 			$location = get_db()->getTable('Location')->findLocationByItem($item, true);
 			$coords=$location[ 'latitude' ].','.$location[ 'longitude' ];
 			$street_address=mh_street_address($item,false);
+			
+			$showlink=true;
 		
 		}elseif($tour!==null){
 			
@@ -734,7 +727,9 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 			reset($coords);
 			$waypoints=array_pop($coords);		
 			$waypoints=implode('+to:', $coords);
-			$coords=$daddr.'+to:'.$waypoints;				
+			$coords=$daddr.'+to:'.$waypoints;	
+			
+			$showlink=get_theme_option('show_tour_dir');			
 		}
 	
 	?>
@@ -742,7 +737,7 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 	<div class="map-actions flex">
 		
 		<!-- Directions link -->
-		<?php if( $coords && ($item || $tour) ):?>
+		<?php if( $showlink && $coords && ($item || $tour) ):?>
 				<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="<?php echo __('Get Directions on Google Maps');?>" target="_blank" rel="noopener" href="https://maps.google.com/maps?saddr=<?php echo $saddr;?>+location&daddr=<?php echo $street_address ? urlencode($street_address) : $coords;?>">
 				<i class="fa fa-lg fa-external-link-square" aria-hidden="true"></i> <span class="label"><?php echo __('Get Directions');?></span>
 		</a>
@@ -1144,7 +1139,7 @@ function mh_post_date(){
 		$a=format_date(metadata('item', 'added'));
 		$m=format_date(metadata('item', 'modified'));	
 	
-		return '<div class="item-post-date">'.__('Published on %s.', $a ).( ($a!==$m) ? '<div>'.__('Last updated on %s.', $m ).'</div>' : null ).'</div>';	
+		return '<div class="item-post-date"><em>'.__('Published on %s.', $a ).( ($a!==$m) ? ' '.__('Last updated on %s.', $m ) : null ).'</em></div>';	
 	}
 }
 
@@ -1567,17 +1562,33 @@ function mh_disquss_comments($shortname){
 	if ($shortname){
 	?>
     <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript" async defer>
-        var disqus_shortname = '<?php echo $shortname;?>'; 
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript><?php echo __('Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>');?></noscript>
-    <a href="http://disqus.com" class="dsq-brlink"><?php echo __('comments powered by <span class="logo-disqus">Disqus</span>');?></a>
+    
+	<div id="disqus_thread">
+	  <a class="load-comments" title="Click to load the comments section" href="#" onclick="disqus();return false;">Show Comments</a> 
+	</div>    
+	
+	
+	<script type="text/javascript" async defer>
+		var disqus_shortname = "<?php echo $shortname;?>";
+		
+		var disqus_loaded = false;
+		
+		// This is the function that will load Disqus comments on demand
+		function disqus() {
+		
+		  if (!disqus_loaded)  {
+		    disqus_loaded = true;
+		    
+		    var e = document.createElement("script");
+		    e.type = "text/javascript";
+		    e.async = true;
+		    e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+		    (document.getElementsByTagName("head")[0] ||
+		     document.getElementsByTagName("body")[0])
+		    .appendChild(e);
+		  }
+		} 	
+	</script>
     
 	<?php
 	}
@@ -1588,7 +1599,7 @@ function mh_disquss_comments($shortname){
 ** intensedebate.com
 */	
 function mh_intensedebate_comments($intensedebate_id){
-	$preface=get_theme_option('comments_text');
+	//$preface=get_theme_option('comments_text');
 	if ($intensedebate_id){ ?>
 	    <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
 	    <div id="disqus_thread"></div>
@@ -1652,7 +1663,7 @@ function mh_tour_preview($s){
 /*
 ** Display the Tours list
 */
-function mh_display_homepage_tours($num=7, $scope='random'){
+function mh_display_homepage_tours($num=7, $scope='featured'){
 	
 	$scope=get_theme_option('homepage_tours_scope') ? get_theme_option('homepage_tours_scope') : $scope;
 	
@@ -1682,12 +1693,18 @@ function mh_display_homepage_tours($num=7, $scope='random'){
 
 	// Fetch some items with our select.
 	$items = $table->fetchObjects($select);
-	if($scope=='random') shuffle($items);
+	$customheader=get_theme_option('tour_header');
+	if($scope=='random'){
+		shuffle($items);
+		$heading = $customheader ? $customheader : __('Take a').' '.mh_tour_label('singular');
+	}else{
+		$heading = $customheader ? $customheader : ucfirst($scope).' '.mh_tour_label('plural');
+	}
 	$num = (count($items)<$num)? count($items) : $num;
 	$html=null;
 	
 	if($items){
-		$html .= '<h2><a href="'.WEB_ROOT.'/tours/browse/">'.mh_tour_header().'</a></h2>';
+		$html .= '<h3 class="result-type-header">'.$heading.'</h3>';
 	
 		for ($i = 0; $i < $num; $i++) {
 			$html .= '<article class="item-result">';
@@ -1707,26 +1724,22 @@ function mh_display_homepage_tours($num=7, $scope='random'){
 
 }
 
-function mh_homepage_hero_item($item){
+function mh_hero_item($item){
 			$itemTitle = metadata($item, array('Dublin Core', 'Title'));
 			$itemDescription = mh_the_text($item,array('snippet'=>200));
 			$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
 			$html=null;
 	
 			if (metadata($item, 'has thumbnail') ) {
-			
 				$img_markup=item_image('fullsize',array(),0, $item);
 				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
 				$img_url = array_pop($result);				
-				
-				$html .= '<div class="'.$class.'">';
-					$html .= '<article class="featured-story-result">';
+					$html .= '<article class="featured-story-result '.$class.'">';
 					$html .= '<div class="featured-decora-outer">' ;
-						$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')"></div>' ;
-						$html .= '<div class="featured-decora-img">'.link_to_item(item_image('square_thumbnail',array('alt'=>''),0, $item), array(), 'show', $item).'</div>';
+						$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')">' ;
 					
 						$html .= '<div class="featured-decora-text"><div class="featured-decora-text-inner">';
-							$html .= '<header><h3>' . link_to_item($itemTitle, array(), 'show', $item) . '<span class="featured-item-author">'.mh_the_byline($item,false).'</span></h3></header>';
+							$html .= '<header><h3>' . link_to_item($itemTitle, array(), 'show', $item) . '</h3><span class="featured-item-author">'.mh_the_byline($item,false).'</span></header>';
 						if ($itemDescription) {
 							$html .= '<div class="item-description">' . strip_tags($itemDescription) . '</div>';
 							}else{
@@ -1735,9 +1748,8 @@ function mh_homepage_hero_item($item){
 	
 						$html .= '</div></div>' ;
 					
-					$html .= '</div>' ;
+					$html .= '</div></div>' ;
 					$html .= '</article>';
-				$html .= '</div>';
 			}
 			
 			return $html;
@@ -1750,19 +1762,18 @@ function mh_homepage_hero_item($item){
 function mh_display_random_featured_item($withImage=false,$num=1)
 {
 	$featuredItem = get_random_featured_items($num,$withImage);
-	$html = '<h2 class="hidden">'.__('Featured %s', mh_item_label()).'</h2>';
+	$html = '<h3 class="result-type-header">Featured '.mh_item_label('plural').'</h3>';
 	
 	if ($featuredItem) {
 	
 	foreach($featuredItem as $item):
-
-		$html.=mh_homepage_hero_item($item);
+		$html .=mh_hero_item($item);
 			
 	endforeach;		
 			
 	}else {
 		$html .= '<article class="featured-story-result none">';
-		$html .= '<div class="item-thumb clearfix"></div><div class="item-description empty"><p>'.__('No featured items are available.').'</p></div>';
+		$html .= '<p>'.__('No featured items are available.').'</p>';
 		$html .= '</article>';
 	}
 	
@@ -1775,29 +1786,23 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 /*
 ** Display the customizable "About" content on homepage
 */
-function mh_home_about($length=530,$html=null){
+function mh_home_about($length=800,$html=null){
 
 	$html .= '<div class="about-text">';
 		$html .= '<article>';
 			
 			$html .= '<header>';
 				$html .= '<h2>'.option('site_title').'</h2>';
-				$html .= '<span class="find-us">'.__('A project by %s', mh_owner_link()).'</span>';
+				$html .= '<span class="sponsor">'.__('A project by').' <span class="sponsor-name">'.mh_owner_link().'</span></span>';
 			$html .= '</header>';
 		
-			$html .= '<div class="about-main">';
+			$html .= '<div class="about-main"><p>';
 				$html .= substr(mh_about(),0,$length);
-				$html .= ($length < strlen(mh_about())) ? '...' : null;
-				$html .= '<p class="view-more-link"><a href="'.url('about').'">'.__('Read more <span>About Us</span>').'</a></p>';
-			$html .= '</div>';
+				$html .= ($length < strlen(mh_about())) ? '... ' : null;
+				$html .= ' <a href="'.url('about').'">'.__('Read more <span>About Us</span>').'</a>';
+			$html .= '</p></div>';
 	
 		$html .= '</article>';
-	$html .= '</div>';
-	
-	$html .= '<div class="home-about-links">';
-		$html .= '<aside>';
-		$html .= mh_homepage_find_us();
-		$html .= '</aside>';
 	$html .= '</div>';
 
 	return $html;
@@ -1819,12 +1824,8 @@ function mh_home_popular_tags($num=50){
 /*
 ** List of recent or random items for homepage
 */
-function mh_home_item_list($html=null){
-	$html.= '<div id="rr_home-items" class="">';
-	$html.=  mh_random_or_recent( ($mode=get_theme_option('random_or_recent')) ? $mode : 'recent' );
-	$html.=  '</div>';	
-	
-	return $html;
+function mh_home_item_list(){
+	return mh_random_or_recent( ($mode=get_theme_option('random_or_recent')) ? $mode : 'recent' );
 }
 
 /*
@@ -1834,10 +1835,10 @@ function mh_social_array($max=5){
 	$services=array();
 	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a target="_blank" rel="noopener" title="Email" href="mailto:'.$email.'" class="button social icon email"><i class="fa fa-lg fa-envelope" aria-hidden="true"><span> Email</span></i></a>') : null;		
 	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Facebook" href="'.$facebook.'" class="button social icon facebook"><i class="fa fa-lg fa-facebook" aria-hidden="true"><span> Facebook</span></i></a>') : null;	
-	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Twitter" href="'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
+	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
 	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Youtube" href="'.$youtube.'" class="button social icon youtube"><i class="fa fa-lg fa-youtube-play" aria-hidden="true"><span> Youtube</span></i></a>') : null;
-	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
-	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
+	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
+	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="https://www.pinterest.com/'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
 	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
 	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
 	($wordpress=get_theme_option('wordpress_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="WordPress" href="'.$wordpress.'" class="button social icon wordpress"><i class="fa fa-lg fa-wordpress" aria-hidden="true"><span> WordPress</span></i></a>') : null;				
@@ -1893,56 +1894,65 @@ function mh_owner_link(){
 /*
 ** Build HTML content for homepage widget sections
 ** Each widget can be used ONLY ONCE
-** The "Random or Recent" widget is always used since it's req. for the mobile slider
-** If the admin user chooses not to use it, it's included in a hidden container
 */
 
-function homepage_widget_1($content='featured'){
+function homepage_widget_1($content='recent_or_random'){
 	
 	get_theme_option('widget_section_1') ? $content=get_theme_option('widget_section_1') : null;
 	
 	return $content;
 }
 
-function homepage_widget_2($content='tours'){
+function homepage_widget_2($content='featured'){
 	
 	get_theme_option('widget_section_2') ? $content=get_theme_option('widget_section_2') : null;
 	
 	return $content;	
 }
 
-function homepage_widget_3($content='recent_or_random'){
+function homepage_widget_3($content='tours'){
 	
 	get_theme_option('widget_section_3') ? $content=get_theme_option('widget_section_3') : null;
 	
 	return $content;	
 }
+function homepage_widget_4($content='about'){
+	
+	get_theme_option('widget_section_4') ? $content=get_theme_option('widget_section_4') : null;
+	
+	return $content;	
+}
 
-function homepage_widget_sections($html=null){
-		
-		$recent_or_random_isset=0; 
-		$tours_isset=0;
-		$featured_isset=0;
+function homepage_widget_sections(){
+		$html=null;
+		$recent_or_random=0; 
+		$tours=0;
+		$featured=0;
 		$popular_tags=0;
+		$about=0;
 		
-		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3()) as $setting){
+		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3(),homepage_widget_4()) as $setting){
 			
 			switch ($setting) {
 			    case 'featured':
-			        $html.= ($featured_isset==0) ? '<section id="featured-story">'.mh_display_random_featured_item(true,3).'</section>' : null;
-			        $featured_isset++;
+			        $html.= ($featured==0) ? '<section id="featured-stories">'.mh_display_random_featured_item(true,3).'</section>' : null;
+			        $featured++;
 			        break;
 			    case 'tours':
-			        $html.= ($tours_isset==0) ? '<section id="home-tours">'.mh_display_homepage_tours().'</section>' : null;
-			        $tours_isset++;
+			        $html.= ($tours==0) ? '<section id="home-tours">'.mh_display_homepage_tours().'</section>' : null;
+			        $tours++;
 			        break;
 			    case 'recent_or_random':
-			        $html.= ($recent_or_random_isset==0) ? '<section id="home-item-list">'.mh_home_item_list().'</section>' : null;
-			        $recent_or_random_isset++;
+			        $html.= ($recent_or_random==0) ? '<section id="home-item-list">'.mh_home_item_list().'</section>' : null;
+			        $recent_or_random++;
 			        break;
 			    case 'popular_tags':
-			        $html.= ($popular_tags==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
+			        $html.= ($popular==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
 			        $popular_tags++;
+			        break;
+			    case 'about':
+			        $html.= ($about==0) ? '<section id="about">'.mh_home_about().'</section>	' : null;
+			        $about++;
 			        break;
 
 			    default:
@@ -1950,21 +1960,15 @@ function homepage_widget_sections($html=null){
 			}
 			
 		}
-		
-		// we need to use this one at least once for the mobile slider. if it's unused, we'll include it in a hidden div
-		$html.= ($recent_or_random_isset==0) ? '<section class="hidden" id="home-item-list">'.mh_home_item_list().'</section>' : null;
-		
+				
 		return $html;
-
-
 }
-
 
 
 /*
 ** Get recent/random items for use in mobile slideshow on homepage
 */
-function mh_random_or_recent($mode='recent',$num=4){
+function mh_random_or_recent($mode='recent',$num=6){
 	
 	switch ($mode){
 	
@@ -1973,60 +1977,53 @@ function mh_random_or_recent($mode='recent',$num=4){
 		$param="Random";
 		break;
 	case 'recent':
-		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'added', 'sort_dir' => 'd'), $num);
+		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'added', 'sort_dir' => 'd','public'=>true), $num);
 		$param="Recent";
 		break;
 		
-	}
-
-	
+	}	
 	set_loop_records('items',$items);
-
-	$html=null;
+	$html='<section id="random-recent">';
 	$labelcount='<span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
 		
 	if (has_loop_records('items')){
-			
-		$html.=($num <=1) ? '<h2>'.__('%s1 %s2', $param, mh_item_label()).'</h2>' : '<h2>'.__('%1s %2s', $param, mh_item_label('plural')).'</h2>';
-		
-		$html.= '<div class="rr-results">';	
-			
-		foreach (loop('items') as $item){
-			$html.= '<article class="item-result has-image">';
-
-			$html.= '<h3>'.link_to_item(metadata($item,array('Dublin Core','Title')),array('class'=>'permalink')).'</h3>';
-
+	
+	$html.='<h3 class="result-type-header">'.ucfirst($mode).' '.mh_item_label('plural').'</h3>';
+	$html.='<div class="browse-items flex">';
+		foreach(loop('Items') as $item){
+			$item_image=null;
+			$description = mh_the_text($item,array('snippet'=>250));
+			$tags=tag_string(get_current_record('item') , url('items/browse'));
+			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
 			$hasImage=metadata($item, 'has thumbnail');
 			if ($hasImage){
-				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
-				$item_image = array_pop($result);
+					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
+					$item_image = array_pop($result);				
 			}
 
-			$html.= isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null;
-
-
-			if($desc = mh_the_text($item,array('snippet'=>200))){
-				$html.= '<div class="item-description">'.strip_tags($desc).'</div>';
-			}else{
-				$html.= '<div class="item-description">'.__('Text preview unavailable.').'</div>';
-			}
-
-			$html.= '</article>';
-
+			$html.='<article class="item-result'.( $hasImage ? 'has-image' : null ).'">';
+				$html.=( isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null );
+				$html.='<h3>'.$titlelink.'</h3>';
+				$html.='<div class="browse-meta-top">'.mh_the_byline($item,false).'</div>';
+				
+				
+				if ($description){
+					$html.='<div class="item-description">';
+					$html.=strip_tags($description);
+					$html.='</div>';
+				}
+				
+			$html.='</article> ';
 		}
-		$html.= '</div>';	
-		$html.= '<p class="view-more-link">'.link_to_items_browse(__('Browse all %s',$labelcount)).'</p>';
-
+		$html.='<p class="view-more-link"><a href="/items/browse/">'.__('Browse all %s',$labelcount).'</a></p>';
+		$html.='</div>';
+		
 		
 	}else{
-		$html .= '<article class="recent-random-result none">';
-		$html .= '<p>'.__('No %s items are available.',$mode).'</p>';
-		$html .= '</article><div class="clearfix"></div>';
+		$html.='<p>No Items Found!</p>';
 	}
-
-	
-	return $html;	
-	
+	$html.='</section>';
+	return $html;
 }
 /*
 ** Icon file for mobile devices
@@ -2084,10 +2081,39 @@ function mh_configured_css(){
 	$bg = $bg_url ? 'background-image: url('.$bg_url.');background-attachment: fixed; ' : '';
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
-	$user_css= get_theme_option('custom_css') ? '/* Theme Option CSS */ '.get_theme_option('custom_css') : null;
-	return '<style type="text/css">
-	</style>
+	$configured_css = '
+		a{
+			color: '.$color_primary.'
+		}
+		a:hover,
+		.item-hero .item-hero-text .byline a{
+			color: '.$color_secondary.'
+		}	
+		.hTagcloud li a,
+		.button.button-primary, 
+		button.button-primary, 
+		input[type="submit"].button-primary, 
+		input[type="reset"].button-primary, 
+		input[type="button"].button-primary {
+		    background-color: '.$color_primary.';
+		    border-color: inherit;
+		}	
+		.hTagcloud li a:hover, .hTagcloud li a:focus,	
+		.button.button-primary:hover, .button.button-primary:focus,
+		button.button-primary:hover, button.button-primary:focus,
+		input[type="submit"].button-primary:hover, input[type="submit"].button-primary:focus,
+		input[type="reset"].button-primary:hover, input[type="reset"].button-primary:focus,
+		input[type="button"].button-primary:hover,input[type="button"].button-primary:focus {
+		    background-color: '.$color_secondary.';
+		    border-color: inherit;
+		}
+		.secondary-nav ul li.active a, body#tours .secondary-nav ul li a:first-child{
+			color: '.$color_primary.';
+			border-bottom: 4px solid '.$color_secondary.';			
+		}		
 	';
+	$user_css= get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : null;
+	return '<style type="text/css">'.$configured_css.$user_css.'</style>';
 }
 
 
@@ -2102,6 +2128,8 @@ function mh_font_config(){
 		$config="fontdeck: { id: '".$fd."' }";
 	}elseif($fdc=get_theme_option('fonts_dot_com')){
 		$config="monotype: { projectId: '".$fdc."' }";
+	}elseif($fdc=get_theme_option('google_fonts')){
+		$config="google: { families: [".$fdc."] }";		
 	}else{
 		$config="google: { families: [ 'Raleway:latin', 'Playfair+Display:latin' ] }";
 	}
@@ -2161,7 +2189,7 @@ function mh_about($text=null){
 		// If the 'About Text' option has a value, use it. Otherwise, use default text
 		$text =
 			get_theme_option('about') ?
-			get_theme_option('about') :
+			strip_tags(get_theme_option('about'),'<a><em><i><strong><bold><u>') :
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;

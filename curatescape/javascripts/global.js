@@ -1,4 +1,4 @@
-var theme_name='curatescape_next';
+var theme_name='curatescape';
 jQuery(document).ready(function($) {
 	console.log('MMenu ready...');
 	loadJS('//'+location.host+'/themes/'+theme_name+'/javascripts/jquery.mmenu/jquery.mmenu.all.js',function(){

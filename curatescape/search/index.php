@@ -83,7 +83,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				echo '<div class="search-stories">';
 				foreach($stories as $s){
 					$record=get_record_by_id($s['record_type'], $s['record_id']);
-					echo mh_homepage_hero_item($record);
+					echo mh_hero_item($record);
 				}	
 				echo '</div>';
 			}
