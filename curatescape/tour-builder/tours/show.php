@@ -22,9 +22,9 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 		<h2 class="tour-title"><?php echo $tourTitle; ?></h2>
 		<?php $byline=null;
 		if(tour( 'Credits' )){
-			$byline.= '<span class="tour-meta">'.__('%1s curated by: %2s', mh_tour_label('singular'),tour( 'Credits' )).'</span>';
+			$byline.= '<span class="tour-meta">'.__('Curated by %s',tour( 'Credits' )).'</span>';
 		}elseif(get_theme_option('show_author') == true){
-			$byline.= '<span class="tour-meta">'.__('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).'</span>';
+			$byline.= '<span class="tour-meta">'.__('Curated by The %s Team',option('site_title')).'</span>';
 		}
 		echo '<div class="byline">'.$byline.'</div>';
 		?>
@@ -34,9 +34,6 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 		    <section id="text">
 			   <div id="tour-description">
 			    <?php echo htmlspecialchars_decode(nls2p( tour( 'Description' ) )); ?>
-			   </div>
-			   <div id="tour-postscript">
-			    <?php echo htmlspecialchars_decode(metadata('tour','Postscript Text')); ?>
 			   </div>
 			</section>
 			   
@@ -72,6 +69,9 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 							$item_image=null; 
 						endif;
 					endforeach; ?>
+			</section>
+			<section id="tour-postscript">
+				<?php echo htmlspecialchars_decode(metadata('tour','Postscript Text')); ?>
 			</section>
 			
 			<div class="comments">

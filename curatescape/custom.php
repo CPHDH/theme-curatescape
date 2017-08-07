@@ -25,6 +25,11 @@ function mh_search_form_default_record_types()
 	if(get_theme_option('default_file_search')) $recordTypes[]='File';
     return $recordTypes;
 }	
+/*
+** Set Fallback Thumbnails
+*/
+add_file_fallback_image('audio','audio.png');
+add_file_fallback_image('video','video.png');
 	
 /*
 ** SEO Page Description
@@ -153,8 +158,8 @@ function mh_item_browse_subnav(){
 	echo nav(array(
 			array('label'=>__('All') ,'uri'=> url('items/browse')),
 			array('label'=>__('Tags'), 'uri'=> url('items/tags')),
-			array('label'=>__('%s Search', mh_item_label('singular')), 'uri'=> url('items/search')),
 			array('label'=>__('Sitewide Search'), 'uri'=> url('search')),
+			array('label'=>__('%s Search', mh_item_label('singular')), 'uri'=> url('items/search')),
 		));
 }
 
@@ -301,6 +306,8 @@ function mh_get_item_json($item=null){
 				'thumbnail'   => $thumbnail,
 			);		
 			return json_encode($itemMetadata);
+		}else{
+			return false;
 		}	
 	}	
 }
@@ -418,7 +425,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		    var raw = navigator.userAgent.match(/Safari\/([-+]?[0-9]*\.?[0-9]+)\./);
 		    return raw ? parseFloat(raw[1]) : 0; // return 0 for not-Safari
 		}		
-
 
 		jQuery(document).ready(function() {
 			loadCSS( leafletcss );
@@ -1171,7 +1177,7 @@ function mh_file_caption($file,$inlineTitle=true){
 	}
 
 	if( count($caption) ){
-		return ($inlineTitle ? $title.': ' : null).implode(" | ", $caption);
+		return ($inlineTitle ? $title.': ' : null).implode(" ~ ", $caption);
 	}else{
 		return $inlineTitle ? $title : null;
 	}
@@ -1292,13 +1298,13 @@ function mh_audio_files($item,$index=0){
 		$mime = metadata($file,'MIME Type');
 		if ( array_search($mime, $audioTypes) !== false ){
 			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
-			$audioDesc = strip_tags(mh_file_caption($file,false),'<span>');
+			$audioDesc = strip_tags(mh_file_caption($file,false));
 			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$audioTitle.'</div>';
-					$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.='<strong>Details</strong>: '.link_to($file,'show',__('View File Record'));
+					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
+					$html.=snippet($audioDesc,0,250,"...").'<br>'.link_to($file,'show',__('View File Record'));
 				$html.='</div>';
 			$html.='</div>';
 		}
@@ -1307,7 +1313,7 @@ function mh_audio_files($item,$index=0){
 		<h3><?php echo __('Audio');?></h3>
 		<figure id="item-audio">	
 			<div class="media-container audio">
-				<audio id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+				<audio muted id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
 					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
 				</audio>
 				<div class="flex media-list audio" style="">
@@ -1324,23 +1330,31 @@ function mh_audio_files($item,$index=0){
 						height:'30',
 						controlBar: {
 							fullscreenToggle: false
-						}
+						},
+						autoplay:true,
+						muted:false
 					}).src(
 						$('.media-list.audio .media-select:first-child').attr('data-source')
 					);
 					if(typeof audioplayer == 'object'){
+
+						audioplayer.ready(function(){
+							// load controls
+							setTimeout(function(){ 
+								audioplayer.pause().muted(false);
+							}, 10);
+						});
+						
 						$('.media-list.audio .media-select:first-child').addClass('now-playing');
 						
 						$('.media-list.audio .media-select').on('click',function(e){
+							audioplayer.muted(false);
 							$('.media-list.audio .now-playing').removeClass('now-playing');
 							$(this).addClass('now-playing');
 							audioplayer.src($(this).attr('data-source')).play();
 						});
 						
-						audioplayer.ready(function(){
-							// load controls
-							audioplayer.play().pause()
-						});
+
 					}	
 					
 				});
@@ -1364,12 +1378,13 @@ function mh_video_files($item='item',$html=null) {
 		$videoMime = metadata($file,'MIME Type');
 		if ( in_array($videoMime,$videoTypes) ){
 			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
+			$videoDesc = strip_tags(mh_file_caption($file,false));
 			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$videoTitle.'</div>';
-					$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.='<strong>Details</strong>: '.link_to($file,'show',__('View File Record'));
+					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
+					$html.=snippet($videoDesc,0,250,"...").'<br>'.link_to($file,'show',__('View File Record'));
 				$html.='</div>';
 			$html.='</div>';
 
@@ -1427,7 +1442,7 @@ function mh_single_file_show($file=null){
 			?>
 			<figure id="item-audio">	
 				<div class="media-container audio">
-					<audio src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+					<audio muted src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
 						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
 					</audio>
 				</div>
@@ -1441,12 +1456,15 @@ function mh_single_file_show($file=null){
 						height:'30',
 						controlBar: {
 							fullscreenToggle: false
-						}
+						},
+						autoplay: true,
 					});
 					if(typeof audioplayer == 'object'){
 						audioplayer.ready(function(){
 							// load controls
-							audioplayer.play().pause()
+							setTimeout(function(){ 
+								audioplayer.pause().muted(false)
+							}, 10);
 						});
 					}				
 				});
@@ -1455,11 +1473,6 @@ function mh_single_file_show($file=null){
 			
 			<?php
 			
-/*
-			$html = '<audio controls><source src="'.file_display_url($file,'original').'" type="audio/mpeg" /><h5 class="no-audio"><strong>'.__('Download Audio').':</strong><a href="'.file_display_url($file,'original').'">MP3</a></h5></audio>';
-			
-			return $html;
-*/
 		
 		// SINGLE VIDEO FILE	
 		}elseif(array_search($mime, $videoTypes) !== false){
@@ -1570,7 +1583,8 @@ function mh_disquss_comments($shortname){
 	
 	<script type="text/javascript" async defer>
 		var disqus_shortname = "<?php echo $shortname;?>";
-		
+		//var disqus_identifier="";
+		//var disqus_url="";
 		var disqus_loaded = false;
 		
 		// This is the function that will load Disqus comments on demand
@@ -1663,7 +1677,7 @@ function mh_tour_preview($s){
 /*
 ** Display the Tours list
 */
-function mh_display_homepage_tours($num=7, $scope='featured'){
+function mh_display_homepage_tours($num=5, $scope='featured'){
 	
 	$scope=get_theme_option('homepage_tours_scope') ? get_theme_option('homepage_tours_scope') : $scope;
 	
@@ -1704,15 +1718,28 @@ function mh_display_homepage_tours($num=7, $scope='featured'){
 	$html=null;
 	
 	if($items){
+
 		$html .= '<h3 class="result-type-header">'.$heading.'</h3>';
 	
 		for ($i = 0; $i < $num; $i++) {
+			set_current_record( 'tour', $items[$i] );
+			$tour=get_current_tour();		
+			
+			
+			if(tour('credits')){
+				$byline= __('Curated by %s',tour('credits'));
+			}else{
+				$byline= __('Curated by The %s Team',option('site_title'));
+			}				
+				
 			$html .= '<article class="item-result">';
-			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. $items[$i]['id'].'">' . $items[$i]['title'] . '</a></h3>';
+			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',count($tour->Items)).'</span> ~ <span>'.$byline.'</span>';
 			$html .= '</article>';
 		}
 		if(count($public)>1){
-			$html .= '<p class="view-more-link"><a href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
+		
+			
+			$html .= '<p class="view-more-link"><a class="button" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
 		}
 	}else{
 		$html .= '<article class="home-tour-result none">';
@@ -1761,12 +1788,12 @@ function mh_hero_item($item){
 */
 function mh_display_random_featured_item($withImage=false,$num=1)
 {
-	$featuredItem = get_random_featured_items($num,$withImage);
-	$html = '<h3 class="result-type-header">Featured '.mh_item_label('plural').'</h3>';
+	$featuredItems = get_random_featured_items($num,$withImage);
+	$html = '<h3 class="result-type-header">'.__('Featured %s',mh_item_label('plural')).'</h3>';
 	
-	if ($featuredItem) {
+	if ($featuredItems) {
 	
-	foreach($featuredItem as $item):
+	foreach($featuredItems as $item):
 		$html .=mh_hero_item($item);
 			
 	endforeach;		
@@ -1777,7 +1804,7 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 		$html .= '</article>';
 	}
 	
-	
+	$html.='<p class="view-more-link"><a class="button" href="/items/browse?featured=1">'.__('Browse Featured %s',mh_item_label('plural')).'</a></p>';
 
 	return $html;
 }
@@ -1811,11 +1838,13 @@ function mh_home_about($length=800,$html=null){
 /*
 ** Tag cloud for homepage
 */
-function mh_home_popular_tags($num=50){
+function mh_home_popular_tags($num=40){
 	
 	$tags=get_records('Tag',array('sort_field' => 'count', 'sort_dir' => 'd'),$num);
-	
-	return '<div id="home-tags" class="browse tags">'.tag_cloud($tags,url('items/browse')).'<p class="view-more-link"><a href="'.url('items/tags').'">'.__('View all <span>%s Tags</span>',total_records('Tags')).'</a></p></div>';
+	$html = '<h3 class="result-type-header">'.__('Popular Tags').'</h3>';
+	$html.=tag_cloud($tags,url('items/browse'));
+	$html.='<p class="view-more-link"><a class="button" href="/items/tags/">'.__('Browse all %s tags',total_records('Tags')).'</a></p>';
+	return $html;
 	
 }
 
@@ -1930,6 +1959,7 @@ function homepage_widget_sections(){
 		$featured=0;
 		$popular_tags=0;
 		$about=0;
+		$meta=0;
 		
 		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3(),homepage_widget_4()) as $setting){
 			
@@ -1947,14 +1977,17 @@ function homepage_widget_sections(){
 			        $recent_or_random++;
 			        break;
 			    case 'popular_tags':
-			        $html.= ($popular==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
+			        $html.= ($popular_tags==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
 			        $popular_tags++;
 			        break;
 			    case 'about':
 			        $html.= ($about==0) ? '<section id="about">'.mh_home_about().'</section>	' : null;
 			        $about++;
 			        break;
-
+			    case 'custom_meta_img':
+			        $html.= ($meta==0) ? '<section id="custom-meta-img" aria-hidden="true"><img src="'.mh_seo_pageimg_custom().'" alt="" class="homepage-brand-image"></section>	' : null;
+			        $meta++;
+			        break;
 			    default:
 			    	$html.=null;
 			}
@@ -2015,8 +2048,9 @@ function mh_random_or_recent($mode='recent',$num=6){
 				
 			$html.='</article> ';
 		}
-		$html.='<p class="view-more-link"><a href="/items/browse/">'.__('Browse all %s',$labelcount).'</a></p>';
+		
 		$html.='</div>';
+		$html.='<p class="view-more-link"><a class="button" href="/items/browse/">'.__('Browse all %s',$labelcount).'</a></p>';
 		
 		
 	}else{
@@ -2082,14 +2116,18 @@ function mh_configured_css(){
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
 	$configured_css = '
-		a{
+		a,.now-playing .media-caption a{
 			color: '.$color_primary.'
 		}
 		a:hover,
-		.item-hero .item-hero-text .byline a{
+		.item-hero .item-hero-text .byline a,
+		.media-caption a,
+		.pswp__caption a,
+		body#home section#home-popular-tags ul.popularity li a:hover,
+		body#items.tags section#tags ul.popularity li a:hover{
 			color: '.$color_secondary.'
 		}	
-		.hTagcloud li a,
+		body#items.show .hTagcloud li a,
 		.button.button-primary, 
 		button.button-primary, 
 		input[type="submit"].button-primary, 
@@ -2098,7 +2136,7 @@ function mh_configured_css(){
 		    background-color: '.$color_primary.';
 		    border-color: inherit;
 		}	
-		.hTagcloud li a:hover, .hTagcloud li a:focus,	
+		body#items.show .hTagcloud li a:hover, body#items.show .hTagcloud li a:focus,	
 		.button.button-primary:hover, .button.button-primary:focus,
 		button.button-primary:hover, button.button-primary:focus,
 		input[type="submit"].button-primary:hover, input[type="submit"].button-primary:focus,
@@ -2110,7 +2148,16 @@ function mh_configured_css(){
 		.secondary-nav ul li.active a, body#tours .secondary-nav ul li a:first-child{
 			color: '.$color_primary.';
 			border-bottom: 4px solid '.$color_secondary.';			
-		}		
+		}	
+		body#home li.popular a,body#items.tags li.popular a{color: '.$color_primary.';}
+		body#home li.v-popular a,body#items.tags li.v-popular a{color: '.adjustBrightness($color_primary,-30).';}
+		body#home li.vv-popular a,body#items.tags li.vv-popular a{color: '.adjustBrightness($color_primary,-25).';}
+		body#home li.vvv-popular a,body#items.tags li.vvv-popular a{color: '.adjustBrightness($color_primary,-20).';}
+		body#home li.vvvv-popular a,body#items.tags li.vvvv-popular a{color: '.adjustBrightness($color_primary,-15).';}
+		body#home li.vvvvv-popular a,body#items.tags li.vvvvv-popular a{color: '.$color_secondary.';}
+		body#home li.vvvvvv-popular a,body#items.tags li.vvvvvv-popular a{color: '.adjustBrightness($color_secondary,-15).';}
+		body#home li.vvvvvvv-popular a,body#items.tags li.vvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-20).';}
+		body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-25).';}			
 	';
 	$user_css= get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : null;
 	return '<style type="text/css">'.$configured_css.$user_css.'</style>';

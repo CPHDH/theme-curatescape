@@ -29,24 +29,15 @@ echo head( array(
 					echo '<article id="item-result-'.$i.'" class="item-result has-image">';
 					echo '<h3>'.link_to_tour(null,array('class'=>'permalink')).'</h3>';
 					echo '<div class="browse-meta-top byline">';
+					echo '<span class="total">'.count($tour->Items).' '.__('Locations').'</span> ~ ';
 					if(tour( 'Credits' )){
-						echo __('%1s curated by: %2s', mh_tour_label('singular'),tour( 'Credits' )).' | ';
+						echo __('Curated by %s',tour( 'Credits' ));
 					}elseif(get_theme_option('show_author') == true){
-						echo __('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).' | ';
+						echo __('Curated by The %s Team',option('site_title'));
 					}		
-					echo count($tour->Items).' '.__('Locations').'</div>';
+					echo '</div>';
 		
-					echo '<div class="item-description">'.snippet($tourdesc,0,250).'</div>'; 
-					if(get_theme_option('show_tour_item_thumbs') == true){
-						$html=  '<span class="tour-thumbs-container">';
-						foreach($tour->Items as $mini_thumb){
-							$html.=  metadata($mini_thumb, 'has thumbnail') ? 
-							'<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : 
-							null;
-						}
-						$html.=  '</span>';
-						echo $html;
-					}			
+					echo '<div class="item-description">'.snippet($tourdesc,0,250).'</div>'; 			
 					echo '</article>';
 					$i++;
 				

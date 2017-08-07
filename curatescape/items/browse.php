@@ -28,6 +28,10 @@ elseif ( !empty($auth) ) {
 	$title = __('%1s in "%2s"', mh_item_label('plural'), $collection_title);
 	$bodyclass .=' queryresults';
 	$maptype='queryresults';
+}elseif ( isset($_GET['featured']) && $_GET['featured'] == 1){
+	$title = __('Featured %s', mh_item_label('plural'));
+	$bodyclass .=' queryresults';
+	$maptype='queryresults';
 }
 elseif ($query) {
 	$title = __('Search Results for "%s"', $query);

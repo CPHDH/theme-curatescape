@@ -244,6 +244,9 @@ figure#item-photos .flex-image .file{
 #navigation nav a{
 	margin: 0 .5em 0 0;
 }
+#navigation nav .priority a.button{
+	border-color:#fff;
+}
 #navigation nav #home-logo{
 	text-decoration: none;
 	color:inherit;
@@ -279,6 +282,9 @@ figure#item-photos .flex-image .file{
 #navigation #menu-button{
 	background: #fff;
 	margin-right: 0;
+}
+#menu-button:hover,#navigation #menu-button:focus{
+	color:#222;
 }
 @media all and (min-width:880px){
 	#menu-button i:after{
@@ -497,7 +503,7 @@ body#tours .secondary-nav ul li a:first-child{
 .browse-items article{
 	width: 100%;
 	flex-grow: 0;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #eaeaea;
 	padding-bottom: .5em;
 	margin-bottom: 2em;
 }
@@ -550,6 +556,11 @@ body#tours .secondary-nav ul li a:first-child{
 	padding: 18px;
 	box-sizing: border-box;
 }
+.item-hero.no-img .item-hero-text{
+	position: inherit;
+}
+
+
 .item-hero .item-hero-text .subtitle{
 	color: #ddd;
 }
@@ -598,6 +609,12 @@ video,audio{
 .video-js.audio{
 	
 }
+
+/*
+.button:hover, button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, .button:focus, button:focus, input[type="submit"]:focus, input[type="reset"]:focus, input[type="button"]:focus{
+	color:#fafafa;
+}
+*/
 
 .curatescape-player-audio-dimensions{
 	width: 100%;
@@ -910,6 +927,15 @@ span.number{
 	cursor: pointer;
 }
 
+/* VIEW MORE LINKS */
+p.view-more-link a.button{
+	width: 100%;
+	background: #fafafa;
+}
+p.view-more-link a.button:hover,p.view-more-link a.button:focus{
+	color:#222;
+	background: #fff;
+}
 
 /* SOCIAL MEDIA */
 .link-icons a span {
@@ -1038,18 +1064,33 @@ span.number{
 	background-color:#77c159;
 	color:#fff;
 }
+/* TAG CLOUDS */
+body#home section#home-popular-tags ul.popularity li,
+body#items.tags section#tags ul.popularity li{
+	display: inline-block;
+}
 
-/* TAGS AND SUBJECTS AND RELATED TOURS */
-.hTagcloud{
+body#home li.popular a,body#items.tags li.popular a{font-size: 1em;}
+body#home li.v-popular a,body#items.tags li.v-popular a{font-size: 1.3em;}
+body#home li.vv-popular a,body#items.tags li.vv-popular a{font-size: 1.6em;}
+body#home li.vvv-popular a,body#items.tags li.vvv-popular a{font-size: 1.9em;}
+body#home li.vvvv-popular a,body#items.tags li.vvvv-popular a{font-size: 2.4em;font-weight: 600}
+body#home li.vvvvv-popular a,body#items.tags li.vvvvv-popular a{font-size: 2.7em;font-weight: 600}
+body#home li.vvvvvv-popular a,body#items.tags li.vvvvvv-popular a{font-size: 3em;font-weight: 800}
+body#home li.vvvvvvv-popular a,body#items.tags li.vvvvvvv-popular a{font-size: 3.3em;font-weight: 800}
+body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{font-size: 3.6em;font-weight: 800}
+
+/* ITEM TAGS AND SUBJECTS AND RELATED TOURS */
+body#items.show .hTagcloud{
 	overflow-x: hidden;
 }
 
-.tags ul li,
+body#items.show .tags ul li,
 .subjects ul li,
 #tour-for-item ul li{
 	display: inline;
 }
-.hTagcloud li a,
+body#items.show .hTagcloud li a,
 .subjects li a,
 #tour-for-item li a{
     display: inline-block;
@@ -1070,7 +1111,7 @@ span.number{
     box-sizing: border-box;
     margin: 0 .25em .5em 0;
 }
-.hTagcloud li a{
+body#items.show .hTagcloud li a{
     color: #FFF;
     background-color: #33C3F0;
     border-color: #33C3F0;	
@@ -1085,7 +1126,8 @@ span.number{
     background-color: #fafafa;
     border-color: #ccc;	
 }
-.hTagcloud a:hover,.hTagcloud a:focus{
+body#items.show .hTagcloud a:hover,
+body#items.show .hTagcloud a:focus{
     color: #FFF;
     background-color: #1EAEDB;
     border-color: #1EAEDB;		
@@ -1124,7 +1166,7 @@ a.load-comments{
     display: block;
     text-align: center;
     padding: .5em 1em;
-    margin-top: 1em;
+    margin: 1em 0 0;
     color: #222;
     text-decoration: none;
     border-radius: 4px;
@@ -1133,6 +1175,11 @@ a.load-comments{
 a.load-comments:hover,a.load-comments:focus{
 	background-color: #fafafa;
 	color:#222;
+}
+@media all and (max-width:550px){
+	a.load-comments{
+		margin-bottom: 1em;
+	}
 }
 
 
@@ -1251,13 +1298,27 @@ body#search form#search-form #advanced-form input[type="radio"]{
 	margin-right: .5em;
 }
 
+form#sitewide-search-filters input[type="checkbox"],
 body#search form#search-form #advanced-form input[type="checkbox"]{
 	margin-right: .25em;
 }
 
+form#sitewide-search-filters input[type="checkbox"] + label,
 body#search form#search-form #advanced-form input[type="checkbox"] + label{
 	display: inline-block;
 	margin-right: 1em;
+}
+
+form#sitewide-search-filters .fieldset{
+    padding: .5em 0 0;
+    background: #fafafa;
+    border: 1px solid #ccc;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 10px;	
+}
+form#sitewide-search-filters .fieldset div{
+	flex-grow: 1;
 }
 
 body#search form#search-form #advanced-form p a{
@@ -1277,6 +1338,7 @@ body#search form#advanced-search-form input[type="submit"]:hover,
 body#search form#advanced-search-form input[type="submit"]:focus,
 body#search form#search-form button#submit_search:hover,
 body#search form#search-form button#submit_search:focus{
+	color:#222;
 } 
 
 body#search form#advanced-search-form .search-entry > select{
@@ -1309,8 +1371,18 @@ body#search form#advanced-search-form div.field:last-child {
 	justify-content: space-between;	
 }
 .search-files-file{
-	width: 24%;
+	width: 49%;
 }	
+@media all and (min-width:470px){
+	.search-files-file{
+		width: 32%;
+	}		
+}
+@media all and (min-width:670px){
+	.search-files-file{
+		width: 24%;
+	}		
+}
 .search-files-file h4{
 	font-size: 1.6rem;
 }
@@ -1351,7 +1423,7 @@ section#about{
     font-size: 2.6rem;
 }
 #tours.browse article{
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #eaeaea;
 	padding-bottom: .5em;
 	margin-bottom: 2em;
 }
@@ -1409,6 +1481,20 @@ section#about{
 	border-right: 0 none transparent;
 }
 
+#home-tours article{
+	margin-bottom: 1.5em;
+	border: 1px solid #eaeaea;;
+	padding: 1.5em 2em;
+	text-align: center;
+}
+#home-tours article h3{
+	margin-bottom: 0;
+}
+body#tours.browse article span.total,
+#home-tours article span.total{
+	font-weight: 600;
+}
+
 @media all and (min-width:550px){
 	.tour-route{
 		margin-right: 2em;
@@ -1437,9 +1523,10 @@ section#about{
 }
 
 #tour-postscript{
-	margin-bottom: 2em;
+	margin: 0 auto 2em;
 	font-style: italic;
 	max-width: 40em;
+	text-align: center;
 }
 
 /* TOUR NAVIGATION */
@@ -1475,13 +1562,21 @@ section#about{
 	background: #222;
 }
 
+/* HOMEPAGE CUSTOM BRAND IMAGE */
+section#custom-meta-img{
+	text-align: center;
+}
+.homepage-brand-image{
+	margin: 0 auto;
+}
+
 /* COLLECTIONS */
 #collections.browse article h3{
 	font-size: 2.6rem;
 }
 
 /* FILES */
-article.page.file.show #story-header{
+article.page.file.show #file-header{
 	text-align: center;
 }
 .file-appears-in-item{}
@@ -1800,12 +1895,9 @@ body#items.show.fancy section.media {
 }	
 body#items.show.fancy .video-js,
 body#items.show.fancy .vjs-has-started .vjs-control-bar{
-	color: #222;
-	background: #fafafa;
 	border-bottom: 1px solid #222;
 }
 body#items.show.fancy .video-js .vjs-big-play-button{
-	color: #fff;
 }
 body#items.show.fancy .media-list{
 	background: #222;

@@ -34,9 +34,9 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				<?php
 				
 				echo '<div id="search-filters">';
-				echo '<a href="'.url('search').'" class="sitewide-search-legend sitewide-search-edit"><span class="icon-pencil" aria-hidden="true"></span> '.__('Searching %1s of %2s Record Types',(count($active_types) ? count($active_types) : count($searchable_types)),count($searchable_types) ).'</a> ';
+				echo '<a href="'.url('search').'" class="button sitewide-search-legend sitewide-search-edit"><span class="icon-pencil" aria-hidden="true"></span> '.__('Searching %1s of %2s Record Types',(count($active_types) ? count($active_types) : count($searchable_types)),count($searchable_types) ).'</a> ';
 				echo '<form id="sitewide-search-filters" class="hidden">';
-				$filters='<div class="fieldset">';
+				$filters='<div class="fieldset flex">';
 				foreach($searchable_types as $record_type=>$record_label){
 					$checked = (count($active_types) && in_array($record_type,$active_types)) ? "checked" : count($active_types)<=0 ? "checked" : null;
 					$filters.= '<div><input type="checkbox" '.$checked.' id="'.$record_type.'" value="'.$record_type.'" name="record_types[]"/><label for="'.$record_type.'" class="record_types">'.$record_label.'</label></div>';
@@ -47,6 +47,12 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				echo '</form>';
 				echo '</div>';
 				?>
+			<script async defer>
+				jQuery('.sitewide-search-edit').click(function(e){
+					jQuery('#sitewide-search-filters').toggleClass('hidden');
+					e.preventDefault ? e.preventDefault() : e.returnValue = false;					
+				})
+			</script>	
 					
 			<?php endif;?>			
 			<?php $tours=$stories=$files=$pages=$collections=array();?>

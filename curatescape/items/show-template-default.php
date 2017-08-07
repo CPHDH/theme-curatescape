@@ -17,17 +17,12 @@ echo head(array(
 <article class="story item show" role="main">
 			
 	<header id="story-header">
-		<?php if($hasimg){
-			echo '<div class="item-hero hero" style="background-image: url('.$hero_img.')">';
+		<?php
+			echo '<div class="item-hero '.($hasimg ? 'hero' : 'no-img').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
 			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
 			echo '</div>';	
 			echo mh_the_lede();
-		}else{
-			echo mh_the_title();
-			echo mh_the_subtitle();
-			echo mh_the_lede();
-			echo mh_the_byline($item,true);
-		}?>
+		?>
 		<?php //echo item_is_private($item);?>
 	</header>
 	
@@ -42,7 +37,7 @@ echo head(array(
 		<?php mh_item_images($item);?>	
 		<?php mh_audio_files($item);?>		
 	</section>
-
+	<?php if(mh_get_item_json($item)): ?>
 	<section class="map">
 		<h2>Map</h2>
 		<figure>
@@ -51,6 +46,7 @@ echo head(array(
 		</figure>
 		<figcaption><?php echo mh_map_caption();?></figcaption>
 	</section>
+	<?php endif;?>
 	
 	<?php echo mh_factoid(); ?>
 	
