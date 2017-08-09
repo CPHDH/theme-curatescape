@@ -87,7 +87,7 @@ echo head_js(false);
 	// Async CSS 	
 	loadCSS('<?php echo src('font-awesome/css/font-awesome.min.css','fonts');?>'); // font awesome css
 	loadCSS('<?php echo src('jquery.mmenu/jquery.mmenu.all.css','javascripts');?>'); // mmenu css
-	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.css','javascripts');?>'); // photoswipe css
+	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.min.css','javascripts');?>'); // photoswipe css
 	// Async JS 
 	loadJS('<?php echo src('global.js','javascripts');?>'); // global.js
 	<?php if( 0 === strpos(current_url(), '/items/show') ):?>
@@ -103,11 +103,9 @@ echo head_js(false);
 
 <!-- Theme Display Settings -->
 <?php
-$bgImg=get_theme_option('bg_img');
-$themeClass= ($bgImg) ? ' fancy' : ' minimalist';
 $bodyid = isset($bodyid) ? $bodyid : 'default';
-$bodyclass = isset($bodyclass) ? $bodyclass.$themeClass : 'default'.$themeClass;
-$bodyStyle= ($bgImg) ? 'background-image: url('.mh_bg_url().')' : null;
+$bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescape';
+$bodyStyle= (get_theme_option('bg_img')) ? 'background-image: url('.mh_bg_url().')' : 'background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(250,250,250,1) 50%,rgba(234,234,234,1) 100%);background-attachment:fixed;';
 ?>
 
 </head>
@@ -121,7 +119,7 @@ $bodyStyle= ($bgImg) ? 'background-image: url('.mh_bg_url().')' : null;
 
 <div id="page-content">
 	<?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
-	<header class="<?php if($bgImg) echo 'container';?> header-nav">
+	<header class="container header-nav">
 		<?php echo mh_global_header();?>
 	</header>
 	

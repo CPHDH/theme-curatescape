@@ -227,12 +227,14 @@ function mh_global_header($html=null){
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<span class="spacer"></span>
 		<span class="flex flex-end flex-grow flex-nav-container">
+			<?php if(!get_theme_option('hide_primary_nav')):?>
 			<span class="flex priority">
 	  			<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo mh_item_label('plural');?></a>
 	  			<?php if(plugin_is_active('TourBuilder')): ?>
 	  				<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo mh_tour_label('plural');?></a>
 	  			<?php endif;?>
 			</span>
+			<?php endif;?>
 			<span class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
   			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'));?>
@@ -407,7 +409,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var terrain=null; // reset below
 		var mapLayerThemeSetting = <?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : null;?>;
 		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>';
-		var leafletcss='<?php echo src('leaflet/leaflet.css','javascripts');?>';	
+		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>';	
 		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>';
 		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>';
 
@@ -520,7 +522,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							}
 							
 					        jQuery.each(data.items,function(i,item){
-									
+								var appendQueryParams=(type=='tour') ? '?tour='+data.id+'&index='+i : '';
 						        var address = item.address ? item.address : '';
 								var c = (item.featured==1 && featured_color) ? featured_color : color;
 								var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
@@ -530,7 +532,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 								    var image = '';
 							    }
 							    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
-						        var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
+						        var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+appendQueryParams+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
 								
 								
 								var marker = L.marker([item.latitude,item.longitude],{
@@ -1042,17 +1044,21 @@ function mh_factoid($item='item'){
 		$factoids=metadata($item,array('Item Type Metadata','Factoid'),array('all'=>true));
 		if($factoids){
 			$html=null;
-			//$html.='<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>';
+			$tw1script=null;
+			$tw2script=null;
 			$tweetable=get_theme_option('tweetable_factoids');
+			if($tweetable){
+				$tw1script='<script async defer type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>';
+				$tw2script="<script async defer type='text/javascript'>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
+			}
 			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
 			foreach($factoids as $factoid){
-				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.(!$tweetable ? '<span><a class="button tweet-this"><i class="fa fa-lg fa-twitter" aria-hidden="true"></i></a></span>' : null).'</div>';
+				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.($tweetable ? '<span><a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="'.strip_tags($factoid).'"'.$via.'">Tweet this factoid</a></span>' : '').'</div>';
 			}
 			
 			if($html){
-				return '<aside id="factoid">'.'<h2 hidden class="hidden">Factoids</h2>'.$html.'</aside>';				
+				return $tw1script.'<aside id="factoid">'.'<h2 hidden class="hidden">Factoids</h2>'.$html.'</aside>'.$tw2script;				
 			}
-			//"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 		}
 	} 
 
@@ -1181,35 +1187,6 @@ function mh_file_caption($file,$inlineTitle=true){
 	}else{
 		return $inlineTitle ? $title : null;
 	}
-}
-
-
-function mh_js_loaders(){
-	//===========================// ?>
-	<script>
-	jQuery(document).ready(function($) {
-		/*! 
-		loadJS: load a JS file asynchronously. 
-		[c]2014 @scottjehl, Filament Group, Inc. (Based on http://goo.gl/REQGQ by Paul Irish). 
-		Licensed MIT 
-		*/
-		
-		function loadJS(src,cb){"use strict";var ref=window.document.getElementsByTagName("script")[0];var script=window.document.createElement("script");script.src=src;script.async=true;ref.parentNode.insertBefore(script,ref);if(cb&&typeof(cb)==="function"){script.onload=cb;}
-		return script;}
-		
-		/*!
-		loadCSS: load a CSS file asynchronously.
-		[c]2014 @scottjehl, Filament Group, Inc.
-		Licensed MIT
-		*/
-		
-		function loadCSS(href,before,media){"use strict";var ss=window.document.createElement("link");var ref=before||window.document.getElementsByTagName("script")[0];var sheets=window.document.styleSheets;ss.rel="stylesheet";ss.href=href;ss.media="only x";ref.parentNode.insertBefore(ss,ref);function toggleMedia(){var defined;for(var i=0;i<sheets.length;i++){if(sheets[i].href&&sheets[i].href.indexOf(href)>-1){defined=true;}}
-		if(defined){ss.media=media||"all";}
-		else{setTimeout(toggleMedia);}}
-		toggleMedia();return ss;}
-	});
-	</script>
-	<?php //========================//
 }
 
 
@@ -1562,8 +1539,31 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 ** @TODO
 */
 function mh_share_this($type='Page'){
-
-	return null;
+	if(get_theme_option('add_this_buttons')==1){
+		$addThisAnalytics = get_theme_option('add_this_analytics');
+		$html = '<h3>'.__('Share this %s',$type).'</h3>';
+		$html .= '<!-- AddThis Button BEGIN -->
+				<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+				<a class="addthis_button_twitter"></a>
+				<a class="addthis_button_facebook"></a>
+				<a class="addthis_button_pinterest_share"></a>
+				<a class="addthis_button_email"></a>
+				<a class="addthis_button_compact"></a>
+				</div>
+				
+				<script async defer>
+				jQuery(document).ready(function(){
+					loadJS("//s7.addthis.com/js/300/addthis_widget.js#async=1",function(){
+						console.log("Add This ready...");
+						var addthis_config = addthis_config||{};
+						addthis_config.pubid = "'.get_theme_option('add_this_analytics').'";
+						addthis.init();	
+					});
+				});
+				</script>	
+				<!-- AddThis Button END -->';
+		return $html;
+	}
 }
 
 /*
@@ -1571,10 +1571,8 @@ function mh_share_this($type='Page'){
 ** disqus.com
 */
 function mh_disquss_comments($shortname){
-	$preface=get_theme_option('comments_text');
 	if ($shortname){
 	?>
-    <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
     
 	<div id="disqus_thread">
 	  <a class="load-comments" title="Click to load the comments section" href="#" onclick="disqus();return false;">Show Comments</a> 
@@ -1583,8 +1581,6 @@ function mh_disquss_comments($shortname){
 	
 	<script type="text/javascript" async defer>
 		var disqus_shortname = "<?php echo $shortname;?>";
-		//var disqus_identifier="";
-		//var disqus_url="";
 		var disqus_loaded = false;
 		
 		// This is the function that will load Disqus comments on demand
@@ -1592,6 +1588,7 @@ function mh_disquss_comments($shortname){
 		
 		  if (!disqus_loaded)  {
 		    disqus_loaded = true;
+		    console.log("Disqus ready...");
 		    
 		    var e = document.createElement("script");
 		    e.type = "text/javascript";
@@ -1613,9 +1610,7 @@ function mh_disquss_comments($shortname){
 ** intensedebate.com
 */	
 function mh_intensedebate_comments($intensedebate_id){
-	//$preface=get_theme_option('comments_text');
 	if ($intensedebate_id){ ?>
-	    <?php echo $preface ? '<div id="comments_preface">'.$preface.'</div>' : ''?>
 	    <div id="disqus_thread"></div>
 	
 		<script>
@@ -1869,8 +1864,7 @@ function mh_social_array($max=5){
 	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
 	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="https://www.pinterest.com/'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
 	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
-	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
-	($wordpress=get_theme_option('wordpress_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="WordPress" href="'.$wordpress.'" class="button social icon wordpress"><i class="fa fa-lg fa-wordpress" aria-hidden="true"><span> WordPress</span></i></a>') : null;				
+	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;					
 
 	if( ($total=count($services)) > 0 ){
 		if($total>$max){
@@ -2134,7 +2128,7 @@ function mh_configured_css(){
 		input[type="reset"].button-primary, 
 		input[type="button"].button-primary {
 		    background-color: '.$color_primary.';
-		    border-color: inherit;
+		    border-color: '.$color_primary.';
 		}	
 		body#items.show .hTagcloud li a:hover, body#items.show .hTagcloud li a:focus,	
 		.button.button-primary:hover, .button.button-primary:focus,
@@ -2143,7 +2137,7 @@ function mh_configured_css(){
 		input[type="reset"].button-primary:hover, input[type="reset"].button-primary:focus,
 		input[type="button"].button-primary:hover,input[type="button"].button-primary:focus {
 		    background-color: '.$color_secondary.';
-		    border-color: inherit;
+		    border-color: '.$color_secondary.';
 		}
 		.secondary-nav ul li.active a, body#tours .secondary-nav ul li a:first-child{
 			color: '.$color_primary.';

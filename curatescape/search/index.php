@@ -99,7 +99,13 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				foreach($files as $s){
 					echo '<div class="search-files-file">';
 					$record=get_record_by_id($s['record_type'], $s['record_id']);
-					echo '<a href="'.record_url($record, 'show').'">'.record_image($record, 'square_thumbnail').'</a>';
+					$mime = metadata($record,'MIME Type');
+					if(substr($mime,0,5)=='video'){
+						$img='<img src="'.img('video.png').'" alt="'.$s['title'].'" title="'.$s['title'].'">';
+					}else{
+						$img=record_image($record, 'square_thumbnail');
+					}
+					echo '<a href="'.record_url($record, 'show').'">'.$img.'</a>';
 					echo '<h4><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h4>';
 					echo '</div>';
 				}	
@@ -112,6 +118,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				foreach($collections as $s){
 					$record=get_record_by_id($s['record_type'], $s['record_id']);
 					echo '<h4><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h4>';
+					echo '<div class="collection-description-search">'.metadata($record,array('Dublin Core','Description'),array('snippet'=>300)).'</div>';
 				}	
 				echo '</div>';
 			}
