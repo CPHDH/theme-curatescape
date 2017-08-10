@@ -408,10 +408,10 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var carto=null; // reset below
 		var terrain=null; // reset below
 		var mapLayerThemeSetting = <?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : null;?>;
-		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>';
-		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>';	
-		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>';
-		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>';
+		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>'+'?v=1.1';
+		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>'+'?v=1.1';	
+		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>'+'?v=1.1';
+		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>'+'?v=1.1';
 
 
 		// End PHP Variables
