@@ -49,9 +49,7 @@
 	
 	</div><!-- end primary -->
 	
-	<aside id="share-this" class="browse">
 	<?php echo mh_share_this(__('File'));?>
-	</aside>	
 </article>
 
 </div> <!-- end content -->

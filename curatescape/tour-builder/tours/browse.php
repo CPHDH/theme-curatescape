@@ -52,9 +52,7 @@ echo head( array(
 			<?php echo pagination_links(); ?>
 		</div>
 		
-		<aside id="share-this" class="browse">
 		<?php echo mh_share_this(); ?>
-		</aside>
 		
 	</article>
 </div> <!-- end content -->

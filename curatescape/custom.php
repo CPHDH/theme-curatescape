@@ -1541,7 +1541,7 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 function mh_share_this($type='Page'){
 	if(get_theme_option('add_this_buttons')==1){
 		$addThisAnalytics = get_theme_option('add_this_analytics');
-		$html = '<h3>'.__('Share this %s',$type).'</h3>';
+		$html = '<aside id="share-this"><h3>'.__('Share this %s',$type).'</h3>';
 		$html .= '<!-- AddThis Button BEGIN -->
 				<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
 				<a class="addthis_button_twitter"></a>
@@ -1549,7 +1549,7 @@ function mh_share_this($type='Page'){
 				<a class="addthis_button_pinterest_share"></a>
 				<a class="addthis_button_email"></a>
 				<a class="addthis_button_compact"></a>
-				</div>
+				</div></aside>
 				
 				<script async defer>
 				jQuery(document).ready(function(){

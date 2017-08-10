@@ -13,9 +13,7 @@ echo head(array('maptype'=>'none','title' => html_escape(metadata('simple_pages_
 			    ?>					    
 		</section>    
 		
-		<aside id="share-this" class="browse">
-			<?php echo mh_share_this();?>
-		</aside>	
+		<?php echo mh_share_this();?>
 	
 	</article>
 

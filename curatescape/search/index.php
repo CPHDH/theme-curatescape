@@ -146,9 +146,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		</section>	
 		</div><!-- end primary -->
 
-		<aside id="share-this" class="browse">
-			<?php echo mh_share_this();?>
-		</aside>	
+		<?php echo mh_share_this();?>
 
 	</article>
 </div> <!-- end content -->

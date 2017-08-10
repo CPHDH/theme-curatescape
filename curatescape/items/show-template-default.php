@@ -21,11 +21,11 @@ echo head(array(
 			echo '<div class="item-hero '.($hasimg ? 'hero' : 'no-img').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
 			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
 			echo '</div>';	
+			echo function_exists('tour_nav') ? '<nav class="tour-nav-container top">'.tour_nav(null,mh_tour_label()).'</nav>' : null;
 			echo mh_the_lede();
 		?>
 		<?php //echo item_is_private($item);?>
 	</header>
-	
 	<section class="text">
 		<h2 hidden class="hidden">Text</h2>
 		<?php echo mh_the_text(); ?>
@@ -62,11 +62,8 @@ echo head(array(
 		<?php echo mh_display_comments();?>
 	</section>	
 
-	<aside id="share-this">
-		<?php echo mh_share_this(mh_item_label());?>
-	</aside>	
+	<?php echo mh_share_this(mh_item_label());?>
 	
-	<?php echo function_exists('tour_nav') ? tour_nav(null,mh_tour_label()) : null; ?>
-
+	<?php echo function_exists('tour_nav') ? '<nav class="tour-nav-container bottom">'.tour_nav(null,mh_tour_label()).'</nav>' : null; ?>
 </article>
 <?php echo foot(); ?>

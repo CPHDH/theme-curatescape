@@ -57,6 +57,9 @@ body#items.show #wrap,
 body#tours.show #wrap{
 	padding: 0;
 }
+body#items.show article.story{
+	margin-bottom: .5em;
+}
 article.tour{
 	padding: 2em 1em;
 }
@@ -243,11 +246,11 @@ h2.query-header{
 /*! ITEM PHOTOS */
 figure#item-photos{
 	justify-content: space-between;
-	margin: 0 -0.5% 1em;
+	margin: 0 0 1em;
 }
 figure#item-photos .flex-image{
 	width: 100%;
-	margin: 0.5%;
+	margin: 3px;
 	flex-grow: 1;
 	flex-shrink: 1;
 	height: 14em;
@@ -264,7 +267,7 @@ figure#item-photos .flex-image{
 @media all and (min-width:880px){
 	figure#item-photos .flex-image{
 		width: 32%;
-		max-width: 49%;
+		max-width: calc(50% - 3px);
 	}
 }
 
@@ -344,6 +347,7 @@ figure#item-photos .flex-image .file{
 		font-size: 11px;
 		vertical-align: middle;
 		font-weight: 600;
+		padding-bottom: 1px;
 	}
 }
 
@@ -699,6 +703,10 @@ video,audio{
 .curatescape-player-audio-dimensions{
 	width: 100%;
 }
+#curatescape-player-audio,#curatescape-player-audio:focus,
+#curatescape-player,#curatescape-player:focus{
+	outline-width: 0;outline-offset: 0;outline-color: rgba(0,0,0,0);outline-style: none;
+}
 .media-container.audio .video-js .vjs-big-play-button{
 	display: none !important;
 }
@@ -727,6 +735,7 @@ video,audio{
 }
 .media-icon{color: #fff;}
 .now-playing .media-icon{color: #222;}
+
 
 /*! MEDIA TYPE AND SEARCH HEADINGS */
 section.media h3,section.map h2, #search.browse h3.result-type-header, body#home h3.result-type-header{
@@ -766,7 +775,7 @@ section.media h3,section.map h2, #search.browse h3.result-type-header, body#home
 	overflow-x: hidden;
 }
 .metadata h3{
-    font-size: 100%;
+    font-size: 115%;
     margin-bottom: .5em;
 }
 .metadata h3:after{
@@ -886,6 +895,9 @@ section.map figcaption{
 	line-height: 30px;
 }
 
+body.fullscreen-map{
+	overflow: hidden;
+}
 body.fullscreen-map div#curatescape-map-canvas{
     height: 100vh;
     width: 100vw;
@@ -1564,7 +1576,7 @@ section#about{
 
 #home-tours article{
 	margin-bottom: 1.5em;
-	border: 1px solid #eaeaea;;
+	border: 1px solid #eaeaea;
 	padding: 1.5em 2em;
 	text-align: center;
 }
@@ -1615,7 +1627,7 @@ body#tours.browse article span.total,
     text-align: center;
     text-transform: capitalize;
     font-weight: 600;
-    margin-top: 3em;
+    margin-top: 1em;
     padding: 1em;
     border-top: 1px dashed #ccc;
 }
@@ -1642,6 +1654,15 @@ body#tours.browse article span.total,
 	background: #222;
 }
 
+.tour-nav-container.top .tour-nav{
+	color: transparent;
+	visibility: hidden;
+}
+.tour-nav-container.top #tour-nav-links{
+	margin-top: -3.5em;
+	margin-bottom: 1em;
+}
+
 /*! HOMEPAGE CUSTOM BRAND IMAGE */
 section#custom-meta-img{
 	text-align: center;
@@ -1655,7 +1676,6 @@ section#custom-meta-img{
 	font-size: 2.6rem;
 }
 
-
 /*! FILES */
 article.page.file.show #file-header{
 	text-align: center;
@@ -1667,6 +1687,10 @@ article.page.file.show .file-desc{
 .rights-caption{
 	font-style: italic;
 	color: #555;
+}
+article.page.file.show .item-file a{
+	text-align: center;
+	display: block;
 }
 
 /*! EXHIBITS */

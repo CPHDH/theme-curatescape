@@ -34,9 +34,7 @@ echo head(array('maptype'=>'none','title' => __('Collection').' | '.$title, 'bod
 		    		   
 		</section>
     </div>
-	<aside id="share-this" class="browse">
-		<?php echo mh_share_this('Collection'); ?>
-	</aside>
+	<?php echo mh_share_this('Collection'); ?>
 </article>
 </div> <!-- end content -->
 

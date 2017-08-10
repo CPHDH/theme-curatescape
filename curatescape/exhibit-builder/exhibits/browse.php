@@ -80,9 +80,7 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
 				
 	</section>	
 	
-	<aside id="share-this" class="browse">
-		<?php echo mh_share_this();?>
-	</aside>
+	<?php echo mh_share_this();?>
 
 </article>
 </div> <!-- end content -->
