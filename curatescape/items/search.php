@@ -12,8 +12,8 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 
 <div id="content">
 
-<section class="search">	
-	<h2><?php echo $title; ?></h2>
+<article class="search browse">	
+	<h2 class="query-header"><?php echo $title; ?></h2>
 		
 
 
@@ -27,19 +27,16 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 
 
 		<?php echo $this->partial('items/search-form.php',
-		    array('formAttributes' =>
-		        array('id'=>'advanced-search-form'))); ?>
+			array('formAttributes' =>array('id'=>'advanced-search-form'))); ?>
         
 				
 	</section>	
 	</div><!-- end primary -->
 
-
-</section>
+	<?php echo mh_share_this();?>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this();?>
-</div>
+
 
 <?php echo foot(); ?>

@@ -1,17 +1,17 @@
 <?php 
 echo head(array('maptype'=>'focusarea','title'=>'403','bodyid'=>'error','bodyclass'=>'error_403')); ?>
-<?php mh_map_actions();?>
+
 <div id="content">
-<article class="error show">
-<h2>403</h2>
-
-	<div id="primary" class="show">
-		<section id="text">
-		    <p><?php echo __('Sorry. Access Forbidden!');?></p>
-		</section> 
-	</div>
-
-
-</article>
+	<article class="error page show">
+	<h2>403</h2>
+	
+		<div id="primary" class="show">
+			<section id="text">
+			    <p><?php echo __('Sorry. Access Forbidden!');?></p>
+			</section> 
+		</div>
+	
+	
+	</article>
 </div> <!-- end content -->
 <?php echo foot(); ?>

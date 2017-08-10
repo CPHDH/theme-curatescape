@@ -1,4 +1,5 @@
 <?php 
 // We don't need to use the Geolocation plugin on the front-end
-include_once($_SERVER["DOCUMENT_ROOT"] . "/themes/curatescape/error/404.php");
+$path=realpath(__DIR__ . '/../..')."/error/404.php";
+include_once($path);
 ?>

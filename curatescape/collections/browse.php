@@ -12,9 +12,8 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyclass' => $bodyclass, 
 ?>
 
 <div id="content">
-<section class="browse collection">			
-<h2><?php echo $title.': '.$total;?></h2>
-
+<article class="browse collection">			
+	<h2 class="query-header"><?php echo $title.': '.$total;?></h2>
 
 	<div id="primary" class="browse">
 	
@@ -28,9 +27,8 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyclass' => $bodyclass, 
 
 		    <article class="collection item-result">
 		        <h3><?php echo link_to($collection,'show', metadata($collection, array('Dublin Core','Title')), array('class'=>'permalink') ) ?></h3>
-		        <span class="collection-meta-browse"><?php echo metadata($collection, 'total_items').' '.mh_item_label('plural');?></span>
-		        <p class="description"><?php echo snippet(metadata($collection, array('Dublin Core','Description')),0,500); ?></p>
-		    </article>
+		        <div class="collection-description"><?php echo snippet(metadata($collection, array('Dublin Core','Description')),0,500); ?></div>
+		    </article><br><br>
 		
 	<?php endforeach; ?>
 
@@ -41,13 +39,11 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyclass' => $bodyclass, 
 
 	
 	<div class="pagination bottom"><?php echo pagination_links(); ?></div>
-
-</section>
+	<?php echo mh_share_this(); ?>
+</article>
 </div> <!-- end content -->
 
-<div id="share-this" class="browse">
-<?php echo mh_share_this(); ?>
-</div>
+
 
 <?php echo foot();?>
 

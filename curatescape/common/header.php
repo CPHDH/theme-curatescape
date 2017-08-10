@@ -8,16 +8,15 @@
 <meta charset="UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=5">
 
-<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <?php echo auto_discovery_link_tags(); ?>
 
 <?php
-isset($title) ? $title : $title=null;
-isset($tour) ? $tour : $tour=null;
-isset($item) ? $item : $item=null;
-isset($file) ? $file : $file=null;
+$title = (isset($title)) ? $title : null;
+$item = (isset($item)) ? $item : null;
+$tour = (isset($tour)) ? $tour : null;
+$file = (isset($file)) ? $file : null;
 ?>
     
 <title><?php echo mh_seo_pagetitle($title,$item); ?></title>
@@ -44,73 +43,86 @@ isset($file) ? $file : $file=null;
 <meta name="msapplication-TileColor" content="#ffffff"/>
 <meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
 
-<!-- Installable //// TODO: update icon sizes="192px x 192px" and "128px x 128px" -->
-<!--meta name="mobile-web-app-capable" content="yes"-->
-<!--link rel="manifest" href="<?php echo WEB_ROOT; ?>/themes/curatescape/manifest.json.php"-->
+<!-- Icon -->
+<link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
-
-<!-- Stylesheet -->
-<?php echo mh_theme_css();?>	
+<link rel='mask-icon' href='<?php echo img('favicon.svg')?>' color='#1EAEDB'> <!-- Safari -->
 
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>
+<!-- Assets -->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script>
+	/*! 
+	loadJS: load a JS file asynchronously. 
+	[c]2014 @scottjehl, Filament Group, Inc. (Based on http://goo.gl/REQGQ by Paul Irish). 
+	Licensed MIT 
+	*/
+	
+	function loadJS(src,cb){"use strict";var ref=window.document.getElementsByTagName("script")[0];var script=window.document.createElement("script");script.src=src;script.async=true;ref.parentNode.insertBefore(script,ref);if(cb&&typeof(cb)==="function"){script.onload=cb;}
+	return script;}
+	
+	/*!
+	loadCSS: load a CSS file asynchronously.
+	[c]2014 @scottjehl, Filament Group, Inc.
+	Licensed MIT
+	*/
+	
+	function loadCSS(href,before,media){"use strict";var ss=window.document.createElement("link");var ref=before||window.document.getElementsByTagName("script")[0];var sheets=window.document.styleSheets;ss.rel="stylesheet";ss.href=href;ss.media="only x";ref.parentNode.insertBefore(ss,ref);function toggleMedia(){var defined;for(var i=0;i<sheets.length;i++){if(sheets[i].href&&sheets[i].href.indexOf(href)>-1){defined=true;}}
+	if(defined){ss.media=media||"all";}
+	else{setTimeout(toggleMedia);}}
+	toggleMedia();return ss;}
+</script>
+<?php 
+//queue_css_file('font-awesome/css/font-awesome.min','all',false,'fonts');
+echo head_css(); 
+echo mh_theme_css();
+echo head_js(false); 
+?>
+
+<script>
+	// Async CSS 	
+	loadCSS('<?php echo src('font-awesome/css/font-awesome.min.css','fonts');?>'); // font awesome css
+	loadCSS('<?php echo src('jquery.mmenu/jquery.mmenu.all.css','javascripts');?>'); // mmenu css
+	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.min.css','javascripts');?>'); // photoswipe css
+	// Async JS 
+	loadJS('<?php echo src('global.js','javascripts');?>'); // global.js
+	<?php if( 0 === strpos(current_url(), '/items/show') ):?>
+		loadJS('<?php echo src('items-show.js','javascripts');?>'); // items-show.js
+	<?php endif;?>	
+</script>
 
 <!-- Custom CSS via theme config -->
-<?php 
-echo mh_custom_css();
-if ($uploaded_stylesheet=get_theme_option('custom stylesheet')){
-	echo '<link rel="stylesheet" type="text/css" media="screen" href="'.WEB_ROOT.'/files/theme_uploads/'.$uploaded_stylesheet.'" />';
-}
-?>
-
-<!-- jQuery -->
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<!-- Leaflet -->
-<?php echo js_tag('leaflet','javascripts/leaflet');?>
-<link rel="stylesheet" href="<?php echo css_src('leaflet','javascripts/leaflet');?>" />
-<?php if(get_theme_option('clustering')):?>
-	<!-- Clustering -->
-	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
-<?php endif;
-queue_js_file('libraries.min'); // <-- Modernizr, MakiMarker, Swipe.js, iSOnScreen, LoadJS, LoadCSS
-queue_js_file('check-width');
-echo head_js(false); // <-- No to Omeka default scripts
-// Fancybox, VideoJS (CDN) and AudioJS are loaded asyncronously as needed
-?>
-<!--[if lte IE 9]>
-<?php echo js_tag('ie-polyfills.min');?>
-<![endif]-->
-
-
-<!-- Google Analytics -->
-<?php echo mh_google_analytics();?>
+<?php echo mh_configured_css();?>
 
 <!-- Plugin Stuff -->
-<?php echo fire_plugin_hook('public_head', array('view'=>$this)); ?>
+<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
+
+<!-- Theme Display Settings -->
+<?php
+$bodyid = isset($bodyid) ? $bodyid : 'default';
+$bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescape';
+$bodyStyle= (get_theme_option('bg_img')) ? 'background-image: url('.mh_bg_url().')' : 'background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(250,250,250,1) 50%,rgba(234,234,234,1) 100%);background-attachment:fixed;';
+?>
 
 </head>
-<body<?php echo isset($bodyid) ? ' id="'.$bodyid.'"' : ''; ?><?php echo isset($bodyclass) ? ' class="'.$bodyclass.'"' : ''; ?>> 
+<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>" style="<?php echo $bodyStyle;?>"> 
 
-<div id="no-js-message">
-	<span><?php echo __('Please enable JavaScript in your browser settings.');?></span>
-</div>
+<noscript>
+	<div id="no-js-message">
+		<span><?php echo __('For full functionality please enable JavaScript in your browser settings.');?> <a target="_blank" href="https://goo.gl/koeeaJ"><?php echo __('Need Help?');?></a></span>
+	</div>
+</noscript>
 
-
-<header class="main active" role="banner">	
-	<?php echo mh_global_header();?>
-	<script>
-	    jQuery(".main .menu").removeClass("active");
-	    jQuery("#mobile-menu-button a").click(function () {
-	    	jQuery(".main .menu").toggleClass("active");
-	    });
-	</script>
-</header>
-
-
-<div id="wrap">
-
-	<figure id="hero">
-		<?php echo mh_which_content($maptype,$item,$tour); ?>	
-	</figure>
+<div id="page-content">
+	<?php fire_plugin_hook('public_body', array('view'=>$this)); ?>
+	<header class="container header-nav">
+		<?php echo mh_global_header();?>
+	</header>
+	
+	
+	<div id="wrap" class="container">
+		<?php fire_plugin_hook('public_content_top', array('view'=>$this)); ?>
