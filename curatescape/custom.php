@@ -1156,7 +1156,7 @@ function mh_post_date(){
 }
 
 /*
-** Build caption from description, source, and creator
+** Build caption from description, source, creator, date
 */
 function mh_file_caption($file,$inlineTitle=true){
 
@@ -1182,6 +1182,11 @@ function mh_file_caption($file,$inlineTitle=true){
 		$caption[]= __('Creator: %s', $creator);
 	}
 
+	$date = metadata( $file, array( 'Dublin Core', 'Date' ) );
+	if( $date ) {
+		$caption[]= __('Date: %s', $date);
+	}
+
 	if( count($caption) ){
 		return ($inlineTitle ? $title.': ' : null).implode(" ~ ", $caption);
 	}else{
@@ -1202,13 +1207,7 @@ function mh_item_images($item,$index=0){
 			$title=metadata($file, array('Dublin Core', 'Title')) ? metadata($file, array('Dublin Core', 'Title')) : 'Untitled';
 			$title_formatted=link_to($file,'show','<strong>'.$title.'</strong>',array('title'=>'View File Record'));
 			$desc=metadata($file, array('Dublin Core', 'Description'));
-			$caption=($desc ? $title_formatted.': '.$desc : $title_formatted);
-			if($source=metadata($file, array('Dublin Core', 'Source'))){
-				$caption.=' ~ '.__('Source').': '.$source;
-			}
-			if($creators=metadata($file, array('Dublin Core', 'Creator'),true)){
-				$caption.=' ~ '.__('Creator').': '.implode(', ',$creators);
-			}			
+			$caption=$title_formatted.($desc ? ': ' : ' ~ ').mh_file_caption($file,false);
 			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
 			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 				$html.= '<a title="'.$title.'" class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';

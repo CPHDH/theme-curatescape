@@ -16,6 +16,7 @@
 		
 		($source=metadata('file', array('Dublin Core','Source'))) ? $info[] = '<span class="file-source">'.__('Source').': '.$source.'</span>' : null;
 		($creators=metadata('file', array('Dublin Core','Creator'),true)) ? $info[] = '<span class="file-creator">'.__('Creator').': '.implode(', ',$creators).'</span>' : null;
+		($date=metadata('file', array('Dublin Core','Date'),true)) ? $info[] = '<span class="file-date">'.__('Date').': '.implode(', ',$date).'</span>' : null;
 
 		echo count($info) ? '<span id="file-header-info" class="story-meta byline">'.implode(" ~ ", $info).'</span>' : null;
 				
