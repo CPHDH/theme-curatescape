@@ -1500,6 +1500,10 @@ section#about{
     border: 1px solid #ccc;
     padding: 1em 1em 0;
     border-radius: 3px;
+    margin-bottom: 0;
+}
+section#about + section{
+	margin-top: 2.5rem;
 }
 .about-text header{
 	text-align: center;
