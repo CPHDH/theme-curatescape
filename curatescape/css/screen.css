@@ -232,6 +232,11 @@ h2.query-header{
 	width: 100%;
 }
 
+.hero.short{
+	min-height: 15em;
+	min-height: 30vh;
+}
+
 .scroll-x{
 	max-width: 100%;
 	overflow-x: scroll;
@@ -670,10 +675,6 @@ article.browse{
 	padding: 18px;
 	box-sizing: border-box;
 }
-.item-hero.no-img .item-hero-text{
-	position: inherit;
-}
-
 
 .item-hero .item-hero-text .subtitle{
 	color: #ddd;

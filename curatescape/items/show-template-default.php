@@ -18,7 +18,7 @@ echo head(array(
 			
 	<header id="story-header">
 		<?php
-			echo '<div class="item-hero '.($hasimg ? 'hero' : 'no-img').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
+			echo '<div class="item-hero '.(!$hasimg ? 'hero short' : 'hero').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
 			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
 			echo '</div>';	
 			echo function_exists('tour_nav') ? '<nav class="tour-nav-container top">'.tour_nav(null,mh_tour_label()).'</nav>' : null;
