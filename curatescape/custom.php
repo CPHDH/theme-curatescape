@@ -1711,10 +1711,10 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 	$num = (count($items)<$num)? count($items) : $num;
 	$html=null;
 	
-	if($items){
 
-		$html .= '<h3 class="result-type-header">'.$heading.'</h3>';
-	
+
+	$html .= '<h3 class="result-type-header">'.$heading.'</h3>';
+	if($items){
 		for ($i = 0; $i < $num; $i++) {
 			set_current_record( 'tour', $items[$i] );
 			$tour=get_current_tour();		
@@ -1736,9 +1736,7 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 			$html .= '<p class="view-more-link"><a class="button" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
 		}
 	}else{
-		$html .= '<article class="home-tour-result none">';
-		$html .= '<p>'.__('No tours are available.').'</p>';
-		$html .= '</article>';
+		$html .= '<p>'.__('No tours are available. Publish some now.').'</p>';
 	}
 	
 	return $html;
@@ -1787,18 +1785,17 @@ function mh_display_random_featured_item($withImage=false,$num=1)
 	
 	if ($featuredItems) {
 	
-	foreach($featuredItems as $item):
-		$html .=mh_hero_item($item);
-			
-	endforeach;		
+		foreach($featuredItems as $item):
+			$html .=mh_hero_item($item);
+		endforeach;	
+		
+		$html.='<p class="view-more-link"><a class="button" href="/items/browse?featured=1">'.__('Browse Featured %s',mh_item_label('plural')).'</a></p>';
 			
 	}else {
 		$html .= '<article class="featured-story-result none">';
-		$html .= '<p>'.__('No featured items are available.').'</p>';
+		$html .= '<p>'.__('No featured items are available. Publish some now.').'</p>';
 		$html .= '</article>';
 	}
-	
-	$html.='<p class="view-more-link"><a class="button" href="/items/browse?featured=1">'.__('Browse Featured %s',mh_item_label('plural')).'</a></p>';
 
 	return $html;
 }
@@ -2011,11 +2008,10 @@ function mh_random_or_recent($mode='recent',$num=6){
 	set_loop_records('items',$items);
 	$html='<section id="random-recent">';
 	$labelcount='<span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
-		
-	if (has_loop_records('items')){
-	
 	$html.='<h3 class="result-type-header">'.ucfirst($mode).' '.mh_item_label('plural').'</h3>';
-	$html.='<div class="browse-items flex">';
+
+	if (has_loop_records('items')){
+		$html.='<div class="browse-items flex">';
 		foreach(loop('Items') as $item){
 			$item_image=null;
 			$description = mh_the_text($item,array('snippet'=>250));
@@ -2047,7 +2043,7 @@ function mh_random_or_recent($mode='recent',$num=6){
 		
 		
 	}else{
-		$html.='<p>No Items Found!</p>';
+		$html.='<p>'.__('No items are available. Publish some now.').'</p>';
 	}
 	$html.='</section>';
 	return $html;
