@@ -352,6 +352,22 @@ figure#item-photos .flex-image .file{
 		font-weight: 600;
 		padding-bottom: 1px;
 	}	
+	
+		/* Stacked Nav Option */
+		.flex-nav-container.stacked{
+			flex-direction: column;
+			max-width: 45%;
+		}
+		.flex-nav-container.stacked .flex.priority{
+			justify-content: space-between;
+			margin-bottom: .5em;
+		}	
+		.flex-nav-container.stacked .flex.priority a{
+			width: 50%;
+		}
+		#navigation nav .flex-nav-container.stacked .flex.priority a.button:last-child{
+			margin-right: 0;
+		}
 }
 
 @media all and (max-width:880px){

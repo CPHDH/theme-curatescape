@@ -226,7 +226,7 @@ function mh_global_header($html=null){
 	<nav>
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<span class="spacer"></span>
-		<span class="flex flex-end flex-grow flex-nav-container">
+		<span class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
 			<?php if(!get_theme_option('hide_primary_nav')):?>
 			<span class="flex priority">
 	  			<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo mh_item_label('plural');?></a>
