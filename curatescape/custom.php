@@ -1030,8 +1030,8 @@ function mh_access_information($item='item',$formatted=true){
 
 function mh_map_caption($item='item'){
 	$caption=array();
-	if($addr=mh_street_address($item,false)) $caption[]=$addr;
-	if($accs=mh_access_information($item,false)) $caption[]=$accs;
+	if($addr=mh_street_address($item,false)) $caption[]=strip_tags($addr,'<a>');
+	if($accs=mh_access_information($item,false)) $caption[]=strip_tags($accs,'<a>');
 	return implode( ' ~ ', $caption );
 }
 
