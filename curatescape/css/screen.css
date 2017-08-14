@@ -633,6 +633,7 @@ article.browse{
 
 .item-description{
 	margin-bottom: .5em;
+	overflow-x: hidden;
 }
 .browse-items article .item-image{
 	display: block;
