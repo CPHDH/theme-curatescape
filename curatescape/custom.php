@@ -1876,7 +1876,9 @@ function mh_social_array($max=5){
 ** $class 'colored' uses a service-specific color as background
 ** $class 'no-label' visually hides the label and just uses the icon
 */
-function mh_footer_find_us($class="no-label", $max=9){
+function mh_footer_find_us($class=null, $max=9){
+	$class.= get_theme_option('social_label') ? ' label' : ' no-label';
+	$class.= get_theme_option('social_color') ? ' colored' : ' no-color';
 	if( $services=mh_social_array($max) ){
 		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
 	}
