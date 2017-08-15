@@ -648,6 +648,7 @@ article.browse{
 	background-color: #000;
 	background-position: center center;
 	margin-bottom: 1em;
+	max-height: 49%;
 }
 .browse-items article h3 a{
 	text-decoration: none;
@@ -1057,6 +1058,7 @@ p.view-more-link a.button:hover,p.view-more-link a.button:focus{
 .link-icons a span{
 	font-size:11px;
 	vertical-align:middle;
+	font-weight: 600;
 }
 
 .link-icons.no-label a span{
