@@ -405,15 +405,12 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var mapBounds; // keep track of changing bounds
 		var root_url = '<?php echo WEB_ROOT;?>';
 		var geolocation_icon = '<?php echo img('geolocation.png');?>';
-		var carto=null; // reset below
-		var terrain=null; // reset below
-		var mapLayerThemeSetting = <?php echo get_theme_option('map_style') ? strtolower(get_theme_option('map_style')) : null;?>;
+		var mapLayerThemeSetting = '<?php echo get_theme_option('map_style') ? get_theme_option('map_style') : null;?>';
 		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>'+'?v=1.1';
 		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>'+'?v=1.1';	
 		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>'+'?v=1.1';
 		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>'+'?v=1.1';
-
-
+		
 		// End PHP Variables
 		
 		var isSecure = window.location.protocol == 'https:' ? true : false;
@@ -443,7 +440,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
 					});
-				var defaultMapLayer= mapLayerThemeSetting ? mapLayerThemeSetting : carto;	
+				var defaultMapLayer= mapLayerThemeSetting=='TERRAIN' ? terrain : carto;	
 
 
 				var mapDisplay =function(){
