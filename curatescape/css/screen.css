@@ -648,7 +648,7 @@ article.browse{
 	background-color: #000;
 	background-position: center center;
 	margin-bottom: 1em;
-	max-height: 49%;
+	max-height: 20em;
 }
 .browse-items article h3 a{
 	text-decoration: none;
