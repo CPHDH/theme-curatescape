@@ -1995,7 +1995,7 @@ function mh_random_or_recent($mode='recent',$num=6){
 	switch ($mode){
 	
 	case 'random':
-		$items=get_random_featured_items($num,true);
+		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'random', 'sort_dir' => 'd','public'=>true), $num);;
 		$param="Random";
 		break;
 	case 'recent':
