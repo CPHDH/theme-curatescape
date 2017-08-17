@@ -257,13 +257,13 @@ function mh_get_tour_json($tour=null){
 		foreach($tour->Items as $item){
 			$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 			$address = ( element_exists('Item Type Metadata','Street Address') ) 
-				? preg_replace( "/\r|\n/", "", strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) )) 
+				? strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) )
 				: null;
 			if($location && $item->public){
 				$tourItems[] = array(
 					'id'		=> $item->id,
 					'title'		=> trim(addslashes(metadata($item,array('Dublin Core','Title')))),
-					'address'	=> trim(html_entity_decode(strip_formatting(addslashes($address)))),
+					'address'	=> trim(str_replace('\'','',$address)),
 					'latitude'	=> $location[ 'latitude' ],
 					'longitude'	=> $location[ 'longitude' ],
 					);
