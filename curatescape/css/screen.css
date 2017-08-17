@@ -966,6 +966,10 @@ body.fullscreen-map div#curatescape-map-canvas{
 	margin:0!important;
 	width:15em;
 }
+.leaflet-popup-content span{
+	max-width: 100%;
+	overflow: hidden;
+}
 
 .curatescape-infowindow-title{
 	padding:4px 8px 0;
