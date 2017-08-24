@@ -257,7 +257,7 @@ function mh_get_tour_json($tour=null){
 		foreach($tour->Items as $item){
 			$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 			$address = ( element_exists('Item Type Metadata','Street Address') ) 
-				? strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) )
+				? preg_replace( "/\r|\n/", " ",strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) ))
 				: null;
 			if($location && $item->public){
 				$tourItems[] = array(
@@ -287,7 +287,7 @@ function mh_get_item_json($item=null){
 	if($item){
 		$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 		$address= ( element_exists('Item Type Metadata','Street Address') ) 
-			? preg_replace( "/\r|\n/", "", strip_tags(metadata( 'item', array( 'Item Type Metadata','Street Address' )) ))  
+			? preg_replace( "/\r|\n/", " ", strip_tags(metadata( 'item', array( 'Item Type Metadata','Street Address' )) ))  
 			: null;
 		$accessinfo= ( element_exists('Item Type Metadata','Access Information') && metadata($item, array('Item Type Metadata','Access Information')) ) ? true : false;
 		$title=html_entity_decode( strip_formatting( metadata( 'item', array( 'Dublin Core', 'Title' ))));
