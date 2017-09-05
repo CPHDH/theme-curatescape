@@ -29,7 +29,7 @@ echo head( array(
 					echo '<article id="item-result-'.$i.'" class="item-result has-image">';
 					echo '<h3>'.link_to_tour(null,array('class'=>'permalink')).'</h3>';
 					echo '<div class="browse-meta-top byline">';
-					echo '<span class="total">'.count($tour->Items).' '.__('Locations').'</span> ~ ';
+					echo '<span class="total">'.mh_tour_total_items($tour).' '.__('Locations').'</span> ~ ';
 					if(tour( 'Credits' )){
 						echo __('Curated by %s',tour( 'Credits' ));
 					}elseif(get_theme_option('show_author') == true){

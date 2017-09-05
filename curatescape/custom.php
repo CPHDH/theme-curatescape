@@ -1659,6 +1659,18 @@ function mh_display_comments(){
 	}
 }
 
+/*
+** Get total tour items, omitting unpublished items
+*/
+function mh_tour_total_items($tour){
+	$i=0;
+	foreach($tour->Items as $ti){
+		if($ti->public){
+			$i++;
+		}
+	}
+	return $i;
+}
 
 /*
 ** Display the Tours search results
@@ -1675,8 +1687,8 @@ function mh_tour_preview($s){
 	}elseif(get_theme_option('show_author') == true){
 		$html.=  __('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).' | ';
 	}		
-	$html.=  count($record->Items).' '.__('Locations').'</span><br>';
-	$html.=  ($text=tour('Description')) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
+	$html.=  mh_tour_total_items($record).' '.__('Locations').'</span><br>';
+	$html.=  ($text=strip_tags(html_entity_decode(tour('Description')))) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
 	if(get_theme_option('show_tour_item_thumbs') == true){
 		$html.=  '<span class="tour-thumbs-container">';
 		foreach($record->Items as $mini_thumb){
@@ -1750,7 +1762,7 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 			}				
 				
 			$html .= '<article class="item-result">';
-			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',count($tour->Items)).'</span> ~ <span>'.$byline.'</span>';
+			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span>';
 			$html .= '</article>';
 		}
 		if(count($public)>1){
