@@ -855,8 +855,8 @@ section.map figcaption{
 }
 
 #curatescape-map-canvas{
+    height: 45vh;
     min-height: 20em;
-    min-height: 45vh;
 }
 
 .leaflet-container{
@@ -1643,6 +1643,12 @@ body#tours.browse article span.total,
 	}
 	#tour-items article{
 		padding-top: .5em;
+	}
+}
+
+@media all and (min-width:880px){
+	.tour-route{
+		margin-left: 1em;
 	}
 }
 
