@@ -35,7 +35,8 @@ echo head(array(
 		<h2 hidden class="hidden">Media</h2>
 		<?php mh_video_files($item);?>
 		<?php mh_item_images($item);?>	
-		<?php mh_audio_files($item);?>		
+		<?php mh_audio_files($item);?>	
+		<?php mh_document_files($item);?>		
 	</section>
 	<?php if(mh_get_item_json($item)): ?>
 	<section class="map">

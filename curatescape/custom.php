@@ -1423,6 +1423,38 @@ function mh_video_files($item='item',$html=null) {
 		</script>			
 	<?php endif;
 }
+
+/*
+** loop through and display DOCUMENT files other than the supported audio, video, and image types
+*/
+function mh_document_files($item='item',$html=null){
+	
+	$blacklist=array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif','video/mp4','video/mpeg','video/quicktime','audio/mpeg');
+	foreach (loop('files', $item->Files) as $file){
+		$documentMime = metadata($file,'MIME Type');
+		if ( !in_array($documentMime,$blacklist) ){	
+			
+			$title = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : $file->original_filename;
+			$extension=pathinfo($file->getWebPath('original'), PATHINFO_EXTENSION);
+			$size=formatSizeUnits($file->size);
+			$download=$file->getWebPath('original');
+			
+			$html .= '<tr>';
+			$html .= '<td class="title"><a href="/files/show/'.$file->id.'">'.$title.'</a></td>';
+			$html .= '<td class="info"><span>'.$extension.'</span> / '.$size.'</td>';
+			$html .= '<td class="download"><a class="button" target="_blank" title="Download" href="'.$download.'"><i class="fa fa-download" aria-hidden="true"></i> <span>Download</span></a></td>';
+			$html .= '</tr>';
+		}
+		
+	}	
+	if($html){
+		echo '<h3>'.__('Documents').'</h3>';
+		echo '<figure id="item-documents">';
+		echo '<table><tbody><tr><th>Name</th><th>Info</th><th>Actions</th></tr>'.$html.'</tbody></table>';
+		echo '</figure>';
+	}
+	
+}
 /*
 ** display single file in FILE TEMPLATE
 */
@@ -2379,5 +2411,37 @@ function adjustBrightness($hex, $steps) {
     return $return;
 }
 
+/* 
+** https://stackoverflow.com/questions/5501427/php-filesize-mb-kb-conversion
+*/
+function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' kB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+}
 
 ?>

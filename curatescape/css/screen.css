@@ -763,6 +763,53 @@ video,audio{
 .now-playing .media-icon{color: #222;}
 
 
+/*! DOCUMENTS TABLE */
+#item-documents table{
+	width: 100%;
+}
+#item-documents table th{
+	color: #fff;
+	text-transform: uppercase;
+	padding-top: 0;
+}
+#item-documents table td{
+	background: #fff;
+}
+#item-documents table td.title,#item-documents table td.info{
+	border-right: 1px solid #ccc;
+}
+#item-documents table td.title{
+	padding-left: 1em;
+}
+#item-documents table td.info{
+	text-transform: uppercase;
+	min-width: 7em;
+}
+#item-documents table td.download{
+	padding-right: 1em;
+}
+#item-documents table .button{
+	margin-bottom: 0;
+	width: 100%;
+	color: #fff;
+	background: #222;
+	border-color: #ccc;
+}
+#item-documents table .button:hover{
+	color: #ccc;
+}
+@media all and (max-width:550px){
+	#item-documents table th {
+		display: none;
+	}
+	#item-documents table td,table tr{
+		display: block;
+	}
+	#item-documents table tr + tr{
+		margin-bottom: 1em;
+	}
+}
+
 /*! MEDIA TYPE AND SEARCH HEADINGS */
 section.media h3,section.map h2, #search.browse h3.result-type-header, body#home h3.result-type-header{
     font-size: 160%;
