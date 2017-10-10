@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=5">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
 
 <?php echo auto_discovery_link_tags(); ?>
 

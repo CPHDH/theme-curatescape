@@ -2028,6 +2028,28 @@ article.error{
     overflow-y: scroll;
 }
 
+/* iPhone X Landscape */
+@media only screen and (max-device-height:2436px) and (orientation:landscape){
+	header.container.header-nav,
+	article.browse,
+	article.page.show,
+	article#homepage
+	{
+		padding-right: constant(safe-area-inset-right);
+		padding-left: constant(safe-area-inset-left);
+	}
+	div.tour-nav{
+		margin-right: constant(safe-area-inset-right);
+		margin-left: constant(safe-area-inset-left);	
+	}
+	.leaflet-left .leaflet-control{
+		margin-left: constant(safe-area-inset-left);
+	}
+	.leaflet-right .leaflet-control{
+		margin-right: constant(safe-area-inset-right);
+	}	
+}
+
 /*! PRINT  */
 @media print{
  .header-nav,footer.main,section.media,section.map,.load-comments,#share-this,#admin-bar{ display: none !important; }
