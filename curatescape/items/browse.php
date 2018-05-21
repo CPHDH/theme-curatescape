@@ -1,10 +1,10 @@
 <?php 
-$tag = (isset($_GET['tag']) ? $_GET['tag'] : null); // items --> browse
-$tags = (isset($_GET['tags']) ? $_GET['tags'] : null); // tags/items --> show
-$subj = ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 49 )  ? $_GET['advanced'][0]['terms'] : null );
-$auth= ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 39 )  ? $_GET['advanced'][0]['terms'] : null );
-$collection = (isset($_GET['collection']) ? $_GET['collection'] : null);
-$query = (isset($_GET['search']) ? $_GET['search'] : null);
+$tag = (isset($_GET['tag']) ? htmlspecialchars($_GET['tag']) : null); // items --> browse
+$tags = (isset($_GET['tags']) ? htmlspecialchars($_GET['tags']) : null); // tags/items --> show
+$subj = ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 49 )  ? htmlspecialchars($_GET['advanced'][0]['terms']) : null );
+$auth= ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['element_id'] == 39 )  ? htmlspecialchars($_GET['advanced'][0]['terms']) : null );
+$collection = (isset($_GET['collection']) ? htmlspecialchars($_GET['collection']) : null);
+$query = (isset($_GET['search']) ? htmlspecialchars($_GET['search']) : null);
 $bodyclass='browse';
 $maptype='focusarea';
 
@@ -56,7 +56,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 <article class="browse stories items">	
 	<h2 class="query-header"><?php 
 	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
-	echo htmlspecialchars($title); 
+	echo $title; 
 	?></h2>
 
 	<div id="primary" class="browse">

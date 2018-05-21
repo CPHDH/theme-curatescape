@@ -1,5 +1,5 @@
 <?php 
-$query = (isset($_GET['query']) ? $_GET['query'] : null);
+$query = (isset($_GET['query']) ? htmlspecialchars($_GET['query']) : null);
 $searchRecordTypes = get_search_record_types();
 $title = __('Search %s', mh_item_label('plural'));
 $bodyclass ='browse advanced-search'.(current_user() ? ' logged-in' : null);
@@ -13,7 +13,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 <div id="content">
 
 <article class="search browse">	
-	<h2 class="query-header"><?php echo htmlspecialchars($title); ?></h2>
+	<h2 class="query-header"><?php echo $title; ?></h2>
 		
 
 
