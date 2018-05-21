@@ -56,7 +56,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 <article class="browse stories items">	
 	<h2 class="query-header"><?php 
 	$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
-	echo $title; 
+	echo htmlspecialchars($title); 
 	?></h2>
 
 	<div id="primary" class="browse">
