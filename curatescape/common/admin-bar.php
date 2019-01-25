@@ -21,7 +21,7 @@
     $r = preg_match_all("/.*?(\d+)$/", $url, $matches);
 	if($r==1){
 		$edit=array(
-			'label'=>_('Edit Record'),
+			'label'=>__('Edit Record'),
 			'uri'=>admin_url($matches[0][0]),
 			'class'=>'highlight'
 		);
