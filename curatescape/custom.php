@@ -464,6 +464,13 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					defaultMapLayer=carto;				
 
 				}
+				
+				// helper for title attributes with encoded HTML
+				function convertHtmlToText(value) {
+				    var d = document.createElement('div');
+				    d.innerHTML = value;
+				    return d.innerText;
+				}				
 
 				var mapDisplay =function(){
 					// Build the base map
@@ -556,11 +563,10 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							    }
 							    var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
 						        var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+appendQueryParams+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
-								
-								
+																
 								var marker = L.marker([item.latitude,item.longitude],{
 									icon: icon(c,inner),
-									title: item.title,
+									title: convertHtmlToText(item.title),
 									}).bindPopup(html);
 								
 								group.push(marker);  
@@ -598,7 +604,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							
 							var marker = L.marker([data.latitude,data.longitude],{
 								icon: icon(color,"circle"),
-								title: data.title,
+								title: convertHtmlToText(data.title),
 								}).bindPopup(html);					
 							
 							marker.addTo(map);
