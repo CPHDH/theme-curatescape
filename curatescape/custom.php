@@ -435,15 +435,19 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			loadJS( leafletjs, function(){
 				console.log('Leaflet ready...');
 				
-				terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
+				var terrain = L.tileLayer('//stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{retina}.jpg', {
 						attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map Tiles by <a href="http://stamen.com/">Stamen Design</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
 					});		
-				carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
+				var carto = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
 					});
-				mapbox = L.tileLayer('https://api.mapbox.com/v4/mapbox.'+mapbox_tile_layer+'/{z}/{x}/{y}{retina}.png?access_token={accessToken}', {
+				var wikimedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{retina}.png', {
+						attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
+						retina: (L.Browser.retina) ? '@2x' : '',
+					});
+				var mapbox = L.tileLayer('https://api.mapbox.com/v4/mapbox.'+mapbox_tile_layer+'/{z}/{x}/{y}{retina}.png?access_token={accessToken}', {
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://www.mapbox.com/feedback/">Mapbox</a>',
 				    	retina: (L.Browser.retina) ? '@2x' : '',
 						accessToken: mapbox_access_token,
@@ -456,12 +460,14 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					break;
 					case 'CARTO':
 					defaultMapLayer=carto;
+					case 'WIKIMEDIA':
+					defaultMapLayer=wikimedia;
 					break;
 					case 'MAPBOX_TILES':
 					defaultMapLayer=mapbox;
 					break;	
 					default:
-					defaultMapLayer=carto;				
+					defaultMapLayer=wikimedia;				
 
 				}
 				
@@ -505,8 +511,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					
 					// Layer controls
 					var allLayers={
+						"Street":(defaultMapLayer == terrain) ? wikimedia : defaultMapLayer,
 						"Terrain":terrain,
-						"Street":carto,
 					};
 					if(mapbox_access_token){
 						allLayers[mapbox_layer_title]=mapbox;
