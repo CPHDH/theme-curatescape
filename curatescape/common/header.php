@@ -48,8 +48,12 @@ $file = (isset($file)) ? $file : null;
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
 <link rel='mask-icon' href='<?php echo img('favicon.svg')?>' color='#1EAEDB'> <!-- Safari -->
 
+<!-- Plugin Stuff -->
+<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
+
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>
+
 <!-- Assets -->
 <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -97,9 +101,6 @@ echo head_js(false);
 
 <!-- Custom CSS via theme config -->
 <?php echo mh_configured_css();?>
-
-<!-- Plugin Stuff -->
-<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
 
 <!-- Theme Display Settings -->
 <?php
