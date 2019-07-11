@@ -1,7 +1,7 @@
 <?php
 $maptype='tour';	
 $tourTitle = strip_formatting( tour( 'title' ) );
-$label = mh_tour_label();
+$label = mh_tour_label('singular');
 if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 } else {
    $tourTitle = '';
@@ -41,7 +41,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 				
 				<h3 hidden class="hidden"><?php echo __('Locations for %s', $label);?></h3>
 				<nav class="secondary-nav" id="tours-show" aria-hidden="true"> 
-					<?php echo mh_tour_browse_subnav(mh_tour_label(),$tour->id);?>
+					<?php echo mh_tour_browse_subnav($label,$tour->id);?>
 				</nav>				
 					<?php 
 					$i=1;
