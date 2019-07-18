@@ -1325,7 +1325,7 @@ function mh_audio_files($item,$index=0){
 		<figure id="item-audio">	
 			<div class="media-container audio">
 				<audio muted id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
-					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
+					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
 				</audio>
 				<div class="flex media-list audio" style="">
 					<?php echo $html;?>		
@@ -1407,7 +1407,7 @@ function mh_video_files($item='item',$html=null) {
 			<div class="media-container video">
 			
 			<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
-				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-media-support/" target="_blank" rel="noopener">supports HTML5 video</a></p>
+				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
 			</video>
 			<div class="flex media-list video" style="">
 				<?php echo $html;?>
@@ -1486,7 +1486,7 @@ function mh_single_file_show($file=null){
 			<figure id="item-audio">	
 				<div class="media-container audio">
 					<audio muted src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
-						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank" rel="noopener">supports HTML5 audio</a></p>
+						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that supports HTML5 audio</p>
 					</audio>
 				</div>
 			</figure>				
