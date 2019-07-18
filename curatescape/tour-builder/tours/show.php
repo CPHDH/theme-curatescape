@@ -46,7 +46,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 					<?php 
 					$i=1;
 					foreach( $tour->getItems() as $tourItem ): 
-						if($tourItem->public):
+						if($tourItem->public || current_user()):
 							set_current_record( 'item', $tourItem );
 								$itemID=$tourItem->id;
 								$hasImage=metadata($tourItem,'has thumbnail');

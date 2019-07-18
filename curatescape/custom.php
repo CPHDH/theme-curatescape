@@ -1704,12 +1704,12 @@ function mh_display_comments(){
 }
 
 /*
-** Get total tour items, omitting unpublished items
+** Get total tour items, omitting unpublished items unless logged in
 */
 function mh_tour_total_items($tour){
 	$i=0;
 	foreach($tour->Items as $ti){
-		if($ti->public){
+		if($ti->public || current_user()){
 			$i++;
 		}
 	}
