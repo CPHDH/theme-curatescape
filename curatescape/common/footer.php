@@ -14,6 +14,8 @@
 			<div id="powered-by"><?php echo __('Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>');?></div>
 		</div>
 		
+		<?php echo mh_footer_cta();?>
+		
 		<div class="custom"><?php echo get_theme_option('custom_footer_html');?></div>
 	
 		<?php echo fire_plugin_hook('public_footer', array('view'=>$this)); ?>	

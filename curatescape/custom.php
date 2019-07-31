@@ -1941,6 +1941,17 @@ function mh_home_cta($html=null){
 		return $html;
 	}
 }
+
+function mh_footer_cta($html=null){
+	$footer_cta_button_label=get_theme_option('footer_cta_button_label');
+	$footer_cta_button_url=get_theme_option('footer_cta_button_url');
+	$footer_cta_button_target=get_theme_option('footer_cta_button_target') ? 'target="_blank"' : null;
+	if($footer_cta_button_label && $footer_cta_button_url){
+		$html.= '<aside class="footer_cta"><a class="button button-primary" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></aside>';
+	}
+	return $html;
+}
+
 /*
 ** Tag cloud for homepage
 */
