@@ -1906,6 +1906,42 @@ function mh_home_about($length=800,$html=null){
 }
 
 /*
+** Display the customizable "Call to Action" content on homepage
+*/
+function mh_home_cta($html=null){
+	
+	$cta_title=get_theme_option('cta_title');
+	$cta_text=get_theme_option('cta_text');
+	$cta_img_src=get_theme_option('cta_img_src');
+	$cta_button_label=get_theme_option('cta_button_label');
+	$cta_button_url=get_theme_option('cta_button_url');
+	$cta_button_url_target=get_theme_option('cta_button_url_target') ? ' target="_blank"' : null;
+	
+	if($cta_title && $cta_button_label && $cta_button_url){	
+		$html .='<h3 class="result-type-header">'.$cta_title.'</h3>';
+	
+		$html .= '<div class="cta-inner">';
+			$html .= '<article style="background-image:url(/files/theme_uploads/'.$cta_img_src.');">';
+				if($cta_img_src){
+					$html .= '<div class="cta-hero">';
+					$html .= '<a class="button button-primary" href="'.$cta_button_url.'" '.$cta_button_url_target.'>'.$cta_button_label.'</a>';
+					$html .= '</div>';
+				}
+				if($cta_text){
+					$html .= '<div class="cta-description">';
+					$html .= '<p>';
+						$html .= $cta_text;
+					$html .= '</p>';
+					$html .= '<a class="button" href="'.$cta_button_url.'" '.$cta_button_url_target.'>'.$cta_button_label.'</a>';
+					$html .= '</div>';
+				}
+			$html .= '</article>';
+		$html .= '</div>';
+	
+		return $html;
+	}
+}
+/*
 ** Tag cloud for homepage
 */
 function mh_home_popular_tags($num=40){
@@ -2031,6 +2067,7 @@ function homepage_widget_sections(){
 		$popular_tags=0;
 		$about=0;
 		$meta=0;
+		$cta=0;
 		
 		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3(),homepage_widget_4()) as $setting){
 			
@@ -2055,6 +2092,10 @@ function homepage_widget_sections(){
 			        $html.= ($about==0) ? '<section id="about">'.mh_home_about().'</section>	' : null;
 			        $about++;
 			        break;
+			    case 'cta':
+			        $html.= ($cta==0) ? '<section id="cta">'.mh_home_cta().'</section>	' : null;
+			        $cta++;
+			        break;			        
 			    case 'custom_meta_img':
 			        $html.= ($meta==0) ? '<section id="custom-meta-img" aria-hidden="true"><img src="'.mh_seo_pageimg_custom().'" alt="" class="homepage-brand-image"></section>	' : null;
 			        $meta++;

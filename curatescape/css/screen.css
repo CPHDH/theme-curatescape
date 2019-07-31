@@ -1768,6 +1768,41 @@ section#custom-meta-img{
 	margin: 0 auto;
 }
 
+/*! HOMEPAGE CTA */
+body#home #content section:last-child{
+	margin-bottom: 0;
+}
+section#cta{
+	margin-bottom: 2em;
+}
+
+.cta-inner article{
+	background-color: rgba(0,0,0,1);
+	background-size: cover;
+	background-position: center bottom;
+}
+.cta-hero{
+	text-align: center;
+	background-size: cover;
+	box-shadow: 0 0 3em rgba(0,0,0,.5) inset;
+}
+.cta-hero .button{
+	margin: 12em auto 10em;
+	box-shadow: 0 0 1em rgba(0,0,0,.25);
+	border-color: #fff;
+}
+.cta-description{
+	background-color: rgba(0, 0, 0,0.75);
+	color: #fff;
+	padding: 1em;
+	text-align: center;
+}
+.cta-description p{
+	hyphens:none;
+}
+.cta-description .button{
+	color: #fff;
+}
 /*! COLLECTIONS */
 #collections.browse article h3{
 	font-size: 2.6rem;
