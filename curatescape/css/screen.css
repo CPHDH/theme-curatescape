@@ -1983,7 +1983,7 @@ body.contribution #flash ul{
 }
 #admin-bar a.highlight:hover,#admin-bar a.highlight:focus{
 	background: #eaeaea;
-	color:#222;
+	color:#222 !important;
 	text-shadow: 1px 1px 1px #fff;
 }
 

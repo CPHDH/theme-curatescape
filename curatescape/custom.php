@@ -1406,13 +1406,13 @@ function mh_video_files($item='item',$html=null) {
 	if($html): ?>
 		<h3><?php echo __('Video');?></h3>
 		<figure id="item-video">
-			<div class="media-container video">
-			
-			<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
-				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
-			</video>
-			<div class="flex media-list video" style="">
-				<?php echo $html;?>
+			<div class="media-container video">		
+				<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
+					<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
+				</video>
+				<div class="flex media-list video" style="">
+					<?php echo $html;?>
+				</div>
 			</div>
 		</figure>
 		<script>
