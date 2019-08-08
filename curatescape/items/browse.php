@@ -48,6 +48,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 <div id="content">
 	
 <section class="map">
+	<h2 hidden class="hidden"><?php echo __('Map');?></h2>
 	<figure>
 		<?php echo mh_map_type($maptype,null,null); ?>
 	</figure>
@@ -61,6 +62,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 
 	<div id="primary" class="browse">
 		<section id="results">
+			<h2 hidden class="hidden"><?php echo mh_item_label('plural');?></h2>
 				
 			<nav class="secondary-nav" id="item-browse"> 
 				<?php echo mh_item_browse_subnav();?>
@@ -82,7 +84,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 				
 				?>
 				<article class="item-result <?php echo $hasImage ? 'has-image' : null;?>">
-					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null; ?>
+					<?php echo isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img" aria-label="'.metadata($item, array('Dublin Core', 'Title')).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null; ?>
 					<h3><?php echo $titlelink; ?></h3>
 					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
 					

@@ -27,12 +27,12 @@ echo head(array(
 		<?php //echo item_is_private($item);?>
 	</header>
 	<section class="text">
-		<h2 hidden class="hidden">Text</h2>
+		<h2 hidden class="hidden"><?php echo __('Text');?></h2>
 		<?php echo mh_the_text(); ?>
 	</section>
 	
 	<section class="media">
-		<h2 hidden class="hidden">Media</h2>
+		<h2 hidden class="hidden"><?php echo __('Media');?></h2>
 		<?php mh_video_files($item);?>
 		<?php mh_item_images($item);?>	
 		<?php mh_audio_files($item);?>	
@@ -44,15 +44,15 @@ echo head(array(
 		<figure>
 			<?php echo mh_map_type($maptype,$item); ?>
 			<?php echo mh_map_actions($item);?>
+			<figcaption><?php echo mh_map_caption();?></figcaption>
 		</figure>
-		<figcaption><?php echo mh_map_caption();?></figcaption>
 	</section>
 	<?php endif;?>
 	
 	<?php echo mh_factoid(); ?>
 	
 	<section class="metadata">
-		<h2 hidden class="hidden">Metadata</h2>
+		<h2 hidden class="hidden"><?php echo __('Metadata');?></h2>
 		<?php echo mh_official_website();?>	
 		<?php echo mh_item_citation(); ?>
 		<?php echo function_exists('tours_for_item') ? tours_for_item($item->id, __('Related %s', mh_tour_label('plural'))) : null?>

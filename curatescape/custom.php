@@ -99,7 +99,7 @@ function mh_seo_pageimg_custom(){
 function mh_theme_css($media='all'){
 	$themeName = Theme::getCurrentThemeName();
 	$theme = Theme::getTheme($themeName);
-	return '<link href="'.WEB_PUBLIC_THEME.'/'.$themeName.'/css/screen.css?v='.$theme->version.'" media="'.$media.'" rel="stylesheet" type="text/css" >';
+	return '<link href="'.WEB_PUBLIC_THEME.'/'.$themeName.'/css/screen.css?v='.$theme->version.'" media="'.$media.'" rel="stylesheet">';
 }
 
 
@@ -225,22 +225,22 @@ function mh_global_header($html=null){
 <div id="navigation">
 	<nav>
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
-		<span class="spacer"></span>
-		<span class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
+		<div class="spacer"></div>
+		<div class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
 			<?php if(!get_theme_option('hide_primary_nav')):?>
-			<span class="flex priority">
+			<div class="flex priority">
 	  			<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo mh_item_label('plural');?></a>
 	  			<?php if(plugin_is_active('TourBuilder')): ?>
 	  				<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo mh_tour_label('plural');?></a>
 	  			<?php endif;?>
-			</span>
+			</div>
 			<?php endif;?>
-			<span class="flex search-plus flex-grow">
+			<div class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
   			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'));?>
   			<a title="Menu" id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
-			</span>
-		</span>
+			</div>
+		</div>
 	</nav>
 </div>
 <?php
@@ -386,7 +386,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 			$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
 	}
 	?>
-	<script type="text/javascript" async defer>
+	<script>
 		// PHP Variables
 		var type =  '<?php echo $type ;?>';
 		var color = '<?php echo $color ;?>';
@@ -1083,8 +1083,8 @@ function mh_factoid($item='item'){
 			$tw2script=null;
 			$tweetable=get_theme_option('tweetable_factoids');
 			if($tweetable){
-				$tw1script='<script async defer type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>';
-				$tw2script="<script async defer type='text/javascript'>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
+				$tw1script='<script async defer src="https://platform.twitter.com/widgets.js"></script>';
+				$tw2script="<script async defer>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
 			}
 			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
 			foreach($factoids as $factoid){
@@ -1235,6 +1235,7 @@ function mh_file_caption($file,$inlineTitle=true){
 */
 function mh_item_images($item,$index=0){
 	$html=null;
+	$captionID=1;
 	foreach (loop('files', $item->Files) as $file){
 		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
 		$mime = metadata($file,'MIME Type');
@@ -1244,10 +1245,11 @@ function mh_item_images($item,$index=0){
 			$desc=metadata($file, array('Dublin Core', 'Description'));
 			$caption=$title_formatted.($desc ? ': ' : ' ~ ').mh_file_caption($file,false);
 			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
-			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-				$html.= '<a title="'.$title.'" class="file flex" href="'.$src.'" data-size="" style="background-image: url(\''.$src.'\');"></a>';
-				$html.= '<figcaption hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i>').'</figcaption>';
+			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" aria-label="'.$title.'" aria-describedby="caption'.$captionID.'">';
+				$html.= '<a href="'.$src.'" title="'.$title.'" class="file flex" style="background-image: url(\''.$src.'\');" data-size=""></a>';
+				$html.= '<figcaption id="caption'.$captionID.'" hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i>').'</figcaption>';
 			$html.= '</figure>';
+			$captionID++;
 		}		
 	}
 	if($html): ?>
@@ -1324,7 +1326,7 @@ function mh_audio_files($item,$index=0){
 		<h3><?php echo __('Audio');?></h3>
 		<figure id="item-audio">	
 			<div class="media-container audio">
-				<audio muted id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+				<audio muted id="curatescape-player-audio" class="video-js" controls preload="auto">
 					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
 				</audio>
 				<div class="flex media-list audio" style="">
@@ -1332,7 +1334,7 @@ function mh_audio_files($item,$index=0){
 				</div>
 			</div>
 		</figure>	
-		<script async defer>
+		<script>
 			jQuery(document).ready(function($) {
 				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
 				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
@@ -1413,7 +1415,7 @@ function mh_video_files($item='item',$html=null) {
 				<?php echo $html;?>
 			</div>
 		</figure>
-		<script async defer>
+		<script>
 			jQuery(document).ready(function($) {
 				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
 				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
@@ -1485,14 +1487,13 @@ function mh_single_file_show($file=null){
 			?>
 			<figure id="item-audio">	
 				<div class="media-container audio">
-					<audio muted src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto" type="audio/mp3">
+					<audio muted src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto">
 						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that supports HTML5 audio</p>
 					</audio>
 				</div>
 			</figure>				
-			<script async defer>
+			<script>
 			jQuery(document).ready(function($) {
-				
 				loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
 				loadJS('//vjs.zencdn.net/5.19.2/video.js', function() {
 					var audioplayer = videojs('curatescape-player-audio',{
@@ -1530,7 +1531,7 @@ function mh_single_file_show($file=null){
 				$html.= $embeddable;
 			}else{
 				?>
-				<script async defer>
+				<script>
 					loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
 					loadJS('//vjs.zencdn.net/5.19.2/video.js');
 				</script>	
@@ -1617,7 +1618,7 @@ function mh_share_this($type='Page'){
 				<a class="addthis_button_compact"></a>
 				</div></aside>
 				
-				<script async defer>
+				<script>
 				jQuery(document).ready(function(){
 					loadJS("//s7.addthis.com/js/300/addthis_widget.js#async=1",function(){
 						console.log("Add This ready...");
@@ -1645,7 +1646,7 @@ function mh_disquss_comments($shortname){
 	</div>    
 	
 	
-	<script type="text/javascript" async defer>
+	<script async defer>
 		var disqus_shortname = "<?php echo $shortname;?>";
 		var disqus_loaded = false;
 		
@@ -1685,7 +1686,7 @@ function mh_intensedebate_comments($intensedebate_id){
 		var idcomments_post_url;
 		</script>
 		<span id="IDCommentsPostTitle" style="display:none"></span>
-		<script async defer type='text/javascript' src='https://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+		<script async defer src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
 		<?php
 	}
 }
@@ -2157,7 +2158,7 @@ function mh_random_or_recent($mode='recent',$num=6){
 			}
 
 			$html.='<article class="item-result'.( $hasImage ? 'has-image' : null ).'">';
-				$html.=( isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null );
+				$html.=( isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img" aria-label="'.metadata($item, array('Dublin Core', 'Title')).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null );
 				$html.='<h3>'.$titlelink.'</h3>';
 				$html.='<div class="browse-meta-top">'.mh_the_byline($item,false).'</div>';
 				
@@ -2282,7 +2283,7 @@ function mh_configured_css(){
 		body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-25).';}			
 	';
 	$user_css= get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : null;
-	return '<style type="text/css">'.$configured_css.$user_css.'</style>';
+	return '<style>'.$configured_css.$user_css.'</style>';
 }
 
 
@@ -2312,7 +2313,7 @@ function mh_font_config(){
 ** see also screen.css
 */
 function mh_web_font_loader(){ ?>
-<script type="text/javascript">
+<script>
 	WebFontConfig = {
 		<?php echo mh_font_config(); ?>
 	};
@@ -2320,7 +2321,6 @@ function mh_web_font_loader(){ ?>
 		var wf = document.createElement('script');
 		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
 		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-		wf.type = 'text/javascript';
 		wf.async = 'true';
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(wf, s);
@@ -2336,7 +2336,7 @@ function mh_google_analytics($webPropertyID=null){
 	if ($webPropertyID!=null){
 		echo "
 		<!-- Google Analytics -->
-		<script type=\"text/javascript\">
+		<script>
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', '".$webPropertyID."']);
 			_gaq.push(['_trackPageview']);

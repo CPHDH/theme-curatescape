@@ -113,7 +113,7 @@ article.page.show{
 }
 
 /*! TYPOGRAPHY */
-body,.link-icons span,#navigation nav #home-logo h3,.sidebar-app-title,#tour-nav-links a,#menu-button i:after{
+body,.link-icons span,#navigation nav #home-logo h3,.sidebar-app-title,#tour-nav-links a,.tour-nav-links a,#menu-button i:after{
   font-family: "Raleway";
 }
 
@@ -262,6 +262,7 @@ figure#item-photos{
 	justify-content: space-between;
 	margin: 0 0 1em;
 }
+
 figure#item-photos .flex-image{
 	width: 100%;
 	margin: 3px;
@@ -893,6 +894,7 @@ section.map figure{
 section.map figcaption{
 	font-style: italic;
 	color: #777;
+	margin-top: 0.5em;
 }
 .curatescape-map{
 	background:#ccc;
@@ -1728,11 +1730,13 @@ body#tours.browse article span.total,
     padding: 1em;
     border-top: 1px dashed #ccc;
 }
+.tour-nav-links,
 #tour-nav-links{
 	visibility: hidden;
 	display: flex;
 	margin-top: .25em;
 }
+.tour-nav-links a,
 #tour-nav-links a{
     visibility: visible;
     padding: .5em;
@@ -1743,9 +1747,11 @@ body#tours.browse article span.total,
     text-transform: uppercase;
     color: #222;
 }
+.tour-nav-links a:nth-last-child(2),
 #tour-nav-links a:nth-last-child(2){
 	background: #ddd;
 }
+.tour-nav-links a:hover,.tour-nav-links a:focus,
 #tour-nav-links a:hover,#tour-nav-links a:focus{
 	color: #fff;
 	background: #222;
@@ -1755,6 +1761,7 @@ body#tours.browse article span.total,
 	color: transparent;
 	visibility: hidden;
 }
+.tour-nav-container.top .tour-nav-links,
 .tour-nav-container.top #tour-nav-links{
 	margin-top: -3.5em;
 	margin-bottom: 1em;

@@ -10,6 +10,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
    'bodyclass' => 'show tour', 'tour'=>$tour ) );
 ?>
 <section class="map">
+	<h2 hidden class="hidden"><?php echo __('Map for %s',mh_tour_label('singular'));?></h2>
 	<figure>
 		<?php echo mh_map_type($maptype,null,$tour); ?>
 		<?php echo mh_map_actions(null,$tour);?>
@@ -32,6 +33,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 	
 		<div id="primary" class="show">
 		    <section id="text">
+			   <h2 hidden class="hidden"><?php echo __('%s Description',mh_tour_label('singular'));?></h2>
 			   <div id="tour-description">
 			    <?php echo htmlspecialchars_decode(nls2p( tour( 'Description' ) )); ?>
 			   </div>
@@ -71,6 +73,7 @@ echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'co
 					endforeach; ?>
 			</section>
 			<section id="tour-postscript">
+				<h2 hidden class="hidden"><?php echo __('%s Postscript',mh_tour_label('singular'));?></h2>
 				<?php echo htmlspecialchars_decode(metadata('tour','Postscript Text')); ?>
 			</section>
 			
