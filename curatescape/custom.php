@@ -1880,7 +1880,7 @@ function mh_home_cta($html=null){
 	$cta_img_src=get_theme_option('cta_img_src');
 	$cta_button_label=get_theme_option('cta_button_label');
 	$cta_button_url=get_theme_option('cta_button_url');
-	$cta_button_url_target=get_theme_option('cta_button_url_target') ? ' target="_blank"' : null;
+	$cta_button_url_target=get_theme_option('cta_button_url_target') ? ' target="_blank" rel="noreferrer noopener"' : null;
 	
 	if($cta_title && $cta_button_label && $cta_button_url){	
 		$html .='<h3 class="result-type-header">'.$cta_title.'</h3>';
@@ -1910,7 +1910,7 @@ function mh_home_cta($html=null){
 function mh_footer_cta($html=null){
 	$footer_cta_button_label=get_theme_option('footer_cta_button_label');
 	$footer_cta_button_url=get_theme_option('footer_cta_button_url');
-	$footer_cta_button_target=get_theme_option('footer_cta_button_target') ? 'target="_blank"' : null;
+	$footer_cta_button_target=get_theme_option('footer_cta_button_target') ? 'target="_blank" rel="noreferrer noopener"' : null;
 	if($footer_cta_button_label && $footer_cta_button_url){
 		$html.= '<aside class="footer_cta"><a class="button button-primary" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></aside>';
 	}
