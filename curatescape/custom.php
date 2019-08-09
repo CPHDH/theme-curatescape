@@ -494,7 +494,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 						var geolocationControl = L.control({position: 'topleft'});
 						geolocationControl.onAdd = function (map) {
 						    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-						    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" title="Geolocation"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
+						    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" aria-label="Geolocation" title="Geolocation" role="button"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
 						    return div;
 						};
 						geolocationControl.addTo(map);				
@@ -504,7 +504,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					var fullscreenControl = L.control({position: 'topleft'});
 					fullscreenControl.onAdd = function (map) {
 					    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-fullscreen');
-					    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" title="Fullscreen"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
+					    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" aria-label="Fullscreen" title="Fullscreen" role="button"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
 					    return div;
 					};
 					fullscreenControl.addTo(map);
@@ -1312,7 +1312,7 @@ function mh_audio_files($item,$index=0){
 		if ( array_search($mime, $audioTypes) !== false ){
 			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
 			$audioDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play" tabindex="0">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$audioTitle.'</div>';
@@ -1343,17 +1343,19 @@ function mh_audio_files($item,$index=0){
 				'<source src="'+src+'" type="audio/mp3"></source>'
 			)
 			if(typeof audioplayer == 'object'){
-				$('.media-list.audio .media-select:first-child').addClass('now-playing');
+				$('.media-list.audio .media-select:first-child').addClass('now-playing');	
 				
-				$('.media-list.audio .media-select').on('click',function(e){
-					var newsrc=$(this).attr('data-source');
-					$('.media-list.audio .now-playing').removeClass('now-playing');
-					$(this).addClass('now-playing');
-					audioplayer.html(
-						'<source src="'+newsrc+'" type="audio/mp3"></source>'
-					);
-					audioplayer.get(0).load();
-					audioplayer.get(0).play();
+				$('.media-list.audio .media-select').on('click keydown',function(e){	
+					if(( e.type == 'click' ) || ( e.type == 'keydown' && e.which  == 13 )){
+						var newsrc=$(this).attr('data-source');
+						$('.media-list.audio .now-playing').removeClass('now-playing');
+						$(this).addClass('now-playing');
+						audioplayer.html(
+							'<source src="'+newsrc+'" type="audio/mp3"></source>'
+						);
+						audioplayer.get(0).load();
+						audioplayer.get(0).play();
+					}
 				});				
 				
 			}
@@ -1378,7 +1380,7 @@ function mh_video_files($item='item',$html=null) {
 		if ( in_array($videoMime,$videoTypes) ){
 			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
 			$videoDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play" tabindex="0">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$videoTitle.'</div>';
@@ -1412,15 +1414,17 @@ function mh_video_files($item='item',$html=null) {
 			if(typeof videoplayer == 'object'){
 				$('.media-list.video .media-select:first-child').addClass('now-playing');
 				
-				$('.media-list.video .media-select').on('click',function(e){
-					var newsrc=$(this).attr('data-source');
-					$('.media-list.video .now-playing').removeClass('now-playing');
-					$(this).addClass('now-playing');
-					videoplayer.html(
-						'<source src="'+newsrc+'" type="video/mp4"></source>'
-					);
-					videoplayer.get(0).load();
-					videoplayer.get(0).play();
+				$('.media-list.video .media-select').on('click keydown',function(e){
+					if(( e.type == 'click' ) || ( e.type == 'keydown' && e.which  == 13 )){
+						var newsrc=$(this).attr('data-source');
+						$('.media-list.video .now-playing').removeClass('now-playing');
+						$(this).addClass('now-playing');
+						videoplayer.html(
+							'<source src="'+newsrc+'" type="video/mp4"></source>'
+						);
+						videoplayer.get(0).load();
+						videoplayer.get(0).play();
+					}
 				});				
 				
 			}
