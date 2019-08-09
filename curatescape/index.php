@@ -2,7 +2,7 @@
 $stealthMode=(get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true) ? true : false;
 $classname='home'.($stealthMode ? ' stealth' : null);
 if ($stealthMode) queue_css_file('stealth');
-echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>$classname)); 
+	echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>$classname)); 
 ?>
 <?php
 if ($stealthMode){
