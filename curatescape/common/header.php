@@ -90,7 +90,7 @@ echo head_js(false);
 <script>
 	// Async CSS 	
 	loadCSS('<?php echo src('font-awesome/css/font-awesome.min.css','fonts');?>'); // font awesome css
-	loadCSS('<?php echo src('jquery.mmenu/jquery.mmenu.all.css','javascripts');?>'); // mmenu css
+	loadCSS('<?php echo src('jquery.mmenu/mmenu.css','javascripts');?>'); // mmenu css
 	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.min.css','javascripts');?>'); // photoswipe css
 	// Async JS 
 	loadJS('<?php echo src('global.js','javascripts');?>'); // global.js
