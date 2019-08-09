@@ -1312,66 +1312,52 @@ function mh_audio_files($item,$index=0){
 		if ( array_search($mime, $audioTypes) !== false ){
 			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
 			$audioDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$audioTitle.'</div>';
 					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.=snippet($audioDesc,0,250,"...").'<br>'.link_to($file,'show',__('View File Record'));
+					$html.=snippet($audioDesc,0,250,"...");
 				$html.='</div>';
 			$html.='</div>';
+			$html.=link_to($file,'show',__('View File Record'));
 		}
 	};
 	if($html): ?>
 		<h3><?php echo __('Audio');?></h3>
 		<figure id="item-audio">	
 			<div class="media-container audio">
-				<audio muted id="curatescape-player-audio" class="video-js" controls preload="auto">
+				<audio id="curatescape-player-audio" class="video-js" controls preload="auto">
 					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
 				</audio>
-				<div class="flex media-list audio" style="">
+				<div class="flex media-list audio">
 					<?php echo $html;?>		
 				</div>
 			</div>
 		</figure>	
 		<script>
-			jQuery(document).ready(function($) {
-				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
-				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
-
-					var audioplayer = videojs('curatescape-player-audio',{
-						height:'30',
-						controlBar: {
-							fullscreenToggle: false
-						},
-						autoplay:true,
-						muted:false
-					}).src(
-						$('.media-list.audio .media-select:first-child').attr('data-source')
+		jQuery(document).ready(function($) {
+			var audioplayer = $('#curatescape-player-audio');
+			var src=$('.media-list.audio .media-select:first-child').attr('data-source');
+			audioplayer.html(
+				'<source src="'+src+'" type="audio/mp3"></source>'
+			)
+			if(typeof audioplayer == 'object'){
+				$('.media-list.audio .media-select:first-child').addClass('now-playing');
+				
+				$('.media-list.audio .media-select').on('click',function(e){
+					var newsrc=$(this).attr('data-source');
+					$('.media-list.audio .now-playing').removeClass('now-playing');
+					$(this).addClass('now-playing');
+					audioplayer.html(
+						'<source src="'+newsrc+'" type="audio/mp3"></source>'
 					);
-					if(typeof audioplayer == 'object'){
-
-						audioplayer.ready(function(){
-							// load controls
-							setTimeout(function(){ 
-								audioplayer.pause().muted(false);
-							}, 10);
-						});
-						
-						$('.media-list.audio .media-select:first-child').addClass('now-playing');
-						
-						$('.media-list.audio .media-select').on('click',function(e){
-							audioplayer.muted(false);
-							$('.media-list.audio .now-playing').removeClass('now-playing');
-							$(this).addClass('now-playing');
-							audioplayer.src($(this).attr('data-source')).play();
-						});
-						
-
-					}	
-					
-				});
-			});
+					audioplayer.get(0).load();
+					audioplayer.get(0).play();
+				});				
+				
+			}
+		});		
 		</script>
 	<?php endif;
 }
@@ -1392,14 +1378,15 @@ function mh_video_files($item='item',$html=null) {
 		if ( in_array($videoMime,$videoTypes) ){
 			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
 			$videoDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$videoTitle.'</div>';
 					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.=snippet($videoDesc,0,250,"...").'<br>'.link_to($file,'show',__('View File Record'));
+					$html.=snippet($videoDesc,0,250,"...");
 				$html.='</div>';
 			$html.='</div>';
+			$html.=link_to($file,'show',__('View File Record'));
 
 		}
 	}
@@ -1407,33 +1394,37 @@ function mh_video_files($item='item',$html=null) {
 		<h3><?php echo __('Video');?></h3>
 		<figure id="item-video">
 			<div class="media-container video">		
-				<video id="curatescape-player" class="video-js vjs-fluid" controls preload="auto">
+				<video id="curatescape-player" playsinline controls preload="auto">
 					<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
 				</video>
-				<div class="flex media-list video" style="">
+				<div class="flex media-list video">
 					<?php echo $html;?>
 				</div>
 			</div>
 		</figure>
 		<script>
-			jQuery(document).ready(function($) {
-				loadCSS("//vjs.zencdn.net/5.19.2/video-js.css");
-				loadJS("//vjs.zencdn.net/5.19.2/video.js", function(){
-					
-					var videoplayer = videojs('curatescape-player').src(
-						$('.media-list.video .media-select:first-child').attr('data-source')
+		jQuery(document).ready(function($) {
+			var videoplayer = $('#curatescape-player');
+			var src=$('.media-list.video .media-select:first-child').attr('data-source');
+			videoplayer.html(
+				'<source src="'+src+'" type="video/mp4"></source>'
+			)
+			if(typeof videoplayer == 'object'){
+				$('.media-list.video .media-select:first-child').addClass('now-playing');
+				
+				$('.media-list.video .media-select').on('click',function(e){
+					var newsrc=$(this).attr('data-source');
+					$('.media-list.video .now-playing').removeClass('now-playing');
+					$(this).addClass('now-playing');
+					videoplayer.html(
+						'<source src="'+newsrc+'" type="video/mp4"></source>'
 					);
-					if(typeof videoplayer == 'object'){
-						$('.media-list.video .media-select:first-child').addClass('now-playing');
-						
-						$('.media-list.video .media-select').on('click',function(e){
-							$('.media-list.video .now-playing').removeClass('now-playing');
-							$(this).addClass('now-playing');
-							videoplayer.src($(this).attr('data-source')).play();
-						});
-					}				
-				});
-			});
+					videoplayer.get(0).load();
+					videoplayer.get(0).play();
+				});				
+				
+			}
+		});
 		</script>			
 	<?php endif;
 }
@@ -1487,34 +1478,11 @@ function mh_single_file_show($file=null){
 			?>
 			<figure id="item-audio">	
 				<div class="media-container audio">
-					<audio muted src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto">
-						<p class="vjs-no-js">To listen to this audio please enable JavaScript and consider upgrading to a web browser that supports HTML5 audio</p>
+					<audio src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto">
+						<p class="vjs-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 audio</p>
 					</audio>
 				</div>
-			</figure>				
-			<script>
-			jQuery(document).ready(function($) {
-				loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
-				loadJS('//vjs.zencdn.net/5.19.2/video.js', function() {
-					var audioplayer = videojs('curatescape-player-audio',{
-						height:'30',
-						controlBar: {
-							fullscreenToggle: false
-						},
-						autoplay: true,
-					});
-					if(typeof audioplayer == 'object'){
-						audioplayer.ready(function(){
-							// load controls
-							setTimeout(function(){ 
-								audioplayer.pause().muted(false)
-							}, 10);
-						});
-					}				
-				});
-			});
-			</script>
-			
+			</figure>
 			<?php
 			
 		
@@ -1530,15 +1498,11 @@ function mh_single_file_show($file=null){
 				// If a video has an embeddable streaming version, use it.
 				$html.= $embeddable;
 			}else{
-				?>
-				<script>
-					loadCSS('//vjs.zencdn.net/5.19.2/video-js.css');
-					loadJS('//vjs.zencdn.net/5.19.2/video.js');
-				</script>	
-				<?php 	
+
 				$html .= '<div class="item-file-container">';
-				$html .= '<video width="725" height="410" class="video-js vjs-default-skin" controls preload="auto" data-setup="{}">';
+				$html .= '<video width="725" height="410" controls preload="auto" data-setup="{}">';
 				$html .= '<source src="'.$videoFile.'" type="video/mp4">';
+				$html .= '<p class="vjs-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 video</p>';
 				$html .= '</video>';
 
 			}	
