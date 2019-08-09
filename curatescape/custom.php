@@ -2203,12 +2203,11 @@ function mh_configured_css(){
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
 	$configured_css = '
-		a,.now-playing .media-caption a{
+		a{
 			color: '.$color_primary.'
 		}
 		a:hover,
 		.item-hero .item-hero-text .byline a,
-		.media-caption a,
 		.pswp__caption a,
 		body#home section#home-popular-tags ul.popularity li a:hover,
 		body#items.tags section#tags ul.popularity li a:hover{
@@ -2244,7 +2243,10 @@ function mh_configured_css(){
 		body#home li.vvvvv-popular a,body#items.tags li.vvvvv-popular a{color: '.$color_secondary.';}
 		body#home li.vvvvvv-popular a,body#items.tags li.vvvvvv-popular a{color: '.adjustBrightness($color_secondary,-15).';}
 		body#home li.vvvvvvv-popular a,body#items.tags li.vvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-20).';}
-		body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-25).';}			
+		body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-25).';}
+		.media-list > a:hover{
+			background-color:'.$color_primary.'
+		}
 	';
 	$user_css= get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : null;
 	return '<style>'.$configured_css.$user_css.'</style>';
