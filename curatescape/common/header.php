@@ -55,10 +55,7 @@ $file = (isset($file)) ? $file : null;
 <?php echo mh_web_font_loader();?>
 
 <!-- Assets -->
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	/*!
 	loadJS: load a JS file asynchronously. 
