@@ -14,6 +14,9 @@ body{
 	background-size: cover;
 	background-attachment: fixed;
 }
+a:focus{
+	text-decoration: underline !important;
+}
 /*fixes background shift on open mmenu*/
 html.mm-background .mm-page{
 	background: unset;
@@ -938,6 +941,10 @@ section.map figcaption{
 	line-height:2em;
 }
 
+.leaflet-control a:focus{
+	text-decoration: none !important;
+}
+
 .leaflet-control-layers-base label span{
 	padding-left:3px;
 }
@@ -1141,57 +1148,57 @@ p.view-more-link a.button:hover,p.view-more-link a.button:focus{
 	border-color:#fff;
 }
 
-.link-icons a.facebook:hover{
+.link-icons a.facebook:hover,.link-icons a.facebook:focus{
 	background-color:#305891;
 	color:#fff;
 }
 
-.link-icons a.twitter:hover{
+.link-icons a.twitter:hover,.link-icons a.twitter:focus{
 	background-color:#2ca8d2;
 	color:#fff;
 }
 
-.link-icons a.youtube:hover{
+.link-icons a.youtube:hover,.link-icons a.youtube:focus{
 	background-color:#de2826;
 	color:#fff;
 }
 
-.link-icons a.instagram:hover{
+.link-icons a.instagram:hover,.link-icons a.instagram:focus{
 	background-color:#000;
 	color:#fff;
 }
 
-.link-icons a.pinterest:hover{
+.link-icons a.pinterest:hover,.link-icons a.pinterest:focus{
 	background-color:#c82828;
 	color:#fff;
 }
 
-.link-icons a.reddit:hover{
+.link-icons a.reddit:hover,.link-icons a.reddit:focus{
 	background-color:#ff4501;
 	color:#fff;
 }
 
-.link-icons a.tumblr:hover{
+.link-icons a.tumblr:hover,.link-icons a.tumblr:focus{
 	background-color:#36465d;
 	color:#fff;
 }
 
-.link-icons a.wordpress:hover{
+.link-icons a.wordpress:hover,.link-icons a.wordpress:focus{
 	background-color:#0087be;
 	color:#fff;
 }
 
-.link-icons a.email:hover{
+.link-icons a.email:hover,.link-icons a.email:focus{
 	background-color:#0078d7;
 	color:#fff;
 }
 
-.link-icons a.apple:hover{
+.link-icons a.apple:hover,.link-icons a.apple:focus{
 	background-color:#000;
 	color:#fff;
 }
 
-.link-icons a.android:hover{
+.link-icons a.android:hover,.link-icons a.android:focus{
 	background-color:#77c159;
 	color:#fff;
 }
