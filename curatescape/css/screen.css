@@ -457,6 +457,8 @@ figure#item-photos .flex-image .file{
 .offscreen-search{
 	background: #222;
 	padding-top: 20px;
+	padding-left: 20px;
+	width: 100%;
 }
 .offscreen-search input{
 	width: 93%;
@@ -467,6 +469,11 @@ figure#item-photos .flex-image .file{
 }
 .offscreen-random{
 	background: rgba(0,0,0,.6);
+	width: 100%;
+    text-align: center;
+}
+.mm-navbar{
+	justify-content: center;
 }
 .mm-navbar .offscreen-random a{
 	color: #fff;
@@ -606,6 +613,8 @@ body#tours .secondary-nav ul li a:first-child{
 }
 .sidebar-app-link{
 	height: 100%;
+	text-align: center;
+	flex-grow: 1;
 }
 
 .mm-navbar a.sidebar-app-link.fa-apple{
