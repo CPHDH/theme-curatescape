@@ -108,7 +108,7 @@ $bodyStyle= (get_theme_option('bg_img')) ? 'background-image: url('.mh_bg_url().
 
 </head>
 <body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>" style="<?php echo $bodyStyle;?>"> 
-
+<a id="skip-nav" href="#content"><?php echo __('Skip to main content');?></a>
 <noscript>
 	<div id="no-js-message">
 		<span><?php echo __('For full functionality please enable JavaScript in your browser settings.');?> <a target="_blank" href="https://goo.gl/koeeaJ"><?php echo __('Need Help?');?></a></span>
