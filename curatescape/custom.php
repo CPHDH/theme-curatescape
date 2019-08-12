@@ -223,7 +223,7 @@ function random_item_link($text=null,$class='show',$hasImage=true){
 function mh_global_header($html=null){
 ?>  
 <div id="navigation">
-	<nav>
+	<nav aria-label="<?php echo __('Main Navigation');?>">
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<div class="spacer"></div>
 		<div class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
@@ -237,7 +237,7 @@ function mh_global_header($html=null){
 			<?php endif;?>
 			<div class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
-  			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'));?>
+  			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'),__('Search - Top'));?>
   			<a title="Menu" id="menu-button" href="#offscreen-menu" class="button icon"><i class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
 			</div>
 		</div>
@@ -800,7 +800,7 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 ** Includes settings for simple and advanced search via theme options
 */
 
-function mh_simple_search($inputID='search',$formProperties=array()){
+function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="Search"){
 	
 	$sitewide = (get_theme_option('use_sitewide_search') == 1) ? 1 : 0;	
 	$qname = ($sitewide==1) ? 'query' : 'search';
@@ -814,7 +814,7 @@ function mh_simple_search($inputID='search',$formProperties=array()){
 	$formProperties['method'] = 'get';
 	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
-	$html .= get_view()->formText('search', $searchQuery, array('aria-label'=>'Search','name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
+	$html .= get_view()->formText('search', $searchQuery, array('aria-label'=>$ariaLabel,'name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
 
 	// add hidden fields for the get parameters passed in uri
@@ -1312,7 +1312,7 @@ function mh_audio_files($item,$index=0){
 		if ( array_search($mime, $audioTypes) !== false ){
 			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
 			$audioDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play" tabindex="0">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play '.$audioTitle.'" tabindex="0">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$audioTitle.'</div>';
@@ -1328,7 +1328,7 @@ function mh_audio_files($item,$index=0){
 		<figure id="item-audio">	
 			<div class="media-container audio">
 				<audio id="curatescape-player-audio" class="video-js" controls preload="auto">
-					<p class="vjs-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
+					<p class="media-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
 				</audio>
 				<div class="flex media-list audio">
 					<?php echo $html;?>		
@@ -1380,7 +1380,7 @@ function mh_video_files($item='item',$html=null) {
 		if ( in_array($videoMime,$videoTypes) ){
 			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
 			$videoDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play" tabindex="0">';
+			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play '.$videoTitle.'" tabindex="0">';
 				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
 				$html.='<div class="media-caption">';
 					$html.='<div class="media-title">'.$videoTitle.'</div>';
@@ -1397,7 +1397,7 @@ function mh_video_files($item='item',$html=null) {
 		<figure id="item-video">
 			<div class="media-container video">		
 				<video id="curatescape-player" playsinline controls preload="auto">
-					<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
+					<p class="media-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
 				</video>
 				<div class="flex media-list video">
 					<?php echo $html;?>
@@ -1483,7 +1483,7 @@ function mh_single_file_show($file=null){
 			<figure id="item-audio">	
 				<div class="media-container audio">
 					<audio src="<?php echo file_display_url($file,'original');?>" id="curatescape-player-audio" class="video-js" controls preload="auto">
-						<p class="vjs-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 audio</p>
+						<p class="media-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 audio</p>
 					</audio>
 				</div>
 			</figure>
@@ -1506,7 +1506,7 @@ function mh_single_file_show($file=null){
 				$html .= '<div class="item-file-container">';
 				$html .= '<video width="725" height="410" controls preload="auto" data-setup="{}">';
 				$html .= '<source src="'.$videoFile.'" type="video/mp4">';
-				$html .= '<p class="vjs-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 video</p>';
+				$html .= '<p class="media-no-js">To listen to this audio please consider upgrading to a web browser that supports HTML5 video</p>';
 				$html .= '</video>';
 
 			}	
@@ -1916,7 +1916,7 @@ function mh_footer_cta($html=null){
 	$footer_cta_button_url=get_theme_option('footer_cta_button_url');
 	$footer_cta_button_target=get_theme_option('footer_cta_button_target') ? 'target="_blank" rel="noreferrer noopener"' : null;
 	if($footer_cta_button_label && $footer_cta_button_url){
-		$html.= '<aside class="footer_cta"><a class="button button-primary" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></aside>';
+		$html.= '<div class="footer_cta"><a class="button button-primary" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></div>';
 	}
 	return $html;
 }

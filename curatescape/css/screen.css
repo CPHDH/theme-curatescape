@@ -760,7 +760,9 @@ article.browse{
 
 
 /*! AUDIO and VIDEO */
-.media-container{
+.media-container .media-no-js{
+	color: #fff;
+	background: #000;
 }
 video,audio{
 	width: 100%;
@@ -849,7 +851,6 @@ video,audio{
 	border-color: #ccc;
 }
 #item-documents table .button:hover{
-	color: #ccc;
 }
 @media all and (max-width:550px){
 	#item-documents table th {
