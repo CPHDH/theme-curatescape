@@ -14,7 +14,7 @@ echo head(array(
 	'title' => metadata($item,array('Dublin Core', 'Title')),
 	)); ?>
 
-<article class="story item show" role="main">
+<article class="story item show" role="main" id="content">
 			
 	<header id="story-header">
 		<?php
