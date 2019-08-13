@@ -22,7 +22,9 @@ jQuery(document).ready(function($) {
 		var extensions = [
 				"pagedim-black",
 			    "border-full",
-			    "position-right"
+			    "position-right",
+			    "fx-menu-fade",
+			    "fx-listitems-slide"
 			];
 		
 		var social= new Array();

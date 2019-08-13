@@ -28,7 +28,7 @@ a:focus{
   width: 1px;
 }
 /*fixes background shift on open mmenu*/
-html.mm-background .mm-page{
+.mm-wrapper_background .mm-page{
 	background: unset;
 }
 /* fix for fixed-cover background sizing on "mobile" */
@@ -645,6 +645,10 @@ body#tours .secondary-nav ul li a:first-child{
 .mm-listview span{
 	background: #222;
 }
+.mm-navbars_bottom{
+	font-weight: bold;
+}
+
 .mm-listview .nav-search{
     background: #fff;
     box-sizing: border-box;
@@ -656,6 +660,8 @@ body#tours .secondary-nav ul li a:first-child{
 	height: 100%;
 	text-align: center;
 	flex-grow: 1;
+	font-weight: bold;
+	line-height: 2em;
 }
 
 .mm-navbar a.sidebar-app-link.fa-apple{
@@ -1516,6 +1522,7 @@ footer.main nav#footer-nav input:focus{
 }
 #footer-nav .downloads a{
 	width: 49%;
+	font-weight: bold;
 }
 #footer-nav .downloads a:hover{
 	border-color: #222;
