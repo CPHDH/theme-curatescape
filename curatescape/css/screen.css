@@ -126,7 +126,8 @@ article.page.show{
 }
 
 /* Skip Nav */
-a#skip-nav{
+a#skip-nav,
+a#skip-map{
     left:-999px;
     position:absolute;
     top:auto;
@@ -135,7 +136,10 @@ a#skip-nav{
     overflow:hidden;
     z-index:-999;	
 }
-a#skip-nav:focus,a#skip-nav:active{
+a#skip-nav:focus,
+a#skip-nav:active,
+a#skip-map:focus,
+a#skip-map:active{
     color: #fff;
     background-color:#000;
     left: auto;

@@ -779,7 +779,7 @@ function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',
 	
 	?>
 	
-	<div class="map-actions flex">
+	<div id="map-actions-anchor" class="map-actions flex">
 		
 		<!-- Directions link -->
 		<?php if( $showlink && $coords && ($item || $tour) ):?>

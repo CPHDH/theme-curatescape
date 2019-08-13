@@ -9,15 +9,17 @@ if( $tourTitle != '' && $tourTitle != '[Untitled]' ) {
 echo head( array( 'maptype'=>$maptype,'title' => ''.$label.' | '.$tourTitle, 'content_class' => 'horizontal-nav', 'bodyid'=>'tours',
    'bodyclass' => 'show tour', 'tour'=>$tour ) );
 ?>
-<section class="map">
-	<h2 hidden class="hidden"><?php echo __('Map for %s',mh_tour_label('singular'));?></h2>
-	<figure>
-		<?php echo mh_map_type($maptype,null,$tour); ?>
-		<?php echo mh_map_actions(null,$tour);?>
-	</figure>
-</section>
 <div id="content">
-	<article class="tour show" role="main">
+	<section class="map">
+		<h2 hidden class="hidden"><?php echo __('Map for %s',mh_tour_label('singular'));?></h2>
+		<nav aria-label="Skip Interactive Map"><a id="skip-map" href="#tour-content">Skip Interactive Map</a></nav>
+		<figure>
+			<?php echo mh_map_type($maptype,null,$tour); ?>
+			<?php echo mh_map_actions(null,$tour);?>
+		</figure>
+	</section>
+	
+	<article id="tour-content" class="tour show" role="main">
 	
 		<header id="tour-header">
 		<h2 class="tour-title"><?php echo $tourTitle; ?></h2>
