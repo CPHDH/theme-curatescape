@@ -17,6 +17,16 @@ body{
 a:focus{
 	text-decoration: underline !important;
 }
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
 /*fixes background shift on open mmenu*/
 html.mm-background .mm-page{
 	background: unset;
@@ -370,6 +380,7 @@ figure#item-photos .flex-image .file{
 	margin-bottom: 0;
 	flex-grow: 1;
 }
+
 #navigation .search-plus form fieldset, #navigation .search-plus form fieldset input{
 	margin: 0;
 	width: 100%;

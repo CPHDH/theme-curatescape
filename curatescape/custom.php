@@ -832,6 +832,7 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 			$html .= get_view()->formHidden('record_types[]', $drt,array('id'=>$inputID.'-'.$drt));
 		}
 	}
+	$html .= '<input type="submit" class="submit visuallyhidden" name="submit_search" id="submit_search_advanced" value="'.__('Submit').'">';
 	
 	$html .= '</form>';
 	return $html;	
