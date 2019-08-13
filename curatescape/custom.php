@@ -573,6 +573,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 								var marker = L.marker([item.latitude,item.longitude],{
 									icon: icon(c,inner),
 									title: convertHtmlToText(item.title),
+									alt: convertHtmlToText(item.title),
 									}).bindPopup(html);
 								
 								group.push(marker);  
@@ -611,6 +612,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 							var marker = L.marker([data.latitude,data.longitude],{
 								icon: icon(color,"circle"),
 								title: convertHtmlToText(data.title),
+								alt: convertHtmlToText(data.title),
 								}).bindPopup(html);					
 							
 							marker.addTo(map);
