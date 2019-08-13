@@ -1115,7 +1115,7 @@ function mh_related_links(){
 	if ($relations){
 		$html= '<h3>'.__('Related Sources').'</h3><div class="related-resources"><ul>';
 		foreach ($relations as $relation) {
-			$html.= '<li>'.strip_tags($relation,'<a><i><em><b><strong>').'</li>';
+			$html.= '<li>'.strip_tags($relation,'<a><i><cite><em><b><strong>').'</li>';
 		}
 		$html.= '</ul></div>';
 		return $html;
@@ -1250,7 +1250,7 @@ function mh_item_images($item,$index=0){
 			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
 			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" aria-label="'.$title.'" aria-describedby="caption'.$captionID.'">';
 				$html.= '<a href="'.$src.'" title="'.$title.'" class="file flex" style="background-image: url(\''.$src.'\');" data-size=""></a>';
-				$html.= '<figcaption id="caption'.$captionID.'" hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i>').'</figcaption>';
+				$html.= '<figcaption id="caption'.$captionID.'" hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i><cite>').'</figcaption>';
 			$html.= '</figure>';
 			$captionID++;
 		}		
@@ -2331,7 +2331,7 @@ function mh_about($text=null){
 		// If the 'About Text' option has a value, use it. Otherwise, use default text
 		$text =
 			get_theme_option('about') ?
-			strip_tags(get_theme_option('about'),'<a><em><i><strong><bold><u>') :
+			strip_tags(get_theme_option('about'),'<a><em><i><cite><strong><bold><u>') :
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
