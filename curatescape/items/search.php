@@ -184,7 +184,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		        <?php if (!isset($buttonText)) {
 		            $buttonText = __('Search for items');
 		        } ?>
-		        <input type="submit" class="submit" name="submit_search" id="submit_search_advanced" value="<?php echo $buttonText ?>">
+		        <input type="submit" class="submit button button-primary" name="submit_search" id="submit_search_advanced" value="<?php echo $buttonText ?>">
 		    </div>
 		</form>
 		

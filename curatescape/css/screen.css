@@ -1541,23 +1541,23 @@ footer.main .custom{
 }
 
 /*! ADVANCED SEARCH */
-body#search form#search-form br{
+form#search-form br{
 	display: none;
 }
-body#search form#search-form #advanced-form p{
+form#search-form #advanced-form p{
 	display: none;
 }
-body#search form#search-form #advanced-form input[type="radio"]{
+form#search-form #advanced-form input[type="radio"]{
 	margin-right: .5em;
 }
 
 form#sitewide-search-filters input[type="checkbox"],
-body#search form#search-form #advanced-form input[type="checkbox"]{
+form#search-form #advanced-form input[type="checkbox"]{
 	margin-right: .25em;
 }
 
 form#sitewide-search-filters input[type="checkbox"] + label,
-body#search form#search-form #advanced-form input[type="checkbox"] + label{
+form#search-form #advanced-form input[type="checkbox"] + label{
 	display: inline-block;
 	margin-right: 1em;
 }
@@ -1574,41 +1574,42 @@ form#sitewide-search-filters .fieldset div{
 	flex-grow: 1;
 }
 
-body#search form#search-form #advanced-form p a{
+form#search-form #advanced-form p a{
 	font-size: 80%;
 }
 
-body#search form#search-form input#query{
+form#search-form input#query{
 	width: 100%;
 	max-width: 40em;
 }
-body#search form#advanced-search-form input[type="submit"],
-body#search form#search-form button#submit_search{
+form#advanced-search-form input[type="submit"],
+form#search-form button#submit_search{
 	margin-top: 2em;
 }
 
-body#search form#advanced-search-form input[type="submit"]:hover,
-body#search form#advanced-search-form input[type="submit"]:focus,
-body#search form#search-form button#submit_search:hover,
-body#search form#search-form button#submit_search:focus{
+form#advanced-search-form input[type="submit"]:hover,
+form#advanced-search-form input[type="submit"]:focus{
 	color:#222;
 }
 
-body#search form#advanced-search-form .search-entry > select{
+form#advanced-search-form .search-entry > select{
 	margin-right: .5em;
 }
 
-body#search .remove_search{
+.remove_search{
 	background-color: #eaeaea;
+	color: #000;
 }
 
-body#search form#advanced-search-form div.field:nth-last-child(5),
-body#search form#advanced-search-form div.field:nth-last-child(4),
-body#search form#advanced-search-form div.field:nth-last-child(3),
-body#search form#advanced-search-form div.field:nth-last-child(2),
-body#search form#advanced-search-form div.field:nth-last-child(1),
-body#search form#advanced-search-form div.field:last-child{
-    display: none;
+#search-narrow-by-fields select{
+	margin-right: 5px;
+}
+button.add_search {
+    background: #777;
+    color: #fff;
+}
+#no-results{
+	width: 100%;
 }
 
 /*! SEARCH RESULTS */

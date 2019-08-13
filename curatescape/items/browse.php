@@ -109,6 +109,14 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 					
 				</article> 
 			<?php endforeach; ?>
+			
+			<?php if($query && !$total_results){?>
+			<div id="no-results">
+			    <p><?php echo ($query) ? '<em>'.__('Your query returned <strong>no results</strong>.').'</em>' : null;?></p>
+			    <?php echo search_form(array('show_advanced'=>true));?>
+			</div>
+			<?php }?>
+			
 			</div>
 			<div class="pagination bottom"><?php echo pagination_links(); ?></div>
 		</section>	
