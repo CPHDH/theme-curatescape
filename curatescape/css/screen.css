@@ -1036,11 +1036,13 @@ section.map figcaption{
 	background-color:#fff;
 	width: 1.5em;
 	height: 1.5em;
-	line-height: 1.25em;
+	line-height: 1.5em;
 	box-shadow:0 1px 5px rgba(0,0,0,0.65);
 	background: #fff;
 	border-radius:4px;
 	display:block;
+	text-align: center;
+	vertical-align: bottom;
 }
 .leaflet-control-geolocation-toggle i,
 .leaflet-control-fullscreen-toggle i{
