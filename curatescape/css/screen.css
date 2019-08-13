@@ -14,7 +14,7 @@ body{
 	background-size: cover;
 	background-attachment: fixed;
 }
-a:focus{
+a:focus,input[type="submit"]:focus,button:focus{
 	text-decoration: underline !important;
 }
 .visuallyhidden {
