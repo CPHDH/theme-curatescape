@@ -669,7 +669,7 @@ body#tours .secondary-nav ul li a:first-child{
 	color:#222;
 }
 .mm-navbar a.sidebar-app-link.fa-android{
-	background: #77c159;
+	background: #54802D;
 	color:#fff;
 }
 
@@ -1256,7 +1256,7 @@ p.view-more-link a.button:hover,p.view-more-link a.button:focus{
 }
 
 .link-icons a.android:hover,.link-icons a.android:focus{
-	background-color:#77c159;
+	background-color:#54802D;
 	color:#fff;
 }
 
@@ -1315,7 +1315,7 @@ p.view-more-link a.button:hover,p.view-more-link a.button:focus{
 }
 
 .link-icons.colored a.android{
-	background-color:#77c159;
+	background-color:#54802D;
 	color:#fff;
 }
 /*! TAG CLOUDS */
@@ -1528,7 +1528,7 @@ footer.main nav#footer-nav input:focus{
 	border-color: #222;
 }
 #footer-nav .downloads a.android{
-	background: #77c159;
+	background: #54802D;
 	color: #fff;
 	border-color: #fff;
 }
