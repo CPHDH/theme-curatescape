@@ -521,6 +521,10 @@ figure#item-photos .flex-image .file{
 .mm-navbar{
 	justify-content: center;
 }
+.mm-navbars_bottom .mm-navbar:last-child{
+	justify-content: space-around;
+	justify-content: space-evenly;
+}
 .mm-navbar .offscreen-random a{
 	color: #fff;
 	display: block;
