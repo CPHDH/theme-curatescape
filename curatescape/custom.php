@@ -1549,7 +1549,7 @@ function mh_file_metadata_additional($file='file',$html=null){
 	}
 	
 	if($html){
-		echo '<h3>Additional Information</h3>';
+		echo '<h3>'.__('Additional Information').'</h3>';
 		echo '<div class="additional-elements">'.$html.'</div>';
 	}
 } 
