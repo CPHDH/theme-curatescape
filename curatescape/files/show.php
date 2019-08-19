@@ -43,6 +43,10 @@
 			?>	
 			</div>	
 	
+		<div class="additional_file_metadata">
+			<?php mh_file_metadata_additional();?>
+		</div>			
+
 		<hr>	
 		<?php echo __('This file appears in').': '.link_to_item( $title, array('class'=>'file-appears-in-item'), 'show', $record);?> 
 		<hr>
