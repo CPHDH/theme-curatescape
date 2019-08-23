@@ -702,7 +702,11 @@ function mh_display_map($type=null,$item=null,$tour=null){
 								alert(errorMessage);
 							}, 
 							options);
-					});			
+					});	
+					
+					// enable mouse scrollwheel zoom if the user has interacted with the map
+					map.once('focus', function() { map.scrollWheelZoom.enable(); });					
+							
 				}
 
 
