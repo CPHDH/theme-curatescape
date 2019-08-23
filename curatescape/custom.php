@@ -417,17 +417,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		
 		// End PHP Variables
 		
-		var isSecure = window.location.protocol == 'https:' ? true : false;
-		function getChromeVersion () {  
-			// Chrome v.50+ requires secure origins for geolocation   
-		    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-		    return raw ? parseInt(raw[2], 10) : 0; // return 0 for not-Chrome
-		}
-		function getSafariVersion () {  
-			// Safari v.9.3+ requires secure origins for geolocation   
-		    var raw = navigator.userAgent.match(/Safari\/([-+]?[0-9]*\.?[0-9]+)\./);
-		    return raw ? parseFloat(raw[1]) : 0; // return 0 for not-Safari
-		}		
+		var isSecure = window.location.protocol == 'https:' ? true : false;	
 
 		jQuery(document).ready(function() {
 			loadCSS( leafletcss );
@@ -489,8 +479,8 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					
 					
 					// Geolocation controls
-					if( (getChromeVersion()>=50 && !isSecure) || (getSafariVersion()>=601.6 && !isSecure) || !navigator.geolocation){			
-						// console.warn('Geolocation is not available over insecure origins on this browser.');
+					if( !isSecure || !navigator.geolocation){			
+						console.warn('Geolocation is not available over insecure origins on this browser.');
 					}else{
 						var geolocationControl = L.control({position: 'topleft'});
 						geolocationControl.onAdd = function (map) {
