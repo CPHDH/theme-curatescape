@@ -259,10 +259,11 @@ function mh_get_tour_json($tour=null){
 			$address = ( element_exists('Item Type Metadata','Street Address') ) 
 				? preg_replace( "/\r|\n/", " ",strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) ))
 				: null;
+			$title=html_entity_decode( strip_formatting( metadata( $item, array( 'Dublin Core', 'Title' ))));	
 			if($location && $item->public){
 				$tourItems[] = array(
 					'id'		=> $item->id,
-					'title'		=> trim(addslashes(metadata($item,array('Dublin Core','Title')))),
+					'title'		=> trim(addslashes($title)),
 					'address'	=> trim(str_replace('\'','',$address)),
 					'latitude'	=> $location[ 'latitude' ],
 					'longitude'	=> $location[ 'longitude' ],
