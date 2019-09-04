@@ -76,7 +76,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'items','bodyclass
 				$item_image=null;
 				$description = mh_the_text($item,array('snippet'=>250));
 				$tags=tag_string(get_current_record('item') , url('items/browse'));
-				$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
+				$titlelink=link_to_item(strip_tags(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink')));
 				$hasImage=metadata($item, 'has thumbnail');
 				if ($hasImage){
 						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);

@@ -246,6 +246,12 @@ function mh_global_header($html=null){
 <?php
 }
 
+/*
+** Sanitize user-input to prevent bad control character messages
+*/	
+function mh_json_plaintextify($text=null){
+	return trim(addslashes(preg_replace( "/\r|\n/", " ",strip_tags( $text ))));
+}
 
 /*
 ** Single Tour JSON
@@ -257,14 +263,14 @@ function mh_get_tour_json($tour=null){
 		foreach($tour->Items as $item){
 			$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
 			$address = ( element_exists('Item Type Metadata','Street Address') ) 
-				? preg_replace( "/\r|\n/", " ",strip_tags(metadata( $item, array( 'Item Type Metadata','Street Address' )) ))
-				: null;
-			$title=html_entity_decode( strip_formatting( metadata( $item, array( 'Dublin Core', 'Title' ))));	
+				? metadata( $item, array( 'Item Type Metadata','Street Address' ))
+				: null;		
+			$title=metadata( $item, array( 'Dublin Core', 'Title' ));
 			if($location && $item->public){
 				$tourItems[] = array(
 					'id'		=> $item->id,
-					'title'		=> trim(addslashes($title)),
-					'address'	=> trim(str_replace('\'','',$address)),
+					'title'		=> mh_json_plaintextify($title),
+					'address'	=> mh_json_plaintextify($address),
 					'latitude'	=> $location[ 'latitude' ],
 					'longitude'	=> $location[ 'longitude' ],
 					);
@@ -287,11 +293,11 @@ function mh_get_item_json($item=null){
 			
 	if($item){
 		$location = get_db()->getTable( 'Location' )->findLocationByItem( $item, true );
-		$address= ( element_exists('Item Type Metadata','Street Address') ) 
-			? preg_replace( "/\r|\n/", " ", strip_tags(metadata( 'item', array( 'Item Type Metadata','Street Address' )) ))  
-			: null;
+		$address = ( element_exists('Item Type Metadata','Street Address') ) 
+			? metadata( $item, array( 'Item Type Metadata','Street Address' ))
+			: null;		
+		$title=metadata( $item, array( 'Dublin Core', 'Title' ));
 		$accessinfo= ( element_exists('Item Type Metadata','Access Information') && metadata($item, array('Item Type Metadata','Access Information')) ) ? true : false;
-		$title=html_entity_decode( strip_formatting( metadata( 'item', array( 'Dublin Core', 'Title' ))));
 		if(metadata($item, 'has thumbnail')){
 			$thumbnail = (preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('square_thumbnail'), $result)) ? array_pop($result) : null;
 		}else{ 
@@ -303,8 +309,8 @@ function mh_get_item_json($item=null){
 				'featured'    => $item->featured,
 				'latitude'    => $location[ 'latitude' ],
 				'longitude'   => $location[ 'longitude' ],
-				'title'       => trim(addslashes($title)),
-				'address'	  => addslashes($address),
+				'title'       => mh_json_plaintextify($title),
+				'address'	  => mh_json_plaintextify($address),
 				'accessinfo'  => $accessinfo,
 				'thumbnail'   => $thumbnail,
 			);		
@@ -917,7 +923,7 @@ function mh_the_text($item='item',$options=array()){
 ** Title
 */
 function mh_the_title($item='item'){
-	return '<h1 class="title">'.metadata($item, array('Dublin Core', 'Title'), array('index'=>0)).'</h1>';
+	return '<h1 class="title">'.strip_tags(metadata($item, array('Dublin Core', 'Title')), array('index'=>0)).'</h1>';
 }
 
 
@@ -1822,7 +1828,7 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 }
 
 function mh_hero_item($item){
-			$itemTitle = metadata($item, array('Dublin Core', 'Title'));
+			$itemTitle = strip_tags(metadata($item, array('Dublin Core', 'Title')));
 			$itemDescription = mh_the_text($item,array('snippet'=>200));
 			$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
 			$html=null;
@@ -2148,14 +2154,14 @@ function mh_random_or_recent($mode='recent',$num=6){
 			$item_image=null;
 			$description = mh_the_text($item,array('snippet'=>250));
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
-			$titlelink=link_to_item(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink'));
+			$titlelink=link_to_item(strip_tags(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink')));
 			$hasImage=metadata($item, 'has thumbnail');
 			if ($hasImage){
 					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
 					$item_image = array_pop($result);				
 			}
 
-			$html.='<article class="item-result'.( $hasImage ? 'has-image' : null ).'">';
+			$html.='<article class="item-result'.( $hasImage ? ' has-image' : null ).'">';
 				$html.=( isset($item_image) ? link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img" aria-label="'.metadata($item, array('Dublin Core', 'Title')).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))) : null );
 				$html.='<h3>'.$titlelink.'</h3>';
 				$html.='<div class="browse-meta-top">'.mh_the_byline($item,false).'</div>';
