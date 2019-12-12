@@ -951,6 +951,30 @@ function mh_the_lede($item='item'){
 		
 }
 
+/*
+** Title + Subtitle (for search/browse/home)
+*/
+function mh_the_title_expanded($item='item'){
+	$title=strip_tags(metadata($item, array('Dublin Core', 'Title')));
+	if(get_theme_option('subtitle_on_browse') && element_exists('Item Type Metadata','Subtitle')){
+		$subtitle = ' – '.strip_tags(metadata($item,array('Item Type Metadata','Subtitle')));
+		$title = $title.$subtitle;
+	}
+	return link_to($item,'show',$title, array('class'=>'permalink'));
+}
+
+/*
+** Snippet: Lede + Story (for search/browse/home)
+*/
+function mh_snippet_expanded($item='item'){
+	$story=element_exists('Item Type Metadata','Story') ? metadata($item,array('Item Type Metadata', 'Story'),array('snippet'=>250)) : null;
+	if(get_theme_option('lede_on_browse') && element_exists('Item Type Metadata','Lede')){
+		$lede = strip_tags(metadata($item,array('Item Type Metadata','Lede'))).' ';
+		$story = $lede.$story;
+	}
+	return snippet($story,0,250,'&hellip;');
+}
+
 
 /*
 ** sponsor for use in item byline 
@@ -1828,8 +1852,8 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 }
 
 function mh_hero_item($item){
-			$itemTitle = strip_tags(metadata($item, array('Dublin Core', 'Title')));
-			$itemDescription = mh_the_text($item,array('snippet'=>200));
+			$itemTitle = mh_the_title_expanded($item);
+			$itemDescription = mh_snippet_expanded($item);
 			$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
 			$html=null;
 	
@@ -2152,9 +2176,9 @@ function mh_random_or_recent($mode='recent',$num=6){
 		$html.='<div class="browse-items flex">';
 		foreach(loop('Items') as $item){
 			$item_image=null;
-			$description = mh_the_text($item,array('snippet'=>250));
+			$description = mh_snippet_expanded($item);
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
-			$titlelink=link_to_item(strip_tags(metadata($item, array('Dublin Core', 'Title')), array('class'=>'permalink')));
+			$titlelink=link_to_item(mh_the_title_expanded($item), array('class'=>'permalink'));
 			$hasImage=metadata($item, 'has thumbnail');
 			if ($hasImage){
 					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
