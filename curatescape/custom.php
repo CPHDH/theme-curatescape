@@ -939,14 +939,13 @@ function mh_the_subtitle($item='item'){
 	return  $subtitle ? '<h2 class="subtitle">'.$subtitle.'</h2>' : ($dc_title2!=='[Untitled]' ? '<h2 class="subtitle">'.$dc_title2.'</h2>' : null);
 }
 
-
 /*
-** lede  
+** Lede  
 */
 function mh_the_lede($item='item'){
 	if (element_exists('Item Type Metadata','Lede')){
 		$lede=metadata($item,array('Item Type Metadata', 'Lede'));
-		return  $lede ? '<div class="lede">'.$lede.'</div>' : null;
+		return  $lede ? '<div class="lede">'.strip_tags($lede,'<a><em><i><u><b><strong><strike>').'</div>' : null;
 	}
 		
 }
@@ -1754,13 +1753,14 @@ function mh_tour_preview($s){
 	set_current_record( 'tour', $record );
 	$html.=  '<article>';
 	$html.=  '<h3 class="tour-result-title"><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h3>';
-	$html.=  '<span class="tour-meta-browse">';
+	$html.=  '<div class="tour-meta-browse browse-meta-top byline">';
+	$html.= '<span class="total">'.mh_tour_total_items($record).' '.__('Locations').'</span> ~ ';
 	if(tour('Credits') ){
-		$html.=  __('%1s curated by: %2s', mh_tour_label('singular'),tour('Credits') ).' | ';
+		$html.=  __('%1s curated by %2s', mh_tour_label('singular'),tour('Credits') );
 	}elseif(get_theme_option('show_author') == true){
-		$html.=  __('%1s curated by: The %2s Team',mh_tour_label('singular'),option('site_title')).' | ';
+		$html.=  __('%1s curated by The %2s Team',mh_tour_label('singular'),option('site_title'));
 	}		
-	$html.=  mh_tour_total_items($record).' '.__('Locations').'</span><br>';
+	$html.=  '</div>';
 	$html.=  ($text=strip_tags(html_entity_decode(tour('Description')))) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
 	if(get_theme_option('show_tour_item_thumbs') == true){
 		$html.=  '<span class="tour-thumbs-container">';
@@ -2388,7 +2388,7 @@ function mh_about($text=null){
 		// If the 'About Text' option has a value, use it. Otherwise, use default text
 		$text =
 			get_theme_option('about') ?
-			strip_tags(get_theme_option('about'),'<a><em><i><cite><strong><bold><u>') :
+			strip_tags(get_theme_option('about'),'<a><em><i><cite><strong><b><u>') :
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
