@@ -21,7 +21,10 @@ echo head(array(
 			echo '<div class="item-hero '.(!$hasimg ? 'hero short' : 'hero').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
 			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
 			echo '</div>';	
-			echo function_exists('tour_nav') ? '<nav aria-label="'.__('Tour Navigation - Top').'" class="tour-nav-container top">'.tour_nav(null,mh_tour_label('singular')).'</nav>' : null;
+			if(function_exists('tour_nav')){
+				$tournavhtml=tour_nav(null,mh_tour_label('singular'),get_theme_option('tour_nav_always'),$item->id);
+				echo $tournavhtml ? '<nav aria-label="'.__('Tour Navigation - Top').'" class="tour-nav-container top">'.$tournavhtml.'</nav>' : null;
+			}
 			echo mh_the_lede();
 		?>
 		<?php //echo item_is_private($item);?>
