@@ -1702,14 +1702,6 @@ section#about + section{
 #tours.browse article h3{
     font-size: 2.6rem;
 }
-#tours.browse article{
-	border-bottom: 1px solid #eaeaea;
-	padding-bottom: .5em;
-	margin-bottom: 2em;
-}
-#tours.browse article:last-child{
-	border-bottom:0 none transparent;
-}
 
 #tour-header{
 	text-align: center;
@@ -1761,12 +1753,51 @@ section#about + section{
 	border-right: 0 none transparent;
 }
 
+#browse-tours-container article,
 #home-tours article{
 	margin-bottom: 1.5em;
 	border: 1px solid #eaeaea;
 	padding: 1.5em 2em;
 	text-align: center;
 }
+
+#browse-tours-container article.fetch-tour-image,
+#home-tours article.fetch-tour-image{
+	text-align: left;
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	align-items: center;
+}
+
+#browse-tours-container article.fetch-tour-image .tour-image-container,
+#home-tours article.fetch-tour-image .tour-image-container{
+	height: 150px;
+	width: 150px;
+	border-radius: 50%;
+	background-color: #ccc;
+	background-position: center center;
+	margin-right: 2em;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+@media all and (max-width:550px){
+	#browse-tours-container article.fetch-tour-image,
+	#home-tours article.fetch-tour-image{
+		flex-direction: column;
+		text-align: center;
+	}
+	#browse-tours-container article.fetch-tour-image .tour-image-container,
+	#home-tours article.fetch-tour-image .tour-image-container{
+		margin: 0 auto 1em;
+	}
+	#browse-tours-container article{
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+}
+#browse-tours-container article h3,
 #home-tours article h3{
 	margin-bottom: 0;
 }
@@ -1774,6 +1805,11 @@ body#tours.browse article span.total,
 #home-tours article span.total,
 body#search article span.total{
 	font-weight: 600;
+}
+
+#browse-tours-container .item-description{
+	text-align: left;
+	margin-top: .5em;
 }
 
 @media all and (min-width:550px){

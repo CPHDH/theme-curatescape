@@ -1834,15 +1834,15 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 				$byline= __('Curated by The %s Team',option('site_title'));
 			}				
 				
-			$html .= '<article class="item-result">';
-			$html .= '<h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span>';
+			$html .= '<article class="item-result '.(get_theme_option('fetch_tour_images') ? 'fetch-tour-image' : null).'" data-tour-id="'.tour('id').'">';
+			$html .= get_theme_option('fetch_tour_images') ? '<div class="tour-image-container"></div>' : null;
+			$html .= '<div><h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span></div>';
 			$html .= '</article>';
+			
 		}
 		if(count($public)>1){
-		
-			
 			$html .= '<p class="view-more-link"><a class="button" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
-		}
+		}	
 	}else{
 		$html .= '<p>'.__('No tours are available. Publish some now.').'</p>';
 	}
