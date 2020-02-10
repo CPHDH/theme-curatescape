@@ -1925,8 +1925,7 @@ function mh_home_about($length=800,$html=null){
 			$html .= '<div class="about-main"><p>';
 				$html .= substr(mh_about(),0,$length);
 				$html .= ($length < strlen(mh_about())) ? '... ' : null;
-				$html .= ' <a href="'.url('about').'">'.__('Read more <span>About Us</span>').'</a>';
-			$html .= '</p></div>';
+			$html .= '</p><a class="button u-full-width" href="'.url('about').'">'.__('Read more About Us').'</a></div>';
 	
 		$html .= '</article>';
 	$html .= '</div>';
@@ -2386,9 +2385,8 @@ function mh_google_analytics($webPropertyID=null){
 function mh_about($text=null){
 	if (!$text) {
 		// If the 'About Text' option has a value, use it. Otherwise, use default text
-		$text =
-			get_theme_option('about') ?
-			strip_tags(get_theme_option('about'),'<a><em><i><cite><strong><b><u>') :
+		$text = get_theme_option('about') ? 
+			strip_tags(get_theme_option('about'),'<a><em><i><cite><strong><b><u><br><img><video><iframe>') : 
 			__('%s is powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org/">Curatescape</a>, a humanities-centered web and mobile framework available for both Android and iOS devices.',option('site_title'));
 	}
 	return $text;
