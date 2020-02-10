@@ -53,7 +53,7 @@ function mh_seo_pagedesc($item=null,$tour=null,$file=null){
 ** SEO Site Description
 */
 function mh_seo_sitedesc(){
-	return mh_about() ? strip_tags(mh_about()) : strip_tags(option('description'));
+	return strip_tags(option('description')) ? strip_tags(option('description')) : (mh_about() ? strip_tags(mh_about()) : null);
 }
 
 /* 
