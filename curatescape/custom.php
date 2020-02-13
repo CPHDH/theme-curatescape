@@ -412,7 +412,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var mapBounds; // keep track of changing bounds
 		var root_url = '<?php echo WEB_ROOT;?>';
 		var geolocation_icon = '<?php echo img('geolocation.png');?>';
-		var mapLayerThemeSetting = '<?php echo get_theme_option('map_style') ? get_theme_option('map_style') : null;?>';
+		var mapLayerThemeSetting = '<?php echo get_theme_option('map_style') ? get_theme_option('map_style') : 'CARTO_VOYAGER';?>';
 		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>'+'?v=1.1';
 		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>'+'?v=1.1';	
 		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>'+'?v=1.1';
@@ -440,6 +440,10 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
 					});
+				var voyager = L.tileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}{retina}.png', {
+				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
+						retina: (L.Browser.retina) ? '@2x' : '',
+					});					
 				var wikimedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{retina}.png', {
 						attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
@@ -449,25 +453,28 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				    	retina: (L.Browser.retina) ? '@2x' : '',
 						accessToken: mapbox_access_token,
 					});	
-
+					
 				var defaultMapLayer;	
 				switch(mapLayerThemeSetting){
 					case 'TERRAIN':
-					defaultMapLayer=terrain;
-					break;
+						defaultMapLayer=terrain;
+						break;
 					case 'CARTO':
-					defaultMapLayer=carto;
+						defaultMapLayer=carto;
+						break;
+					case 'CARTO_VOYAGER':
+						defaultMapLayer=voyager;
+						break;						
 					case 'WIKIMEDIA':
-					defaultMapLayer=wikimedia;
-					break;
+						defaultMapLayer=wikimedia;
+						break;
 					case 'MAPBOX_TILES':
-					defaultMapLayer=mapbox;
-					break;	
+						defaultMapLayer=mapbox;
+						break;	
 					default:
-					defaultMapLayer=wikimedia;				
-
+						defaultMapLayer=wikimedia;				
 				}
-				
+								
 				// helper for title attributes with encoded HTML
 				function convertHtmlToText(value) {
 				    var d = document.createElement('div');
@@ -508,7 +515,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					
 					// Layer controls
 					var allLayers={
-						"Street":(defaultMapLayer == terrain) ? wikimedia : defaultMapLayer,
+						"Street":(defaultMapLayer == terrain) ? voyager : defaultMapLayer,
 						"Terrain":terrain,
 					};
 					if(mapbox_access_token){
