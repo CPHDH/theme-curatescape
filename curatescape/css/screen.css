@@ -2262,5 +2262,8 @@ article.error{
 
 /*! PRINT  */
 @media print{
- .header-nav,footer.main,section.media,section.map,.load-comments,#share-this,#admin-bar{ display: none !important; }
+ *{font-family: serif !important;text-shadow: none !important;}
+ .header-nav,footer.main,section.media,section.map,.load-comments,#share-this,#admin-bar,.tour-nav-container,#tour-for-item,div.subjects,div.tags{ display: none !important; }
+ .item-hero.hero{min-height: 0 !important;background: none !important;position: relative !important;}
+ .item-hero .item-hero-text, .item-hero .item-hero-text .subtitle{color:#000 !important;background: none !important;position: relative !important;}
 }
