@@ -419,7 +419,7 @@ function mh_display_map($type=null,$item=null,$tour=null){
 		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>'+'?v=1.1';
 		var mapbox_tile_layer='<?php echo get_theme_option('mapbox_tile_layer');?>';
 		var mapbox_access_token='<?php echo get_theme_option('mapbox_access_token');?>';
-		var mapbox_layer_title='<?php echo get_theme_option('mapbox_tile_layer') ? ucwords( str_replace( '-',' ', get_theme_option('mapbox_tile_layer') ) ) : "Mapbox";?>';
+		var mapbox_layer_title='<?php echo get_theme_option('mapbox_tile_layer') ? ucwords( str_replace( array('-v11','-v10','-v9','-'),' ', get_theme_option('mapbox_tile_layer') ) ) : "Mapbox";?>';
 		
 		// End PHP Variables
 		
@@ -444,14 +444,11 @@ function mh_display_map($type=null,$item=null,$tour=null){
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
 						retina: (L.Browser.retina) ? '@2x' : '',
 					});					
-				var wikimedia = L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{retina}.png', {
-						attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
-						retina: (L.Browser.retina) ? '@2x' : '',
-					});
-				var mapbox = L.tileLayer('https://api.mapbox.com/v4/mapbox.'+mapbox_tile_layer+'/{z}/{x}/{y}{retina}.png?access_token={accessToken}', {
+				var mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/'+mapbox_tile_layer+'/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 				    	attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://www.mapbox.com/feedback/">Mapbox</a>',
-				    	retina: (L.Browser.retina) ? '@2x' : '',
 						accessToken: mapbox_access_token,
+						tileSize: 512,
+						zoomOffset: -1,
 					});	
 					
 				var defaultMapLayer;	
@@ -465,9 +462,6 @@ function mh_display_map($type=null,$item=null,$tour=null){
 					case 'CARTO_VOYAGER':
 						defaultMapLayer=voyager;
 						break;						
-					case 'WIKIMEDIA':
-						defaultMapLayer=wikimedia;
-						break;
 					case 'MAPBOX_TILES':
 						defaultMapLayer=mapbox;
 						break;	
