@@ -4,6 +4,10 @@ if ($hasimg=metadata($item, 'has thumbnail') ) {
 	$img_markup=item_image('fullsize',array(),0, $item);
 	preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
 	$hero_img = array_pop($result);
+	$hero_class="has-image";
+}else{
+	$hero_img='';
+	$hero_class="no-image";
 }
 	
 echo head(array(
@@ -18,7 +22,7 @@ echo head(array(
 			
 	<header id="story-header">
 		<?php
-			echo '<div class="item-hero '.(!$hasimg ? 'hero short' : 'hero').'" '.($hasimg ? 'style="background-image: url('.$hero_img.')"' : null).'>';
+			echo '<div class="item-hero hero '.$hero_class.'" style="background-image: url('.$hero_img.')">';
 			echo '<div class="item-hero-text">'.mh_the_title().mh_the_subtitle().mh_the_byline($item,true).'</div>';
 			echo '</div>';	
 			if(function_exists('tour_nav')){
@@ -34,6 +38,7 @@ echo head(array(
 		<?php echo mh_the_text(); ?>
 	</section>
 	
+	<?php if($item->Files):?>
 	<section class="media">
 		<h2 hidden class="hidden"><?php echo __('Media');?></h2>
 		<?php mh_video_files($item);?>
@@ -41,6 +46,7 @@ echo head(array(
 		<?php mh_audio_files($item);?>	
 		<?php mh_document_files($item);?>		
 	</section>
+	<?php endif;?>
 	<?php if(mh_get_item_json($item)): ?>
 	<section class="map">
 		<h2>Map</h2>

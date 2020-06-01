@@ -284,13 +284,12 @@ h2.query-header{
 
 .hero{
 	min-height:30em;
-	min-height: 70vh;
+	min-height: 65vh;
 	width: 100%;
 }
 
 .hero.short{
-	min-height: 15em;
-	min-height: 30vh;
+
 }
 
 .scroll-x{
