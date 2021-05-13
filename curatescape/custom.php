@@ -238,7 +238,7 @@ function mh_global_header($html=null){
 			<div class="flex search-plus flex-grow">
   			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
   			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'),__('Search - Top'));?>
-  			<a title="<?php echo __('Menu');?>" id="menu-button" href="#offscreen-menu" class="button icon"><i title="<?php echo __('Menu');?>" class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
+  			<a title="<?php echo __('Menu');?>" id="menu-button" href="#offscreen-menu" class="button icon"><i data-title="<?php echo __('Menu');?>" class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
 			</div>
 		</div>
 	</nav>
