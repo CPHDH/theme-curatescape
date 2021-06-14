@@ -27,7 +27,9 @@ jQuery(document).ready(function ($) {
           content: [
             "<span class='offscreen-random'><a href='" +
               $(".random-story-link").attr("href") +
-              "'><i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random Story<a></span>",
+              "'><i class='fa fa-random fa-lg' aria-hidden='true'></i> " +
+              $(".random-story-link").text() +
+              "<a></span>",
           ],
           height: 1,
         },
