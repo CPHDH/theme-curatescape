@@ -13,16 +13,10 @@ else{
 ?>	
 
 	<div id="content" role="main">
-	<section class="map">
-		<h2 hidden class="hidden"><?php echo __('Map');?></h2>
-		<nav aria-label="<?php echo __('Skip Interactive Map');?>"><a id="skip-map" href="#homepage"><?php echo __('Skip Interactive Map');?></a></nav>
-		<figure>
-			<?php echo mh_map_type('focusarea',null,null); ?>
-		</figure>
-	</section>	
-	<article id="homepage" class="page show">
-		<?php echo homepage_widget_sections();?>
-	</article>
+		<article id="homepage" class="page show">
+			<?php echo homepage_widget_sections();?>
+			<?php fire_plugin_hook('public_home', array('view' => $this)); ?>
+		</article>
 	</div> <!-- end content -->
 
 <?php

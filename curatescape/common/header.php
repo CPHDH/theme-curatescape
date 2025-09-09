@@ -37,11 +37,6 @@ $file = (isset($file)) ? $file : null;
 
 <!-- Apple Stuff -->
 <link rel="apple-touch-icon-precomposed" href="<?php echo mh_apple_icon_logo_url();?>"/>
-<?php echo mh_ios_smart_banner(); ?>
-
-<!-- Windows stuff -->
-<meta name="msapplication-TileColor" content="#ffffff"/>
-<meta name="msapplication-TileImage" content="<?php echo mh_apple_icon_logo_url();?>"/>
 
 <!-- Icon -->
 <link rel="shortcut icon" href="<?php echo ($favicon=get_theme_option('favicon')) ? WEB_ROOT.'/files/theme_uploads/'.$favicon : img('favicon.ico');?>"/>
@@ -55,7 +50,6 @@ $file = (isset($file)) ? $file : null;
 <?php echo mh_web_font_loader();?>
 
 <!-- Assets -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 	/*!
 	loadJS: load a JS file asynchronously. 
@@ -81,19 +75,12 @@ $file = (isset($file)) ? $file : null;
 //queue_css_file('font-awesome/css/font-awesome.min','all',false,'fonts');
 echo head_css(); 
 echo mh_theme_css();
-echo head_js(false); 
+echo head_js(true); 
 ?>
 
 <script>
 	// Async CSS 	
-	loadCSS('<?php echo src('font-awesome/css/font-awesome.min.css','fonts');?>'); // font awesome css
-	loadCSS('<?php echo src('jquery.mmenu/mmenu.css','javascripts');?>'); // mmenu css
-	loadCSS('<?php echo src('photoswipe/dist/photoswipe.all.min.css','javascripts');?>'); // photoswipe css
-	// Async JS 
-	loadJS('<?php echo src('global.js','javascripts');?>'); // global.js
-	<?php if( 0 === strpos(current_url(), '/items/show') ):?>
-		loadJS('<?php echo src('items-show.js','javascripts');?>'); // items-show.js
-	<?php endif;?>	
+	loadJS('<?php echo src('global.js','javascripts');?>');
 </script>
 
 <!-- Custom CSS via theme config -->
@@ -103,11 +90,10 @@ echo head_js(false);
 <?php
 $bodyid = isset($bodyid) ? $bodyid : 'default';
 $bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescape';
-$bodyStyle= (get_theme_option('bg_img')) ? 'background-image: url('.mh_bg_url().')' : 'background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(250,250,250,1) 50%,rgba(234,234,234,1) 100%);background-attachment:fixed;';
 ?>
 
 </head>
-<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>" style="<?php echo $bodyStyle;?>"> 
+<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>"> 
 <nav aria-label="<?php echo __('Skip Navigation');?>"><a id="skip-nav" href="#content"><?php echo __('Skip to main content');?></a></nav>
 <noscript>
 	<div id="no-js-message">

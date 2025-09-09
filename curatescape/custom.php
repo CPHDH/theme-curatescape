@@ -1,17 +1,4 @@
 <?php
-	
-/*
-** Relabel Search Record Types
-*/
-add_filter('search_record_types', 'mh_search_record_types');
-function mh_search_record_types($recordTypes)
-{
-	if(plugin_is_active('SimplePages')) $recordTypes['SimplePagesPage'] = __('Page');
-	$recordTypes['Item'] = mh_item_label('singular');
-	if(plugin_is_active('TourBuilder','1.6','>=')) $recordTypes['Tour'] = mh_tour_label('singular');
-	return $recordTypes;
-}
-
 /*
 ** Set Default Search Record Types
 */
@@ -20,7 +7,7 @@ function mh_search_form_default_record_types()
 {
 	$recordTypes=array();
 	$recordTypes[]='Item';
-	if(plugin_is_active('TourBuilder','1.6','>=') && get_theme_option('default_tour_search')) $recordTypes[]='Tour';
+	if(plugin_is_active('Curatescape') && get_theme_option('default_tour_search')) $recordTypes[]='Tour';
 	if(plugin_is_active('SimplePages') && get_theme_option('default_page_search')) $recordTypes[]='SimplePagesPage';
 	if(get_theme_option('default_file_search')) $recordTypes[]='File';
 	return $recordTypes;
@@ -39,7 +26,7 @@ function mh_seo_pagedesc($item=null,$tour=null,$file=null){
 		$itemdesc=snippet(mh_the_text($item),0,500,"...");
 		return htmlspecialchars(strip_tags($itemdesc));
 	}elseif($tour != null){
-		$tourdesc=snippet(tour('Description'),0,500,"...");
+		$tourdesc=snippet(metadata($tour,'Description'),0,500,"...");
 		return htmlspecialchars(strip_tags($tourdesc));
 	}elseif($file != null){
 		$filedesc=snippet(metadata('file',array('Dublin Core', 'Description')),0,500,"...");
@@ -102,51 +89,11 @@ function mh_theme_css($media='all'){
 	return '<link href="'.WEB_PUBLIC_THEME.'/'.$themeName.'/css/screen.css?v='.$theme->version.'" media="'.$media.'" rel="stylesheet">';
 }
 
-/* 
-** Custom Label for Items/Stories
-*/
-function mh_item_label($which=null){
-	if($which=='singular'){
-		return ($singular=get_theme_option('item_label_singular')) ? $singular : __('Story');
-	}
-	elseif($which=='plural'){
-		return ($plural=get_theme_option('item_label_plural')) ? $plural : __('Stories');
-	}else{
-		return __('Story');
-	}
-}
-
-/* 
-** Custom Label for Tours
-*/
-function mh_tour_label($which=null){
-	if($which=='singular'){
-		return ($singular=get_theme_option('tour_label_singular')) ? $singular : __('Tour');
-	}
-	elseif($which=='plural'){
-		return ($plural=get_theme_option('tour_label_plural')) ? $plural : __('Tours');
-	}else{
-		return __('Tour');
-	}
-}
-
 /*
 ** Global navigation
 */
 function mh_global_nav($nested=false){
-	$curatenav=get_theme_option('default_nav');
-	if( $curatenav==1 || !isset($curatenav) ){
-		return nav(array(
-				array('label'=>__('Home'),'uri' => url('/')),
-				array('label'=>mh_item_label('plural'),'uri' => url('items/browse')),
-				array('label'=>mh_tour_label('plural'),'uri' => url('tours/browse/')),
-				array('label'=>__('About'),'uri' => url('about/')),
-			));
-	}elseif($nested){
-		return public_nav_main()->setMaxDepth(1);
-	}else{
-		return public_nav_main()->setMaxDepth(0);
-	}
+	return public_nav_main()->setMaxDepth(0);
 }
 
 /*
@@ -157,7 +104,7 @@ function mh_item_browse_subnav(){
 			array('label'=>__('All') ,'uri'=> url('items/browse')),
 			array('label'=>__('Tags'), 'uri'=> url('items/tags')),
 			array('label'=>__('Sitewide Search'), 'uri'=> url('search')),
-			array('label'=>__('%s Search', mh_item_label('singular')), 'uri'=> url('items/search')),
+			array('label'=>__('%s Search', storyLabelString()), 'uri'=> url('items/search')),
 		));
 }
 
@@ -199,7 +146,7 @@ function mh_the_logo(){
 function random_item_link($text=null,$class='show',$hasImage=true){
 
 	if(!$text){
-		$text= __('View a Random %s', mh_item_label('singular'));
+		$text= __('View a Random %s', storyLabelString());
 	}
 	$randitems = get_records('Item', array( 'sort_field' => 'random', 'hasImage' => $hasImage), 1);
 
@@ -225,9 +172,9 @@ function mh_global_header($html=null){
 		<div class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
 			<?php if(!get_theme_option('hide_primary_nav')):?>
 			<div class="flex priority">
-				<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo mh_item_label('plural');?></a>
-				<?php if(plugin_is_active('TourBuilder')): ?>
-				<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo mh_tour_label('plural');?></a>
+				<?php if(plugin_is_active('Curatescape')): ?>
+					<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo storyLabelString('plural');?></a>
+					<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo tourLabelString('plural');?></a>
 				<?php endif;?>
 			</div>
 			<?php endif;?>
@@ -315,440 +262,6 @@ function mh_get_item_json($item=null){
 		}
 	}
 }
-
-/*
-** Map Type
-** Uses variable set in each page template 
-*/
-function mh_map_type($maptype='none',$item=null,$tour=null){
-	if ($maptype == 'focusarea') {
-		return mh_display_map('focusarea',null,null);
-	}
-	elseif ($maptype == 'story') {
-		return mh_display_map('story',$item,null,null);
-	}
-	elseif ($maptype == 'queryresults') {
-		return mh_display_map('queryresults',null,null);
-	}
-	elseif ($maptype == 'tour') {
-		return mh_display_map('tour',null,$tour);
-	}
-	elseif ($maptype == 'collection') {
-		return mh_display_map('queryresults',null,null);
-	}	
-	elseif ($maptype == 'none') {
-		return null;
-	}
-	else {
-		return null;
-	}
-}
-
-/*
-** Render the map
-** Source feeds generated from Mobile JSON plugin
-** Location data (LatLon and Zoom) created and stored in Omeka using stock Geolocation plugin
-*/
-function mh_display_map($type=null,$item=null,$tour=null){
-	$pluginlng=(get_option( 'geolocation_default_longitude' )) ? get_option( 'geolocation_default_longitude' ) : null;
-	$pluginlat=(get_option( 'geolocation_default_latitude' )) ? get_option( 'geolocation_default_latitude' ) : null;
-	$zoom=(get_option('geolocation_default_zoom_level')) ? get_option('geolocation_default_zoom_level') : 12;
-	$color=get_theme_option('marker_color') ? get_theme_option('marker_color') : '#222222';
-	$featured_color=get_theme_option('featured_marker_color') ? get_theme_option('featured_marker_color') : $color;
-	switch($type){
-		case 'focusarea':
-			/* all stories, map is centered on focus area (plugin center) */
-			$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
-			break;
-	
-		case 'global':
-			/* all stories, map is bounded according to content */
-			$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
-			break;
-	
-		case 'queryresults':
-			/* browsing by tags, subjects, search results, etc, map is bounded according to content */
-			$uri=WEB_ROOT.$_SERVER['REQUEST_URI'];
-			$json_source=$uri.'&output=mobile-json';
-			break;		
-	
-		case 'story':
-			/* single story */
-			$json_source = ($item) ? mh_get_item_json($item) : null;
-			break;
-	
-		case 'tour':
-			/* single tour, map is bounded according to content  */
-			$json_source= ($tour) ? mh_get_tour_json($tour) : null;
-			break;
-	
-		default:
-			$json_source=WEB_ROOT.'/items/browse?output=mobile-json';
-	}
-	?>
-	<script>
-		// PHP Variables
-		var type =  '<?php echo $type ;?>';
-		var color = '<?php echo $color ;?>';
-		var featured_color = '<?php echo $featured_color ;?>';
-		var root = '<?php echo WEB_ROOT ;?>';
-		var source ='<?php echo $json_source ;?>';
-		var center =[<?php echo $pluginlat.','.$pluginlng ;?>];
-		var zoom = <?php echo $zoom ;?>;
-		var defaultItemZoom=<?php echo get_theme_option('map_zoom_single') ? (int)get_theme_option('map_zoom_single') : 14;?>;
-		var featuredStar = <?php echo get_theme_option('featured_marker_star');?>;
-		var useClusters = <?php echo get_theme_option('clustering');?>; 
-		var clusterTours = <?php echo get_theme_option('tour_clustering');?>; 
-		var clusterIntensity = <?php echo get_theme_option('cluster_intensity') ? get_theme_option('cluster_intensity') : 15;?>; 
-		var alwaysFit = <?php echo get_theme_option('fitbounds') ? get_theme_option('fitbounds') : 0;?>; 
-		var markerSize = '<?php echo get_theme_option('marker_size') ? get_theme_option('marker_size') : "m";?>'; 
-		var mapBounds; // keep track of changing bounds
-		var root_url = '<?php echo WEB_ROOT;?>';
-		var geolocation_icon = '<?php echo img('geolocation.png');?>';
-		var primaryMapStyle = '<?php echo get_theme_option('primary_map') ? get_theme_option('primary_map') : 'CARTO_VOYAGER';?>';
-		var secondaryMapStyle = '<?php echo get_theme_option('secondary_map') ? get_theme_option('secondary_map') : 'NONE';?>';
-		var leafletjs='<?php echo src('leaflet.maki.combined.min.js','javascripts');?>'+'?v=1.1';
-		var leafletcss='<?php echo src('leaflet/leaflet.min.css','javascripts');?>'+'?v=1.1';	
-		var leafletClusterjs='<?php echo src('leaflet.markercluster/leaflet.markercluster.js','javascripts');?>'+'?v=1.1';
-		var leafletClustercss='<?php echo src('leaflet.markercluster/leaflet.markercluster.min.css','javascripts');?>'+'?v=1.1';
-		var mapbox_tile_layer='<?php echo get_theme_option('mapbox_tile_layer');?>';
-		var mapbox_access_token='<?php echo get_theme_option('mapbox_access_token');?>';
-		var mapbox_layer_title='<?php echo get_theme_option('mapbox_tile_layer') ? ucwords( str_replace( array('-v11','-v10','-v9','-'),' ', get_theme_option('mapbox_tile_layer') ) ) : "Mapbox";?>';
-
-		// End PHP Variables
-		var isSecure = window.location.protocol == 'https:' ? true : false;	
-
-		jQuery(document).ready(function() {
-			loadCSS( leafletcss );
-			if(useClusters==true) loadCSS( leafletClustercss );
-			loadJS( leafletjs, function(){
-				console.log('Leaflet ready...');
-				var tiles=[];
-				tiles.STAMEN_TERRAIN = L.tileLayer(
-				'//tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{retina}.png', {
-					attribution: '<a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> | <a href="https://stamen.com/" target="_blank">Stamen Design</a> | <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> | <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a>',
-					retina: (L.Browser.retina) ? '@2x' : '',
-					label: 'Terrain (Stamen Terrain)',
-				});
-				tiles.STAMEN_TONER = L.tileLayer(
-				"//tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{retina}.png",{
-					attribution: '<a href="https://stadiamaps.com/">Stadia Maps</a> | <a href="https://stamen.com/">Stamen Design</a> | <a href="https://openmaptiles.org/">OpenMapTiles</a>',
-					retina: L.Browser.retina ? "@2x" : "",
-					label: 'Street (Stamen Toner Lite)',
-				});
-				tiles.CARTO_POSITRON = L.tileLayer(
-				'//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{retina}.png', {
-					attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
-					retina: (L.Browser.retina) ? '@2x' : '',
-					label: 'Street (Carto Positron)',
-				});
-				tiles.CARTO_VOYAGER = L.tileLayer(
-				'//cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}{retina}.png',{
-					attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
-					retina: (L.Browser.retina) ? '@2x' : '',
-					label: 'Street (Carto Voyager)',
-				});
-				tiles.CARTO_DARK_MATTER = L.tileLayer(
-				"//cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{retina}.png",{
-					attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://cartodb.com/attributions">CartoDB</a>',
-					retina: L.Browser.retina ? "@2x" : "",
-					label: 'Street (Carto Dark Matter)',
-				});
-				tiles.HUMANITARIAN = L.tileLayer(
-				"//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",{
-					attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://www.hotosm.org">Humanitarian OpenStreetMap Team</a> | <a href="https://openstreetmap.fr">OpenStreetMap France</a>',
-					label: 'Street (OSM Humanitarian)',
-				});
-				tiles.OSM_BRIGHT = L.tileLayer(
-				"//tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{retina}.png", {
-					attribution: '<a href="https://stadiamaps.com/">Stadia Maps</a> | <a href="https://openmaptiles.org/">OpenMapTiles</a>',
-					retina: L.Browser.retina ? "@2x" : "",
-					label: 'Street (Stadia OSM Bright)',
-				});
-				tiles.STADIA_OUTDOORS = L.tileLayer(
-				"//tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{retina}.png",{
-					attribution: '<a href="https://stadiamaps.com/">Stadia Maps</a> | <a href="https://openmaptiles.org/">OpenMapTiles</a>',
-					retina: L.Browser.retina ? "@2x" : "",
-					label: 'Street (Stadia Outdoors)',
-				});
-				tiles.MAPBOX_TILES = L.tileLayer(
-				'https://api.mapbox.com/styles/v1/mapbox/'+mapbox_tile_layer+'/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-					attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://www.mapbox.com/feedback/">Mapbox</a>',
-					accessToken: mapbox_access_token,
-					tileSize: 512,
-					zoomOffset: -1,
-					label: mapbox_layer_title + '(Mapbox)',
-				});
-
-				var defaultMapLayer = tiles[primaryMapStyle];
-
-				// helper for title attributes with encoded HTML
-				function convertHtmlToText(value) {
-				    var d = document.createElement('div');
-				    d.innerHTML = value;
-				    return d.innerText;
-				}				
-
-				var mapDisplay =function(){
-					// Build the base map
-					var map = L.map('curatescape-map-canvas',{
-						layers: defaultMapLayer,
-						minZoom: 3,
-						scrollWheelZoom: false,
-					}).setView(center, zoom);
-					
-					
-					// Geolocation controls
-					if( !isSecure || !navigator.geolocation){			
-						console.warn('Geolocation is not available over insecure origins on this browser.');
-					}else{
-						var geolocationControl = L.control({position: 'topleft'});
-						geolocationControl.onAdd = function (map) {
-						    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-geolocation');
-						    div.innerHTML = '<a class="leaflet-control-geolocation-toggle" href="#" aria-label="Geolocation" title="Geolocation" role="button"><i class="fa fa fa-location-arrow" aria-hidden="true"></i></a>'; 
-						    return div;
-						};
-						geolocationControl.addTo(map);				
-					}
-					
-					// Fullscreen controls
-					var fullscreenControl = L.control({position: 'topleft'});
-					fullscreenControl.onAdd = function (map) {
-					    var div = L.DomUtil.create('div', 'leaflet-control leaflet-control-fullscreen');
-					    div.innerHTML = '<a class="leaflet-control-fullscreen-toggle" href="#" aria-label="Fullscreen" title="Fullscreen" role="button"><i class="fa fa-expand" aria-hidden="true"></i></a>'; 
-					    return div;
-					};
-					fullscreenControl.addTo(map);
-
-					// Layer controls
-					var  allLayers = {
-						[defaultMapLayer.options.label] : defaultMapLayer,
-					};
-					if(secondaryMapStyle !== 'NONE' && tiles[secondaryMapStyle] !== tiles[primaryMapStyle]){
-						allLayers[tiles[secondaryMapStyle].options.label] = tiles[secondaryMapStyle];
-					}
-					if(mapbox_access_token && mapbox_tile_layer !== 'NONE'){
-						allLayers[tiles.MAPBOX_TILES.options.label]=tiles.MAPBOX_TILES;
-					}
-					if(Object.keys(allLayers).length > 1){{
-						L.control.layers(allLayers).addTo(map);		
-					}}
-
-					// Center marker and popup on open
-					map.on('popupopen', function(e) {
-						// find the pixel location on the map where the popup anchor is
-						var px = map.project(e.popup._latlng); 
-						// find the height of the popup container, divide by 2, subtract from the Y axis of marker location
-						px.y -= e.popup._container.clientHeight/2;
-						// pan to new center
-						map.panTo(map.unproject(px),{animate: true}); 
-					});
-					// Add Markers
-					var addMarkers = function(data){				
-						function icon(color,markerInner){ 
-							return L.MakiMarkers.icon({
-								icon: markerInner, 
-								color: color, 
-								size: markerSize,
-								accessToken: "pk.eyJ1IjoiZWJlbGxlbXBpcmUiLCJhIjoiY2ludWdtOHprMTF3N3VnbHlzODYyNzh5cSJ9.w3AyewoHl8HpjEaOel52Eg"
-								});	
-						}
-						if(typeof(data.items)!="undefined"){ // tours and other multi-item maps
-
-							var group=[];
-							if(useClusters==true){
-								var markers = L.markerClusterGroup({
-									spiderfyOnMaxZoom: false, // should be an option?
-									zoomToBoundsOnClick:true,
-									disableClusteringAtZoom: clusterIntensity,
-									polygonOptions: {
-										'stroke': false,
-										'color': '#000',
-										'fillOpacity': .1
-									}
-								});
-							}
-
-							jQuery.each(data.items,function(i,item){
-								var appendQueryParams=(type=='tour') ? '?tour='+data.id+'&index='+i : '';
-								var address = item.address ? item.address : '';
-								var c = (item.featured==1 && featured_color) ? featured_color : color;
-								var inner = (item.featured==1 && featuredStar) ? "star" : "circle";
-								if(typeof(item.thumbnail)!="undefined"){
-									var image = '<a href="'+root_url+'/items/show/'+item.id+'" class="curatescape-infowindow-image '+(!item.thumbnail ? 'no-img' : '')+'" style="background-image:url('+item.thumbnail+');"></a>';
-								}else{
-									var image = '';
-								}
-								var number = (type=='tour') ? '<span class="number">'+(i+1)+'</span>' : '';
-								var html = image+number+'<span><a class="curatescape-infowindow-title" href="'+root_url+'/items/show/'+item.id+appendQueryParams+'">'+item.title+'</a><br>'+'<div class="curatescape-infowindow-address">'+address.replace(/(<([^>]+)>)/ig,"")+'</div></span>';
-
-								var marker = L.marker([item.latitude,item.longitude],{
-									icon: icon(c,inner),
-									title: convertHtmlToText(item.title),
-									alt: convertHtmlToText(item.title),
-									}).bindPopup(html);
-
-								group.push(marker);
-
-								if(useClusters==true) markers.addLayer(marker);
-					
-							});
-
-							if(useClusters==true && type!=='tour' || type=='tour' && clusterTours==true){
-								map.addLayer(markers);
-								mapBounds = markers.getBounds();
-							}else{
-								group=new L.featureGroup(group); 
-								group.addTo(map);
-								mapBounds = group.getBounds();
-							}
-
-							// Fit map to markers as needed
-							if((type == 'queryresults'|| type == 'tour') || alwaysFit==true){
-								if(useClusters==true){
-								map.fitBounds(markers.getBounds());
-								}else{
-									map.fitBounds(group.getBounds());
-								}
-							}
-
-
-						}else{ // single items
-							map.setView([data.latitude,data.longitude],defaultItemZoom);	
-							var address = data.address ? data.address : data.latitude+','+data.longitude;
-
-							var image = (typeof(data.thumbnail)!="undefined") ? '<a href="" class="curatescape-infowindow-image '+(!data.thumbnail ? 'no-img' : '')+'" style="background-image:url('+data.thumbnail+');" title="'+data.title+'"></a>' : '';
-
-							var html = image+'<div class="curatescape-infowindow-address single-item"><span class="icon-map-marker" aria-hidden="true"></span> '+address.replace(/(<([^>]+)>)/ig,"")+'</div>';
-
-							var marker = L.marker([data.latitude,data.longitude],{
-								icon: icon(color,"circle"),
-								title: convertHtmlToText(data.title),
-								alt: convertHtmlToText(data.title),
-								}).bindPopup(html);
-
-							marker.addTo(map);
-
-							mapBounds = map.getBounds();
-						}
-
-					}
-
-					if(type=='story'){
-						var data = jQuery.parseJSON(source);
-						if(data){
-							addMarkers(data);
-						}
-
-					}else if(type=='tour'){
-						var data = jQuery.parseJSON(source);
-						addMarkers(data);
-
-					}else if(type=='focusarea'){
-						jQuery.getJSON( source, function(data) {
-							var data = data;
-							addMarkers(data);
-						});
-
-					}else if(type=='queryresults'){
-						jQuery.getJSON( source, function(data) {
-							var data = data;
-							addMarkers(data);
-						});
-
-					}else{
-						jQuery.getJSON( source, function(data) {
-							var data = data;
-							addMarkers(data);
-						});
-					}
-
-					/* Map Action Buttons */
-
-					// Fullscreen
-					jQuery('.leaflet-control-fullscreen-toggle').click(function(e){
-						e.preventDefault();
-						jQuery("body").toggleClass("fullscreen-map");
-						jQuery(".leaflet-control-fullscreen-toggle i").toggleClass('fa-expand').toggleClass('fa-compress');
-						map.invalidateSize();
-					});
-					jQuery(document).keyup(function(e) {
-						if ( e.keyCode == 27 ){ // exit fullscreen
-							if(jQuery('body').hasClass('fullscreen-map')) jQuery('.leaflet-control-fullscreen-toggle').click();
-						}
-					});
-
-					// Geolocation
-					jQuery('.leaflet-control-geolocation-toggle').click(
-						function(e){
-						e.preventDefault();	
-						var options = {
-							enableHighAccuracy: true,
-							maximumAge: 30000,
-							timeout: 15000
-						};
-						jQuery(".leaflet-control-geolocation-toggle").addClass("working");
-						navigator.geolocation.getCurrentPosition(
-							function(pos) {
-								var userLocation = [pos.coords.latitude, pos.coords.longitude];					
-								// adjust map view
-								if(type=='story'|| type=='tour' || type == 'queryresults'){
-									if(jQuery(".leaflet-popup-close-button").length) jQuery(".leaflet-popup-close-button")[0].click(); // close popup
-									var newBounds = new L.LatLngBounds(mapBounds,new L.LatLng(pos.coords.latitude, pos.coords.longitude));
-									map.fitBounds(newBounds);
-								}else{
-									map.panTo(userLocation);
-								}
-								// add/update user location indicator
-								if(typeof(userMarker)==='undefined') {
-									userMarker = new L.circleMarker(userLocation,{
-									  radius: 8,
-									  fillColor: "#4a87ee",
-									  color: "#ffffff",
-									  weight: 3,
-									  opacity: 1,
-									  fillOpacity: 0.8,
-									}).addTo(map);
-									jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-								}else{
-									userMarker.setLatLng(userLocation);
-									jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-								}
-							}, 
-							function(error) {
-								console.log(error);
-								var errorMessage = error.message ? ' Error message: "' + error.message + '"' : 'Oops! We were unable to determine your current location.';
-								jQuery(".leaflet-control-geolocation-toggle").removeClass("working");
-								alert(errorMessage);
-							}, 
-							options);
-					});	
-
-					// enable mouse scrollwheel zoom if the user has interacted with the map
-					map.once('focus', function() { map.scrollWheelZoom.enable(); });					
-
-				}
-
-				if(useClusters==true){
-					loadJS( leafletClusterjs, function(){
-						console.log('Clustering ready...')
-						mapDisplay();
-					});
-				}else{
-					mapDisplay();
-				}
-
-			});
-
-		});
-		</script>
-
-	<!-- Map Container -->
-	<div class="curatescape-map">
-		<div id="curatescape-map-canvas" class="hero"></div>
-	</div>
-		
-<?php }
 
 /*
 ** Add the map actions toolbar
@@ -957,25 +470,9 @@ function mh_the_lede($item='item'){
 /*
 ** Title + Subtitle (for search/browse/home)
 */
-function mh_the_title_expanded($item='item'){
+function mh_the_title_link($item='item'){
 	$title=strip_tags(metadata($item, array('Dublin Core', 'Title')));
-	if(get_theme_option('subtitle_on_browse') && element_exists('Item Type Metadata','Subtitle')){
-		$subtitle = metadata($item,array('Item Type Metadata','Subtitle')) ? ' – '.strip_tags(metadata($item,array('Item Type Metadata','Subtitle'))) : null;
-		$title = $title.$subtitle;
-	}
 	return link_to($item,'show',$title, array('class'=>'permalink'));
-}
-
-/*
-** Snippet: Lede + Story (for search/browse/home)
-*/
-function mh_snippet_expanded($item='item'){
-	$story=element_exists('Item Type Metadata','Story') ? metadata($item,array('Item Type Metadata', 'Story'),array('snippet'=>250)) : null;
-	if(get_theme_option('lede_on_browse') && element_exists('Item Type Metadata','Lede')){
-		$lede = strip_tags(metadata($item,array('Item Type Metadata','Lede'))).' ';
-		$story = $lede.$story;
-	}
-	return snippet($story,0,250,'&hellip;');
 }
 
 /*
@@ -994,18 +491,13 @@ function mh_the_sponsor($item='item'){
 ** Display subjects as tags
 */
 function mh_subjects(){
-	$subjects = metadata('item',array('Dublin Core', 'Subject'), 'all');
+	$subjects = metadata($item,array('Dublin Core', 'Subject'), 'all');
 	if (count($subjects) > 0){
 		$html = '<div class="subjects">';
 			$html.= '<h3>'.__('Subjects').'</h3>';
 			$html.= '<ul>';
 			foreach ($subjects as $subject){
-				$link = WEB_ROOT;
-				$link .= htmlentities('/items/browse?term=');
-				$link .= rawurlencode($subject);
-				$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
-				$link .= urlencode(str_replace('&amp;','&',$subject));
-				$html.= '<li><a href="'.$link.'">'.$subject.'</a></li> ';
+				$html.= '<li>'.$subject.'</li> ';
 			}
 			$html.= '</ul>';
 		$html .= '</div>';
@@ -1017,7 +509,7 @@ function mh_subjects(){
 ** Display subjects as single line of links
 */
 function mh_subjects_string(){
-	$subjects = metadata('item',array('Dublin Core', 'Subject'), 'all');
+	$subjects = metadata($item,array('Dublin Core', 'Subject'), 'all');
 	if (count($subjects) > 0){
 		$html=array();
 
@@ -1038,7 +530,7 @@ function mh_subjects_string(){
 ** Display the item tags
 */
 function mh_tags(){
-	if (metadata('item','has tags')){
+	if (metadata($item,'has tags')){
 		$html  = '<div class="tags">';
 		$html .= '<h3>'.__('Tags').'</h3>';
 		$html .= tag_cloud('item','items/browse');
@@ -1131,9 +623,9 @@ function mh_factoid($item='item'){
 ** Display related links
 */
 function mh_related_links(){
-	$dc_relations_field = metadata('item',array('Dublin Core', 'Relation'), array('all' => true));
+	$dc_relations_field = metadata($item,array('Dublin Core', 'Relation'), array('all' => true));
 	
-	$related_resources = element_exists('Item Type Metadata','Related Resources') ? metadata('item',array('Item Type Metadata', 'Related Resources'), array('all' => true)) : null;
+	$related_resources = element_exists('Item Type Metadata','Related Resources') ? metadata($item,array('Item Type Metadata', 'Related Resources'), array('all' => true)) : null;
 	
 	$relations = $related_resources ? $related_resources : $dc_relations_field;
 	
@@ -1154,19 +646,11 @@ function mh_related_links(){
 function mh_the_byline($itemObj='item',$include_sponsor=false){
 	if ((get_theme_option('show_author') == true)){
 		$html='<div class="byline">'.__('By').' ';
-
 		if(metadata($itemObj,array('Dublin Core', 'Creator'))){
 			$authors=metadata($itemObj,array('Dublin Core', 'Creator'), array('all'=>true));
 			$total=count($authors);
 			$index=1;
-			$authlink=get_theme_option('link_author');
-
 			foreach ($authors as $author){
-				if($authlink==1){
-					$href='/items/browse?search=&advanced[0][element_id]=39&advanced[0][type]=is+exactly&advanced[0][terms]='.$author;
-					$author='<a href="'.$href.'">'.$author.'</a>';
-				}
-
 				switch ($index){
 				case ($total):
 					$delim ='';
@@ -1180,8 +664,6 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 					$delim =', ';
 					break;
 				}
-
-
 				$html .= $author.$delim;
 				$index++;
 			}
@@ -1192,7 +674,6 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 		$html .= (($include_sponsor) && (mh_the_sponsor($itemObj)!==null ))? ''.mh_the_sponsor($itemObj) : null;
 		
 		$html .='</div>';
-
 		return $html;
 	}
 }
@@ -1202,7 +683,7 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 ** Custom item citation
 */
 function mh_item_citation(){
-	return '<div class="item-citation"><h3>'.__('Cite this Page').'</h3><div>'.html_entity_decode(metadata('item', 'citation')).'</div></div>';
+	return '<div class="item-citation"><h3>'.__('Cite this Page').'</h3><div>'.html_entity_decode(metadata($item, 'citation')).'</div></div>';
 }
 
 /*
@@ -1211,8 +692,8 @@ function mh_item_citation(){
 function mh_post_date(){
 
 	if(get_theme_option('show_datestamp')==1){
-		$a=format_date(metadata('item', 'added'));
-		$m=format_date(metadata('item', 'modified'));	
+		$a=format_date(metadata($item, 'added'));
+		$m=format_date(metadata($item, 'modified'));	
 	
 		return '<div class="item-post-date"><em>'.__('Published on %s.', $a ).( ($a!==$m) ? ' '.__('Last updated on %s.', $m ) : null ).'</em></div>';	
 	}
@@ -1749,13 +1230,13 @@ function mh_tour_preview($s){
 	$html.=  '<h3 class="tour-result-title"><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h3>';
 	$html.=  '<div class="tour-meta-browse browse-meta-top byline">';
 	$html.= '<span class="total">'.mh_tour_total_items($record).' '.__('Locations').'</span> ~ ';
-	if(tour('Credits') ){
-		$html.=  __('%1s curated by %2s', mh_tour_label('singular'),tour('Credits') );
+	if(metadata($tour,'Credits') ){
+		$html.=  __('%1s curated by %2s', tourLabelString(),metadata($tour,'Credits') );
 	}elseif(get_theme_option('show_author') == true){
-		$html.=  __('%1s curated by The %2s Team',mh_tour_label('singular'),option('site_title'));
+		$html.=  __('%1s curated by The %2s Team',tourLabelString(),option('site_title'));
 	}		
 	$html.=  '</div>';
-	$html.=  ($text=strip_tags(html_entity_decode(tour('Description')))) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
+	$html.=  ($text=strip_tags(html_entity_decode(metadata($tour,'Description')))) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
 	if(get_theme_option('show_tour_item_thumbs') == true){
 		$html.=  '<span class="tour-thumbs-container">';
 		foreach($record->Items as $mini_thumb){
@@ -1773,23 +1254,17 @@ function mh_tour_preview($s){
 /*
 ** Display the Tours list
 */
-function mh_display_homepage_tours($num=5, $scope='featured'){
-	
-	$scope=get_theme_option('homepage_tours_scope') ? get_theme_option('homepage_tours_scope') : $scope;
-	
+function mh_display_homepage_tours($scope='random', $num=5){
+	if(!plugin_is_active('Curatescape')) return;
 	// Get the database.
 	$db = get_db();
-
 	// Get the Tour table.
-	$table = $db->getTable('Tour');
-
+	$table = $db->getTable('CuratescapeTour');
 	// Build the select query.
 	$select = $table->getSelect();
 	$select->where('public = 1');
-	
 	// Get total count
-	$public = $table->fetchObjects($select);		
-	
+	$public = $table->fetchObjects($select);
 	// Continue, get scope
 	switch($scope){
 		case 'random':
@@ -1799,81 +1274,71 @@ function mh_display_homepage_tours($num=5, $scope='featured'){
 			$select->where('featured = 1');
 			break;
 	}
-	
-
 	// Fetch some items with our select.
 	$items = $table->fetchObjects($select);
 	$customheader=get_theme_option('tour_header');
 	if($scope=='random'){
 		shuffle($items);
-		$heading = $customheader ? $customheader : __('Take a').' '.mh_tour_label('singular');
+		$heading = $customheader ? $customheader : __('Take a Tour');
 	}else{
-		$heading = $customheader ? $customheader : ucfirst($scope).' '.mh_tour_label('plural');
+		$heading = $customheader ? $customheader : ucfirst($scope).' '.tourLabelString('plural');
 	}
 	$num = (count($items)<$num)? count($items) : $num;
 	$html=null;
-	
-
-
-	$html .= '<h3 class="result-type-header">'.$heading.'</h3>';
+	$html .= '<h2 class="result-type-header">'.$heading.'</h2>';
 	if($items){
 		for ($i = 0; $i < $num; $i++) {
 			set_current_record( 'tour', $items[$i] );
-			$tour=get_current_tour();		
-
-			if(tour('credits')){
-				$byline= __('Curated by %s',tour('credits'));
-			}else{
-				$byline= __('Curated by The %s Team',option('site_title'));
-			}
-
-			$html .= '<article class="item-result '.(get_theme_option('fetch_tour_images') ? 'fetch-tour-image' : null).'" data-tour-id="'.tour('id').'">';
-			$html .= get_theme_option('fetch_tour_images') ? '<div class="tour-image-container"></div>' : null;
-			$html .= '<div><h3 class="home-tour-title"><a href="' . WEB_ROOT . '/tours/show/'. tour('id').'">' . tour('title').'</a></h3><span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span></div>';
+			$tour=getCurrentTour();		
+			$html .= '<article class="item-result tour">';
+			$html .= '<div class="tour-flex-container">';
+				if ($tourImage = $tour->getFileCustom()){
+					$html .= linkToTour($tour, 'show', $tourImage, array('class'=>'tour-image'));
+				}
+				$html .= '<div class="details">';
+					$html .= '<h3>'.linkToTour($tour).'</h3>';
+					if(metadata($tour, 'credits')){
+						$byline= __('Curated by %s',metadata($tour, 'credits'));
+					}else{
+						$byline= __('Curated by The %s Team',option('site_title'));
+					}
+					$html .=  '<span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span>';
+					
+					if ($tourDescription = metadata($tour, 'description', array('no_escape'=>true))){
+						$html .= '<div class="description">'.snippet($tourDescription, 0, 500).'</div>';
+					}
+				$html .= '</div>';
+			$html .= '</div>';
 			$html .= '</article>';
-
 		}
 		if(count($public)>1){
-			$html .= '<p class="view-more-link"><a class="button" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), mh_tour_label('plural')).'</a></p>';
+			$html .= '<a class="button button-primary view-more-link" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), tourLabelString('plural')).'</a>';
 		}	
 	}else{
 		$html .= '<p>'.__('No tours are available. Publish some now.').'</p>';
 	}
-	
 	return $html;
-
 }
 
 function mh_hero_item($item){
-			$itemTitle = mh_the_title_expanded($item);
-			$itemDescription = mh_snippet_expanded($item);
-			$class=get_theme_option('featured_tint')==1 ? 'tint' : 'no-tint';
-			$html=null;
-
-			if (metadata($item, 'has thumbnail') ) {
-				$img_markup=item_image('fullsize',array(),0, $item);
-				preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
-				$img_url = array_pop($result);				
-					$html .= '<article class="featured-story-result '.$class.'">';
-					$html .= '<div class="featured-decora-outer">' ;
-						$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')">' ;
-					
-						$html .= '<div class="featured-decora-text"><div class="featured-decora-text-inner">';
-							$html .= '<header><h3>' . link_to_item($itemTitle, array(), 'show', $item) . '</h3><span class="featured-item-author">'.mh_the_byline($item,false).'</span></header>';
-						if ($itemDescription) {
-							$html .= '<div class="item-description">' . strip_tags($itemDescription) . '</div>';
-							}else{
-							$html .= '<div class="item-description">'.__('Preview text not available.').'</div>';
-						}
-	
-						$html .= '</div></div>' ;
-					
-					$html .= '</div></div>' ;
-					$html .= '</article>';
-			}
-			
-			return $html;
-				
+	$itemTitle = mh_the_title_link($item);
+	$itemDescription = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>300));
+	$html=null;
+	if (metadata($item, 'has thumbnail') ) {
+		$img_markup=item_image('fullsize',array(),0, $item);
+		preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
+		$img_url = array_pop($result);
+		$html .= '<article class="featured-story-result">';
+			$html .= '<div class="featured-decora-outer">' ;
+				$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')">' ;
+				$html .= '<div class="featured-decora-text"><div class="featured-decora-text-inner">';
+					$html .= '<header><h3>' .$itemTitle. '</h3><span class="featured-item-author">'.mh_the_byline($item,false).'</span></header>';
+					$html .= '<div class="item-description">' . $itemDescription ? $itemDescription : __('Preview text not available.') . '</div>';
+				$html .= '</div></div>' ;
+			$html .= '</div></div>' ;
+		$html .= '</article>';
+	}
+	return $html;
 }
 
 /*
@@ -1882,31 +1347,26 @@ function mh_hero_item($item){
 function mh_display_random_featured_item($withImage=false,$num=1)
 {
 	$featuredItems = get_random_featured_items($num,$withImage);
-	$html = '<h3 class="result-type-header">'.__('Featured %s',mh_item_label('plural')).'</h3>';
-	
+	$label = plugin_is_active('Curatescape') ? storyLabelString('plural') : __('Items');
+	$html = '<h2 class="result-type-header">'.__('Featured %s',$label).'</h2>';
 	if ($featuredItems) {
-	
 		foreach($featuredItems as $item):
 			$html .=mh_hero_item($item);
 		endforeach;	
-		
-		$html.='<p class="view-more-link"><a class="button" href="/items/browse?featured=1">'.__('Browse Featured %s',mh_item_label('plural')).'</a></p>';
-			
+		$html.='<a class="button button-primary view-more-link" href="/items/browse?featured=1">'.__('Browse Featured %s',$label).'</a>';
 	}else {
 		$html .= '<article class="featured-story-result none">';
 		$html .= '<p>'.__('No featured items are available. Publish some now.').'</p>';
 		$html .= '</article>';
 	}
-
 	return $html;
 }
-
 
 /*
 ** Display the customizable "About" content on homepage
 */
 function mh_home_about($length=800,$html=null){
-
+	$html .= '<h2 class="result-type-header">'.__('About').'</h2>';
 	$html .= '<div class="about-text">';
 		$html .= '<article>';
 			
@@ -1918,7 +1378,7 @@ function mh_home_about($length=800,$html=null){
 			$html .= '<div class="about-main"><p>';
 				$html .= substr(mh_about(),0,$length);
 				$html .= ($length < strlen(mh_about())) ? '... ' : null;
-			$html .= '</p><a class="button u-full-width" href="'.url('about').'">'.__('Read more About Us').'</a></div>';
+			$html .= '</p><a class="button button-primary view-more-link" href="'.url('about').'">'.__('Read more About Us').'</a></div>';
 	
 		$html .= '</article>';
 	$html .= '</div>';
@@ -1939,14 +1399,12 @@ function mh_home_cta($html=null){
 	$cta_button_url_target=get_theme_option('cta_button_url_target') ? ' target="_blank" rel="noreferrer noopener"' : null;
 	
 	if($cta_title && $cta_button_label && $cta_button_url){	
-		$html .='<h3 class="result-type-header">'.$cta_title.'</h3>';
+		$html .='<h2 class="result-type-header">'.$cta_title.'</h2>';
 	
 		$html .= '<div class="cta-inner">';
 			$html .= '<article style="background-image:url(/files/theme_uploads/'.$cta_img_src.');">';
 				if($cta_img_src){
-					$html .= '<div class="cta-hero">';
-					$html .= '<a class="button button-primary" href="'.$cta_button_url.'" '.$cta_button_url_target.'>'.$cta_button_label.'</a>';
-					$html .= '</div>';
+					$html .= '<div class="cta-hero"></div>';
 				}
 				if($cta_text){
 					$html .= '<div class="cta-description">';
@@ -1979,18 +1437,11 @@ function mh_footer_cta($html=null){
 function mh_home_popular_tags($num=40){
 	
 	$tags=get_records('Tag',array('sort_field' => 'count', 'sort_dir' => 'd'),$num);
-	$html = '<h3 class="result-type-header">'.__('Popular Tags').'</h3>';
+	$html = '<h2 class="result-type-header">'.__('Popular Tags').'</h2>';
 	$html.=tag_cloud($tags,url('items/browse'));
-	$html.='<p class="view-more-link"><a class="button" href="/items/tags/">'.__('Browse all %s tags',total_records('Tags')).'</a></p>';
+	$html.='<a class="button button-primary view-more-link" href="/items/tags/">'.__('Browse %s tags',total_records('Tags')).'</a>';
 	return $html;
 	
-}
-
-/*
-** List of recent or random items for homepage
-*/
-function mh_home_item_list(){
-	return mh_random_or_recent( ($mode=get_theme_option('random_or_recent')) ? $mode : 'recent' );
 }
 
 /*
@@ -2005,7 +1456,7 @@ function mh_social_array($max=5){
 	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
 	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="https://www.pinterest.com/'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
 	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
-	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;					
+	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
 
 	if( ($total=count($services)) > 0 ){
 		if($total>$max){
@@ -2062,35 +1513,26 @@ function mh_owner_link(){
 ** Each widget can be used ONLY ONCE
 */
 
-function homepage_widget_1($content='recent_or_random'){
-	
-	get_theme_option('widget_section_1') ? $content=get_theme_option('widget_section_1') : null;
-	
+function homepage_widget_1($content='items_featured'){
+	$content = get_theme_option('widget_section_1') ? get_theme_option('widget_section_1') : null;
 	return $content;
 }
 
-function homepage_widget_2($content='featured'){
-	
-	get_theme_option('widget_section_2') ? $content=get_theme_option('widget_section_2') : null;
-	
-	return $content;	
+function homepage_widget_2($content='tours_random'){
+	$content = get_theme_option('widget_section_2') ? get_theme_option('widget_section_2') : null;
+	return $content;
 }
 
-function homepage_widget_3($content='tours'){
-	
-	get_theme_option('widget_section_3') ? $content=get_theme_option('widget_section_3') : null;
-	
-	return $content;	
+function homepage_widget_3($content='popular_tags'){
+	$content = get_theme_option('widget_section_3') ? get_theme_option('widget_section_3') : null;
+	return $content;
 }
 function homepage_widget_4($content='about'){
-	
-	get_theme_option('widget_section_4') ? $content=get_theme_option('widget_section_4') : null;
-	
-	return $content;	
+	$content = get_theme_option('widget_section_4') ? get_theme_option('widget_section_4') : null;
+	return $content;
 }
 
-function homepage_widget_sections(){
-		$html=null;
+function homepage_widget_sections($html = null){
 		$recent_or_random=0; 
 		$tours=0;
 		$featured=0;
@@ -2098,22 +1540,34 @@ function homepage_widget_sections(){
 		$about=0;
 		$meta=0;
 		$cta=0;
-		
-		foreach(array(homepage_widget_1(),homepage_widget_2(),homepage_widget_3(),homepage_widget_4()) as $setting){
+		foreach(array_unique(array(
+			homepage_widget_1(),
+			homepage_widget_2(),
+			homepage_widget_3(),
+			homepage_widget_4()
+		)) as $setting ){
 			
 			switch ($setting) {
-				case 'featured':
+				case 'items_featured':
 					$html.= ($featured==0) ? '<section id="featured-stories">'.mh_display_random_featured_item(true,3).'</section>' : null;
 					$featured++;
 					break;
-				case 'tours':
-					$html.= ($tours==0) ? '<section id="home-tours">'.mh_display_homepage_tours().'</section>' : null;
+				case 'tours_random':
+					$html.= ($tours==0) ? '<section id="home-tours">'.mh_display_homepage_tours('random').'</section>' : null;
 					$tours++;
 					break;
-				case 'recent_or_random':
-					$html.= ($recent_or_random==0) ? '<section id="home-item-list">'.mh_home_item_list().'</section>' : null;
+				case 'tours_featured':
+					$html.= ($tours==0) ? '<section id="home-tours">'.mh_display_homepage_tours('featured').'</section>' : null;
+					$tours++;
+					break;
+				case 'items_recent':
+					$html.= ($recent_or_random==0) ? '<section id="home-item-list">'.mh_random_or_recent('recent').'</section>' : null;
 					$recent_or_random++;
 					break;
+				case 'items_random':
+					$html.= ($recent_or_random==0) ? '<section id="home-item-list">'.mh_random_or_recent('random').'</section>' : null;
+					$recent_or_random++;
+				break;
 				case 'popular_tags':
 					$html.= ($popular_tags==0) ? '<section id="home-popular-tags">'.mh_home_popular_tags().'</section>' : null;
 					$popular_tags++;
@@ -2125,10 +1579,6 @@ function homepage_widget_sections(){
 				case 'cta':
 					$html.= ($cta==0) ? '<section id="cta">'.mh_home_cta().'</section>	' : null;
 					$cta++;
-					break;
-				case 'custom_meta_img':
-					$html.= ($meta==0) ? '<section id="custom-meta-img" aria-hidden="true"><img src="'.mh_seo_pageimg_custom().'" alt="" class="homepage-brand-image"></section>	' : null;
-					$meta++;
 					break;
 				default:
 					$html.=null;
@@ -2143,32 +1593,30 @@ function homepage_widget_sections(){
 /*
 ** Get recent/random items for use in mobile slideshow on homepage
 */
-function mh_random_or_recent($mode='recent',$num=6){
-	
+function mh_random_or_recent($mode='recent',$num=6,$html=null){
+	$label = plugin_is_active('Curatescape') ? storyLabelString('plural') : __('Items');
 	switch ($mode){
 	
 	case 'random':
 		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'random', 'sort_dir' => 'd','public'=>true), $num);;
-		$param="Random";
+		$heading=__("Discover %s",$label);
 		break;
 	case 'recent':
 		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'added', 'sort_dir' => 'd','public'=>true), $num);
-		$param="Recent";
+		$heading=__("Recent %s",$label);
 		break;
-		
-	}	
+	}
 	set_loop_records('items',$items);
-	$html='<section id="random-recent">';
-	$labelcount='<span>'.total_records('Item').' '.mh_item_label('plural').'</span>';
-	$html.='<h3 class="result-type-header">'.ucfirst($mode).' '.mh_item_label('plural').'</h3>';
+	$labelcount='<span>'.total_records('Item').' '.$label.'</span>';
+	$html.='<h2 class="result-type-header">'.$heading.'</h2>';
 
 	if (has_loop_records('items')){
 		$html.='<div class="browse-items flex">';
 		foreach(loop('Items') as $item){
 			$item_image=null;
-			$description = mh_snippet_expanded($item);
+			$description = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>300));
 			$tags=tag_string(get_current_record('item') , url('items/browse'));
-			$titlelink=link_to_item(mh_the_title_expanded($item), array('class'=>'permalink'));
+			$titlelink=mh_the_title_link($item);
 			$hasImage=metadata($item, 'has thumbnail');
 			if ($hasImage){
 					preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
@@ -2183,7 +1631,7 @@ function mh_random_or_recent($mode='recent',$num=6){
 				
 				if ($description){
 					$html.='<div class="item-description">';
-					$html.=strip_tags($description);
+					$html.=$description;
 					$html.='</div>';
 				}
 				
@@ -2191,13 +1639,12 @@ function mh_random_or_recent($mode='recent',$num=6){
 		}
 		
 		$html.='</div>';
-		$html.='<p class="view-more-link"><a class="button" href="/items/browse/">'.__('Browse all %s',$labelcount).'</a></p>';
+		$html.='<a class="button button-primary view-more-link" href="/items/browse/">'.__('Browse all %s',$labelcount).'</a>';
 		
 		
 	}else{
 		$html.='<p>'.__('No items are available. Publish some now.').'</p>';
 	}
-	$html.='</section>';
 	return $html;
 }
 /*
@@ -2231,10 +1678,10 @@ function mh_bg_url()
 function mh_link_color()
 {
 	$color = get_theme_option('link_color');
-
 	if ( ($color) && (preg_match('/^#[a-f0-9]{6}$/i', $color)) ){
 		return $color;
 	}
+	return null;
 }
 
 /*
@@ -2243,66 +1690,30 @@ function mh_link_color()
 function mh_secondary_link_color()
 {
 	$color = get_theme_option('secondary_link_color');
-
 	if ( ($color) && (preg_match('/^#[a-f0-9]{6}$/i', $color)) ){
 		return $color;
 	}
+	return null;
 }
 /*
 ** Custom CSS
 */
-function mh_configured_css(){
-	$bg_url=mh_bg_url();
-	$bg = $bg_url ? 'background-image: url('.$bg_url.');background-attachment: fixed; ' : '';
+function mh_configured_css($configured_css=null, $user_css=null){
 	$color_primary=mh_link_color();
 	$color_secondary=mh_secondary_link_color();
-	$configured_css = '
-		a{
-			color: '.$color_primary.'
-		}
-		a:hover,
-		.item-hero .item-hero-text .byline a,
-		.pswp__caption a,
-		body#home section#home-popular-tags ul.popularity li a:hover,
-		body#items.tags section#tags ul.popularity li a:hover{
-			color: '.$color_secondary.'
-		}	
-		body#items.show .hTagcloud li a,
-		.button.button-primary, 
-		button.button-primary, 
-		input[type="submit"].button-primary, 
-		input[type="reset"].button-primary, 
-		input[type="button"].button-primary {
-		    background-color: '.$color_primary.';
-		    border-color: '.$color_primary.';
-		}	
-		body#items.show .hTagcloud li a:hover, body#items.show .hTagcloud li a:focus,	
-		.button.button-primary:hover, .button.button-primary:focus,
-		button.button-primary:hover, button.button-primary:focus,
-		input[type="submit"].button-primary:hover, input[type="submit"].button-primary:focus,
-		input[type="reset"].button-primary:hover, input[type="reset"].button-primary:focus,
-		input[type="button"].button-primary:hover,input[type="button"].button-primary:focus {
-		    background-color: '.$color_secondary.';
-		    border-color: '.$color_secondary.';
-		}
-		.secondary-nav ul li.active a{
-			color: '.$color_primary.';
-			border-bottom: 4px solid '.$color_secondary.';			
-		}	
-		body#home li.popular a,body#items.tags li.popular a{color: '.$color_primary.';}
-		body#home li.v-popular a,body#items.tags li.v-popular a{color: '.adjustBrightness($color_primary,-30).';}
-		body#home li.vv-popular a,body#items.tags li.vv-popular a{color: '.adjustBrightness($color_primary,-25).';}
-		body#home li.vvv-popular a,body#items.tags li.vvv-popular a{color: '.adjustBrightness($color_primary,-20).';}
-		body#home li.vvvv-popular a,body#items.tags li.vvvv-popular a{color: '.adjustBrightness($color_primary,-15).';}
-		body#home li.vvvvv-popular a,body#items.tags li.vvvvv-popular a{color: '.$color_secondary.';}
-		body#home li.vvvvvv-popular a,body#items.tags li.vvvvvv-popular a{color: '.adjustBrightness($color_secondary,-15).';}
-		body#home li.vvvvvvv-popular a,body#items.tags li.vvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-20).';}
-		body#home li.vvvvvvvv-popular a,body#items.tags li.vvvvvvvv-popular a{color: '.adjustBrightness($color_secondary,-25).';}
-		.media-list > a:hover{
-			background-color:'.$color_primary.'
-		}
-	';
-	$user_css= get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : null;
+	if($color_primary && $color_secondary){
+		$configured_css .= '
+			:root{
+				--color-primary:'.$color_primary.';
+				--color-secondary:'.$color_secondary.';
+			}';
+	}
+	if(get_theme_option('bg_img') && mh_bg_url()){
+		$configured_css .='body{
+			background-image: url('.mh_bg_url().');
+		}';
+	}
+	$user_css = get_theme_option('custom_css') ? '/* Theme Option: User CSS */ '.get_theme_option('custom_css') : $user_css;
 	return '<style>'.$configured_css.$user_css.'</style>';
 }
 
@@ -2443,7 +1854,7 @@ function mh_license(){
 function link_to_item_edit($item=null,$pre=null,$post=null)
 {
 	if (is_allowed($item, 'edit')) {
-		return $pre.'<a class="edit" href="'. html_escape(url('admin/items/edit/')).metadata('item','ID').'">'.__('Edit Item').'</a>'.$post;
+		return $pre.'<a class="edit" href="'. html_escape(url('admin/items/edit/')).metadata($item,'ID').'">'.__('Edit Item').'</a>'.$post;
 	}
 }
 

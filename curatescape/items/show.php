@@ -3,13 +3,13 @@
 // Determine which template to use based on the item type
 
 $type = $item->getItemType();
-$type = $type['name'];
+$type = isset($type['name']) ? $type['name'] : null;
 switch($type){
 
-//	case 'Curatescape Story':
-//	include('show-template-story.php');
-//	break;
-	
+	// case 'Curatescape Story':
+	// include('show-template-curatescape.php');
+	// break;
+
 	default:
 	include('show-template-default.php');
 	break;
