@@ -11,7 +11,13 @@ function mh_search_form_default_record_types()
 	if(plugin_is_active('SimplePages') && get_theme_option('default_page_search')) $recordTypes[]='SimplePagesPage';
 	if(get_theme_option('default_file_search')) $recordTypes[]='File';
 	return $recordTypes;
-}	
+}
+/*
+** Icons
+*/
+function mh_icon($icon){
+	return '<svg aria-hidden="true" class="icon-sprite '.$icon.'" viewBox="0 0 512 512"><use xlink:href="'.img('sprites.svg').'#'.$icon.'" /></svg>';
+}
 /*
 ** Set Fallback Thumbnails
 */
@@ -143,22 +149,24 @@ function mh_the_logo(){
 /*
 ** Link to Random Item
 */
-function random_item_link($text=null,$class='show',$hasImage=true){
+function random_item_link($text=null,$hasImage=true){
 
 	if(!$text){
-		$text= __('View a Random %s', storyLabelString());
+		$text= mh_icon('shuffle').__('View a Random %s', storyLabelString());
 	}
-	$randitems = get_records('Item', array( 'sort_field' => 'random', 'hasImage' => $hasImage), 1);
+	$randitems = get_records('Item', array( 
+		'sort_field' => 'random', 'hasImage' => $hasImage), 1);
 
 	if( count( $randitems ) > 0 ){
-		$link = link_to( $randitems[0], 'show', $text, array( 'class' => 'random-story-link ' . $class ) );
-	}else{
-		$link = link_to( '/', 'show', __('Publish some items to activate this link'),
-			array( 'class' => 'random-story-link ' . $class ) );
+		return link_to( 
+			$randitems[0], 
+			'show', 
+			$text, 
+			array( 'class' => 'button button-primary icon random-story-link' ) 
+		);
 	}
-	return $link;
+	return null;
 }
-
 
 /*
 ** Global header
@@ -169,7 +177,7 @@ function mh_global_header($html=null){
 	<nav aria-label="<?php echo __('Main Navigation');?>">
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<div class="spacer"></div>
-		<div class="flex flex-end flex-grow flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
+		<div class="flex flex-end flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
 			<?php if(!get_theme_option('hide_primary_nav')):?>
 			<div class="flex priority">
 				<?php if(plugin_is_active('Curatescape')): ?>
@@ -178,10 +186,8 @@ function mh_global_header($html=null){
 				<?php endif;?>
 			</div>
 			<?php endif;?>
-			<div class="flex search-plus flex-grow">
-			<!--input class="nav-search u-full-width" type="search" placeholder="Search"-->
-			<?php echo mh_simple_search('header-search',array('id'=>'header-search-form'),__('Search - Top'));?>
-			<a title="<?php echo __('Menu');?>" id="menu-button" href="#offscreen-menu" class="button icon"><i data-title="<?php echo __('Menu');?>" class="fa fa-bars fa-lg" aria-hidden="true"></i></a>	
+			<div class="flex search-plus">
+			<a title="<?php echo __('Menu');?>" id="menu" href="#footer-nav" class="button icon-only"><?php echo mh_icon('search');?> <?php echo mh_icon('menu');?></a>	
 			</div>
 		</div>
 	</nav>
@@ -369,15 +375,13 @@ function mh_appstore_downloads(){
 		$ios_app_id = get_theme_option('ios_app_id');
 		if($ios_app_id){
 			$href='https://itunes.apple.com/us/app/'.$ios_app_id;
-			$apps[]='<a class="appstore ios" href="'.$href.'" target="_blank" rel="noopener">'.
-			'<i class="fa fa-lg fa-apple" aria-hidden="true"></i> '.__('App Store').'</a>';
+			$apps[]='<a class="button icon appstore ios" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('appstore').__('App Store').'</a>';
 		}
 
 		$android_app_id = get_theme_option('android_app_id');
 		if($android_app_id){
 			$href='http://play.google.com/store/apps/details?id='.$android_app_id;
-			$apps[]='<a class="appstore android" href="'.$href.'" target="_blank" rel="noopener">'.
-			'<i class="fa fa-lg fa-android" aria-hidden="true"></i> '.__('Google Play').'</a>';
+			$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
 			}		
 		
 		
@@ -1311,8 +1315,8 @@ function mh_display_homepage_tours($scope='random', $num=5){
 			$html .= '</div>';
 			$html .= '</article>';
 		}
-		if(count($public)>1){
-			$html .= '<a class="button button-primary view-more-link" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%1$s %2$s</span>', count($public), tourLabelString('plural')).'</a>';
+		if(count($public)>=1){
+			$html .= '<a class="button button-primary view-more-link" href="'.WEB_ROOT.'/tours/browse/">'.__('Browse all <span>%s</span>', tourLabelString('plural')).'</a>';
 		}	
 	}else{
 		$html .= '<p>'.__('No tours are available. Publish some now.').'</p>';
@@ -1447,23 +1451,23 @@ function mh_home_popular_tags($num=40){
 /*
 ** Build an array of social media links (including icons) from theme settings
 */
-function mh_social_array($max=5){
+function mh_social_array(){
 	$services=array();
-	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a target="_blank" rel="noopener" title="Email" href="mailto:'.$email.'" class="button social icon email"><i class="fa fa-lg fa-envelope" aria-hidden="true"><span> Email</span></i></a>') : null;		
-	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Facebook" href="'.$facebook.'" class="button social icon facebook"><i class="fa fa-lg fa-facebook" aria-hidden="true"><span> Facebook</span></i></a>') : null;	
-	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/'.$twitter.'" class="button social icon twitter"><i class="fa fa-lg fa-twitter" aria-hidden="true"><span> Twitter</span></i></a>') : null;	
-	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Youtube" href="'.$youtube.'" class="button social icon youtube"><i class="fa fa-lg fa-youtube-play" aria-hidden="true"><span> Youtube</span></i></a>') : null;
-	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/'.$instagram.'" class="button social icon instagram"><i class="fa fa-lg fa-instagram" aria-hidden="true"><span> Instagram</span></i></a>') : null;			
-	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="https://www.pinterest.com/'.$pinterest.'" class="button social icon pinterest"><i class="fa fa-lg fa-pinterest" aria-hidden="true"><span> Pinterest</span></i></a>') : null;
-	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button social icon tumblr"><i class="fa fa-lg fa-tumblr" aria-hidden="true"><span> Tumblr</span></i></a>') : null;
-	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button social icon reddit"><i class="fa fa-lg fa-reddit" aria-hidden="true"><span> Reddit</span></i></a>') : null;	
+	($email=get_theme_option('contact_email') ? get_theme_option('contact_email') : get_option('administrator_email')) ? array_push($services,'<a target="_blank" rel="noopener" title="Email" href="mailto:'.$email.'" class="button icon-only email">'.mh_icon('mail').'</a>') : null;
+	($instagram=get_theme_option('instagram_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Instagram" href="https://www.instagram.com/'.$instagram.'" class="button icon-only instagram">'.mh_icon('instagram').'</a>') : null;
+	($facebook=get_theme_option('facebook_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Facebook" href="'.$facebook.'" class="button icon-only facebook">'.mh_icon('facebook').'</a>') : null;	
+	($threads=get_theme_option('threads_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Threads" href="'.$threads.'" class="button icon-only threads">'.mh_icon('threads').'</a>') : null;
+	($youtube=get_theme_option('youtube_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Youtube" href="'.$youtube.'" class="button icon-only youtube">'.mh_icon('youtube').'</a>') : null;
+	($mastodon=get_theme_option('mastodon_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Mastodon" href="'.$mastodon.'" class="button icon-only mastodon">'.mh_icon('mastodon').'</a>') : null;
+	($bluesky=get_theme_option('bluesky_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Bluesky" href="'.$bluesky.'" class="button icon-only bluesky">'.mh_icon('bluesky').'</a>') : null;	
+	($twitter=get_theme_option('twitter_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="X" href="https://x.com/'.$twitter.'" class="button icon-only twitter">'.mh_icon('x').'</a>') : null;	
+	($pinterest=get_theme_option('pinterest_username')) ? array_push($services,'<a target="_blank" rel="noopener" title="Pinterest" href="https://www.pinterest.com/'.$pinterest.'" class="button icon-only pinterest">'.mh_icon('pinterest').'</a>') : null;
+	($tumblr=get_theme_option('tumblr_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Tumblr" href="'.$tumblr.'" class="button icon-only tumblr">'.mh_icon('tumblr').'</a>') : null;
+	($reddit=get_theme_option('reddit_link')) ? array_push($services,'<a target="_blank" rel="noopener" title="Reddit" href="'.$reddit.'" class="button icon-only reddit">'.mh_icon('reddit').'</a>') : null;
+
+	
 
 	if( ($total=count($services)) > 0 ){
-		if($total>$max){
-			for($i=$total; $i>($max-1); $i-- ){
-				unset($services[$i]);
-			}
-		}
 		return $services;
 	}else{
 		return false;
@@ -1475,22 +1479,10 @@ function mh_social_array($max=5){
 ** $class 'colored' uses a service-specific color as background
 ** $class 'no-label' visually hides the label and just uses the icon
 */
-function mh_footer_find_us($class=null, $max=9){
-	$class.= get_theme_option('social_label') ? ' label' : ' no-label';
-	$class.= get_theme_option('social_color') ? ' colored' : ' no-color';
-	if( $services=mh_social_array($max) ){
-		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
-	}
-}
-
-/*
-** Build a series of social media link for the homepage
-** $class 'colored' uses a service-specific color as background
-** $class 'no-label' visually hides the label and just uses the icon
-*/
-function mh_homepage_find_us($class="", $max=3){
-	if( $services=mh_social_array($max) ){
-		return '<div class="link-icons '.$class.'">'.implode(' ',$services).'</div>';
+function mh_footer_find_us($class=null){
+	$class.= get_theme_option('social_color') ? ' colored' : '';
+	if( $services=mh_social_array() ){
+		return '<div class="link-icons'.$class.'">'.implode(' ',$services).'</div>';
 	}
 }
 
@@ -1599,7 +1591,7 @@ function mh_random_or_recent($mode='recent',$num=6,$html=null){
 	
 	case 'random':
 		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'random', 'sort_dir' => 'd','public'=>true), $num);;
-		$heading=__("Discover %s",$label);
+		$heading=__("Random %s",$label);
 		break;
 	case 'recent':
 		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'added', 'sort_dir' => 'd','public'=>true), $num);

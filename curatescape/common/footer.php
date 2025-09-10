@@ -5,7 +5,7 @@
 		<nav id="footer-nav" aria-label="<?php echo __('Footer Navigation');?>">
 			<?php echo mh_global_nav(); ?> 
 			<?php echo mh_simple_search('footer-search',array('id'=>'footer-search-form'),__('Search - Footer'));?>
-			<?php echo random_item_link("<i class='fa fa-random fa-lg' aria-hidden='true'></i> View A Random ".storyLabelString(),'random-button button');?>
+			<?php echo random_item_link();?>
 			<?php echo mh_appstore_downloads();?>
 		</nav>
 

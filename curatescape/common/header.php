@@ -17,8 +17,9 @@ $title = (isset($title)) ? $title : null;
 $item = (isset($item)) ? $item : null;
 $tour = (isset($tour)) ? $tour : null;
 $file = (isset($file)) ? $file : null;
+$stealthMode=(get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true);
 ?>
-    
+
 <title><?php echo mh_seo_pagetitle($title,$item); ?></title>
 <meta name="description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>" />
 
@@ -109,4 +110,4 @@ $bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescap
 	
 	
 	<div id="wrap" class="container">
-		<?php fire_plugin_hook('public_content_top', array('view'=>$this)); ?>
+		<?php if(!$stealthMode) fire_plugin_hook('public_content_top', array('view'=>$this)); ?>

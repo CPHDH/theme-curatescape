@@ -19,5 +19,8 @@ body#home.stealth h1{
 	text-align: center;
 }
 body#home.stealth footer.main{
-	margin-top: 1em;
+	margin-top: 0;
+}
+body#home.stealth #wrap{
+	padding: 1lh;
 }
