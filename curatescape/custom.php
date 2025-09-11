@@ -1,28 +1,16 @@
 <?php
 /*
-** Set Default Search Record Types
+** Set Fallback Thumbnails
 */
-add_filter('search_form_default_record_types', 'mh_search_form_default_record_types');
-function mh_search_form_default_record_types()
-{
-	$recordTypes=array();
-	$recordTypes[]='Item';
-	if(plugin_is_active('Curatescape') && get_theme_option('default_tour_search')) $recordTypes[]='Tour';
-	if(plugin_is_active('SimplePages') && get_theme_option('default_page_search')) $recordTypes[]='SimplePagesPage';
-	if(get_theme_option('default_file_search')) $recordTypes[]='File';
-	return $recordTypes;
-}
+add_file_fallback_image('audio','audio.png');
+add_file_fallback_image('video','video.png');
+
 /*
 ** Icons
 */
 function mh_icon($icon){
 	return '<svg aria-hidden="true" class="icon-sprite '.$icon.'" viewBox="0 0 512 512"><use xlink:href="'.img('sprites.svg').'#'.$icon.'" /></svg>';
 }
-/*
-** Set Fallback Thumbnails
-*/
-add_file_fallback_image('audio','audio.png');
-add_file_fallback_image('video','video.png');
 
 /*
 ** SEO Page Description
@@ -98,8 +86,8 @@ function mh_theme_css($media='all'){
 /*
 ** Global navigation
 */
-function mh_global_nav($nested=false){
-	return public_nav_main()->setMaxDepth(0);
+function mh_global_nav(){
+	return '<div class="global-nav"><h4>'.__('Navigation').'</h4>'.public_nav_main()->setMaxDepth(1).'</div>';
 }
 
 /*
@@ -150,13 +138,12 @@ function mh_the_logo(){
 ** Link to Random Item
 */
 function random_item_link($text=null,$hasImage=true){
-
 	if(!$text){
-		$text= mh_icon('shuffle').__('View a Random %s', storyLabelString());
+		$label = plugin_is_active('Curatescape') ? storyLabelString() : __('Item');
+		$text= mh_icon('shuffle').__('View a Random %s', $label);
 	}
 	$randitems = get_records('Item', array( 
 		'sort_field' => 'random', 'hasImage' => $hasImage), 1);
-
 	if( count( $randitems ) > 0 ){
 		return link_to( 
 			$randitems[0], 
@@ -168,26 +155,112 @@ function random_item_link($text=null,$hasImage=true){
 	return null;
 }
 
+// Parse HTML Link
+function parseLink($html) {
+	$dom = new DOMDocument();
+	// Suppress warnings
+	libxml_use_internal_errors(true);
+	// Load the HTML
+	$dom->loadHTML($html);
+	// Clear libxml errors
+	libxml_clear_errors();
+	$links = $dom->getElementsByTagName('a');
+	$results = [];
+	foreach ($links as $link) {
+		return array(
+			'href' => $link->getAttribute('href'),
+			'target' => $link->getAttribute('target'),
+			'text' => trim($link->textContent)
+		);
+	}
+	return null;
+}
+
+// Priority Nav Links
+function mh_priority_nav_links($links=array()){
+	$configs = array(
+		get_theme_option('quicklink_1'),
+		get_theme_option('quicklink_2'),
+		get_theme_option('quicklink_3')
+	);
+	$items = $collections = $tours = $exhibits = $map = $about = $custom = 0;
+	foreach($configs as $config){
+		switch ($config) {
+			case 'items':
+				if(!$items){
+					$label = plugin_is_active('Curatescape') ? storyLabelString('plural') : __('Items'); 
+					$links[] = '<a href="'.url('/items/browse/').'" class="button button-primary">'.$label.'</a>';
+					$items++;
+				}
+				break;
+			case 'collections':
+				if(!$collections){
+					$label = __('Collections');
+					$links[] = '<a href="'.url('/collections/browse/').'" class="button button-primary">'.$label.'</a>';
+					$collections++;
+				}
+				break;
+			case 'tours':
+				if(!$tours && plugin_is_active('Curatescape')){
+					$label = tourLabelString('plural');
+					$links[] = '<a href="'.url('/tours/browse/').'" class="button button-primary">'.$label.'</a>';
+					$tours++;
+				}
+				break;
+			case 'exhibits':
+				if(!$exhibits && plugin_is_active('ExhibitBuilder')){
+					$label = __('Exhibits');
+					$links[] = '<a href="'.url('/exhibits/browse/').'" class="button button-primary">'.$label.'</a>';
+					$exhibits++;
+				}
+				break;
+			case 'map':
+				if(!$map && plugin_is_active('Geolocation')){
+					$label = __('Map');
+					$links[] = '<a href="'.url('/geolocation/map/browse/').'" class="button button-primary">'.$label.'</a>';
+					$map++;
+				}
+				break;
+			case 'about':
+				if(!$about && plugin_is_active('SimplePages')){
+					$label = __('About');
+					$links[] = '<a href="'.url('/about/').'" class="button button-primary">'.$label.'</a>';
+					$about++;
+				}
+				break;
+			case 'custom':
+				if(!$custom){
+					if($link = get_theme_option('quicklink_custom')){
+						if($details = parseLink($link)){
+							if( isset($details['href']) && isset($details['text']) ){
+								$target = isset($details['target']) ? 'target="'.$details['target'].'" ' : null;
+								$links[] = '<a '.$target.'href="'.$details['href'].'" class="button button-primary">'.$details['text'].'</a>';
+								$custom++;
+							}
+						}
+					}
+				}
+				break;
+		}
+	}
+	return $links;
+}
 /*
 ** Global header
 */
 function mh_global_header($html=null){
+	mh_priority_nav_links();
 ?>  
 <div id="navigation">
 	<nav aria-label="<?php echo __('Main Navigation');?>">
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<div class="spacer"></div>
-		<div class="flex flex-end flex-nav-container <?php echo get_theme_option('stacked_nav')==1 ? 'stacked' : null;?> ">
-			<?php if(!get_theme_option('hide_primary_nav')):?>
+		<div class="flex flex-end flex-nav-container">
 			<div class="flex priority">
-				<?php if(plugin_is_active('Curatescape')): ?>
-					<a href="<?php echo url('/items/browse/');?>" class="button button-primary"><?php echo storyLabelString('plural');?></a>
-					<a href="<?php echo url('/tours/browse/');?>" class="button button-primary"><?php echo tourLabelString('plural');?></a>
-				<?php endif;?>
+				<?php echo implode('', mh_priority_nav_links());?>
 			</div>
-			<?php endif;?>
-			<div class="flex search-plus">
-			<a title="<?php echo __('Menu');?>" id="menu" href="#footer-nav" class="button icon-only"><?php echo mh_icon('search');?> <?php echo mh_icon('menu');?></a>	
+			<div class="">
+			<a title="<?php echo __('Menu');?>" id="menu" href="#navigation-target" class="button icon-only"><?php echo mh_icon('search');?> <?php echo mh_icon('menu');?></a>	
 			</div>
 		</div>
 	</nav>
@@ -333,13 +406,14 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 	$qname = ($sitewide==1) ? 'query' : 'search';
 	$searchUri = ($sitewide==1) ? url('search') : url('items/browse?sort_field=relevance');
 	$placeholder =  __('Search');	
-	$default_record_types = mh_search_form_default_record_types();
-
+	$default_record_types = unserialize(get_option('search_record_types'));
 
 	$searchQuery = array_key_exists($qname, $_GET) ? $_GET[$qname] : '';
 	$formProperties['action'] = $searchUri;
 	$formProperties['method'] = 'get';
-	$html = '<form ' . tag_attributes($formProperties) . '>' . "\n";
+	
+	$html = '<h4>'.__('Search').'</h4>';
+	$html .= '<form ' . tag_attributes($formProperties) . '>' . "\n";
 	$html .= '<fieldset>' . "\n\n";
 	$html .= get_view()->formText('search', $searchQuery, array('aria-label'=>$ariaLabel,'name'=>$qname,'id'=>$inputID,'class'=>'textinput search','placeholder'=>$placeholder));
 	$html .= '</fieldset>' . "\n\n";
@@ -357,7 +431,7 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 			$html .= get_view()->formHidden('record_types[]', $drt,array('id'=>$inputID.'-'.$drt));
 		}
 	}
-	$html .= '<input type="submit" class="submit visuallyhidden" name="submit_'.$inputID.'" id="submit_search_advanced_'.$inputID.'" value="'.__('Submit').'">';
+	$html .= '<input type="submit" class="submit" name="submit_'.$inputID.'" id="submit_search_advanced_'.$inputID.'" value="'.__('Submit').'">';
 	
 	$html .= '</form>';
 	return $html;	
@@ -386,7 +460,7 @@ function mh_appstore_downloads(){
 		
 		
 		if(count($apps) > 1){
-			return '<div class="downloads flex">'.implode(' ', $apps).'</div>';	
+			return '<h4>'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';	
 		}
 	}
 }
@@ -1430,7 +1504,7 @@ function mh_footer_cta($html=null){
 	$footer_cta_button_url=get_theme_option('footer_cta_button_url');
 	$footer_cta_button_target=get_theme_option('footer_cta_button_target') ? 'target="_blank" rel="noreferrer noopener"' : null;
 	if($footer_cta_button_label && $footer_cta_button_url){
-		$html.= '<div class="footer_cta"><a class="button button-primary" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></div>';
+		$html.= '<div class="footer_cta"><a class="button" href="'.$footer_cta_button_url.'" '.$footer_cta_button_target.'>'.$footer_cta_button_label.'</a></div>';
 	}
 	return $html;
 }
@@ -1482,7 +1556,7 @@ function mh_social_array(){
 function mh_footer_find_us($class=null){
 	$class.= get_theme_option('social_color') ? ' colored' : '';
 	if( $services=mh_social_array() ){
-		return '<div class="link-icons'.$class.'">'.implode(' ',$services).'</div>';
+		return '<h4>'.__('Get in Touch').'</h4><div class="link-icons'.$class.'">'.implode(' ',$services).'</div>';
 	}
 }
 
@@ -1665,23 +1739,9 @@ function mh_bg_url()
 }
 
 /*
-** Custom link color - Primary
+** Custom link color validator (HEX ONLY)
 */
-function mh_link_color()
-{
-	$color = get_theme_option('link_color');
-	if ( ($color) && (preg_match('/^#[a-f0-9]{6}$/i', $color)) ){
-		return $color;
-	}
-	return null;
-}
-
-/*
-** Custom link color - Secondary
-*/
-function mh_secondary_link_color()
-{
-	$color = get_theme_option('secondary_link_color');
+function mh_hex_color($color){
 	if ( ($color) && (preg_match('/^#[a-f0-9]{6}$/i', $color)) ){
 		return $color;
 	}
@@ -1691,15 +1751,18 @@ function mh_secondary_link_color()
 ** Custom CSS
 */
 function mh_configured_css($configured_css=null, $user_css=null){
-	$color_primary=mh_link_color();
-	$color_secondary=mh_secondary_link_color();
-	if($color_primary && $color_secondary){
-		$configured_css .= '
-			:root{
-				--color-primary:'.$color_primary.';
-				--color-secondary:'.$color_secondary.';
-			}';
-	}
+	$color_primary=mh_hex_color(get_theme_option('link_color'));
+	$color_secondary=mh_hex_color(get_theme_option('secondary_link_color'));
+	$color_tertiary=mh_hex_color(get_theme_option('tertiary_link_color'));
+	$color_block=mh_hex_color(get_theme_option('block_color'));
+
+	$configured_css .= ':root{';
+	$configured_css .=	$color_primary ? '--color-primary:'.$color_primary.';' : '';
+	$configured_css .=	$color_secondary ? '--color-secondary:'.$color_secondary.';' : '';
+	$configured_css .=	$color_tertiary ? '--color-tertiary:'.$color_tertiary.';' : '';
+	$configured_css .=	$color_block ? '--color-large-block:'.$color_block.';' : '';
+	$configured_css .= '}';
+
 	if(get_theme_option('bg_img') && mh_bg_url()){
 		$configured_css .='body{
 			background-image: url('.mh_bg_url().');

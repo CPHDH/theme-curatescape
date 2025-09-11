@@ -1,21 +1,27 @@
 
 	</div><!--end wrap-->
 
-	<footer class="main container">
-		<nav id="footer-nav" aria-label="<?php echo __('Footer Navigation');?>">
-			<?php echo mh_global_nav(); ?> 
+	<footer class="main container" id="navigation-target">
+		<nav class="navigation-container" aria-label="<?php echo __('Footer Navigation');?>">
 			<?php echo mh_simple_search('footer-search',array('id'=>'footer-search-form'),__('Search - Footer'));?>
-			<?php echo random_item_link();?>
-			<?php echo mh_appstore_downloads();?>
+			<div>
+				<div class="navigation-inner">
+					<?php echo mh_global_nav(); ?> 
+					<div class="big-buttons">
+						<h4><?php echo __('Discover');?></h4>
+						<?php echo random_item_link();?>
+						<?php echo mh_appstore_downloads();?>
+						<?php echo mh_footer_find_us();?>
+					</div>
+				</div>
+				
+			</div>
 		</nav>
 
 		<div class="default">
-			<?php echo mh_footer_find_us();?>
 			<div id="copyright"><?php echo mh_license();?></div>
 			<div id="powered-by"><?php echo __('Powered by <a href="http://omeka.org/">Omeka</a> + <a href="http://curatescape.org">Curatescape</a>');?></div>
 		</div>
-
-		<?php echo mh_footer_cta();?>
 
 		<div class="custom"><?php echo get_theme_option('custom_footer_html');?></div>
 	
