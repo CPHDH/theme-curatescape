@@ -8,17 +8,15 @@ echo head(array('maptype'=>'focusarea','bodyid'=>'home','bodyclass'=>$classname)
 if ($stealthMode){
 	include_once('stealth-index.php');
 }
-else{
-//if not stealth mode, do everything else
-?>
+else{ ?>
 	<div id="content" role="main">
 		<article id="homepage" class="page show">
 			<?php echo homepage_widget_sections();?>
 			<?php fire_plugin_hook('public_home', array('view' => $this)); ?>
 		</article>
 	</div> <!-- end content -->
-<?php
-//end stealth mode else statement
+	<?php
+	echo foot();
+	//end stealth mode
 }?>
 
-<?php echo foot(); ?>

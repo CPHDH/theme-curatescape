@@ -17,7 +17,6 @@ $title = (isset($title)) ? $title : null;
 $item = (isset($item)) ? $item : null;
 $tour = (isset($tour)) ? $tour : null;
 $file = (isset($file)) ? $file : null;
-$stealthMode=(get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true);
 ?>
 
 <title><?php echo mh_seo_pagetitle($title,$item); ?></title>
@@ -92,9 +91,15 @@ echo head_js(true);
 $bodyid = isset($bodyid) ? $bodyid : 'default';
 $bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescape';
 ?>
+</head
+>
+<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>">
+<div id="overlay"></div>
+<?php 
+$stealthMode=(get_theme_option('stealth_mode')==1)&&(is_allowed('Items', 'edit')!==true);
+if($stealthMode) return;
+?>
 
-</head>
-<body id="<?php echo $bodyid;?>" class="<?php echo $bodyclass;?>"> 
 <nav aria-label="<?php echo __('Skip Navigation');?>"><a id="skip-nav" href="#content"><?php echo __('Skip to main content');?></a></nav>
 <noscript>
 	<div id="no-js-message">
@@ -110,4 +115,4 @@ $bodyclass = isset($bodyclass) ? $bodyclass.' curatescape' : 'default curatescap
 	
 	
 	<div id="wrap" class="container">
-		<?php if(!$stealthMode) fire_plugin_hook('public_content_top', array('view'=>$this)); ?>
+		<?php fire_plugin_hook('public_content_top', array('view'=>$this)); ?>

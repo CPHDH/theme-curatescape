@@ -1,60 +1,58 @@
-var theme_name = "curatescape";
-jQuery(document).ready(function ($) {
-
-  // SMART PUNCTUATION
-  function curlies(element) {
-    function smarten(text) {
-      return (
-        text
-          /* opening singles */
-          .replace(/(^|[-\u2014\s(\["])'/g, "$1\u2018")
-  
-          /* closing singles & apostrophes */
-          .replace(/'/g, "\u2019")
-  
-          /* opening doubles */
-          .replace(/(^|[-\u2014/\[(\u2018\s])"/g, "$1\u201c")
-  
-          /* closing doubles */
-          .replace(/"/g, "\u201d")
-      );
+const toggleBoolean = (el, attr) => {
+  el.getAttribute(attr) == "false" ? el.setAttribute(attr, "true") : el.setAttribute(attr, "false");
+}
+const toggleMenu = (body, menubutton)=>{
+  toggleBoolean(menubutton, 'aria-expanded');
+  body.classList.toggle('expanded');
+}
+const doMenu = ()=>{
+  // CLONE FOOTER MENU TO HEADER
+  let body = document.querySelector('body');
+  let overlay = document.querySelector('#overlay');
+  if(!overlay) return;
+  let headercontainer = document.querySelector('#header-nav-main');
+  if(!headercontainer) return;
+  let menubutton = document.querySelector('#menu.button');
+  if(!menubutton) return;
+  let menutarget = menubutton.attributes.href.nodeValue;
+  if(!menutarget) return;
+  let menucontent = document.querySelector(menutarget + ' nav');
+  let clone = menucontent.parentElement.cloneNode(true); // clone @container
+  if(!clone) return;
+  let elements = clone.querySelectorAll('[id*=footer],[name*=footer],[aria-label*=footer]');
+  if(!elements) return;
+  elements.forEach(el => {
+    const regex = new RegExp('footer', "gi");
+    el.id = el.id.replace(regex,'header');
+    if(el.hasAttribute('aria-label')){
+      el.setAttribute('aria-label', el.getAttribute('aria-label').replace(regex,'Header'));
     }
-    var children = element.children;
-    if (children.length) {
-      for (var i = 0, l = children.length; i < l; i++) {
-        curlies(children[i]);
-      }
+    if(el.hasAttribute('name')){
+      el.setAttribute('name', el.getAttribute('name').replace(regex,'header'));
+    }
+  });
+  headercontainer.appendChild(clone);
+  // OVERLAY CLICK
+  overlay.addEventListener('click', (e)=>{
+    toggleMenu(body,menubutton);
+  });
+  // MENU CLICK
+  menubutton.addEventListener('click', (e)=>{
+    e.preventDefault();
+    toggleMenu(body,menubutton);
+  });
+  // ESC KEY
+  document.onkeydown = (e) => {
+    e = e || window.event;
+    var isEscape = false;
+    if ("key" in e) {
+      isEscape = e.key === "Escape" || e.key === "Esc";
     } else {
-      element.innerHTML = smarten(element.innerHTML);
+      isEscape = e.keyCode === 27;
     }
-  }
-  curlies(document.body);
-  
-  // ============================
-  // TOUR IMAGES
-  if ($(".fetch-tour-image").length) {
-    var tours_json =
-      window.location.protocol +
-      "//" +
-      window.location.hostname +
-      "/tours/browse?output=mobile-json";
-    $.getJSON(tours_json, function (data) {
-      data.tours.forEach(function (tour) {
-        if (tour.tour_img && tour.id) {
-          $(
-            ".fetch-tour-image[data-tour-id=" +
-              tour.id +
-              "] .tour-image-container"
-          ).css(
-            "background-image",
-            "url(" +
-              tour.tour_img.replace("fullsize", "square_thumbnails") +
-              ")"
-          );
-        }
-      });
-    });
-  }
-
-
+    if(isEscape && body.classList.contains('expanded')) toggleMenu(body,menubutton);
+  };
+}
+document.addEventListener('readystatechange',()=>{
+  doMenu();
 });

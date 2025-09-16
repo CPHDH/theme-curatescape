@@ -1,22 +1,26 @@
 
 	</div><!--end wrap-->
 
-	<footer class="main container" id="navigation-target">
-		<nav class="navigation-container" aria-label="<?php echo __('Footer Navigation');?>">
-			<?php echo mh_simple_search('footer-search',array('id'=>'footer-search-form'),__('Search - Footer'));?>
-			<div>
-				<div class="navigation-inner">
-					<?php echo mh_global_nav(); ?> 
-					<div class="big-buttons">
-						<h4><?php echo __('Discover');?></h4>
-						<?php echo random_item_link();?>
-						<?php echo mh_appstore_downloads();?>
-						<?php echo mh_footer_find_us();?>
+	<footer class="main <?php echo get_theme_option('footer_style');?>" id="navigation-target">
+		<div class="navigation-container">
+			<nav class="navigation-content" id="footer-nav-control" aria-label="<?php echo __('Footer Navigation');?>">
+				<?php echo mh_simple_search('footer-search',array('id'=>'footer-search-form'),__('Search - Footer'));?>
+				<div>
+					<div class="navigation-inner">
+						<?php echo mh_global_nav(); ?> 
+						<aside>
+							<div class="extras">
+								<?php echo random_item_link();?>
+								<?php echo mh_footer_find_us();?>
+							</div>
+							<div>
+								<?php echo mh_appstore_downloads();?>
+							</div>
+						</aside>
 					</div>
 				</div>
-				
-			</div>
-		</nav>
+			</nav>
+		</div>
 
 		<div class="default">
 			<div id="copyright"><?php echo mh_license();?></div>

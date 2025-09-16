@@ -137,7 +137,7 @@ function mh_the_logo(){
 /*
 ** Link to Random Item
 */
-function random_item_link($text=null,$hasImage=true){
+function random_item_link($text=null,$hasImage=true, $html = null){
 	if(!$text){
 		$label = plugin_is_active('Curatescape') ? storyLabelString() : __('Item');
 		$text= mh_icon('shuffle').__('View a Random %s', $label);
@@ -145,14 +145,16 @@ function random_item_link($text=null,$hasImage=true){
 	$randitems = get_records('Item', array( 
 		'sort_field' => 'random', 'hasImage' => $hasImage), 1);
 	if( count( $randitems ) > 0 ){
-		return link_to( 
+		return '<h4>'.__('Discover').'</h4>'.link_to( 
 			$randitems[0], 
 			'show', 
 			$text, 
-			array( 'class' => 'button button-primary icon random-story-link' ) 
+			array( 
+				'class' => 'button button-primary icon random-story-link'
+			) 
 		);
 	}
-	return null;
+	return $html;
 }
 
 // Parse HTML Link
@@ -248,19 +250,22 @@ function mh_priority_nav_links($links=array()){
 /*
 ** Global header
 */
-function mh_global_header($html=null){
-	mh_priority_nav_links();
-?>  
+function mh_global_header($html=null){ 
+	$links = implode('', mh_priority_nav_links());
+?>
 <div id="navigation">
-	<nav aria-label="<?php echo __('Main Navigation');?>">
+	<nav class="static" aria-label="<?php echo __('Main Navigation');?>">
 		<?php echo link_to_home_page(mh_the_logo(),array('id'=>'home-logo'));?>
 		<div class="spacer"></div>
-		<div class="flex flex-end flex-nav-container">
-			<div class="flex priority">
-				<?php echo implode('', mh_priority_nav_links());?>
-			</div>
-			<div class="">
-			<a title="<?php echo __('Menu');?>" id="menu" href="#navigation-target" class="button icon-only"><?php echo mh_icon('search');?> <?php echo mh_icon('menu');?></a>	
+		<div id="header-nav-main" class="flex flex-end flex-nav-container">
+			<?php if($links): ?>
+				<div class="priority flex">
+					<?php echo $links;?>
+				</div>
+				<div class="vertical-line"></div>
+			<?php endif;?>
+			<div class="controls">
+				<a role="button" aria-expanded="false" aria-controls="header-nav-control" aria-label="Toggle Menu" title="<?php echo __('Menu');?>" id="menu" href="#navigation-target" class="button icon-only"><?php echo mh_icon('search');?> <?php echo mh_icon('menu');?></a>	
 			</div>
 		</div>
 	</nav>
@@ -440,28 +445,39 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 
 
 /*
-** App Store links on homepage
+** Get plugin-validated app store URLs 
 */
-// <a class='fa fa-android sidebar-app-link' href=''> <span class='sidebar-app-title'>Google Play</span></a>
-function mh_appstore_downloads(){
-	if (get_theme_option('enable_app_links')){
-		$apps=array();
-		$ios_app_id = get_theme_option('ios_app_id');
-		if($ios_app_id){
-			$href='https://itunes.apple.com/us/app/'.$ios_app_id;
-			$apps[]='<a class="button icon appstore ios" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('appstore').__('App Store').'</a>';
-		}
-
-		$android_app_id = get_theme_option('android_app_id');
-		if($android_app_id){
-			$href='http://play.google.com/store/apps/details?id='.$android_app_id;
-			$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
-			}		
-		
-		
-		if(count($apps) > 1){
-			return '<h4>'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';	
-		}
+function getAppStoreUrl($platform){
+	if(!plugin_is_active('Curatescape')) return null;
+	if(
+		$platform == 'ios' && 
+		$string = option('curatescape_app_ios')
+	) {
+		return appStoreValidURL($string);
+	}
+	if(
+		$platform == 'android' && 
+		$string = option('curatescape_app_android')
+	) {
+		return playStoreValidURL($string);
+	}
+	return null;
+}
+/*
+** App Store button links
+*/
+function mh_appstore_downloads($apps=array()){
+	if(!get_theme_option('enable_app_links')){
+		return null;
+	}
+	if($href=getAppStoreUrl('ios')){
+		$apps[]='<a class="button icon appstore ios" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('appstore').__('App Store').'</a>';
+	}
+	if($href=getAppStoreUrl('android')){
+		$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
+	}
+	if(count($apps) > 1){
+		return '<h4>'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
 	}
 }
 
@@ -1449,7 +1465,7 @@ function mh_home_about($length=800,$html=null){
 		$html .= '<article>';
 			
 			$html .= '<header>';
-				$html .= '<h2>'.option('site_title').'</h2>';
+				$html .= '<h3>'.option('site_title').'</h3>';
 				$html .= '<span class="sponsor">'.__('A project by').' <span class="sponsor-name">'.mh_owner_link().'</span></span>';
 			$html .= '</header>';
 		
@@ -1550,13 +1566,10 @@ function mh_social_array(){
 
 /*
 ** Build a series of social media link for the footer
-** $class 'colored' uses a service-specific color as background
-** $class 'no-label' visually hides the label and just uses the icon
 */
 function mh_footer_find_us($class=null){
-	$class.= get_theme_option('social_color') ? ' colored' : '';
 	if( $services=mh_social_array() ){
-		return '<h4>'.__('Get in Touch').'</h4><div class="link-icons'.$class.'">'.implode(' ',$services).'</div>';
+		return '<h4>'.__('Get in Touch').'</h4><div class="link-icons colored">'.implode(' ',$services).'</div>';
 	}
 }
 
@@ -1739,22 +1752,54 @@ function mh_bg_url()
 }
 
 /*
-** Custom link color validator (HEX ONLY)
+** Custom color validator
 */
-function mh_hex_color($color){
-	if ( ($color) && (preg_match('/^#[a-f0-9]{6}$/i', $color)) ){
+function mh_color($color) {
+	$color = strtolower(trim($color));	
+	// HEX
+	if (preg_match('/^#[a-f0-9]{3}$|^#[a-f0-9]{6}$|^#[a-f0-9]{4}$|^#[a-f0-9]{8}$/i', $color)) {
 		return $color;
+	}
+	// RGB/RGBA
+	if (preg_match('/^rgba?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*(?:,\s*(\d+(?:\.\d+)?))?\s*\)$/', $color, $matches)) {
+		$r = floatval($matches[1]);
+		$g = floatval($matches[2]);
+		$b = floatval($matches[3]);
+		$a = isset($matches[4]) ? floatval($matches[4]) : 1;
+		if ($r >= 0 && $r <= 255 && $g >= 0 && $g <= 255 && $b >= 0 && $b <= 255 && $a >= 0 && $a <= 1) {
+			return $color;
+		}
+	}
+	// HSL/HSLA
+	if (preg_match('/^hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)%\s*,\s*(\d+(?:\.\d+)?)%\s*(?:,\s*(\d+(?:\.\d+)?))?\s*\)$/', $color, $matches)) {
+		$h = floatval($matches[1]);
+		$s = floatval($matches[2]);
+		$l = floatval($matches[3]);
+		$a = isset($matches[4]) ? floatval($matches[4]) : 1;
+		if ($h >= 0 && $h <= 360 && $s >= 0 && $s <= 100 && $l >= 0 && $l <= 100 && $a >= 0 && $a <= 1) {
+			return $color;
+		}
+	}
+	// LAB 
+	if (preg_match('/^lab\(\s*(\d+(?:\.\d+)?)%\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)\s*\)$/', $color, $matches)) {
+		$l = floatval($matches[1]);
+		$a = floatval($matches[2]);
+		$b = floatval($matches[3]);
+		if ($l >= 0 && $l <= 100 && $a >= -125 && $a <= 125 && $b >= -125 && $b <= 125) {
+			return $color;
+		}
 	}
 	return null;
 }
+
 /*
 ** Custom CSS
 */
 function mh_configured_css($configured_css=null, $user_css=null){
-	$color_primary=mh_hex_color(get_theme_option('link_color'));
-	$color_secondary=mh_hex_color(get_theme_option('secondary_link_color'));
-	$color_tertiary=mh_hex_color(get_theme_option('tertiary_link_color'));
-	$color_block=mh_hex_color(get_theme_option('block_color'));
+	$color_primary=mh_color(get_theme_option('link_color'));
+	$color_secondary=mh_color(get_theme_option('secondary_link_color'));
+	$color_tertiary=mh_color(get_theme_option('tertiary_link_color'));
+	$color_block=mh_color(get_theme_option('block_color'));
 
 	$configured_css .= ':root{';
 	$configured_css .=	$color_primary ? '--color-primary:'.$color_primary.';' : '';
