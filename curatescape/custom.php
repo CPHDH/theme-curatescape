@@ -1862,42 +1862,23 @@ function mh_web_font_loader(){ ?>
 ** Theme option: google_analytics
 ** Accepts G- and UA- measurement IDs
 */
-function mh_google_analytics()
-{
-   $id=get_theme_option('google_analytics');
-   if ($id):
-	  if (substr($id, 0, 2) == 'G-'): ?>
-		 <!-- GA -->
-		 <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $id; ?>"></script>
-		 <script>
-		 window.dataLayer = window.dataLayer || [];
-		 
-		 function gtag() {
-			dataLayer.push(arguments);
-		 }
-		 gtag('js', new Date());
-		 gtag('config', '<?php echo $id; ?>', {
-			cookie_flags: 'SameSite=None;Secure'
-		 });
-		 </script>
-	  
-	  <?php elseif (substr($id, 0, 3) == 'UA-'): ?>
-		 <!-- GA (Legacy) -->
-		 <script>
-		 var _gaq = _gaq || [];
-		 _gaq.push(['_setAccount', '<?php echo $id; ?>']);
-		 _gaq.push(['_trackPageview']);
-		 (function() {
-			var ga = document.createElement('script');
-			ga.type = 'text/javascript';
-			ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(ga, s);
-		 })();
-		 </script>
-	  <?php endif;
-   endif;
+function mh_google_analytics(){
+	$id = get_theme_option('google_analytics');
+	if ($id && substr($id, 0, 2) == 'G-'): ?>
+	<!-- GA -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $id; ?>"></script> 
+
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+	gtag('config', '<?php echo $id; ?>', {
+		cookie_flags: 'SameSite=None;Secure'
+	});
+	</script>
+	<?php endif;
 }
 
 /*

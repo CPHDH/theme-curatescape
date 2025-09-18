@@ -75,7 +75,7 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass));
 				}
 				?>
 				<article class="item-result <?php echo $hasImage ? 'has-image' : 'no-image';?>">
-					<?php echo link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img" aria-label="'.metadata($item, array('Dublin Core', 'Title')).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))); ?>
+					<?php echo link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img"  aria-label="'.htmlspecialchars(metadata($item, array('Dublin Core', 'Title'))).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))); ?>
 					<h3><?php echo mh_the_title_link($item); ?></h3>
 					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>
 					<div class="item-description">

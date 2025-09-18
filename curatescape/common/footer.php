@@ -30,7 +30,8 @@
 		<div class="custom"><?php echo get_theme_option('custom_footer_html');?></div>
 	
 		<?php echo fire_plugin_hook('public_footer', array('view'=>$this)); ?>
-		<?php echo mh_google_analytics();?>	
+		
+		<?php mh_google_analytics();?>	
 
 	</footer>
 </div> <!-- end page-content -->

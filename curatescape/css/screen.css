@@ -58,8 +58,9 @@ video {
   vertical-align: baseline;
 }
 
-audio:not([controls]) {
-  display: none;
+audio:not([controls]),
+script {
+  display: none !important;
   height: 0;
 }
 
