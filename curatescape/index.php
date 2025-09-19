@@ -10,7 +10,7 @@ if ($stealthMode){
 }
 else{ ?>
 	<div id="content" role="main">
-		<article id="homepage" class="page show">
+		<article id="homepage" class="homepage show">
 			<?php echo homepage_widget_sections();?>
 			<?php fire_plugin_hook('public_home', array('view' => $this)); ?>
 		</article>

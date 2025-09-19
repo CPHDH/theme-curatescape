@@ -3,29 +3,22 @@ $query = (isset($_GET['query']) ? htmlspecialchars($_GET['query']) : null);
 $title = $query ? __('Search Results for "%s"', $query) : __('Sitewide Search');
 $bodyclass ='browse queryresults';
 $maptype='none';
-
+$label = function_exists('storyLabelString') ? storyLabelString('plural') : __('Items');
 
 echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclass'=>$bodyclass)); 
 ?>
-
-
 <div id="content">
 	<article class="search browse">	
 		<h2 class="query-header"><?php 
 		$title .= ( $total_results  ? ': <span class="item-number">'.$total_results.'</span>' : '');
 		echo $title; 
 		?></h2>
-	
 		<div id="primary" class="browse">
 		<section id="results">
 			<h2 hidden class="hidden"><?php echo __('Search Results');?></h2>
-				
 			<nav class="secondary-nav" id="item-browse"> 
-				<?php echo mh_item_browse_subnav();?>
+				<?php echo public_nav_items(); ?>
 			</nav>
-		
-			<div class="pagination top"><?php echo pagination_links(); ?></div>
-			
 			<?php if ($total_results): ?>
 			<?php
 			$searchable_types=get_custom_search_record_types();
@@ -33,7 +26,6 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 			?>
 			<?php if($searchable_types):?> 
 				<?php
-				
 				echo '<div id="search-filters">';
 				echo '<a href="'.url('search').'" class="button sitewide-search-legend sitewide-search-edit"><span class="icon-pencil" aria-hidden="true"></span> '.__('Searching %1s of %2s Record Types',(count($active_types) ? count($active_types) : count($searchable_types)),count($searchable_types) ).'</a> ';
 				echo '<form id="sitewide-search-filters" class="hidden">';
@@ -43,7 +35,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 					$filters.= '<div><input type="checkbox" '.$checked.' id="'.$record_type.'" value="'.$record_type.'" name="record_types[]"/><label for="'.$record_type.'" class="record_types">'.$record_label.'</label></div>';
 				}
 				echo $filters.'</div>'; 
-	
+
 				echo '<input hidden name="query" value="'.$query.'"><input type="submit" value="Resubmit" id="submit_search">';
 				echo '</form>';
 				echo '</div>';
@@ -51,11 +43,11 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 			<script async defer>
 				jQuery('.sitewide-search-edit').click(function(e){
 					jQuery('#sitewide-search-filters').toggleClass('hidden');
-					e.preventDefault ? e.preventDefault() : e.returnValue = false;					
+					e.preventDefault ? e.preventDefault() : e.returnValue = false;
 				})
 			</script>	
 					
-			<?php endif;?>			
+			<?php endif;?>
 			<?php $tours=$stories=$files=$pages=$collections=array();?>
 			<?php foreach (loop('search_texts') as $st){
 				switch($st['record_type']){
@@ -73,7 +65,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 						break;
 					case 'Collection':
 						$collections[]=$st;
-						break;																				
+						break;
 				}
 			}
 			if($tours){
@@ -86,7 +78,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				echo '</div>';
 			}	
 			if($stories){
-				echo '<h3 class="result-type-header">'.mh_item_label('plural').'</h3>';
+				echo '<h3 class="result-type-header">'.$label.'</h3>';
 				echo '<div class="search-stories">';
 				foreach($stories as $s){
 					$record=get_record_by_id($s['record_type'], $s['record_id']);

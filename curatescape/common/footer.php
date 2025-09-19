@@ -9,11 +9,11 @@
 					<div class="navigation-inner">
 						<?php echo mh_global_nav(); ?> 
 						<aside>
-							<div class="extras">
-								<?php echo random_item_link();?>
+							<div id="social-column">
 								<?php echo mh_footer_find_us();?>
 							</div>
 							<div>
+								<?php echo random_item_link();?>
 								<?php echo mh_appstore_downloads();?>
 							</div>
 						</aside>

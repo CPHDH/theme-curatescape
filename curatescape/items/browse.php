@@ -6,14 +6,15 @@ $auth= ( (isset($_GET['advanced'][0]['element_id']) && $_GET['advanced'][0]['ele
 $collection = (isset($_GET['collection']) ? htmlspecialchars($_GET['collection']) : null);
 $query = (isset($_GET['search']) ? htmlspecialchars($_GET['search']) : null);
 $bodyclass='browse';
+$label = function_exists('storyLabelString') ? storyLabelString('plural') : __('Items');
 
 if ( ($tag || $tags) && !($query) ) {
 	$the_tag=($tag ? $tag : $tags);
-	$title = __('%1$s tagged "%2$s"', storyLabelString('plural'), $the_tag);
+	$title = __('%1$s tagged "%2$s"', $label, $the_tag);
 	$bodyclass .=' queryresults';
 }
 elseif ( !empty($auth) ) {
-	$title = __('%1$s by author "%2$s"', storyLabelString('plural'), $auth);
+	$title = __('%1$s by author "%2$s"', $label, $auth);
 	$bodyclass .=' queryresults';
 }elseif ( !empty($subj) ) {
 	$title = __('Results for subject term "%s"', $subj);
@@ -21,10 +22,10 @@ elseif ( !empty($auth) ) {
 }elseif ( !empty($collection) ) {
 	$c=get_record_by_id('collection',$collection);
 	$collection_title=metadata($c,array('Dublin Core','Title'));
-	$title = __('%1s in "%2s"', storyLabelString('plural'), $collection_title);
+	$title = __('%1s in "%2s"', $label, $collection_title);
 	$bodyclass .=' queryresults';
 }elseif ( isset($_GET['featured']) && $_GET['featured'] == 1){
-	$title = __('Featured %s', storyLabelString('plural'));
+	$title = __('Featured %s', $label);
 	$bodyclass .=' queryresults';
 }
 elseif ($query) {
@@ -32,7 +33,7 @@ elseif ($query) {
 	$bodyclass .=' queryresults';
 }
 else{
-	$title = __('All %s', storyLabelString('plural'));
+	$title = __('All %s', $label);
 	$bodyclass .=' items stories';
 }
 echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass)); 
@@ -47,7 +48,7 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass));
 	?></h2>
 	<div id="primary" class="browse">
 		<section id="results">
-			<h2 hidden class="hidden"><?php echo storyLabelString('plural');?></h2>
+			<h2 hidden class="hidden"><?php echo $label;?></h2>
 			<nav class="secondary-nav" id="item-browse"> 
 				<?php echo public_nav_items(); ?>
 			</nav>

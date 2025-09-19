@@ -8,8 +8,8 @@ echo head(array('title'=>'Browse by Tag','bodyid'=>'items','bodyclass'=>'browse 
 	<div id="primary" class="browse">
 	<section id="tags">
 		<h2 hidden class="hidden"><?php echo __('Tags');?></h2>
-		<nav class="secondary-nav" id="tag-browse"> 
-			<?php mh_item_browse_subnav(); ?>
+		<nav class="secondary-nav" id="item-browse"> 
+			<?php echo public_nav_items(); ?>
 		</nav>
 		<?php echo tag_cloud($tags,url('items/browse')); ?>
 	</section>

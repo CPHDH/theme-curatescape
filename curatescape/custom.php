@@ -477,7 +477,7 @@ function mh_appstore_downloads($apps=array()){
 		$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
 	}
 	if(count($apps) > 1){
-		return '<h4>'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
+		return '<h4 id="dl">'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
 	}
 }
 
@@ -1664,7 +1664,6 @@ function homepage_widget_sections($html = null){
 			}
 
 		}
-
 		return $html;
 }
 

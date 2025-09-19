@@ -22,6 +22,8 @@ Skeleton V2.0.4 | Copyright 2014, Dave Gamache | MIT License | www.getskeleton.c
   --reddit: #ff4501;
   --tumblr: #36465d;
   --youtube: #de2826;
+  /* plugin */
+  --curatescape-color-iw-link: var(--color-tertiary);
 }
 
 html {
@@ -1256,9 +1258,8 @@ figure#item-photos .flex-image .file {
 .vertical-line {
   width: 1px;
   height: 2.5em;
-  background: var(--color-light-grey);
   margin: 0 4px;
-  opacity: .15;
+  background: rgba(256,256,256,.15);
 }
 
 header nav.navigation-content{
@@ -1300,6 +1301,9 @@ header nav.navigation-content{
   .expanded header .navigation-content {
     top: calc(100% - 0.5em);
   }
+  .expanded header .navigation-content #social-column{
+    display: none;
+  }
 }
 #overlay{
   background: transparent;
@@ -1317,9 +1321,6 @@ header nav.navigation-content{
   right: 0;
 }
 
-header nav.navigation-content .extras{
-  display: none;
-}
 header nav.navigation-content a:not(.button){
   color: var(--color-tertiary);
 }
@@ -1534,6 +1535,18 @@ article.browse {
   article.browse {
     padding: 2em 1em;
   }
+}
+
+article.page{
+  padding: 1em;
+  min-height: 33vh;
+}
+
+#map-links{
+  display: none;
+}
+#map_browse{
+  width: 100%;
 }
 
 .item-description {
@@ -2179,7 +2192,7 @@ footer.main .custom {
   margin-top: 1em;
 }
 
-/* Footer / Floating Nav Menu */
+/* Footer / Nav Menu */
 .navigation-container{
   container-type: inline-size;
   container-name: navigationcontainer;
@@ -2193,6 +2206,9 @@ footer.main .custom {
 .navigation-content h4{
   color: inherit;
 }
+.navigation-inner h4#dl{
+  margin-top:.75em;
+}
 /* search */
 .navigation-content form{
   background: rgba(256,256,256,.5);
@@ -2203,6 +2219,7 @@ footer.main .custom {
   padding: 4px;
   color: var(--color-text);
   transition: all 0.15s linear;
+  margin-bottom: 0;
 }
 .navigation-content form:focus-within{
   background: rgba(256,256,256,1);
@@ -2222,6 +2239,7 @@ footer.main .custom {
   outline: none;
   border: none !important;
   padding: 0 0.5em;
+  margin-bottom: 0;
 }
 .navigation-content form input[type="submit"]{
   background: var(--color-secondary);
@@ -2251,6 +2269,9 @@ footer.main .custom {
   border-left: 1px solid var(--color-medium-grey);
   padding-left: 1rem;
 }
+.navigation-content ul.navigation > li:last-child{
+  margin-bottom: 0;
+}
 /* nav icon links */
 .navigation-inner .link-icons {
   display: flex;
@@ -2270,9 +2291,6 @@ footer.main .custom {
   flex-direction: row;
   justify-content: space-between;
 }
-.navigation-inner aside > div:first-child > h4:last-of-type{
-  margin-top: 0.5em;
-}
 .navigation-inner div + div {
   margin-left: 1em;
 }
@@ -2282,11 +2300,7 @@ footer.main .custom {
   flex-grow: 1;
   justify-content: space-between;
 }
-@container navigationcontainer (width > 770px){
-  .navigation-inner aside > div:first-child > h4:last-of-type{
-    margin-top: 1em;
-  }
-}
+
 @container navigationcontainer (width < 770px) {
   .navigation-inner .global-nav{
     min-width: 45%;
@@ -2303,9 +2317,16 @@ footer.main .custom {
   }
   .navigation-inner aside > div + div
   {
-    margin-top: 0.5em;
+    margin-top: 1em;
   }
 
+}
+@container navigationcontainer (width > 550px) {
+  .navigation-content > div{
+    border-top: 1px solid rgba(256,256,256,.15);
+    margin-top: 1.5em;
+    padding-top: 2em;
+  }
 }
 @container navigationcontainer (width < 550px) {
   .navigation-inner{
@@ -2314,8 +2335,10 @@ footer.main .custom {
   .navigation-inner aside div{
     display: contents
   }
-  .navigation-inner aside h4{
-    margin-top: 0.5em !important;
+  .navigation-inner h4{
+    margin-top: 0.75em !important;
+    padding-top: 0.75em;
+    border-top: 1px solid rgba(256,256,256,.15);
   }
 }
 
@@ -2444,7 +2467,6 @@ form#search-form #advanced-form p a {
 
 form#search-form input#query {
   width: 100%;
-  max-width: 40em;
 }
 
 form#advanced-search-form input[type="submit"],
@@ -2466,8 +2488,13 @@ form#advanced-search-form .search-entry>select {
   color: #000;
 }
 
-#search-narrow-by-fields select {
+#search-narrow-by-fields select,
+#search-narrow-by-fields input {
   margin-right: 5px;
+}
+
+#keyword-search{
+  width: 100%;
 }
 
 button.add_search {
@@ -2632,27 +2659,6 @@ section#about .button {
   border: 1px solid var(--color-medium-grey);
   padding: 1.5em 2em;
   border-radius: 4px;
-}
-
-#browse-tours-container article.fetch-tour-image,
-#home-tours article.fetch-tour-image {
-  text-align: left;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  align-items: center;
-}
-
-#browse-tours-container article.fetch-tour-image .tour-image-container,
-#home-tours article.fetch-tour-image .tour-image-container {
-  height: 150px;
-  width: 150px;
-  border-radius: 50%;
-  background-color: var(--color-medium-grey);
-  background-position: center center;
-  margin-right: 2em;
-  flex-grow: 0;
-  flex-shrink: 0;
 }
 
 @media all and (max-width: 550px) {
@@ -3205,7 +3211,7 @@ h2.curatescape-map-title {
   }
 
   .curatescape-home-content.bottom {
-    padding: 1em 1em;
+    display: contents;
   }
 }
 

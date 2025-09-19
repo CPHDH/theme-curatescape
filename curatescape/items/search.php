@@ -1,7 +1,8 @@
 <?php 
 $query = (isset($_GET['query']) ? htmlspecialchars($_GET['query']) : null);
 $searchRecordTypes = get_search_record_types();
-$title = __('Search %s', mh_item_label('plural'));
+$label = function_exists('storyLabelString') ? storyLabelString() : __('Items');
+$title = __('%s Search', $label);
 $bodyclass ='browse advanced-search'.(current_user() ? ' logged-in' : null);
 $maptype='none';
 
@@ -22,7 +23,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		<h2 hidden class="hidden"><?php echo __('Search Results');?></h2>
 			
 		<nav class="secondary-nav" id="item-browse"> 
-			<?php echo mh_item_browse_subnav();?>
+			<?php echo public_nav_items(); ?>
 		</nav>
 		
 		<!-- Search form via application/views/scripts/items/search-form.php  -->
