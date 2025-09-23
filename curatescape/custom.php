@@ -2,8 +2,8 @@
 /*
 ** Set Fallback Thumbnails
 */
-add_file_fallback_image('audio','audio.png');
-add_file_fallback_image('video','video.png');
+// add_file_fallback_image('audio','audio.png');
+// add_file_fallback_image('video','video.png');
 
 /*
 ** Icons
@@ -584,10 +584,10 @@ function mh_the_sponsor($item='item'){
 /*
 ** Display subjects as tags
 */
-function mh_subjects(){
+function mh_subjects($item = 'item'){
 	$subjects = metadata($item,array('Dublin Core', 'Subject'), 'all');
 	if (count($subjects) > 0){
-		$html = '<div class="subjects">';
+		$html = '<div class="subjects element">';
 			$html.= '<h3>'.__('Subjects').'</h3>';
 			$html.= '<ul>';
 			foreach ($subjects as $subject){
@@ -599,33 +599,13 @@ function mh_subjects(){
 
 	}
 }
-/*
-** Display subjects as single line of links
-*/
-function mh_subjects_string(){
-	$subjects = metadata($item,array('Dublin Core', 'Subject'), 'all');
-	if (count($subjects) > 0){
-		$html=array();
-
-		foreach ($subjects as $subject){
-			$link = WEB_ROOT;
-			$link .= htmlentities('/items/browse?term=');
-			$link .= rawurlencode($subject);
-			$link .= htmlentities('&search=&advanced[0][element_id]=49&advanced[0][type]=contains&advanced[0][terms]=');
-			$link .= urlencode(str_replace('&amp;','&',$subject));
-			$html[]= '<a href="'.$link.'">'.$subject.'</a>';
-		}
-
-		return '<div class="subjects"><span>'.__('Subjects: ').'</span>'.implode(", ", $html).'</div>';
-	}
-}
 
 /*
 ** Display the item tags
 */
-function mh_tags(){
+function mh_tags($item = 'item'){
 	if (metadata($item,'has tags')){
-		$html  = '<div class="tags">';
+		$html  = '<div class="tags element">';
 		$html .= '<h3>'.__('Tags').'</h3>';
 		$html .= tag_cloud('item','items/browse');
 		$html .= '</div>';
@@ -716,7 +696,7 @@ function mh_factoid($item='item'){
 /*
 ** Display related links
 */
-function mh_related_links(){
+function mh_related_links($item = 'item', $html = null){
 	$dc_relations_field = metadata($item,array('Dublin Core', 'Relation'), array('all' => true));
 	
 	$related_resources = element_exists('Item Type Metadata','Related Resources') ? metadata($item,array('Item Type Metadata', 'Related Resources'), array('all' => true)) : null;
@@ -724,11 +704,14 @@ function mh_related_links(){
 	$relations = $related_resources ? $related_resources : $dc_relations_field;
 	
 	if ($relations){
-		$html= '<h3>'.__('Related Sources').'</h3><div class="related-resources"><ul>';
+		$html .= '<div id="related-resources" class="element">';
+		$html.= '<h3>'.__('Related Resources').'</h3>';
+		$html.= '<div class="element-text"><ul>';
 		foreach ($relations as $relation) {
 			$html.= '<li>'.strip_tags($relation,'<a><i><cite><em><b><strong>').'</li>';
 		}
 		$html.= '</ul></div>';
+		$html.= '</div>';
 		return $html;
 	}
 }
@@ -776,20 +759,23 @@ function mh_the_byline($itemObj='item',$include_sponsor=false){
 /*
 ** Custom item citation
 */
-function mh_item_citation(){
-	return '<div class="item-citation"><h3>'.__('Cite this Page').'</h3><div>'.html_entity_decode(metadata($item, 'citation')).'</div></div>';
+function mh_item_citation($item = 'item'){
+	return '<div class="item-citation element"><h3>'.__('Citation Information').'</h3>'.
+	'<div class="element-text">'.html_entity_decode(metadata($item, 'citation')).'</div>'.
+	'<div class="element-text item-post-date">'.mh_post_date().'</div>'.
+	'</div>';
 }
 
 /*
 ** Post Added/Modified String
 */
-function mh_post_date(){
+function mh_post_date($item = 'item'){
 
 	if(get_theme_option('show_datestamp')==1){
-		$a=format_date(metadata($item, 'added'));
-		$m=format_date(metadata($item, 'modified'));	
+		$a=format_date(metadata($item, 'added'),'MMMM dd, YYYY');
+		$m=format_date(metadata($item, 'modified'),'MMMM dd, YYYY');	
 	
-		return '<div class="item-post-date"><em>'.__('Published on %s.', $a ).( ($a!==$m) ? ' '.__('Last updated on %s.', $m ) : null ).'</em></div>';	
+		return __('Published %s.', $a ).( ($a!==$m) ? ' '.__('Last updated %s.', $m ).'' : null );	
 	}
 }
 

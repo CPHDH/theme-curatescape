@@ -13,7 +13,7 @@
 <?php echo auto_discovery_link_tags(); ?>
 
 <?php
-$title = (isset($title)) ? htmlspecialchars($title) : null;
+$title = (isset($title)) ? html_entity_decode(htmlspecialchars($title)) : null;
 $item = (isset($item)) ? $item : null;
 $tour = (isset($tour)) ? $tour : null;
 $file = (isset($file)) ? $file : null;
