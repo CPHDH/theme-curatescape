@@ -8,7 +8,7 @@
 <article class="page file show" role="main">
 		
 	<header id="file-header">
-		<h2 class="item-title"><?php echo $fileTitle; ?></h2>
+		<h1 class="item-title"><?php echo $fileTitle; ?></h1>
 		<?php 
 		$info = array();
 		
@@ -18,7 +18,7 @@
 		($creators=metadata('file', array('Dublin Core','Creator'),true)) ? $info[] = '<span class="file-creator">'.__('Creator').': '.implode(', ',$creators).'</span>' : null;
 		($date=metadata('file', array('Dublin Core','Date'),true)) ? $info[] = '<span class="file-date">'.__('Date').': '.implode(', ',$date).'</span>' : null;
 
-		echo count($info) ? '<span id="file-header-info" class="story-meta byline">'.implode(" ~ ", $info).'</span>' : null;
+		echo count($info) ? '<span id="file-header-info" class="story-meta">'.implode(" ~ ", $info).'</span>' : null;
 				
 		?>
 	</header>
@@ -28,7 +28,7 @@
 		<?php 
 		$record=get_record_by_id('Item', $file->item_id);
 		$title=metadata($record,array('Dublin Core','Title'));
-		echo __('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record);	
+		echo '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>';	
 		?> 
 		<hr>
 		
@@ -48,7 +48,8 @@
 		</div>			
 
 		<hr>	
-		<?php echo __('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record);?> 
+		<?php echo '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>';	
+		?>
 		<hr>
 		<?php echo mh_hero_item($record);?>
 	

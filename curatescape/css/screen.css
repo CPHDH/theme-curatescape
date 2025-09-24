@@ -22,8 +22,10 @@ Skeleton V2.0.4 | Copyright 2014, Dave Gamache | MIT License | www.getskeleton.c
   --reddit: #ff4501;
   --tumblr: #36465d;
   --youtube: #de2826;
-  /* plugin */
+  /* Curatescape plugin vars */
   --curatescape-color-iw-link: var(--color-tertiary);
+  --factoid-text-size: 1.7rem;
+  --factoid-heading-size: 1.5rem;
 }
 
 html {
@@ -490,6 +492,9 @@ p {
 }
 .element-text > ul{
   margin-bottom: 0;
+}
+section.metadata .element + .element{
+
 }
 
 a {
@@ -978,11 +983,15 @@ h3 a:hover {
 }
 
 .lede {
-  font-size: 140%;
+  padding: 2em;
+  background: var(--color-large-block);
+}
+.lede p{
+  font-size: 130%;
   font-style: italic;
-  margin-bottom: 1em;
   font-weight: 600;
-  padding: 0 1em;
+  margin: 0;
+  color: #fff;
 }
 
 .timestamp {
@@ -1178,7 +1187,7 @@ figure#item-photos .flex-image .file {
   flex-wrap: wrap;
   justify-content: flex-start;
   margin: 0 0 0;
-  padding: 2em 1em 1em;
+  padding: 2em 0 1em;
 }
 
 @media all and (max-width: 650px){
@@ -1604,11 +1613,9 @@ body#items.show .item-hero .item-hero-text {
 .curatescape-text p + p{
   margin-top: 1em;
 }
-section.text.use-curatescape-template .element-set h2,
-section.text.use-curatescape-template .element-set #dublin-core-description,
-section.text.use-curatescape-template .element-set #dublin-core-subject,
-section.text.use-curatescape-template .element-set #curatescape-story-item-type-metadata-related-resources{
-  display: none;
+.use-curatescape-template .element + .element{
+  border-top: 1px dashed #eaeaea;
+  padding-top: 1.25em;
 }
 
 /*! AUDIO and VIDEO */
@@ -1795,32 +1802,7 @@ body#home h2.result-type-header,
   color: #555;
 }
 
-/*! FACTOID */
-#factoid {}
 
-.factoid {
-  padding: 0.5em;
-  background: var(--color-light-grey);
-  border: 1px solid var(--color-medium-grey);
-  border-radius: 3px;
-  margin-bottom: 0.5em;
-  align-items: center;
-}
-
-.factoid span:nth-child(2) {
-  flex-grow: 1;
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.factoid span:nth-child(2) iframe {
-  vertical-align: text-bottom;
-}
-
-.factoid span .tweet-this {
-  display: inline-block;
-  margin: 0 0 0 1em;
-}
 
 /*! METADATA */
 .metadata {
@@ -1832,12 +1814,6 @@ body#home h2.result-type-header,
 /*! CITATION */
 .item-citation .citation-url {
   word-break: break-word;
-}
-.item-post-date {
-  border-top: 1px dotted rgba(0,0,0,.15);
-  padding-top: 0.5em;
-  margin-top: 1em;
-  font-style: italic;
 }
 
 /*! VIEW MORE LINKS */
@@ -2044,7 +2020,7 @@ body#items.show .subjects li a,
   height: 2.6em;
   padding: 0 10px;
   text-align: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   line-height: 2.6em;
   text-transform: uppercase;
@@ -2091,7 +2067,12 @@ body#items.show .hTagcloud a:focus {
   list-style-position: inside;
   list-style-type: square;
 }
-
+#related-resources .element-text ul li{
+  margin-bottom: 0;
+}
+#related-resources .element-text ul li + li{
+  margin-top: 0.5rem;
+}
 /*! COMMENTS */
 #disqus_thread {
   margin-top: 1em;
@@ -2788,12 +2769,18 @@ body#search article span.total {
 /*! FILES */
 article.page.file.show #file-header {
   text-align: center;
+  padding: 2em 2em 0;
+}
+article.page.file.show .appears{
+  text-align: center;
+}
+article.page.file.show .appears a {
+  display: inline-block;
 }
 
-.file-appears-in-item {}
-
 article.page.file.show .file-desc {
-  padding-top: 1em;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .rights-caption {

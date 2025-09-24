@@ -1,9 +1,15 @@
 <?php
-/*
-** Set Fallback Thumbnails
-*/
-// add_file_fallback_image('audio','audio.png');
-// add_file_fallback_image('video','video.png');
+if(plugin_is_active('Curatescape')){
+	// override select plugin settings
+	add_filter('curatescape_redundant_dcm', 'curatescapeRedundantDCM');
+	add_filter('curatescape_redundant_itm', 'curatescapeRedundantITM');
+	function curatescapeRedundantDCM(){
+		return array('Description','Subject','Creator','Title','Coverage');
+	}
+	function curatescapeRedundantITM(){
+		return array('Related Resources','Sponsor','Subtitle', 'Lede', 'Official Website');
+	}
+}
 
 /*
 ** Icons
@@ -557,7 +563,7 @@ function mh_the_subtitle($item='item'){
 function mh_the_lede($item='item'){
 	if (element_exists('Item Type Metadata','Lede')){
 		$lede=metadata($item,array('Item Type Metadata', 'Lede'));
-		return  $lede ? '<div class="lede">'.strip_tags($lede,'<a><em><i><u><b><strong><strike>').'</div>' : null;
+		return  $lede ? '<div class="lede"><p>'.strip_tags($lede,'<a><em><i><u><b><strong><strike>').'</p></div>' : null;
 	}
 }
 
@@ -616,13 +622,18 @@ function mh_tags($item = 'item'){
 /*
 ** Display the official website
 */
-function mh_official_website($item='item'){
-
+function mh_official_website($item='item', $html = null){
 	if (element_exists('Item Type Metadata','Official Website')){
 		$website=metadata($item,array('Item Type Metadata','Official Website'));
-		return $website ? '<h3>'.__('Official Website').'</h3><div>'.$website.'</div>' : null;	
+		if(!$website) return null;
+		$html .= '<div class="website element">';
+			$html .= '<h3>'.__('Official Website').'</h3>';
+			$html .= '<div class="element-text">';
+			$html.= $website;
+			$html .= '</div>';
+		$html .= '</div>';
+		return $html;	
 	} 
-
 }
 
 /*
@@ -662,35 +673,6 @@ function mh_map_caption($item='item'){
 	if($addr=mh_street_address($item)) $caption[]=strip_tags($addr,'<a>');
 	if($accs=mh_access_information($item,false)) $caption[]=strip_tags($accs,'<a>');
 	return implode( ' ~ ', $caption );
-}
-
-/*
-** Display the factoid
-*/
-function mh_factoid($item='item'){
-
-	if (element_exists('Item Type Metadata','Factoid')){
-		$factoids=metadata($item,array('Item Type Metadata','Factoid'),array('all'=>true));
-		if($factoids){
-			$html=null;
-			$tw1script=null;
-			$tw2script=null;
-			$tweetable=get_theme_option('tweetable_factoids');
-			if($tweetable){
-				$tw1script='<script async defer src="https://platform.twitter.com/widgets.js"></script>';
-				$tw2script="<script async defer>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>";
-			}
-			$via=get_theme_option('twitter_username') ? 'data-via="'.get_theme_option('twitter_username').'"' : '';
-			foreach($factoids as $factoid){
-				$html.='<div class="factoid flex"><span>'.$factoid.'</span>'.($tweetable ? '<span><a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="'.strip_tags($factoid).'"'.$via.'">Tweet this factoid</a></span>' : '').'</div>';
-			}
-			
-			if($html){
-				return $tw1script.'<aside id="factoid">'.'<h2 hidden class="hidden">Factoids</h2>'.$html.'</aside>'.$tw2script;				
-			}
-		}
-	} 
-
 }
 
 /*

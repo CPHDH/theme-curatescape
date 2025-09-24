@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html lang="en"  class="ie ie6 lte9 lte8 lte7 no-js"> <![endif]-->
-<!--[if IE 7 ]><html lang="en"  class="ie ie7 lte9 lte8 lte7 no-js"> <![endif]-->
-<!--[if IE 8 ]><html lang="en"  class="ie ie8 lte9 lte8 no-js"> <![endif]-->
-<!--[if IE 9 ]><html lang="en"  class="ie ie9 lte9 no-js"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--><html lang="en" class="notie no-js"> <!--<![endif]-->
+<html lang="en"> 
 <head>
 <meta charset="UTF-8">
 
@@ -24,27 +20,16 @@ $file = (isset($file)) ? $file : null;
 
 <?php if(
 	is_current_url('/search?') || 
-	is_current_url('/items/browse?') || 
+	is_current_url('/items/browse') || 
 	is_current_url('/items?') || 
-	is_current_url('/tours/browse?') || 
-	is_current_url('/tours?')
+	is_current_url('/tours/browse') || 
+	is_current_url('/tours?') || 
+	is_current_url('/exhibits/browse') || 
+	is_current_url('/exhibits?')
 ):?> 
 <!-- No Index: Generated/Query Content -->
 <meta name="robots" content="noindex, follow">
 <?php endif;?>
-
-<!-- FB Open Graph stuff -->
-<meta property="og:title" content="<?php echo mh_seo_pagetitle($title,$item); ?>"/>
-<meta property="og:image" content="<?php echo mh_seo_pageimg($item,$file);?>"/>
-<meta property="og:site_name" content="<?php echo option('site_title');?>"/>
-<meta property="og:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>"/>
-
-<!-- Twitter Card stuff-->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="<?php echo mh_seo_pagetitle($title,$item); ?>">
-<meta name="twitter:description" content="<?php echo mh_seo_pagedesc($item,$tour,$file); ?>">
-<meta name="twitter:image" content="<?php echo mh_seo_pageimg($item,$file);?>">
-<?php echo ($twitter=get_theme_option('twitter_username')) ?  '<meta name="twitter:site" content="@'.$twitter.'"> ' : '';?> 
 
 <!-- Apple Stuff -->
 <link rel="apple-touch-icon-precomposed" href="<?php echo mh_apple_icon_logo_url();?>"/>
@@ -54,8 +39,7 @@ $file = (isset($file)) ? $file : null;
 <link rel="icon" href="<?php echo mh_apple_icon_logo_url(); ?>"/> 
 <link rel='mask-icon' href='<?php echo img('favicon.svg')?>' color='#1EAEDB'> <!-- Safari -->
 
-<!-- Plugin Stuff -->
-<?php fire_plugin_hook('public_head',array('view'=>$this)); ?>
+<?php fire_plugin_hook('public_head',array('view'=>$this));?>
 
 <!-- Fonts -->
 <?php echo mh_web_font_loader();?>
@@ -83,14 +67,20 @@ $file = (isset($file)) ? $file : null;
 	toggleMedia();return ss;}
 </script>
 <?php 
-//queue_css_file('font-awesome/css/font-awesome.min','all',false,'fonts');
+$includejquery = true;
+if(plugin_is_active('Curatescape')){
+	$includejquery = curatescapejQueryConditional(current_url());
+	if(!get_option('curatescape_map_mirror_geolocation')) {
+		curatescapeRemoveHeadAssets( $this, array('/plugins/Geolocation') );
+	}
+}
 echo head_css(); 
 echo mh_theme_css();
-echo head_js(true); 
+echo head_js($includejquery); 
 ?>
 
 <script>
-	// Async CSS 	
+	// Async CSS 
 	loadJS('<?php echo src('global.js','javascripts');?>');
 </script>
 
