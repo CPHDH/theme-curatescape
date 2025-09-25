@@ -1,14 +1,6 @@
 <?php 
 $maptype='story';
-if ($hasimg=metadata($item, 'has thumbnail') ) {
-	$img_markup=item_image('fullsize',array(),0, $item);
-	preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
-	$hero_img = array_pop($result);
-	$hero_class="has-image";
-}else{
-	$hero_img='';
-	$hero_class="no-image";
-}
+$hero_img = mh_hero_image_url($item);
 echo head(array(
 	'item'=>$item, 
 	'bodyid'=>'items', 
@@ -18,7 +10,7 @@ echo head(array(
 <article class="story item show <?php if (get_option('curatescape_template')) echo 'use-curatescape-template';?>" role="main" id="content">
 	<header id="story-header">
 		<?php
-			echo '<div class="item-hero hero '.$hero_class.'" style="background-image: url('.$hero_img.')">';
+			echo '<div class="item-hero hero '.($hero_img ? 'has-image' : 'no-image').'" style="background-image: url('.$hero_img.')">';
 			echo '<div class="item-hero-text">';
 				echo '<h1>'.html_entity_decode(metadata($item, 'rich_title')).'</h1>';
 				if(
@@ -63,9 +55,7 @@ echo head(array(
 	<section class="plugin">
 		<?php fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); ?>
 	</section>
-	<section class="comments">
-		<?php echo mh_display_comments();?>
-	</section>
+	<?php echo mh_display_comments();?>
 </article>
 
 <?php echo foot(); ?>

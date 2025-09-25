@@ -65,17 +65,10 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass));
 			<div class="browse-items flex" role="main">
 			<?php 
 			foreach(loop('Items') as $item): 
-				$item_image=null;
 				$tags=tag_string(get_current_record('item') , url('items/browse'));
-				$hasImage=metadata($item, 'has thumbnail');
-				if ($hasImage){
-						preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', item_image('fullsize'), $result);
-						$item_image = array_pop($result);
-				}else{
-					$item_image='';
-				}
+				$item_image = mh_hero_image_url($item);
 				?>
-				<article class="item-result <?php echo $hasImage ? 'has-image' : 'no-image';?>">
+				<article class="item-result <?php echo $item_image ? 'has-image' : 'no-image';?>">
 					<?php echo link_to_item('<span class="item-image" style="background-image:url('.$item_image.');" role="img"  aria-label="'.htmlspecialchars(metadata($item, array('Dublin Core', 'Title'))).'"></span>',array('title'=>metadata($item,array('Dublin Core','Title')))); ?>
 					<h3><?php echo mh_the_title_link($item); ?></h3>
 					<div class="browse-meta-top"><?php echo mh_the_byline($item,false);?></div>

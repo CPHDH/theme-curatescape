@@ -51,7 +51,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 			<?php $tours=$stories=$files=$pages=$collections=array();?>
 			<?php foreach (loop('search_texts') as $st){
 				switch($st['record_type']){
-					case 'Tour':
+					case 'CuratescapeTour':
 						$tours[]=$st;
 						break;
 					case 'Item':
@@ -69,11 +69,11 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 				}
 			}
 			if($tours){
-				
-				echo '<h3 class="result-type-header">'.mh_tour_label('plural').'</h3>';
+				echo '<h3 class="result-type-header">'.tourLabelString('plural').'</h3>';
 				echo '<div class="search-tours">';
 				foreach($tours as $s){
-					echo mh_tour_preview($s);
+					$tour=get_record_by_id('CuratescapeTour', $s->record_id);
+					echo mh_tour_preview($tour);
 				}	
 				echo '</div>';
 			}	
@@ -93,11 +93,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 					echo '<div class="search-files-file">';
 					$record=get_record_by_id($s['record_type'], $s['record_id']);
 					$mime = metadata($record,'MIME Type');
-					if(substr($mime,0,5)=='video'){
-						$img='<img src="'.img('video.png').'" alt="'.$s['title'].'" title="'.$s['title'].'">';
-					}else{
-						$img=record_image($record, 'square_thumbnail');
-					}
+					$img=record_image($record, 'square_thumbnail');
 					echo '<a href="'.record_url($record, 'show').'">'.$img.'</a>';
 					echo '<h4><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h4>';
 					echo '</div>';

@@ -855,10 +855,7 @@ form {
 body#items.show #wrap,
 body#tours.show #wrap {
   padding: 0;
-}
-
-body#items.show article.story {
-  margin-bottom: 0.5em;
+  overflow: hidden;
 }
 
 article.tour {
@@ -867,6 +864,13 @@ article.tour {
 
 body#items.show #wrap section{
   padding: 2em;
+}
+body#items.show #wrap section.plugin{
+  background: var(--color-large-block);
+  color: #fff;
+}
+body#items.show #wrap section.plugin a{
+  color: var(--color-light-grey);
 }
 
 .curatescape-files{
@@ -1553,10 +1557,7 @@ article.page{
   width: 100%;
 }
 
-.item-description {
-  margin-bottom: 0.5em;
-  overflow-x: hidden;
-}
+
 
 .browse-items article .item-image {
   display: block;
@@ -1616,6 +1617,9 @@ body#items.show .item-hero .item-hero-text {
 .use-curatescape-template .element + .element{
   border-top: 1px dashed #eaeaea;
   padding-top: 1.25em;
+}
+.use-curatescape-template .element-set > h2{
+  display: none;
 }
 
 /*! AUDIO and VIDEO */
@@ -2379,25 +2383,28 @@ form#search-form #advanced-form input[type="radio"] {
 form#sitewide-search-filters input[type="checkbox"],
 form#search-form #advanced-form input[type="checkbox"] {
   margin-right: 0.25em;
+  margin-bottom: 0;
 }
 
 form#sitewide-search-filters input[type="checkbox"]+label,
 form#search-form #advanced-form input[type="checkbox"]+label {
   display: inline-block;
-  margin-right: 1em;
+  margin-left: 0.25em;
+  margin-right: 0.5em;
+  margin-bottom: 0;
 }
 
+
 form#sitewide-search-filters .fieldset {
-  padding: 0.5em 0 0;
+  padding: 0.5em 1em;
   background: var(--color-light-grey);
   border: 1px solid var(--color-medium-grey);
-  text-align: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
 form#sitewide-search-filters .fieldset div {
-  flex-grow: 1;
+  margin: 4px;
 }
 
 form#search-form #advanced-form p a {
@@ -2494,8 +2501,6 @@ button.add_search {
 /*! RANDOM BUTTON */
 #footer-nav .random-button {
   width: 100%;
-  /* background: var(--color-large-block); */
-  /* color: #fff; */
 }
 
 #footer-nav .random-button:hover,
@@ -2553,9 +2558,6 @@ section#about .button {
   padding-top: 0.2rem;
 }
 
-#tour-items article .item-description {
-  max-width: 40em;
-}
 
 #tour-items h3 {
   font-size: 2.6rem;
@@ -2592,8 +2594,7 @@ section#about .button {
   border-right: 0 none transparent;
 }
 
-#browse-tours-container article,
-#home-tours article {
+article.tour {
   margin-bottom: 1.5em;
   border: 1px solid var(--color-medium-grey);
   padding: 1.5em 2em;
@@ -2601,14 +2602,13 @@ section#about .button {
 }
 
 @media all and (max-width: 550px) {
-  #browse-tours-container article {
+  article.tour {
     padding-left: 1em;
     padding-right: 1em;
   }
 }
 
-#browse-tours-container article h3,
-#home-tours article h3 {
+article.tour h3 {
   margin-bottom: 0;
 }
 
@@ -2618,10 +2618,6 @@ body#search article span.total {
   font-weight: 600;
 }
 
-#browse-tours-container .item-description {
-  text-align: left;
-  margin-top: 0.5em;
-}
 
 @media all and (min-width: 550px) {
   .tour-route {
@@ -3184,8 +3180,7 @@ h2.curatescape-map-title {
 
 @media all and (max-width: 590px) {
 
-  #browse-tours-container article,
-  #home-tours article {
+  article.tour {
     text-align: center;
   }
 }

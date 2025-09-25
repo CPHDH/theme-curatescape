@@ -3,11 +3,15 @@ if(plugin_is_active('Curatescape')){
 	// override select plugin settings
 	add_filter('curatescape_redundant_dcm', 'curatescapeRedundantDCM');
 	add_filter('curatescape_redundant_itm', 'curatescapeRedundantITM');
+	add_filter('curatescape_tours_for_item_meta', 'curatescapeToursForItemMeta');
 	function curatescapeRedundantDCM(){
 		return array('Description','Subject','Creator','Title','Coverage');
 	}
 	function curatescapeRedundantITM(){
 		return array('Related Resources','Sponsor','Subtitle', 'Lede', 'Official Website');
+	}
+	function curatescapeToursForItemMeta(){
+		return null;
 	}
 }
 
@@ -1205,33 +1209,30 @@ function mh_share_this($type='Page'){
 function mh_disquss_comments($shortname){
 	if ($shortname){
 	?>
-
-	<div id="disqus_thread">
-	  <a class="load-comments" title="Click to load the comments section" href="#" onclick="disqus();return false;">Show Comments</a> 
-	</div>
-
-	<script async defer>
-		var disqus_shortname = "<?php echo $shortname;?>";
-		var disqus_loaded = false;
-
-		// This is the function that will load Disqus comments on demand
-		function disqus() {
-
-			if (!disqus_loaded)  {
-				disqus_loaded = true;
-				console.log("Disqus ready...");
-
-				var e = document.createElement("script");
-				e.type = "text/javascript";
-				e.async = true;
-				e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
-				(document.getElementsByTagName("head")[0] ||
-				document.getElementsByTagName("body")[0])
-				.appendChild(e);
-		  }
-		} 	
-	</script>
-
+	<section class="comments">
+		<div id="disqus_thread">
+		<a class="load-comments" title="Click to load the comments section" href="#" onclick="disqus();return false;">Show Comments</a> 
+		</div>
+		<script async defer>
+			var disqus_shortname = "<?php echo $shortname;?>";
+			var disqus_loaded = false;
+			// This is the function that will load Disqus comments on demand
+			function disqus() {
+				if (!disqus_loaded)  {
+					disqus_loaded = true;
+					console.log("Disqus ready...");
+	
+					var e = document.createElement("script");
+					e.type = "text/javascript";
+					e.async = true;
+					e.src = "//" + disqus_shortname + ".disqus.com/embed.js";
+					(document.getElementsByTagName("head")[0] ||
+					document.getElementsByTagName("body")[0])
+					.appendChild(e);
+				}
+			}
+		</script>
+	</section>
 	<?php
 	}
 }
@@ -1261,8 +1262,6 @@ function mh_intensedebate_comments($intensedebate_id){
 function mh_display_comments(){
 	if(get_theme_option('comments_id')){
 		return mh_disquss_comments(get_theme_option('comments_id'));
-	}else if(get_theme_option('intensedebate_site_account')){
-		return mh_intensedebate_comments(get_theme_option('intensedebate_site_account'));
 	}else{
 		return null;
 	}
@@ -1282,33 +1281,29 @@ function mh_tour_total_items($tour){
 }
 
 /*
-** Display the Tours search results
+** Display the Tour preview
 */
-function mh_tour_preview($s){
-	$html=null;
-	$record=get_record_by_id($s['record_type'], $s['record_id']);
-	set_current_record( 'tour', $record );
-	$html.=  '<article>';
-	$html.=  '<h3 class="tour-result-title"><a href="'.record_url($record, 'show').'">'.($s['title'] ? $s['title'] : '[Unknown]').'</a></h3>';
-	$html.=  '<div class="tour-meta-browse browse-meta-top byline">';
-	$html.= '<span class="total">'.mh_tour_total_items($record).' '.__('Locations').'</span> ~ ';
-	if(metadata($tour,'Credits') ){
-		$html.=  __('%1s curated by %2s', tourLabelString(),metadata($tour,'Credits') );
-	}elseif(get_theme_option('show_author') == true){
-		$html.=  __('%1s curated by The %2s Team',tourLabelString(),option('site_title'));
-	}		
-	$html.=  '</div>';
-	$html.=  ($text=strip_tags(html_entity_decode(metadata($tour,'Description')))) ? '<span class="tour-result-snippet">'.snippet($text,0,300).'</span>' : null;
-	if(get_theme_option('show_tour_item_thumbs') == true){
-		$html.=  '<span class="tour-thumbs-container">';
-		foreach($record->Items as $mini_thumb){
-			$html.=  metadata($mini_thumb, 'has thumbnail') ? 
-			'<div class="mini-thumb">'.item_image('square_thumbnail',array('height'=>'40','width'=>'40'),null,$mini_thumb).'</div>' : 
-			null;
-		}
-		$html.=  '</span>';
-	}
-	$html.= '</article>';	
+function mh_tour_preview($tour, $html = null){
+	$html .= '<article class="item-result tour">';
+		$html .= '<div class="tour-flex-container">';
+			if ($tourImage = $tour->getFileCustom()){
+				$html .= linkToTour($tour, 'show', $tourImage, array('class'=>'tour-image'));
+			}
+			$html .= '<div class="details">';
+				$html .= '<h3>'.linkToTour($tour).'</h3>';
+				if(metadata($tour, 'credits')){
+					$byline= __('Curated by %s',metadata($tour, 'credits'));
+				}else{
+					$byline= __('Curated by The %s Team',option('site_title'));
+				}
+				$html .=  '<span class="total">'.__('%s Locations',mh_tour_total_items($tour)).'</span> ~ <span>'.$byline.'</span>';
+				
+				if ($tourDescription = metadata($tour, 'description', array('no_escape'=>true))){
+					$html .= '<div class="description">'.snippet($tourDescription, 0, 500).'</div>';
+				}
+			$html .= '</div>';
+		$html .= '</div>';
+	$html .= '</article>';
 	return $html;
 }	
 
@@ -1351,7 +1346,7 @@ function mh_display_homepage_tours($scope='random', $num=5){
 	if($items){
 		for ($i = 0; $i < $num; $i++) {
 			set_current_record( 'tour', $items[$i] );
-			$tour=getCurrentTour();		
+			$tour=getCurrentTour();
 			$html .= '<article class="item-result tour">';
 			$html .= '<div class="tour-flex-container">';
 				if ($tourImage = $tour->getFileCustom()){
@@ -1382,14 +1377,28 @@ function mh_display_homepage_tours($scope='random', $num=5){
 	return $html;
 }
 
+function mh_hero_image_url($item, $size = 'fullsize', $returnArray = false, $nullresult = null)
+{
+	if(!$item) return $nullresult;
+	if(!$item->hasThumbnail()) return $nullresult;
+	foreach($item->getFiles() as $file){
+		if($file->has_derivative_image){
+			if($returnArray == true){
+				$infoArray = dimensions($file, $size);
+				$infoArray['url'] = record_image_url($file, $size);
+				return $infoArray;
+			}
+			return record_image_url($file, $size);
+		}
+	}
+	return $nullresult;
+}
+
 function mh_hero_item($item){
 	$itemTitle = mh_the_title_link($item);
 	$itemDescription = metadata($item, array('Dublin Core', 'Description'), array('snippet'=>300));
 	$html=null;
-	if (metadata($item, 'has thumbnail') ) {
-		$img_markup=item_image('fullsize',array(),0, $item);
-		preg_match('/<img(.*)src(.*)=(.*)"(.*)"/U', $img_markup, $result);
-		$img_url = array_pop($result);
+	if ( $img_url = mh_hero_image_url($item) ) {
 		$html .= '<article class="featured-story-result">';
 			$html .= '<div class="featured-decora-outer">' ;
 				$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')">' ;
