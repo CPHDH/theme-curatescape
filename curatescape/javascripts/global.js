@@ -4,6 +4,15 @@ const toggleBoolean = (el, attr) => {
 const toggleMenu = (body, menubutton)=>{
   toggleBoolean(menubutton, 'aria-expanded');
   body.classList.toggle('expanded');
+  if( body.classList.contains('expanded') ){
+    setTimeout(()=>{
+      let search = document.querySelector('#header-search');
+      if(search){
+        search.focus();
+      }
+    }, 300);
+
+  }
 }
 const doMenu = ()=>{
   // CLONE FOOTER MENU TO HEADER

@@ -420,7 +420,7 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 	$sitewide = (get_theme_option('use_sitewide_search') == 1) ? 1 : 0;	
 	$qname = ($sitewide==1) ? 'query' : 'search';
 	$searchUri = ($sitewide==1) ? url('search') : url('items/browse?sort_field=relevance');
-	$placeholder =  __('Search');	
+	$placeholder =  __('Search...');	
 	$default_record_types = unserialize(get_option('search_record_types'));
 
 	$searchQuery = array_key_exists($qname, $_GET) ? $_GET[$qname] : '';

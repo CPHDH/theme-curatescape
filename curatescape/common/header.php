@@ -70,9 +70,6 @@ $file = (isset($file)) ? $file : null;
 $includejquery = true;
 if(plugin_is_active('Curatescape')){
 	$includejquery = curatescapejQueryConditional(current_url());
-	if(!get_option('curatescape_map_mirror_geolocation')) {
-		curatescapeRemoveHeadAssets( $this, array('/plugins/Geolocation') );
-	}
 }
 echo head_css(); 
 echo mh_theme_css();
