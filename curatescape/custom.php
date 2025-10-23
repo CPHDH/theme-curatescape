@@ -487,7 +487,7 @@ function mh_appstore_downloads($apps=array()){
 		$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
 	}
 	if(count($apps) > 1){
-		return '<h4 id="dl">'.__('Download the App').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
+		return '<h4 id="dl">'.__('Download').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
 	}
 }
 
@@ -1546,7 +1546,7 @@ function mh_social_array(){
 */
 function mh_footer_find_us($class=null){
 	if( $services=mh_social_array() ){
-		return '<h4>'.__('Get in Touch').'</h4><div class="link-icons colored">'.implode(' ',$services).'</div>';
+		return '<h4>'.__('Connect').'</h4><div class="link-icons colored">'.implode(' ',$services).'</div>';
 	}
 }
 

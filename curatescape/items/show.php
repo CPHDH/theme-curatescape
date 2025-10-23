@@ -56,6 +56,11 @@ echo head(array(
 		<?php fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); ?>
 	</section>
 	<?php echo mh_display_comments();?>
+	<nav class="visuallyhidden">
+		<ul class="site-page-pagination">
+			<li id="previous-item" class="site-page-pagination-button previous"><?php echo link_to_previous_item_show(); ?></li>
+			<li id="next-item" class="site-page-pagination-button next"><?php echo link_to_next_item_show(); ?></li>
+		</ul>
+	</nav>
 </article>
-
 <?php echo foot(); ?>
