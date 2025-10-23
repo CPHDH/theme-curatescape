@@ -26,6 +26,7 @@ Skeleton V2.0.4 | Copyright 2014, Dave Gamache | MIT License | www.getskeleton.c
   --curatescape-color-iw-link: var(--color-tertiary);
   --factoid-text-size: 1.7rem;
   --factoid-heading-size: 1.5rem;
+  --factoid-detail-opacity: 0.75;
 }
 
 html {
@@ -503,8 +504,6 @@ p {
   margin-bottom: 0;
 }
 
-section.metadata .element+.element {}
-
 a {
   color: var(--color-secondary);
   transition-property: color, filter, text-decoration;
@@ -845,6 +844,11 @@ select,
 fieldset,
 form {
   max-width: 100%;
+}
+
+audio,
+video{
+  width: 100%;
 }
 
 #wrap {
@@ -1632,7 +1636,6 @@ body#items.show .item-hero .item-hero-text {
 }
 
 /*! MEDIA TYPE AND SEARCH HEADINGS */
-section.media h3,
 #search.browse h2.result-type-header,
 body#home h2.result-type-header,
 section.map h2 {
@@ -1642,8 +1645,8 @@ section.map h2 {
   margin-bottom: revert;
 }
 
-section.media h3 {
-  color: #999;
+.file-title h3{
+  font-size: 2.25rem;
 }
 
 section.map h2,
@@ -3103,12 +3106,24 @@ section.media>div+div {
   margin-bottom: 0;
 }
 
-/* @media all and (max-width: 590px) {
+.curatescape-factoids {
+  background-color: var(--color-large-block);
+  color: #fff;
+  margin: 3rem 0 3.5rem;
+  border-radius: 4px;
+}
 
-  article.tour {
-    text-align: center;
-  }
-} */
+.curatescape-factoids::before {
+  background-color: var(--color-tertiary);
+}
+
+.factoids-decorator svg {
+  fill: var(--color-tertiary);
+}
+
+#factoid-heading {
+  color: var(--color-tertiary)
+}
 
 #query-types,
 #search-narrow-by-fields {
