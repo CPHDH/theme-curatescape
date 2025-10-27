@@ -15,8 +15,6 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 
 <article class="search browse">	
 	<h2 class="query-header"><?php echo $title; ?></h2>
-		
-
 
 	<div id="primary" class="browse">
 	<section id="results">
@@ -37,6 +35,8 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		endif;
 		$formAttributes['method'] = 'GET';
 		?>
+		
+		<p class="search-helper"><?php echo __('Use the form below to search %1s or switch to %2s', function_exists('storyLabelString') ? strtolower(storyLabelString('plural')) : __('items'), '<a href="/search/">'.__('Sitewide Search').'</a>');?></p>
 		
 		<form <?php echo tag_attributes($formAttributes); ?>>
 		    <div id="search-keywords" class="field">
@@ -183,7 +183,7 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		
 		    <div>
 		        <?php if (!isset($buttonText)) {
-		            $buttonText = __('Search for items');
+		            $buttonText = __('Search for %s', function_exists('storyLabelString') ? storyLabelString('plural') : __('Items'));
 		        } ?>
 		        <input type="submit" class="submit button button-primary" name="submit_search" id="submit_search_advanced" value="<?php echo $buttonText ?>">
 		    </div>

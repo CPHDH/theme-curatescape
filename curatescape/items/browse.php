@@ -52,7 +52,8 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass));
 			<nav class="secondary-nav" id="item-browse"> 
 				<?php echo public_nav_items(); ?>
 			</nav>
-
+			
+			<?php if($total_results):?>
 			<div id="sort-links">
 				<?php
 				$sortLinks[__('Title')] = 'Dublin Core,Title';
@@ -61,6 +62,7 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>$bodyclass));
 				?>
 				<span class="sort-label"><?php echo __('Sort by: '); ?></span><?php echo browse_sort_links($sortLinks); ?>
 			</div>
+			<?php endif;?>
 
 			<div class="browse-items flex" role="main">
 			<?php 

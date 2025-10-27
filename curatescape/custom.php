@@ -592,6 +592,23 @@ function mh_the_sponsor($item='item'){
 }
 
 /*
+** Display collection as tag
+*/
+function mh_collection(){
+	$item = get_current_record('item');
+	if(!$item) return;
+	$collection = $item->getCollection();
+	if(!$collection) return;
+	$html = '<div class="collection element">';
+		$html.= '<h3>'.__('Collection').'</h3>';
+		$html.= '<ul>';
+		$html.= '<li>'.link_to($collection, 'show',metadata($collection,array('Dublin Core','Title'))).'</li> ';
+		$html.= '</ul>';
+	$html .= '</div>';
+	return $html;
+}
+	
+/*
 ** Display subjects as tags
 */
 function mh_subjects($item = 'item'){
@@ -606,7 +623,24 @@ function mh_subjects($item = 'item'){
 			$html.= '</ul>';
 		$html .= '</div>';
 		return $html;
+	}
+}
 
+function mh_tour() {
+	$item = get_current_record('item');
+	if(!$item) return;
+	if(!plugin_is_active('Curatescape')) return;
+	$tours = toursForItem($item->id);
+	if (count($tours) > 0){
+		$html = '<div class="element" id="tour-for-item">';
+			$html.= '<h3>'.__('Related %s', tourLabelString('plural')).'</h3>';
+			$html.= '<ul>';
+			foreach ($tours as $tour){
+				$html.= '<li><a href="/tours/show/'.$tour['id'].'">'.$tour['title'].'</a></li> ';
+			}
+			$html.= '</ul>';
+		$html .= '</div>';
+		return $html;
 	}
 }
 
@@ -708,7 +742,8 @@ function mh_related_links($item = 'item', $html = null){
 */
 function mh_the_byline($itemObj='item',$include_sponsor=false){
 	if ((get_theme_option('show_author') == true)){
-		$html='<div class="byline">'.__('By').' ';
+		$html='<div class="byline">';
+		$html .= plugin_is_active('Curatescape') ? __('By').' ' : '';
 		if(metadata($itemObj,array('Dublin Core', 'Creator'))){
 			$authors=metadata($itemObj,array('Dublin Core', 'Creator'), array('all'=>true));
 			$total=count($authors);

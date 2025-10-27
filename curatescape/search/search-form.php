@@ -1,3 +1,4 @@
+<p class="search-helper"><?php echo __('Use the form below to search multiple record types or switch to %s', '<a href="/items/search/">'.__('Advanced Item Search').'</a>');?></p>
 <?php echo $this->form('search-form', $options['form_attributes']); ?>
     <?php echo $this->formText('query', $filters['query'], array('title' => __('Search'))); ?>
     <?php if ($options['show_advanced']): ?>

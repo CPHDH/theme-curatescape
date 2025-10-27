@@ -46,10 +46,11 @@ echo head(array(
 		<?php if(plugin_is_active('Curatescape') && get_option('curatescape_template')):?>
 			<?php echo mh_official_website();?>
 			<?php echo mh_related_links();?>
+			<?php echo mh_tour(); ?>
 			<?php echo mh_subjects(); ?>
 		<?php endif;?>
 		<?php echo mh_tags();?>
-		<?php echo function_exists('tours_for_item') ? tours_for_item($item->id, __('Related %s', mh_tour_label('plural'))) : null?>
+		<?php echo mh_collection(); ?>
 		<?php echo mh_item_citation(); ?>
 	</section>
 	<section class="plugin">

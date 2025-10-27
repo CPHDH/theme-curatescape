@@ -119,4 +119,9 @@
   <g id="add-circle" class="icon">
     <path d="M256.8,52.5c-114.7,0-208,93.3-208,208s93.3,208,208,208,208-93.3,208-208S371.5,52.5,256.8,52.5ZM336.8,276.5h-64v64c0,8.8-7.2,16-16,16s-16-7.2-16-16v-64h-64c-8.8,0-16-7.2-16-16s7.2-16,16-16h64v-64c0-8.8,7.2-16,16-16s16,7.2,16,16v64h64c8.8,0,16,7.2,16,16s-7.2,16-16,16Z"/>
   </g>
+  <g id="information-circle" class="icon">
+    <path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M220 220h32v116"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M208 340h88"/>
+    <path d="M248 130a26 26 0 1026 26 26 26 0 00-26-26z"/>
+  </g>
 </svg>

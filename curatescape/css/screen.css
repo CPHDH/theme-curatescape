@@ -23,7 +23,8 @@ Skeleton V2.0.4 | Copyright 2014, Dave Gamache | MIT License | www.getskeleton.c
   --tumblr: #36465d;
   --youtube: #de2826;
   /* Curatescape plugin vars */
-  --curatescape-color-iw-link: var(--color-tertiary);
+  --curatescape-iw-link-color-hover: var(--color-tertiary);
+  --curatescape-tourmap-caption-display: none;
   --factoid-text-size: 1.7rem;
   --factoid-heading-size: 1.5rem;
   --factoid-detail-opacity: 0.75;
@@ -1859,18 +1860,21 @@ body#items.show .hTagcloud {
 
 body#items.show .tags ul,
 body#items.show .subjects ul,
+body#items.show .collection ul,
 ul#tour-for-item {
   margin-bottom: 0;
 }
 
 body#items.show .tags ul li,
 body#items.show .subjects ul li,
+body#items.show .collection ul li,
 #tour-for-item ul li {
   display: inline;
 }
 
 body#items.show .hTagcloud li a,
 body#items.show .subjects li a,
+body#items.show .collection li a,
 #tour-for-item li a {
   display: inline-block;
   height: 2.6em;
@@ -1888,6 +1892,7 @@ body#items.show .subjects li a,
   cursor: pointer;
   box-sizing: border-box;
   margin: 0 0.25em 0.5em 0;
+  opacity: 1;
 }
 
 body#items.show .hTagcloud li a {
@@ -1904,16 +1909,29 @@ body#items.show .hTagcloud a:focus {
 }
 
 #tour-for-item li a {
-  color: var(--color-large-block);
-  background-color: var(--color-light-grey);
-  border-color: var(--color-medium-grey);
+  color: #fff;
+  background-color: var(--color-large-block);
+  border-color: var(--color-large-block);
 }
 
 #tour-for-item a:hover,
 #tour-for-item a:focus {
+  color: var(--color-secondary);
+  background-color: transparent;
+  border-color: var(--color-secondary);
+}
+
+body#items.show .collection li a {
   color: #fff;
-  background-color: var(--color-large-block);
-  border-color: var(--color-large-block);
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+body#items.show .collection a:hover,
+body#items.show .collection a:focus {
+  color: #fff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 /*! RELATED RESOURCES */
@@ -2260,6 +2278,15 @@ footer.main.fullwidth a.button.button-primary.random-story-link:focus {
 }
 
 /*! ADVANCED SEARCH */
+p.search-helper{
+  font-size: 1em;
+  border-bottom: 1px dashed var(--color-medium-grey);
+  margin: 1em 0;
+  font-style: italic;
+  padding-bottom: 0.5em;
+}
+
+
 form#search-form br {
   display: none;
 }
@@ -2420,6 +2447,10 @@ section#about .button {
 
 .about-main {
   margin-top: 1em;
+}
+
+.about-main .button {
+  margin-top: 1.5em;
 }
 
 .about-text span.sponsor-name {
@@ -2650,6 +2681,12 @@ body#search article span.total {
 /*! COLLECTIONS */
 #collections.browse article h3 {
   font-size: 2.6rem;
+}
+
+#collections.browse article + article {
+  border-top: 1px solid #eaeaea;
+  padding-top: 1em;
+  margin-top: 1em;
 }
 
 /*! FILES */
