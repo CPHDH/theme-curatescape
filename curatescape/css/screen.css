@@ -1567,7 +1567,9 @@ article.tour-show .tour-colophon {
   width: 100%;
 }
 
-
+.pswp__pswp-caption a.button{
+  background-color: var(--color-light-grey)
+}
 
 .browse-items article .item-image {
   display: block;
@@ -1612,6 +1614,7 @@ article.tour-show .tour-colophon {
 
 .curatescape-article-header-styles .curatescape-subtitle{
   font-size: .8em;
+  margin-top: .15em;
 }
 
 .item-hero .item-hero-text .byline {
