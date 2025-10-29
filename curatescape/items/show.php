@@ -36,7 +36,7 @@ echo head(array(
 	</section>
 	<?php if($item->Files):?>
 	<section class="media">
-		<h2 hidden class="hidden"><?php echo __('Media');?></h2>
+		<h2><?php echo __('Files');?></h2>
 		<?php echo files_for_item(array('imageSize' => 'fullsize')); ?>
 	</section>
 	<?php endif;?>
