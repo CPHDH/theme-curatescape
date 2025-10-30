@@ -27,9 +27,7 @@ Skeleton V2.0.4 | Copyright 2014, Dave Gamache | MIT License | www.getskeleton.c
   /* Curatescape plugin vars */
   --curatescape-iw-link-color-hover: var(--color-tertiary);
   --curatescape-tourmap-caption-display: none;
-  --factoid-text-size: 1.7rem;
-  --factoid-heading-size: 1.5rem;
-  --factoid-detail-opacity: 0.75;
+
 }
 
 html {
@@ -3167,22 +3165,7 @@ section.media>div+div {
 }
 
 .curatescape-factoids {
-  background-color: var(--color-large-block);
-  color: #fff;
   margin: 3rem 0 3.5rem;
-  border-radius: 4px;
-}
-
-.curatescape-factoids::before {
-  background-color: var(--color-tertiary);
-}
-
-.factoids-decorator svg {
-  fill: var(--color-tertiary);
-}
-
-#factoid-heading {
-  color: var(--color-tertiary)
 }
 
 #query-types,
