@@ -54,7 +54,18 @@ echo head(array(
 		<?php echo mh_item_citation(); ?>
 	</section>
 	<section class="plugin">
-		<?php fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); ?>
+		<?php 
+		if(
+			plugin_is_active('Curatescape') &&
+			!option('curatescape_map_mirror_geolocation')
+		) {
+			echo get_view()->CuratescapeMap()->Single();
+		} else {
+			fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); 
+		}
+		
+		
+		?>
 	</section>
 	<?php echo mh_display_comments();?>
 	<nav class="visuallyhidden">

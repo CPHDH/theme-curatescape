@@ -894,6 +894,10 @@ body#items.show #wrap section.plugin a {
   color: var(--color-light-grey);
 }
 
+body#items.show #wrap section.plugin .geolocation-map a{
+  color: var(--color-text);
+} 
+
 .curatescape-files {
   padding: 0;
 }
@@ -1550,7 +1554,7 @@ article.page {
 }
 
 article.page{
-  padding: 2rem;
+  padding: 2em;
 }
 
 article.tour-show h1,
