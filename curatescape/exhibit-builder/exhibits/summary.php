@@ -27,10 +27,6 @@
 	        <?php endforeach; ?>
 	    </ul>
 	</nav><br><br>
-		
-	<aside id="share-this" class="show">
-		<?php echo mh_share_this();?>
-	</aside>
 
 </article>
 </div> <!-- end content -->

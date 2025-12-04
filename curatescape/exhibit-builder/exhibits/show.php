@@ -21,11 +21,6 @@
 
 	</div>
 
-
-	<aside id="share-this" class="show">
-		<?php echo mh_share_this();?>
-	</aside>
-
 </article>
 </div> <!-- end content -->
 

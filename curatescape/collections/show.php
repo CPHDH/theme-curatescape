@@ -34,7 +34,6 @@ echo head(array('maptype'=>'none','title' => __('Collection').' | '.$title, 'bod
 		    		   
 		</section>
     </div>
-	<?php echo mh_share_this('Collection'); ?>
 </article>
 </div> <!-- end content -->
 

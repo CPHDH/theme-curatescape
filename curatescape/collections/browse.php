@@ -39,7 +39,6 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyclass' => $bodyclass, 
 
 	
 	<div class="pagination bottom"><?php echo pagination_links(); ?></div>
-	<?php echo mh_share_this(); ?>
 </article>
 </div> <!-- end content -->
 

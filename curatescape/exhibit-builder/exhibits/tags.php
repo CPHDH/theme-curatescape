@@ -32,10 +32,6 @@ echo head(array('maptype'=>'none','title' => $title, 'bodyid' => 'exhibit', 'bod
 		<?php echo tag_cloud($tags, 'exhibits/browse'); ?>
 	</div><!-- end primary -->
 
-	<aside id="share-this" class="browse">
-		<?php echo mh_share_this();?>
-	</aside>
-
 </article>
 </div> <!-- end content -->
 

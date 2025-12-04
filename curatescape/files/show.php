@@ -54,8 +54,7 @@
 		<?php echo mh_hero_item($record);?>
 	
 	</div><!-- end primary -->
-	
-	<?php echo mh_share_this(__('File'));?>
+
 </article>
 
 </div> <!-- end content -->

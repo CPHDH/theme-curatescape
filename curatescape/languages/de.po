@@ -1,0 +1,889 @@
+# German translation for Curatescape Classic theme for Omeka Classic
+# Copyright (C) 2025 Center for Public History + Digital Humanities at Cleveland State University
+# This file is distributed under the same license as the theme package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Curatescape Classic 4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-03 16:28-0500\n"
+"PO-Revision-Date: 2025-12-04 16:20-0500\n"
+"Last-Translator: Center for Public History + Digital Humanities at Cleveland State University <digitalhumanities@csuohio.edu>\n"
+"Language-Team: Center for Public History + Digital Humanities at Cleveland State University <digitalhumanities@csuohio.edu>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: custom.php:100 custom.php:100
+msgid "Navigation"
+msgstr "Navigation"
+
+#: custom.php:108 custom.php:120 exhibit-builder/exhibits/tags.php:21
+#: exhibit-builder/exhibits/browse.php:49 custom.php:108 custom.php:120
+msgid "All"
+msgstr "Alle"
+
+#: custom.php:109 custom.php:653 curatescape/tours/tags.php:14
+#: curatescape/tours/browse.php:62 exhibit-builder/exhibits/tags.php:25
+#: exhibit-builder/exhibits/browse.php:53 custom.php:109 custom.php:653
+#: items/tags.php:10
+msgid "Tags"
+msgstr "Schlagwörter"
+
+#: custom.php:110 custom.php:110 search/index.php:3 items/search.php:39
+msgid "Sitewide Search"
+msgstr "Websiteweite Suche"
+
+#: custom.php:111 custom.php:111 items/search.php:5
+#, php-format
+msgid "%s Search"
+msgstr "%s-Suche"
+
+#: custom.php:126 custom.php:126
+#, php-format
+msgid "Locations for %s"
+msgstr "Orte für %s"
+
+#: custom.php:152 custom.php:152
+#: contribution/contribution/my-contributions.php:11
+msgid "Item"
+msgstr "Element"
+
+#: custom.php:153 custom.php:153
+#, php-format
+msgid "View a Random %s"
+msgstr "Zufälliges %s ansehen"
+
+#: custom.php:158 custom.php:158
+msgid "Discover"
+msgstr "Entdecken"
+
+#: custom.php:203 custom.php:1456 custom.php:1687 custom.php:203
+#: custom.php:1456 custom.php:1687 search/index.php:6 items/search.php:4
+#: items/search.php:186 items/browse.php:9
+msgid "Items"
+msgstr "Elemente"
+
+#: custom.php:210 custom.php:210
+msgid "Collections"
+msgstr "Sammlungen"
+
+#: custom.php:224 custom.php:224
+msgid "Exhibits"
+msgstr "Ausstellungen"
+
+#: custom.php:231 custom.php:231 geolocation/map/browse.php:2
+msgid "Map"
+msgstr "Karte"
+
+#: custom.php:238 custom.php:1475 custom.php:238 custom.php:1475
+msgid "About"
+msgstr "Über uns"
+
+#: custom.php:267 custom.php:267
+msgid "Main Navigation"
+msgstr "Hauptnavigation"
+
+#: custom.php:278 custom.php:278
+msgid "Menu"
+msgstr "Menü"
+
+#: custom.php:401 custom.php:401
+msgid "Get Directions on Google Maps"
+msgstr "Wegbeschreibung in Google Maps abrufen"
+
+#: custom.php:402 custom.php:402
+msgid "Get Directions"
+msgstr "Wegbeschreibung abrufen"
+
+#: custom.php:423 custom.php:423
+msgid "Search..."
+msgstr "Suchen..."
+
+#: custom.php:430 custom.php:430 search/search-form.php:3
+msgid "Search"
+msgstr "Suchen"
+
+#: custom.php:449 custom.php:449
+msgid "Submit"
+msgstr "Absenden"
+
+#: custom.php:484 custom.php:484
+msgid "App Store"
+msgstr "App Store"
+
+#: custom.php:487 custom.php:487
+msgid "Google Play"
+msgstr "Google Play"
+
+#: custom.php:490 custom.php:490
+msgid "Download"
+msgstr "Herunterladen"
+
+#: custom.php:505 custom.php:505
+msgid "Get the app for iPhone"
+msgstr "App für iPhone herunterladen"
+
+#: custom.php:508 custom.php:508
+msgid "Get the app for Android"
+msgstr "App für Android herunterladen"
+
+#: custom.php:512 custom.php:512
+msgid "iPhone"
+msgstr "iPhone"
+
+#: custom.php:513 custom.php:513
+msgid "Android"
+msgstr "Android"
+
+#: custom.php:514 custom.php:514
+#, php-format
+msgid "Get the app for %1$s and %2$s"
+msgstr "App für %1$s und %2$s herunterladen"
+
+#: custom.php:517 custom.php:517
+msgid "iPhone + Android Apps Coming Soon!"
+msgstr "iPhone- und Android-Apps kommen bald!"
+
+#: custom.php:589 custom.php:589
+#, php-format
+msgid "with research support from %s"
+msgstr "mit Forschungsunterstützung von %s"
+
+#: custom.php:603 custom.php:603 collections/show.php:9
+msgid "Collection"
+msgstr "Sammlung"
+
+#: custom.php:618 custom.php:618
+msgid "Subjects"
+msgstr "Themen"
+
+#: custom.php:636 custom.php:636
+#, php-format
+msgid "Related %s"
+msgstr "Verwandte %s"
+
+#: custom.php:668 custom.php:668
+msgid "Official Website"
+msgstr "Offizielle Website"
+
+#: custom.php:698 custom.php:698
+msgid "Access Information"
+msgstr "Zugangsinformationen"
+
+#: custom.php:728 custom.php:728
+msgid "Related Resources"
+msgstr "Verwandte Ressourcen"
+
+#: custom.php:746 custom.php:746
+msgid "By"
+msgstr "Von"
+
+#: custom.php:769 custom.php:769
+#, php-format
+msgid "The %s team"
+msgstr "Das %s-Team"
+
+#: custom.php:784 custom.php:784
+msgid "Citation Information"
+msgstr "Zitierinformationen"
+
+#: custom.php:799 custom.php:799
+#, php-format
+msgid "Published %s."
+msgstr "Veröffentlicht %s."
+
+#: custom.php:799 custom.php:799
+#, php-format
+msgid "Last updated %s."
+msgstr "Zuletzt aktualisiert %s."
+
+#: custom.php:821 custom.php:821
+#, php-format
+msgid "Source: %s"
+msgstr "Quelle: %s"
+
+#: custom.php:827 custom.php:827
+#, php-format
+msgid "Creator: %s"
+msgstr "Ersteller: %s"
+
+#: custom.php:832 custom.php:832
+#, php-format
+msgid "Date: %s"
+msgstr "Datum: %s"
+
+#: custom.php:866 custom.php:866
+msgid "Images"
+msgstr "Bilder"
+
+#: custom.php:931 custom.php:998 custom.php:931 custom.php:998
+msgid "View File Record"
+msgstr "Dateieintrag anzeigen"
+
+#: custom.php:935 custom.php:935
+msgid "Audio"
+msgstr "Audio"
+
+#: custom.php:1003 custom.php:1003
+msgid "Video"
+msgstr "Video"
+
+#: custom.php:1066 custom.php:1066
+msgid "Documents"
+msgstr "Dokumente"
+
+#: custom.php:1153 custom.php:1153
+msgid "Additional Information"
+msgstr "Zusätzliche Informationen"
+
+#: custom.php:1176 custom.php:1187 custom.php:1198 custom.php:1176
+#: custom.php:1187 custom.php:1198
+msgid "View File Details Page"
+msgstr "Dateidetailseite anzeigen"
+
+#: custom.php:1215 custom.php:1215
+#, php-format
+msgid "Share this %s"
+msgstr "Dieses %s teilen"
+
+#: custom.php:1330 custom.php:1393 curatescape/tours/browse.php:49
+#: custom.php:1330 custom.php:1393
+#, php-format
+msgid "Curated by %s"
+msgstr "Kuratiert von %s"
+
+#: custom.php:1332 custom.php:1395 curatescape/tours/browse.php:51
+#: custom.php:1332 custom.php:1395
+#, php-format
+msgid "Curated by The %s Team"
+msgstr "Kuratiert vom %s-Team"
+
+#: custom.php:1334 custom.php:1397 curatescape/tours/browse.php:53
+#: custom.php:1334 custom.php:1397
+#, php-format
+msgid "%s Locations"
+msgstr "%s Orte"
+
+#: custom.php:1374 custom.php:1374
+msgid "Take a Tour"
+msgstr "Eine Tour machen"
+
+#: custom.php:1407 custom.php:1407
+#, php-format
+msgid "Browse all <span>%s</span>"
+msgstr "Alle <span>%s</span> durchsuchen"
+
+#: custom.php:1410 curatescape/tours/browse.php:70 custom.php:1410
+msgid "No tours are available. Publish some now."
+msgstr "Keine Touren verfügbar. Veröffentlichen Sie jetzt welche."
+
+#: custom.php:1442 custom.php:1442
+msgid "Preview text not available."
+msgstr "Vorschautext nicht verfügbar."
+
+#: custom.php:1457 custom.php:1457 items/browse.php:28
+#, php-format
+msgid "Featured %s"
+msgstr "Hervorgehobene %s"
+
+#: custom.php:1462 custom.php:1462
+#, php-format
+msgid "Browse Featured %s"
+msgstr "Hervorgehobene %s durchsuchen"
+
+#: custom.php:1465 custom.php:1465
+msgid "No featured items are available. Publish some now."
+msgstr "Keine hervorgehobenen Elemente verfügbar. Veröffentlichen Sie jetzt welche."
+
+#: custom.php:1481 custom.php:1481
+msgid "A project by"
+msgstr "Ein Projekt von"
+
+#: custom.php:1487 custom.php:1487
+msgid "Read more About Us"
+msgstr "Mehr über uns erfahren"
+
+#: custom.php:1546 custom.php:1546
+msgid "Popular Tags"
+msgstr "Beliebte Schlagwörter"
+
+#: custom.php:1548 custom.php:1548
+#, php-format
+msgid "Browse %s tags"
+msgstr "%s-Schlagwörter durchsuchen"
+
+#: custom.php:1584 custom.php:1584
+msgid "Connect"
+msgstr "Verbinden"
+
+#: custom.php:1692 custom.php:1692
+#, php-format
+msgid "Random %s"
+msgstr "Zufällige %s"
+
+#: custom.php:1696 custom.php:1696
+#, php-format
+msgid "Recent %s"
+msgstr "Neueste %s"
+
+#: custom.php:1732 custom.php:1732
+#, php-format
+msgid "Browse all %s"
+msgstr "Alle %s durchsuchen"
+
+#: custom.php:1736 custom.php:1736
+msgid "No items are available. Publish some now."
+msgstr "Keine Elemente verfügbar. Veröffentlichen Sie jetzt welche."
+
+#: custom.php:1903 custom.php:1903
+#, php-format
+msgid ""
+"%s is powered by <a href=\"http://omeka.org/\">Omeka</a> + <a href=\"http://"
+"curatescape.org/\">Curatescape</a>, a humanities-centered web and mobile "
+"framework available for both Android and iOS devices."
+msgstr ""
+"%s wird betrieben mit <a href=\"http://omeka.org/\">Omeka</a> + <a href=\"http://"
+"curatescape.org/\">Curatescape</a>, einem geisteswissenschaftlich ausgerichteten Web- und Mobil-"
+"Framework, das für Android- und iOS-Geräte verfügbar ist."
+
+#: custom.php:1936 custom.php:1936
+msgid "This work is licensed by "
+msgstr "Diese Arbeit ist lizenziert durch "
+
+#: custom.php:1938 custom.php:1938
+#, php-format
+msgid "&copy; %1$s %2$s"
+msgstr "&copy; %1$s %2$s"
+
+#: custom.php:1949 custom.php:1949
+msgid "Edit Item"
+msgstr "Element bearbeiten"
+
+#: custom.php:1959 custom.php:1959
+msgid "Edit File Details"
+msgstr "Dateidetails bearbeiten"
+
+#: stealth-index.php:4 stealth-index.php:4
+msgid "Check Back Soon!"
+msgstr "Schauen Sie bald wieder vorbei!"
+
+#: curatescape/tours/show.php:36
+#, php-format
+msgid "(%s total)"
+msgstr "(%s insgesamt)"
+
+#: curatescape/tours/show.php:46
+#, php-format
+msgid "This %1s does not have any %2s."
+msgstr "Dieses %1s hat keine %2s."
+
+#: curatescape/tours/show.php:52
+#, php-format
+msgid "%s Information"
+msgstr "%s-Informationen"
+
+#: curatescape/tours/browse.php:4
+#, php-format
+msgid "%1$s tagged \"%2$s\": %3$s"
+msgstr "%1$s mit Schlagwort \"%2$s\": %3$s"
+
+#: curatescape/tours/browse.php:5 items/browse.php:13
+#, php-format
+msgid "%1$s tagged \"%2$s\""
+msgstr "%1$s mit Schlagwort \"%2$s\""
+
+#: curatescape/tours/browse.php:7
+#, php-format
+msgid "Featured %1$s: %2$s"
+msgstr "Hervorgehobene %1$s: %2$s"
+
+#: curatescape/tours/browse.php:8
+msgid "Featured"
+msgstr "Hervorgehoben"
+
+#: curatescape/tours/browse.php:10
+#, php-format
+msgid "All %1$s: %2$s"
+msgstr "Alle %1$s: %2$s"
+
+#: exhibit-builder/exhibits/tags.php:2
+msgid "Browse Exhibits by Tag"
+msgstr "Ausstellungen nach Schlagwort durchsuchen"
+
+#: exhibit-builder/exhibits/summary.php:15
+msgid "Credits"
+msgstr "Mitwirkende"
+
+#: exhibit-builder/exhibits/browse.php:11
+#, php-format
+msgid "Exhibits tagged \"%s\""
+msgstr "Ausstellungen mit Schlagwort \"%s\""
+
+#: exhibit-builder/exhibits/browse.php:16 items/browse.php:20
+#, php-format
+msgid "Results for subject term \"%s\""
+msgstr "Ergebnisse für Thema \"%s\""
+
+#: exhibit-builder/exhibits/browse.php:21 search/index.php:3
+#: items/browse.php:32
+#, php-format
+msgid "Search Results for \"%s\""
+msgstr "Suchergebnisse für \"%s\""
+
+#: exhibit-builder/exhibits/browse.php:21
+msgid "Advanced Search Results"
+msgstr "Erweiterte Suchergebnisse"
+
+#: exhibit-builder/exhibits/browse.php:26
+msgid "All Exhibits"
+msgstr "Alle Ausstellungen"
+
+#: exhibit-builder/exhibits/browse.php:78
+msgid "There are no exhibits available yet."
+msgstr "Es sind noch keine Ausstellungen verfügbar."
+
+#: guest-user/user/stale-token.php:2
+msgid "Stale Token"
+msgstr "Abgelaufener Token"
+
+#: guest-user/user/stale-token.php:10
+msgid ""
+"Your temporary access to the site has expired. Please check your email for "
+"the link to follow to confirm your registration."
+msgstr ""
+"Ihr temporärer Zugang zur Website ist abgelaufen. Bitte überprüfen Sie Ihre E-Mail "
+"für den Link zur Bestätigung Ihrer Registrierung."
+
+#: guest-user/user/stale-token.php:12
+msgid "You have been logged out, but can continue browsing the site."
+msgstr "Sie wurden abgemeldet, können aber weiterhin auf der Website browsen."
+
+#: guest-user/user/register.php:6
+msgid "Register"
+msgstr "Registrieren"
+
+#: guest-user/user/confirm.php:2
+msgid "Confirmation Error"
+msgstr "Bestätigungsfehler"
+
+#: guest-user/user/update-account.php:4
+msgid "Password again for match"
+msgstr "Passwort zur Bestätigung erneut eingeben"
+
+#: guest-user/user/update-account.php:5
+msgid "Passwords match!"
+msgstr "Passwörter stimmen überein!"
+
+#: guest-user/user/update-account.php:6
+msgid "Passwords do not match!"
+msgstr "Passwörter stimmen nicht überein!"
+
+#: guest-user/user/update-account.php:13
+msgid "Update Account"
+msgstr "Konto aktualisieren"
+
+#: search/index.php:18 items/search.php:21
+msgid "Search Results"
+msgstr "Suchergebnisse"
+
+#: search/index.php:30
+#, php-format
+msgid "Searching %1s of %2s Record Types"
+msgstr "Suche %1s von %2s Datensatztypen"
+
+#: search/index.php:127 items/browse.php:85
+msgid "Your query returned <strong>no results</strong>."
+msgstr "Ihre Anfrage ergab <strong>keine Ergebnisse</strong>."
+
+#: search/search-form.php:1
+msgid "Advanced Item Search"
+msgstr "Erweiterte Elementsuche"
+
+#: search/search-form.php:1
+#, php-format
+msgid "Use the form below to search multiple record types or switch to %s"
+msgstr "Verwenden Sie das untenstehende Formular, um mehrere Datensatztypen zu durchsuchen, oder wechseln Sie zu %s"
+
+#: search/search-form.php:7
+msgid "Search using this query type:"
+msgstr "Suche mit diesem Abfragetyp:"
+
+#: search/search-form.php:12
+msgid "Search only these record types:"
+msgstr "Nur diese Datensatztypen durchsuchen:"
+
+#: search/search-form.php:18
+msgid "Go to search settings to select record types to use."
+msgstr "Gehen Sie zu den Sucheinstellungen, um die zu verwendenden Datensatztypen auszuwählen."
+
+#: search/search-form.php:20
+msgid "Advanced Search (Items only)"
+msgstr "Erweiterte Suche (nur Elemente)"
+
+#: common/pagination_control.php:12
+msgid "Pagination"
+msgstr "Seitennummerierung"
+
+#: common/pagination_control.php:18
+msgid "Previous"
+msgstr "Zurück"
+
+#: common/pagination_control.php:43
+msgid "Current Page"
+msgstr "Aktuelle Seite"
+
+#: common/pagination_control.php:46
+#, php-format
+msgid "%s of %s"
+msgstr "%s von %s"
+
+#: common/pagination_control.php:55
+msgid "Next"
+msgstr "Weiter"
+
+#: common/header.php:101
+msgid "Skip Navigation"
+msgstr "Navigation überspringen"
+
+#: common/header.php:101
+msgid "Skip to main content"
+msgstr "Zum Hauptinhalt springen"
+
+#: common/header.php:104
+msgid ""
+"For full functionality please enable JavaScript in your browser settings."
+msgstr ""
+"Für die volle Funktionalität aktivieren Sie bitte JavaScript in Ihren Browsereinstellungen."
+
+#: common/header.php:104
+msgid "Need Help?"
+msgstr "Benötigen Sie Hilfe?"
+
+#: common/footer.php:6
+msgid "Footer Navigation"
+msgstr "Fußzeilennavigation"
+
+#: common/footer.php:7
+msgid "Search - Footer"
+msgstr "Suche - Fußzeile"
+
+#: common/footer.php:27
+msgid ""
+"Powered by <a href=\"http://omeka.org/\">Omeka</a> + <a href=\"http://"
+"curatescape.org\">Curatescape</a>"
+msgstr ""
+"Betrieben mit <a href=\"http://omeka.org/\">Omeka</a> + <a href=\"http://"
+"curatescape.org\">Curatescape</a>"
+
+#: files/show.php:17
+msgid "Source"
+msgstr "Quelle"
+
+#: files/show.php:18 items/browse.php:60
+msgid "Creator"
+msgstr "Ersteller"
+
+#: files/show.php:19
+msgid "Date"
+msgstr "Datum"
+
+#: files/show.php:31 files/show.php:51
+msgid "This file appears in"
+msgstr "Diese Datei erscheint in"
+
+#: files/show.php:58
+msgid "File"
+msgstr "Datei"
+
+#: contribution/contribution/contribute.php:48
+msgid "What type of item do you want to contribute?"
+msgstr "Welche Art von Element möchten Sie beitragen?"
+
+#: contribution/contribution/contribute.php:66
+msgid "Publish my contribution on the web."
+msgstr "Meinen Beitrag im Web veröffentlichen."
+
+#: contribution/contribution/contribute.php:71
+msgid "Contribute anonymously."
+msgstr "Anonym beitragen."
+
+#: contribution/contribution/contribute.php:74
+msgid "Terms and Conditions"
+msgstr "Allgemeine Geschäftsbedingungen"
+
+#: contribution/contribution/contribute.php:74
+#, php-format
+msgid "In order to contribute, you must read and agree to the %s"
+msgstr "Um beizutragen, müssen Sie die %s lesen und akzeptieren"
+
+#: contribution/contribution/contribute.php:78
+msgid "I agree to the Terms and Conditions."
+msgstr "Ich akzeptiere die allgemeinen Geschäftsbedingungen."
+
+#: contribution/contribution/contribute.php:81
+msgid "Contribute"
+msgstr "Beitragen"
+
+#: contribution/contribution/terms.php:2
+msgid "Contribution Terms of Service"
+msgstr "Nutzungsbedingungen für Beiträge"
+
+#: contribution/contribution/my-contributions.php:9
+msgid "Public"
+msgstr "Öffentlich"
+
+#: contribution/contribution/my-contributions.php:10
+msgid "Anonymous"
+msgstr "Anonym"
+
+#: contribution/contribution/my-contributions.php:12
+msgid "Added"
+msgstr "Hinzugefügt"
+
+#: contribution/contribution/thankyou.php:4
+msgid "Thank you for contributing!"
+msgstr "Vielen Dank für Ihren Beitrag!"
+
+#: contribution/contribution/thankyou.php:5
+msgid "make another contribution"
+msgstr "einen weiteren Beitrag leisten"
+
+#: contribution/contribution/thankyou.php:5
+msgid "browse the archive"
+msgstr "das Archiv durchsuchen"
+
+#: contribution/contribution/thankyou.php:5
+#, php-format
+msgid ""
+"Your contribution will show up in the archive once an administrator approves "
+"it. Meanwhile, feel free to %s or %s ."
+msgstr ""
+"Ihr Beitrag wird im Archiv angezeigt, sobald ein Administrator ihn genehmigt hat. "
+"In der Zwischenzeit können Sie gerne %s oder %s."
+
+#: contribution/contribution/thankyou.php:8
+msgid "this page"
+msgstr "diese Seite"
+
+#: contribution/contribution/thankyou.php:8
+#, php-format
+msgid ""
+"If you would like to interact with the site further, you can use an account "
+"that is ready for you. Visit %s, and request a new password for the email "
+"you used"
+msgstr ""
+"Wenn Sie weiter mit der Website interagieren möchten, können Sie ein Konto verwenden, "
+"das für Sie bereitsteht. Besuchen Sie %s und fordern Sie ein neues Passwort für die E-Mail-Adresse an, "
+"die Sie verwendet haben"
+
+#: contribution/contribution/type-form.php:3
+msgid "You must choose a contribution type to continue."
+msgstr "Sie müssen einen Beitragstyp auswählen, um fortzufahren."
+
+#: contribution/contribution/type-form.php:5
+#, php-format
+msgid "Contribute a %s"
+msgstr "Ein %s beitragen"
+
+#: contribution/contribution/type-form.php:14
+msgid "Upload a file"
+msgstr "Eine Datei hochladen"
+
+#: contribution/contribution/type-form.php:34
+msgid "Upload a file (Optional)"
+msgstr "Eine Datei hochladen (optional)"
+
+#: contribution/contribution/type-form.php:46
+msgid "Email (Required)"
+msgstr "E-Mail (erforderlich)"
+
+#: contribution/contribution/type-form.php:61
+#, php-format
+msgid "You are logged in as: %s"
+msgstr "Sie sind angemeldet als: %s"
+
+#: contribution/contribution/type-form.php:76
+#, php-format
+msgid "Your %s profile"
+msgstr "Ihr %s-Profil"
+
+#: contribution/contribution/type-form.php:79
+#: contribution/contribution/type-form.php:81
+msgid "Show"
+msgstr "Anzeigen"
+
+#: contribution/contribution/type-form.php:79
+#: contribution/contribution/type-form.php:81
+msgid "Hide"
+msgstr "Ausblenden"
+
+#: items/show.php:34
+msgid "Text"
+msgstr "Text"
+
+#: items/show.php:39
+msgid "Files"
+msgstr "Dateien"
+
+#: items/show.php:45
+msgid "Additional Metadata"
+msgstr "Zusätzliche Metadaten"
+
+#: items/search.php:39
+msgid "items"
+msgstr "Elemente"
+
+#: items/search.php:39
+#, php-format
+msgid "Use the form below to search %1s or switch to %2s"
+msgstr "Verwenden Sie das untenstehende Formular, um %1s zu durchsuchen, oder wechseln Sie zu %2s"
+
+#: items/search.php:43
+msgid "Search for Keywords"
+msgstr "Nach Schlüsselwörtern suchen"
+
+#: items/search.php:55
+msgid "Narrow by Specific Fields"
+msgstr "Nach bestimmten Feldern eingrenzen"
+
+#: items/search.php:80
+msgid "Search Joiner"
+msgstr "Suchverbindung"
+
+#: items/search.php:85
+msgid "AND"
+msgstr "UND"
+
+#: items/search.php:86
+msgid "OR"
+msgstr "ODER"
+
+#: items/search.php:93
+msgid "Search Field"
+msgstr "Suchfeld"
+
+#: items/search.php:106
+msgid "Search Type"
+msgstr "Suchtyp"
+
+#: items/search.php:111
+msgid "contains"
+msgstr "enthält"
+
+#: items/search.php:112
+msgid "does not contain"
+msgstr "enthält nicht"
+
+#: items/search.php:113
+msgid "is exactly"
+msgstr "ist genau"
+
+#: items/search.php:114
+msgid "is empty"
+msgstr "ist leer"
+
+#: items/search.php:115
+msgid "is not empty"
+msgstr "ist nicht leer"
+
+#: items/search.php:116
+msgid "starts with"
+msgstr "beginnt mit"
+
+#: items/search.php:117
+msgid "ends with"
+msgstr "endet mit"
+
+#: items/search.php:125
+msgid "Search Terms"
+msgstr "Suchbegriffe"
+
+#: items/search.php:131
+msgid "Remove field"
+msgstr "Feld entfernen"
+
+#: items/search.php:135
+msgid "Add a Field"
+msgstr "Ein Feld hinzufügen"
+
+#: items/search.php:141
+msgid "Search By User"
+msgstr "Nach Benutzer suchen"
+
+#: items/search.php:156
+msgid "Search By Tags"
+msgstr "Nach Schlagwörtern suchen"
+
+#: items/search.php:168
+msgid "Featured/Non-Featured"
+msgstr "Hervorgehoben/Nicht hervorgehoben"
+
+#: items/search.php:176
+msgid "Only Featured Items"
+msgstr "Nur hervorgehobene Elemente"
+
+#: items/search.php:177
+msgid "Only Non-Featured Items"
+msgstr "Nur nicht hervorgehobene Elemente"
+
+#: items/search.php:186
+#, php-format
+msgid "Search for %s"
+msgstr "Nach %s suchen"
+
+#: items/tags.php:7
+#, php-format
+msgid "Tags: %s"
+msgstr "Schlagwörter: %s"
+
+#: items/browse.php:17
+#, php-format
+msgid "%1$s by author \"%2$s\""
+msgstr "%1$s von Autor \"%2$s\""
+
+#: items/browse.php:25
+#, php-format
+msgid "%1s in \"%2s\""
+msgstr "%1s in \"%2s\""
+
+#: items/browse.php:36
+#, php-format
+msgid "All %s"
+msgstr "Alle %s"
+
+#: items/browse.php:59
+msgid "Title"
+msgstr "Titel"
+
+#: items/browse.php:61
+msgid "Date Added"
+msgstr "Hinzugefügt am"
+
+#: items/browse.php:63
+msgid "Sort by: "
+msgstr "Sortieren nach: "
+
+#: collections/show.php:25
+#, php-format
+msgid "Browse %1s Items in this collection."
+msgstr "%1s Elemente in dieser Sammlung durchsuchen."
+
+#: collections/show.php:29
+#, php-format
+msgid "This collection currently has no %s."
+msgstr "Diese Sammlung hat derzeit keine %s."
+
+#: collections/browse.php:7
+msgid "Browse Collections"
+msgstr "Sammlungen durchsuchen"
+
+#: error/404.php:10
+msgid "Sorry. The page you are looking for does not exist!"
+msgstr "Entschuldigung. Die gesuchte Seite existiert nicht!"
+
+#: error/403.php:10
+msgid "Sorry. Access Forbidden!"
+msgstr "Entschuldigung. Zugriff verboten!"

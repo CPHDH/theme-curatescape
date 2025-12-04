@@ -135,8 +135,6 @@ echo head(array('maptype'=>$maptype,'title'=>$title,'bodyid'=>'search','bodyclas
 		</section>	
 		</div><!-- end primary -->
 
-		<?php echo mh_share_this();?>
-
 	</article>
 </div> <!-- end content -->
 

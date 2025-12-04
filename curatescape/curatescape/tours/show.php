@@ -31,7 +31,7 @@ echo head( array( 'title' => ''.$label.' | '.$tourTitle, 'bodyid'=>'tours',
 			</div>
 			<div class="tour-items">
 				<?php if(count($tourItems)):?>
-					<?php if($tourItemsDiplay = $tour->tourItemsOutput(option('curatescape_gallery_style_tour'),!option('curatescape_map_mirror_geolocation'))):?>
+					<?php if($tourItemsDiplay = $tour->tourItemsOutput()):?>
 						<h2 class="visuallyhidden"><?php echo storyLabelString(true);?> 
 							<span class="tour-item-count" aria-label="<?php echo __('(%s total)', count($tourItems));?>">
 								<?php echo count($tourItems);?>

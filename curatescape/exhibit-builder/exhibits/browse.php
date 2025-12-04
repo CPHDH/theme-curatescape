@@ -79,8 +79,6 @@ echo head(array('maptype'=>'none','title'=>$title,'bodyid'=>'exhibits','bodyclas
 	<?php endif; ?>
 				
 	</section>	
-	
-	<?php echo mh_share_this();?>
 
 </article>
 </div> <!-- end content -->

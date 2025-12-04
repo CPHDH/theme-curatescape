@@ -66,11 +66,18 @@ $file = (isset($file)) ? $file : null;
 	else{setTimeout(toggleMedia);}}
 	toggleMedia();return ss;}
 </script>
+<!-- Assets -->
 <?php 
-$includejquery = true;
+$includejquery = mh_jQueryConditional(current_url());
+$blacklistAssets = array();
 if(plugin_is_active('Curatescape')){
-	$includejquery = curatescapejQueryConditional(current_url());
+	if(!option('curatescape_map_mirror_geolocation')){
+		array_merge($blacklistAssets, array(
+			'/plugins/Geolocation',
+		));
+	}
 }
+mh_removeHeadAssets($this, $blacklistAssets);
 echo head_css(); 
 echo mh_theme_css();
 echo head_js($includejquery); 

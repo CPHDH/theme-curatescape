@@ -14,6 +14,86 @@ if(plugin_is_active('Curatescape')){
 		return null;
 	}
 }
+function mh_jQueryConditional($current_url=null, $whitelist=array())
+{ 
+	$current_url = $current_url ? $current_url : current_url();
+	if(
+		plugin_is_active('CuratescapeGalleries') && 
+		get_option('curatescapegalleries_gallery_style') == 'gallery-slides' &&
+		strpos($current_url, '/items/show/') == '0'
+	){
+		return true;
+	}
+	if(
+		plugin_is_active('Curatescape') && 
+		get_option('curatescape_map_mirror_geolocation') == true &&
+		strpos($current_url, '/items/show/') == '0'
+	){
+		return true;
+	}
+	$whitelist = count($whitelist) ? $whitelist : array(
+		'/search',
+		'/items/search',
+		'/guest-user/',
+		'/contribution/',
+		'/exhibits/',
+		'/neatline/',
+		'/users/login',
+	);
+	foreach($whitelist as $allowed){
+		if(0 === strpos($current_url, $allowed)) return true;
+	}
+	return false;
+}
+
+function mh_removeHeadAssets($view=null, $paths=array())
+{
+	if ($view) {
+		$scripts = $view->headScript();
+		foreach ($scripts as $key=>$file) {
+			foreach ($paths as $path) {
+				if(
+					0 === strpos(current_url(), '/exhibits/show') && 
+					$path == '/plugins/Geolocation'
+				){
+					// do nothing if this is an exhibit (allow map)
+				}elseif(
+					0 === strpos(current_url(), '/guest-user/') && 
+					$path == '/plugins/GuestUser/views/public/javascripts'
+				){
+					// do nothing if this is a guest user page
+				}elseif (
+					isset($file->attributes['src']) && 
+					strpos($file->attributes['src'], $path) !== false
+				) {
+					$scripts[$key]->type = null;
+					$scripts[$key]->attributes['src'] = null;
+					$scripts[$key]->attributes['source'] = null;
+				}
+			}
+		}
+		$styles = $view->headLink();
+		foreach ($styles as $key=>$file) {
+			foreach ($paths as $path) {
+				if(
+					0 === strpos(current_url(), '/exhibits/show') && 
+					$path == '/plugins/Geolocation'
+				){
+					// do nothing if this is an exhibit (allow map)
+				}elseif (
+					$file->href && 
+					strpos($file->href, $path) !== false
+				) {
+					$styles[$key]->href = null;
+					$styles[$key]->type = null;
+					$styles[$key]->rel = null;
+					$styles[$key]->media = null;
+					$styles[$key]->conditionalStylesheet = null;
+				}
+			}
+		}
+	}
+}
 
 /*
 ** Icons
@@ -355,57 +435,6 @@ function mh_get_item_json($item=null){
 			return false;
 		}
 	}
-}
-
-/*
-** Add the map actions toolbar
-*/
-function mh_map_actions($item=null,$tour=null,$collection=null,$saddr='current',$coords=null){
-	
-		$street_address=null;
-
-		if($item!==null){
-
-			// get the destination coordinates for the item
-			$location = get_db()->getTable('Location')->findLocationByItem($item, true);
-			$coords=$location[ 'latitude' ].','.$location[ 'longitude' ];
-			$street_address=mh_street_address($item);
-
-			$showlink=true;
-		
-		}elseif($tour!==null){
-
-			// get the waypoint coordinates for the tour
-			$coords = array();
-			foreach( $tour->Items as $item ){
-				set_current_record( 'item', $item );
-				$location = get_db()->getTable('Location')->findLocationByItem($item, true);
-				$coords[] = mh_street_address($item) ? urlencode(strip_tags(mh_street_address($item))) : $location['latitude'].','.$location['longitude'];
-			}
-
-			$daddr=end($coords);
-			reset($coords);
-			$waypoints=array_pop($coords);		
-			$waypoints=implode('+to:', $coords);
-			$coords=$daddr.'+to:'.$waypoints;	
-
-			$showlink=get_theme_option('show_tour_dir');
-		}
-	
-	?>
-	
-	<div id="map-actions-anchor" class="map-actions flex">
-
-		<!-- Directions link -->
-		<?php if( $showlink && $coords && ($item || $tour) ):?>
-				<a onclick="jQuery(\'body\').removeClass(\'fullscreen-map\')" class="directions" title="<?php echo __('Get Directions on Google Maps');?>" target="_blank" rel="noopener" href="https://maps.google.com/maps?saddr=<?php echo $saddr;?>+location&daddr=<?php echo $street_address ? urlencode(strip_tags($street_address)) : $coords;?>">
-				<i class="fa fa-lg fa-external-link-square" aria-hidden="true"></i> <span class="label"><?php echo __('Get Directions');?></span>
-		</a>
-		<?php endif;?>
-
-	</div>
-
-	<?php	
 }
 
 /*
@@ -840,236 +869,7 @@ function mh_file_caption($file,$inlineTitle=true){
 }
 
 
-/*
-** Loop through and display image files
-*/
-function mh_item_images($item,$index=0){
-	$html=null;
-	$captionID=1;
-	foreach (loop('files', $item->Files) as $file){
-		$img = array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif');
-		$mime = metadata($file,'MIME Type');
-		if(in_array($mime,$img)) {
-			$title=metadata($file, array('Dublin Core', 'Title')) ? metadata($file, array('Dublin Core', 'Title')) : 'Untitled';
-			$title_formatted=link_to($file,'show','<strong>'.$title.'</strong>',array('title'=>'View File Record'));
-			$desc=metadata($file, array('Dublin Core', 'Description'));
-			$caption=$title_formatted.($desc ? ': ' : ' ~ ').mh_file_caption($file,false);
-			$src=WEB_ROOT.'/files/fullsize/'.str_replace( array('.JPG','.jpeg','.JPEG','.png','.PNG','.gif','.GIF'), '.jpg', $file->filename );
-			$html.= '<figure class="flex-image" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" aria-label="'.$title.'" aria-describedby="caption'.$captionID.'">';
-				$html.= '<a href="'.$src.'" title="'.$title.'" class="file flex" style="background-image: url(\''.$src.'\');" data-size=""></a>';
-				$html.= '<figcaption id="caption'.$captionID.'" hidden class="hidden;">'.strip_tags($caption,'<a><u><strong><em><i><cite>').'</figcaption>';
-			$html.= '</figure>';
-			$captionID++;
-		}
-	}
-	if($html): ?>
-		<h3><?php echo __('Images');?></h3>
-		<figure id="item-photos" class="flex flex-wrap" itemscope itemtype="http://schema.org/ImageGallery">
-			<?php echo $html;?>
-		</figure>		
-		<!-- PhotoSwipe -->
-		<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="pswp__bg"></div>
-			<div class="pswp__scroll-wrap">
-			<div class="pswp__container">
-				<div class="pswp__item"></div>
-				<div class="pswp__item"></div>
-				<div class="pswp__item"></div>
-			</div>
-			<div class="pswp__ui pswp__ui--hidden">
-				<div class="pswp__top-bar">
-					<div class="pswp__counter"></div>
-					<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-					<button class="pswp__button pswp__button--share" title="Share"></button>
-					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-					<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-					<div class="pswp__preloader">
-						<div class="pswp__preloader__icn">
-							<div class="pswp__preloader__cut">
-								<div class="pswp__preloader__donut"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-					<div class="pswp__share-tooltip"></div> 
-				</div>
-				<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-				<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
-				<div class="pswp__caption">
-					<div class="pswp__caption__center"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<?php endif;
-}
 
-
-/*
-** Loop through and display audio files
-*/
-function mh_audio_files($item,$index=0){
-	if (!$item){
-		$item=set_loop_records('files',$item);
-	}
-	$html=null;
-	$audioTypes = array('audio/mpeg');
-	foreach (loop('files', $item->Files) as $file){
-		$mime = metadata($file,'MIME Type');
-		if ( array_search($mime, $audioTypes) !== false ){
-			$audioTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Audio File '.($index+1);
-			$audioDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play '.$audioTitle.'" tabindex="0">';
-				$html.='<div class="media-thumb"><i class="fa fa-lg fa-microphone media-icon" aria-hidden="true"></i></div>';
-				$html.='<div class="media-caption">';
-					$html.='<div class="media-title">'.$audioTitle.'</div>';
-					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.=snippet($audioDesc,0,250,"...");
-				$html.='</div>';
-			$html.='</div>';
-			$html.=link_to($file,'show',__('View File Record'));
-		}
-	};
-	if($html): ?>
-		<h3><?php echo __('Audio');?></h3>
-		<figure id="item-audio">	
-			<div class="media-container audio">
-				<audio id="curatescape-player-audio" class="video-js" controls preload="auto">
-					<p class="media-no-js">To listen to this audio please enable JavaScript, and consider upgrading to a web browser that supports HTML5 audio</p>
-				</audio>
-				<div class="flex media-list audio">
-					<?php echo $html;?>		
-				</div>
-			</div>
-		</figure>	
-		<script>
-		jQuery(document).ready(function($) {
-			var audioplayer = $('#curatescape-player-audio');
-			var src=$('.media-list.audio .media-select:first-child').attr('data-source');
-			audioplayer.html(
-				'<source src="'+src+'" type="audio/mp3"></source>'
-			)
-			if(typeof audioplayer == 'object'){
-				$('.media-list.audio .media-select:first-child').addClass('now-playing');	
-				
-				$('.media-list.audio .media-select').on('click keydown',function(e){	
-					if(( e.type == 'click' ) || ( e.type == 'keydown' && e.which  == 13 )){
-						var newsrc=$(this).attr('data-source');
-						$('.media-list.audio .now-playing').removeClass('now-playing');
-						$(this).addClass('now-playing');
-						audioplayer.html(
-							'<source src="'+newsrc+'" type="audio/mp3"></source>'
-						);
-						audioplayer.get(0).load();
-						audioplayer.get(0).play();
-					}
-				});
-				
-			}
-		});		
-		</script>
-	<?php endif;
-}
-
-
-/*
-** Loop through and display video files
-** Please use H.264 video format
-** We accept multiple H.264-related MIME-types because Omeka MIME detection is sometimes spotty
-** But in the end, we always tell the browser they're looking at "video/mp4"
-*/
-function mh_video_files($item='item',$html=null) {
-
-	$videoTypes = array('video/mp4','video/mpeg','video/quicktime');
-	foreach (loop('files', $item->Files) as $file){
-		$videoMime = metadata($file,'MIME Type');
-		if ( in_array($videoMime,$videoTypes) ){
-			$videoTitle = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : 'Video File '.($videoIndex+1);
-			$videoDesc = strip_tags(mh_file_caption($file,false));
-			$html.='<div class="flex media-select" data-source="'.WEB_ROOT.'/files/original/'.$file->filename.'" role="button" aria-label="click to play '.$videoTitle.'" tabindex="0">';
-				$html.='<div class="media-thumb"><i class="fa fa-lg fa-film media-icon" aria-hidden="true"></i></div>';
-				$html.='<div class="media-caption">';
-					$html.='<div class="media-title">'.$videoTitle.'</div>';
-					//$html.='<strong>Duration</strong>: <span class="duration">00:00:00</span><br>';
-					$html.=snippet($videoDesc,0,250,"...");
-				$html.='</div>';
-			$html.='</div>';
-			$html.=link_to($file,'show',__('View File Record'));
-
-		}
-	}
-	if($html): ?>
-		<h3><?php echo __('Video');?></h3>
-		<figure id="item-video">
-			<div class="media-container video">		
-				<video id="curatescape-player" playsinline controls preload="auto">
-					<p class="media-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
-				</video>
-				<div class="flex media-list video">
-					<?php echo $html;?>
-				</div>
-			</div>
-		</figure>
-		<script>
-		jQuery(document).ready(function($) {
-			var videoplayer = $('#curatescape-player');
-			var src=$('.media-list.video .media-select:first-child').attr('data-source');
-			videoplayer.html(
-				'<source src="'+src+'" type="video/mp4"></source>'
-			)
-			if(typeof videoplayer == 'object'){
-				$('.media-list.video .media-select:first-child').addClass('now-playing');
-				
-				$('.media-list.video .media-select').on('click keydown',function(e){
-					if(( e.type == 'click' ) || ( e.type == 'keydown' && e.which  == 13 )){
-						var newsrc=$(this).attr('data-source');
-						$('.media-list.video .now-playing').removeClass('now-playing');
-						$(this).addClass('now-playing');
-						videoplayer.html(
-							'<source src="'+newsrc+'" type="video/mp4"></source>'
-						);
-						videoplayer.get(0).load();
-						videoplayer.get(0).play();
-					}
-				});
-			}
-		});
-		</script>
-	<?php endif;
-}
-
-/*
-** loop through and display DOCUMENT files other than the supported audio, video, and image types
-*/
-function mh_document_files($item='item',$html=null){
-	
-	$blacklist=array('image/jpeg','image/jpg','image/png','image/jpeg','image/gif','video/mp4','video/mpeg','video/quicktime','audio/mpeg');
-	foreach (loop('files', $item->Files) as $file){
-		$documentMime = metadata($file,'MIME Type');
-		if ( !in_array($documentMime,$blacklist) ){	
-			
-			$title = metadata($file,array('Dublin Core','Title')) ? metadata($file,array('Dublin Core','Title')) : $file->original_filename;
-			$extension=pathinfo($file->getWebPath('original'), PATHINFO_EXTENSION);
-			$size=formatSizeUnits($file->size);
-			$download=$file->getWebPath('original');
-			
-			$html .= '<tr>';
-			$html .= '<td class="title"><a href="/files/show/'.$file->id.'">'.$title.'</a></td>';
-			$html .= '<td class="info"><span>'.$extension.'</span> / '.$size.'</td>';
-			$html .= '<td class="download"><a class="button" target="_blank" title="Download" href="'.$download.'"><i class="fa fa-download" aria-hidden="true"></i> <span>Download</span></a></td>';
-			$html .= '</tr>';
-		}
-
-	}	
-	if($html){
-		echo '<h3>'.__('Documents').'</h3>';
-		echo '<figure id="item-documents">';
-		echo '<table><tbody><tr><th>Name</th><th>Info</th><th>Actions</th></tr>'.$html.'</tbody></table>';
-		echo '</figure>';
-	}
-	
-}
 /*
 ** display single file in FILE TEMPLATE
 */
@@ -1201,39 +1001,6 @@ function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Cor
 	}
 	else{
 		return false;
-	}
-}
-
-
-/*
-** Display the social sharing widgets
-** @TODO
-*/
-function mh_share_this($type='Page'){
-	if(get_theme_option('add_this_buttons')==1){
-		$addThisAnalytics = get_theme_option('add_this_analytics');
-		$html = '<aside id="share-this"><h3>'.__('Share this %s',$type).'</h3>';
-		$html .= '<!-- AddThis Button BEGIN -->
-				<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-				<a class="addthis_button_twitter"></a>
-				<a class="addthis_button_facebook"></a>
-				<a class="addthis_button_pinterest_share"></a>
-				<a class="addthis_button_email"></a>
-				<a class="addthis_button_compact"></a>
-				</div></aside>
-				
-				<script>
-				jQuery(document).ready(function(){
-					loadJS("//s7.addthis.com/js/300/addthis_widget.js#async=1",function(){
-						console.log("Add This ready...");
-						var addthis_config = addthis_config||{};
-						addthis_config.pubid = "'.get_theme_option('add_this_analytics').'";
-						addthis.init();	
-					});
-				});
-				</script>	
-				<!-- AddThis Button END -->';
-		return $html;
 	}
 }
 
