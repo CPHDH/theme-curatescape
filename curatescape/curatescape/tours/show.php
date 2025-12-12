@@ -32,7 +32,7 @@ echo head( array( 'title' => ''.$label.' | '.$tourTitle, 'bodyid'=>'tours',
 			<div class="tour-items">
 				<?php if(count($tourItems)):?>
 					<?php if($tourItemsDiplay = $tour->tourItemsOutput()):?>
-						<h2 class="visuallyhidden"><?php echo storyLabelString(true);?> 
+						<h2 class=""><?php echo storyLabelString(true);?> 
 							<span class="tour-item-count" aria-label="<?php echo __('(%s total)', count($tourItems));?>">
 								<?php echo count($tourItems);?>
 							</span>

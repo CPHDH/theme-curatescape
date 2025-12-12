@@ -883,6 +883,7 @@ body#items.show #wrap section.plugin {
   color: #fff;
 }
 
+#tours.show .tour-items h2,
 body#items.show #wrap section.media h2,
 body#items.show #wrap section.plugin h2 {
   color: #fff;
@@ -906,10 +907,12 @@ body#items.show #wrap section.plugin .geolocation-map a{
 body#items.show section.media {
   background: var(--color-large-block);
 }
-.curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure{
+.curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure,
+.tour-items-browse .curatescape-item-figure{
   padding-bottom: 1em;
 }
-.curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure + .curatescape-image-figure{
+.curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure + .curatescape-image-figure,
+.tour-items-browse .curatescape-item-gallery .curatescape-item-figure + .curatescape-item-figure{
   border-top: 1px dashed var(--color-line-on-dark);
   padding-top: 2em;
 }
@@ -2482,9 +2485,22 @@ section#about .button {
 }
 
 /*! TOURS */
+.tour-item-count {
+  font-size: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+@container tourgallerycontainer (width >= 720px) {
+  .tour-items-browse .curatescape-items .curatescape-item-gallery .curatescape-item-figure > a {
+    width: calc(60% - 3rem);
+    padding-right: 3rem;
+  }
+}
+
 @container gallerycontainer (width >= 720px) {
   .curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure > a,
-  .curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure > div {
+  .curatescape-image-gallery.gallery-inline-captions .curatescape-image-figure > div,
+  .tour-items-browse .curatescape-items .curatescape-item-gallery .curatescape-item-figure > a {
     width: calc(60% - 3rem);
     padding-right: 3rem;
   }
@@ -3108,25 +3124,25 @@ h2.curatescape-map-title {
   }
 }
 
-#tours.show .curatescape-files,
+#tours.show .curatescape-items,
 #items.show .curatescape-files {
   color: #fff;
 }
 
-#tours.show .curatescape-files a:not(.button),
+#tours.show .curatescape-items a:not(.button),
 #items.show .curatescape-files a:not(.button) {
   color: var(--color-tertiary)
 }
 
-#tours.show .curatescape-files a.button,
+#tours.show .curatescape-items a.button,
 #items.show .curatescape-files a.button {
   color: #fff;
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
 }
 
-#tours.show .curatescape-files a.button:focus,
-#tours.show .curatescape-files a.button:hover,
+#tours.show .curatescape-items a.button:focus,
+#tours.show .curatescape-items a.button:hover,
 #items.show .curatescape-files a.button:focus,
 #items.show .curatescape-files a.button:hover {
   background-color: var(--color-primary);

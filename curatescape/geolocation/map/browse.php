@@ -11,7 +11,7 @@ echo head(array('title'=>$title,'bodyid'=>'items','bodyclass'=>'map browse geolo
 		</nav>
 		<?php if (!$useCuratescape): ?>
 			<div id="geolocation-browse">
-				<?php echo $this->geolocationMapBrowse('map_browse', array('list' => 'map-links', 'params' => $params)); ?>
+				<?php echo $this->geolocationMapBrowse('map_browse', array('list' => 'map-links')); ?>
 				<div id="map-links"></div>
 			</div>
 		<?php else: ?>

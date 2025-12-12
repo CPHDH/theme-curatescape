@@ -63,8 +63,6 @@ echo head(array(
 		} else {
 			fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); 
 		}
-		
-		
 		?>
 	</section>
 	<?php echo mh_display_comments();?>
