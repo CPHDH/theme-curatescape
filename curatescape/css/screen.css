@@ -1639,8 +1639,10 @@ article.tour-show .tour-colophon {
 body#items.show .item-hero .item-hero-text {
   padding: 2em;
 }
-
-.curatescape-text p+p {
+article.page h3, article.page h4,
+article.page p,
+.tour-description p + p,
+.curatescape-text p + p {
   margin-top: 1em;
 }
 
