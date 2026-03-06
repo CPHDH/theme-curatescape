@@ -1184,7 +1184,7 @@ h2.query-header {
 #navigation nav.static {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-start;
   margin: 0 0 0;
   padding: 2em 0 1em;
@@ -1244,7 +1244,6 @@ h2.query-header {
   display: block;
 }
 
-#navigation nav.static #home-logo,
 #navigation .flex-nav-container {
   z-index: 8;
 }
