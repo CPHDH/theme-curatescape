@@ -59,7 +59,9 @@ echo head(array(
 			plugin_is_active('Curatescape') &&
 			!option('curatescape_map_mirror_geolocation')
 		) {
-			echo get_view()->CuratescapeMap()->Single();
+			if(!empty(get_db()->getTable( 'Location' )->findLocationByItem( $item, true ))) {
+				echo get_view()->CuratescapeMap()->Single();
+			}
 		} else {
 			fire_plugin_hook('public_items_show', array('view' => $this, 'item'=>$item)); 
 		}
