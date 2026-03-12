@@ -604,7 +604,7 @@ function mh_the_lede($item='item'){
 ** Title + Subtitle (for search/browse/home)
 */
 function mh_the_title_link($item='item'){
-	$title=strip_tags(metadata($item, array('Dublin Core', 'Title')));
+	$title = html_entity_decode(metadata($item, 'rich_title'));
 	return link_to($item,'show',$title, array('class'=>'permalink'));
 }
 
