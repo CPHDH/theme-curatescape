@@ -62,6 +62,8 @@ const doMenu = ()=>{
     if(isEscape && body.classList.contains('expanded')) toggleMenu(body,menubutton);
   };
 }
-document.addEventListener('readystatechange',()=>{
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', doMenu);
+} else {
   doMenu();
-});
+}
