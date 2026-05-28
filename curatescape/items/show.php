@@ -59,7 +59,7 @@ echo head(array(
 			plugin_is_active('Curatescape') &&
 			!option('curatescape_map_mirror_geolocation')
 		) {
-			if(!empty(get_db()->getTable( 'Location' )->findLocationByItem( $item, true ))) {
+			if(mh_get_geolocation_data($item)) {
 				echo get_view()->CuratescapeMap()->Single();
 			}
 		} else {
