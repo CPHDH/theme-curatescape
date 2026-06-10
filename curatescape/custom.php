@@ -17,17 +17,18 @@ if(plugin_is_active('Curatescape')){
 function mh_jQueryConditional($current_url=null, $whitelist=array())
 { 
 	$current_url = $current_url ? $current_url : current_url();
+	// jQuery-dependent plugin output (Omeka lightgallery via CuratescapeGalleries
+	// slides mode; Geolocation map.js) can appear on items/show, the homepage,
+	// and the map page, so load jQuery sitewide when one of these scenarios applies
 	if(
-		plugin_is_active('CuratescapeGalleries') && 
-		get_option('curatescapegalleries_gallery_style') == 'gallery-slides' &&
-		strpos($current_url, '/items/show/') == '0'
+		plugin_is_active('CuratescapeGalleries') &&
+		get_option('curatescapegalleries_gallery_style') == 'gallery-slides'
 	){
 		return true;
 	}
 	if(
-		plugin_is_active('Curatescape') && 
-		get_option('curatescape_map_mirror_geolocation') == true &&
-		strpos($current_url, '/items/show/') == '0'
+		plugin_is_active('Curatescape') &&
+		get_option('curatescape_map_mirror_geolocation') == true
 	){
 		return true;
 	}
@@ -44,55 +45,6 @@ function mh_jQueryConditional($current_url=null, $whitelist=array())
 		if(0 === strpos($current_url, $allowed)) return true;
 	}
 	return false;
-}
-
-function mh_removeHeadAssets($view=null, $paths=array())
-{
-	if ($view) {
-		$scripts = $view->headScript();
-		foreach ($scripts as $key=>$file) {
-			foreach ($paths as $path) {
-				if(
-					0 === strpos(current_url(), '/exhibits/show') && 
-					$path == '/plugins/Geolocation'
-				){
-					// do nothing if this is an exhibit (allow map)
-				}elseif(
-					0 === strpos(current_url(), '/guest-user/') && 
-					$path == '/plugins/GuestUser/views/public/javascripts'
-				){
-					// do nothing if this is a guest user page
-				}elseif (
-					isset($file->attributes['src']) && 
-					strpos($file->attributes['src'], $path) !== false
-				) {
-					$scripts[$key]->type = null;
-					$scripts[$key]->attributes['src'] = null;
-					$scripts[$key]->attributes['source'] = null;
-				}
-			}
-		}
-		$styles = $view->headLink();
-		foreach ($styles as $key=>$file) {
-			foreach ($paths as $path) {
-				if(
-					0 === strpos(current_url(), '/exhibits/show') && 
-					$path == '/plugins/Geolocation'
-				){
-					// do nothing if this is an exhibit (allow map)
-				}elseif (
-					$file->href && 
-					strpos($file->href, $path) !== false
-				) {
-					$styles[$key]->href = null;
-					$styles[$key]->type = null;
-					$styles[$key]->rel = null;
-					$styles[$key]->media = null;
-					$styles[$key]->conditionalStylesheet = null;
-				}
-			}
-		}
-	}
 }
 
 /*
@@ -131,8 +83,7 @@ function mh_seo_sitedesc(){
 ** SEO Page Title
 */
 function mh_seo_pagetitle($title,$item){
-	$subtitle=$item ? (mh_the_subtitle($item) ? ' - '.mh_the_subtitle($item) : null) : null;
-	$pt = $title ? $title.$subtitle.' | '.option('site_title') : option('site_title');
+	$pt = $title ? $title.' | '.option('site_title') : option('site_title');
 	return strip_tags($pt);
 }
 
@@ -451,6 +402,7 @@ function mh_simple_search($inputID='search',$formProperties=array(),$ariaLabel="
 	$searchUri = ($sitewide==1) ? url('search') : url('items/browse?sort_field=relevance');
 	$placeholder =  __('Search...');	
 	$default_record_types = unserialize(get_option('search_record_types'));
+	$default_record_types = is_array($default_record_types) ? $default_record_types : array();
 
 	$searchQuery = array_key_exists($qname, $_GET) ? $_GET[$qname] : '';
 	$formProperties['action'] = $searchUri;
@@ -515,7 +467,7 @@ function mh_appstore_downloads($apps=array()){
 	if($href=getAppStoreUrl('android')){
 		$apps[]='<a class="button icon appstore android" href="'.$href.'" target="_blank" rel="noopener">'.mh_icon('googleplay').__('Google Play').'</a>';
 	}
-	if(count($apps) > 1){
+	if(count($apps) > 0){
 		return '<h4 id="dl">'.__('Download').'</h4><div class="downloads">'.implode(' ', $apps).'</div>';
 	}
 }
@@ -651,7 +603,7 @@ function mh_get_geolocation_data($item = null){
   if(plugin_is_active('Geolocation')){
 	  $locationTable = get_db()->getTable('Location');
 	  if (method_exists($locationTable, 'findLocationByItem')) {
-		  return $locationTable->findLocationByItem($item, $single);
+		  return $locationTable->findLocationByItem($item, true);
 	  }
 	  if (method_exists($locationTable, 'findLocationsByItem')) {
 		  return $locationTable->findLocationsByItem($item);
@@ -985,9 +937,10 @@ function mh_file_metadata_additional($file='file',$html=null){
 */
 function embeddableVersion($file,$title=null,$desc=null,$field=array('Dublin Core','Relation'),$caption=true){
 
-	$youtube= (strpos(metadata($file,$field), 'youtube.com')) ? metadata($file,$field) : false;
-	$youtube_shortlink= (strpos(metadata($file,$field), 'youtu.be')) ? metadata($file,$field) : false;
-	$vimeo= (strpos(metadata($file,$field), 'vimeo.com')) ? metadata($file,$field) : false;
+	$relation = metadata($file,$field);
+	$youtube= ($relation && strpos($relation, 'youtube.com') !== false) ? $relation : false;
+	$youtube_shortlink= ($relation && strpos($relation, 'youtu.be') !== false) ? $relation : false;
+	$vimeo= ($relation && strpos($relation, 'vimeo.com') !== false) ? $relation : false;
 
 	if($youtube) {
 		// assumes YouTube links look like https://www.youtube.com/watch?v=NW03FB274jg where the v query contains the video identifier
@@ -1229,7 +1182,7 @@ function mh_hero_item($item){
 				$html .= '<div class="featured-decora-bg" style="background-image:url('.$img_url.')">' ;
 				$html .= '<div class="featured-decora-text"><div class="featured-decora-text-inner">';
 					$html .= '<header><h3>' .$itemTitle. '</h3><span class="featured-item-author">'.mh_the_byline($item,false).'</span></header>';
-					$html .= '<div class="item-description">' . $itemDescription ? $itemDescription : __('Preview text not available.') . '</div>';
+					$html .= '<div class="item-description">' . ($itemDescription ? $itemDescription : __('Preview text not available.')) . '</div>';
 				$html .= '</div></div>' ;
 			$html .= '</div></div>' ;
 		$html .= '</article>';
@@ -1478,10 +1431,11 @@ function mh_random_or_recent($mode='recent',$num=6,$html=null){
 	switch ($mode){
 	
 	case 'random':
-		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'random', 'sort_dir' => 'd','public'=>true), $num);;
+		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'random', 'sort_dir' => 'd','public'=>true), $num);
 		$heading=__("Random %s",$label);
 		break;
 	case 'recent':
+	default:
 		$items=get_records('Item', array('hasImage'=>true,'sort_field' => 'added', 'sort_dir' => 'd','public'=>true), $num);
 		$heading=__("Recent %s",$label);
 		break;
@@ -1719,10 +1673,10 @@ function mh_license(){
 		'intl'=>'International',
 		'ca'=>'Canada',
 		'au'=>'Australia',
-		'uk'=>'United Kingdom (England and Whales)',
+		'uk'=>'United Kingdom (England and Wales)',
 		'us'=>'United States'
 	);
-	if($cc_license != 'none'){
+	if($cc_license && $cc_license != 'none' && isset($cc_readable[$cc_license], $cc_readable[$cc_version], $cc_jurisdiction_readable[$cc_jurisdiction])){
 		return __('This work is licensed by '.mh_owner_link().' under a <a rel="license" href="http://creativecommons.org/licenses/'.$cc_license.'/'.$cc_readable[$cc_version].'/'.($cc_jurisdiction !== 'intl' ? $cc_jurisdiction : null).'">Creative Commons '.$cc_readable[$cc_license].' '.$cc_readable[$cc_version].' '.$cc_jurisdiction_readable[$cc_jurisdiction].' License</a>.');
 	}else{
 		return __('&copy; %1$s %2$s', date('Y'), mh_owner_link() );

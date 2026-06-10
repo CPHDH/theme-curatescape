@@ -19,8 +19,7 @@ elseif ( !empty($auth) ) {
 }elseif ( !empty($subj) ) {
 	$title = __('Results for subject term "%s"', $subj);
 	$bodyclass .=' queryresults';
-}elseif ( !empty($collection) ) {
-	$c=get_record_by_id('collection',$collection);
+}elseif ( !empty($collection) && ($c=get_record_by_id('collection',$collection)) ) {
 	$collection_title=metadata($c,array('Dublin Core','Title'));
 	$title = __('%1s in "%2s"', $label, $collection_title);
 	$bodyclass .=' queryresults';

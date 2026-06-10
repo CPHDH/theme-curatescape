@@ -3,7 +3,7 @@ $title=tourLabelString('plural');
 if(isset($_GET['tags'])){
 	$queryheader = __('%1$s tagged "%2$s": %3$s', tourLabelString('plural'), htmlspecialchars($_GET['tags']), count($tours)); 
 	$title = __('%1$s tagged "%2$s"', tourLabelString('plural'), htmlspecialchars($_GET['tags']));
-}elseif(isset($_GET['featured'])){
+}elseif(isset($_GET['featured']) && $_GET['featured'] == 1){
 	$queryheader = __('Featured %1$s: %2$s', tourLabelString('plural'), count($tours));
 	$title = __('Featured').' '.$title;
 }else{

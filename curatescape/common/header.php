@@ -69,16 +69,9 @@ $file = (isset($file)) ? $file : null;
 <!-- Assets -->
 <?php 
 $includejquery = mh_jQueryConditional(current_url());
-$blacklistAssets = array();
-if(plugin_is_active('Curatescape')){
-	if(!option('curatescape_map_mirror_geolocation')){
-		array_merge($blacklistAssets, array(
-			'/plugins/Geolocation',
-		));
-	}
-}
-mh_removeHeadAssets($this, $blacklistAssets);
-echo head_css(); 
+// Geolocation assets are stripped by the Curatescape plugin itself
+// (HookPublicHead) when not mirroring, so the theme doesn't manage a blacklist.
+echo head_css();
 echo mh_theme_css();
 echo head_js($includejquery); 
 ?>

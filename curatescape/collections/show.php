@@ -26,7 +26,7 @@ echo head(array('maptype'=>'none','title' => __('Collection').' | '.$title, 'bod
 
 		    <?php else: ?>
 		    
-		        <br><br><p><?php echo __("This collection currently has no %s.",mh_item_label('plural')); ?></p>
+		        <br><br><p><?php echo __("This collection currently has no %s.",plugin_is_active('Curatescape') ? storyLabelString('plural') : __('Items')); ?></p>
 		        
 		    <?php endif; ?>
 		    

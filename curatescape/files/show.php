@@ -25,11 +25,11 @@
 
 	<div id="item-primary" class="show">
 		<hr>
-		<?php 
+		<?php
 		$record=get_record_by_id('Item', $file->item_id);
-		$title=metadata($record,array('Dublin Core','Title'));
-		echo '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>';	
-		?> 
+		$title=$record ? metadata($record,array('Dublin Core','Title')) : null;
+		echo $record ? '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>' : null;
+		?>
 		<hr>
 		
 		<figure>
@@ -47,11 +47,11 @@
 			<?php mh_file_metadata_additional();?>
 		</div>			
 
-		<hr>	
-		<?php echo '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>';	
+		<hr>
+		<?php echo $record ? '<div class="appears">'.__('This file appears in').': '.link_to_item( strip_tags($title), array('class'=>'file-appears-in-item'), 'show', $record).'</div>' : null;
 		?>
 		<hr>
-		<?php echo mh_hero_item($record);?>
+		<?php echo $record ? mh_hero_item($record) : null;?>
 	
 	</div><!-- end primary -->
 
